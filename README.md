@@ -1,0 +1,1 @@
+# botshield-sdk-typescript
