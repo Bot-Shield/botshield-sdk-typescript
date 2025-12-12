@@ -18,7 +18,7 @@ export namespace DeviceRemoveResponse {
   export interface Data {
     message: string;
 
-    passkeys_deleted: unknown;
+    passkeys_deleted: number;
 
     success: boolean;
   }
