@@ -55,12 +55,12 @@ $ cd botshield-sdk-typescript
 # With yarn
 $ yarn link
 $ cd ../my-package
-$ yarn link botshield-sdk
+$ yarn link @botshield/botshield-sdk
 
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global botshield-sdk
+$ pnpm link -—global @botshield/botshield-sdk
 ```
 
 ## Running tests

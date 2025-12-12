@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "paths": {
-      "botshield-sdk/*": ["./src/*"],
-      "botshield-sdk": ["./src/index.ts"]
+      "@botshield/botshield-sdk/*": ["./src/*"],
+      "@botshield/botshield-sdk": ["./src/index.ts"]
     },
     "noEmit": true,
 

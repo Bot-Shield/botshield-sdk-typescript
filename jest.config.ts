@@ -7,8 +7,8 @@ const config: JestConfigWithTsJest = {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { sourceMaps: 'inline' }],
   },
   moduleNameMapper: {
-    '^botshield-sdk$': '<rootDir>/src/index.ts',
-    '^botshield-sdk/(.*)$': '<rootDir>/src/$1',
+    '^@botshield/botshield-sdk$': '<rootDir>/src/index.ts',
+    '^@botshield/botshield-sdk/(.*)$': '<rootDir>/src/$1',
   },
   modulePathIgnorePatterns: [
     '<rootDir>/ecosystem-tests/',

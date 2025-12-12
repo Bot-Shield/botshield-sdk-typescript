@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { BotshieldSDK } from 'botshield-sdk';
+import { BotShield } from '@botshield/botshield-sdk';
 
-const { stringifyQuery } = BotshieldSDK.prototype as any;
+const { stringifyQuery } = BotShield.prototype as any;
 
 describe(stringifyQuery, () => {
   for (const [input, expected] of [

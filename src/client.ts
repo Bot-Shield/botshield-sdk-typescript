@@ -45,16 +45,31 @@ import {
 } from './internal/utils/log';
 import { isEmptyObj } from './internal/utils/values';
 
+const environments = {
+  production: 'https://api.botshield.ai/operations',
+  development: 'http://localhost:9991/operations',
+};
+type Environment = keyof typeof environments;
+
 export interface ClientOptions {
   /**
-   * Defaults to process.env['BOTSHIELD_SDK_API_KEY'].
+   * Defaults to process.env['BOTSHIELD_API_KEY'].
    */
   apiKey?: string | null | undefined;
 
   /**
+   * Specifies the environment to use for the API.
+   *
+   * Each environment maps to a different base URL:
+   * - `production` corresponds to `https://api.botshield.ai/operations`
+   * - `development` corresponds to `http://localhost:9991/operations`
+   */
+  environment?: Environment | undefined;
+
+  /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env['BOTSHIELD_SDK_BASE_URL'].
+   * Defaults to process.env['BOT_SHIELD_BASE_URL'].
    */
   baseURL?: string | null | undefined;
 
@@ -108,7 +123,7 @@ export interface ClientOptions {
   /**
    * Set the log level.
    *
-   * Defaults to process.env['BOTSHIELD_SDK_LOG'] or 'warn' if it isn't set.
+   * Defaults to process.env['BOT_SHIELD_LOG'] or 'warn' if it isn't set.
    */
   logLevel?: LogLevel | undefined;
 
@@ -121,9 +136,9 @@ export interface ClientOptions {
 }
 
 /**
- * API Client for interfacing with the Botshield SDK API.
+ * API Client for interfacing with the Bot Shield API.
  */
-export class BotshieldSDK {
+export class BotShield {
   apiKey: string | null;
 
   baseURL: string;
@@ -139,10 +154,11 @@ export class BotshieldSDK {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the Botshield SDK API.
+   * API Client for interfacing with the Bot Shield API.
    *
-   * @param {string | null | undefined} [opts.apiKey=process.env['BOTSHIELD_SDK_API_KEY'] ?? null]
-   * @param {string} [opts.baseURL=process.env['BOTSHIELD_SDK_BASE_URL'] ?? http://localhost:9991/operations] - Override the default base URL for the API.
+   * @param {string | null | undefined} [opts.apiKey=process.env['BOTSHIELD_API_KEY'] ?? null]
+   * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
+   * @param {string} [opts.baseURL=process.env['BOT_SHIELD_BASE_URL'] ?? https://api.botshield.ai/operations] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -151,25 +167,32 @@ export class BotshieldSDK {
    * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
-    baseURL = readEnv('BOTSHIELD_SDK_BASE_URL'),
-    apiKey = readEnv('BOTSHIELD_SDK_API_KEY') ?? null,
+    baseURL = readEnv('BOT_SHIELD_BASE_URL'),
+    apiKey = readEnv('BOTSHIELD_API_KEY') ?? null,
     ...opts
   }: ClientOptions = {}) {
     const options: ClientOptions = {
       apiKey,
       ...opts,
-      baseURL: baseURL || `http://localhost:9991/operations`,
+      baseURL,
+      environment: opts.environment ?? 'production',
     };
 
-    this.baseURL = options.baseURL!;
-    this.timeout = options.timeout ?? BotshieldSDK.DEFAULT_TIMEOUT /* 1 minute */;
+    if (baseURL && opts.environment) {
+      throw new Errors.BotShieldError(
+        'Ambiguous URL; The `baseURL` option (or BOT_SHIELD_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null',
+      );
+    }
+
+    this.baseURL = options.baseURL || environments[options.environment || 'production'];
+    this.timeout = options.timeout ?? BotShield.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
     this.logLevel = defaultLogLevel;
     this.logLevel =
       parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
-      parseLogLevel(readEnv('BOTSHIELD_SDK_LOG'), "process.env['BOTSHIELD_SDK_LOG']", this) ??
+      parseLogLevel(readEnv('BOT_SHIELD_LOG'), "process.env['BOT_SHIELD_LOG']", this) ??
       defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
@@ -187,7 +210,8 @@ export class BotshieldSDK {
   withOptions(options: Partial<ClientOptions>): this {
     const client = new (this.constructor as any as new (props: ClientOptions) => typeof this)({
       ...this._options,
-      baseURL: this.baseURL,
+      environment: options.environment ? options.environment : undefined,
+      baseURL: options.environment ? undefined : this.baseURL,
       maxRetries: this.maxRetries,
       timeout: this.timeout,
       logger: this.logger,
@@ -204,7 +228,7 @@ export class BotshieldSDK {
    * Check whether the base URL is set to its default.
    */
   #baseURLOverridden(): boolean {
-    return this.baseURL !== 'http://localhost:9991/operations';
+    return this.baseURL !== environments[this._options.environment || 'production'];
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
@@ -228,7 +252,7 @@ export class BotshieldSDK {
     if (this.apiKey == null) {
       return undefined;
     }
-    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
+    return buildHeaders([{ Authorization: this.apiKey }]);
   }
 
   /**
@@ -244,7 +268,7 @@ export class BotshieldSDK {
         if (value === null) {
           return `${encodeURIComponent(key)}=`;
         }
-        throw new Errors.BotshieldSDKError(
+        throw new Errors.BotShieldError(
           `Cannot stringify type ${typeof value}; Expected string, number, boolean, or null. If you need to pass nested query parameters, you can manually encode them, e.g. { query: { 'foo[key1]': value1, 'foo[key2]': value2 } }, and please open a GitHub issue requesting better support for your use case.`,
         );
       })
@@ -716,10 +740,10 @@ export class BotshieldSDK {
     }
   }
 
-  static BotshieldSDK = this;
+  static BotShield = this;
   static DEFAULT_TIMEOUT = 60000; // 1 minute
 
-  static BotshieldSDKError = Errors.BotshieldSDKError;
+  static BotShieldError = Errors.BotShieldError;
   static APIError = Errors.APIError;
   static APIConnectionError = Errors.APIConnectionError;
   static APIConnectionTimeoutError = Errors.APIConnectionTimeoutError;
@@ -735,25 +759,19 @@ export class BotshieldSDK {
 
   static toFile = Uploads.toFile;
 
-  devices: API.Devices = new API.Devices(this);
   sdk: API.SDK = new API.SDK(this);
-  pass: API.Pass = new API.Pass(this);
   verification: API.Verification = new API.Verification(this);
+  pass: API.Pass = new API.Pass(this);
+  devices: API.Devices = new API.Devices(this);
 }
 
-BotshieldSDK.Devices = Devices;
-BotshieldSDK.SDK = SDK;
-BotshieldSDK.Pass = Pass;
-BotshieldSDK.Verification = Verification;
+BotShield.SDK = SDK;
+BotShield.Verification = Verification;
+BotShield.Pass = Pass;
+BotShield.Devices = Devices;
 
-export declare namespace BotshieldSDK {
+export declare namespace BotShield {
   export type RequestOptions = Opts.RequestOptions;
-
-  export {
-    Devices as Devices,
-    type DeviceRemoveResponse as DeviceRemoveResponse,
-    type DeviceRemoveParams as DeviceRemoveParams,
-  };
 
   export {
     SDK as SDK,
@@ -764,16 +782,22 @@ export declare namespace BotshieldSDK {
   };
 
   export {
+    Verification as Verification,
+    type VerificationGetStatusResponse as VerificationGetStatusResponse,
+    type VerificationLookupUserByEmailResponse as VerificationLookupUserByEmailResponse,
+    type VerificationGetStatusParams as VerificationGetStatusParams,
+    type VerificationLookupUserByEmailParams as VerificationLookupUserByEmailParams,
+  };
+
+  export {
     Pass as Pass,
     type PassCreateResponse as PassCreateResponse,
     type PassCreateParams as PassCreateParams,
   };
 
   export {
-    Verification as Verification,
-    type VerificationGetStatusResponse as VerificationGetStatusResponse,
-    type VerificationLookupUserByEmailResponse as VerificationLookupUserByEmailResponse,
-    type VerificationGetStatusParams as VerificationGetStatusParams,
-    type VerificationLookupUserByEmailParams as VerificationLookupUserByEmailParams,
+    Devices as Devices,
+    type DeviceRemoveResponse as DeviceRemoveResponse,
+    type DeviceRemoveParams as DeviceRemoveParams,
   };
 }
