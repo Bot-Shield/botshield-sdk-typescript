@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "botshield-sdk/*": ["./dist/src/*"],
-      "botshield-sdk": ["./dist/src/index.ts"]
+      "@botshield/botshield-sdk/*": ["./dist/src/*"],
+      "@botshield/botshield-sdk": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,

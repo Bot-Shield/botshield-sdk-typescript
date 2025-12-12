@@ -2,13 +2,13 @@
 
 import { castToError } from '../internal/errors';
 
-export class BotshieldSDKError extends Error {}
+export class BotShieldError extends Error {}
 
 export class APIError<
   TStatus extends number | undefined = number | undefined,
   THeaders extends Headers | undefined = Headers | undefined,
   TError extends Object | undefined = Object | undefined,
-> extends BotshieldSDKError {
+> extends BotShieldError {
   /** HTTP status for the response that caused the error */
   readonly status: TStatus;
   /** HTTP headers for the response that caused the error */
