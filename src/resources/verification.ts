@@ -5,6 +5,9 @@ import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
 export class Verification extends APIResource {
+  /**
+   * Check verification status
+   */
   getStatus(
     query: VerificationGetStatusParams,
     options?: RequestOptions,
@@ -12,6 +15,9 @@ export class Verification extends APIResource {
     return this._client.get('/verification/status', { query, ...options });
   }
 
+  /**
+   * Look up user by email
+   */
   lookupUserByEmail(
     query: VerificationLookupUserByEmailParams,
     options?: RequestOptions,
@@ -21,101 +27,100 @@ export class Verification extends APIResource {
 }
 
 export interface VerificationGetStatusResponse {
-  data?: VerificationGetStatusResponse.UnionMember0 | VerificationGetStatusResponse.UnionMember1;
+  data: VerificationGetStatusResponse.UnionMember0 | VerificationGetStatusResponse.UnionMember1;
 }
 
 export namespace VerificationGetStatusResponse {
   export interface UnionMember0 {
-    created_at: unknown;
+    created_at: string;
 
-    error_message: unknown;
+    expires_at: string;
 
-    expires_at: unknown;
+    found: true;
 
-    found: boolean;
+    organization_id: string;
 
-    metadata: unknown;
+    request_id: string;
 
-    organization_id: unknown;
+    /**
+     * Verification status
+     */
+    status: 'pending' | 'verified' | 'failed' | 'expired' | 'cancelled';
 
-    partner_user_id: unknown;
+    error_message?: string | null;
 
-    request_id: unknown;
+    metadata?: { [key: string]: unknown } | null;
 
-    status: unknown;
+    partner_user_id?: string | null;
 
-    user_email: unknown;
+    user_email?: string | null;
 
-    verified_at: unknown;
-
-    message?: unknown;
+    verified_at?: string | null;
   }
 
   export interface UnionMember1 {
-    found: boolean;
+    found: false;
 
-    message: unknown;
+    /**
+     * Error message
+     */
+    message: string;
 
-    status: string;
-
-    created_at?: unknown;
-
-    error_message?: unknown;
-
-    expires_at?: unknown;
-
-    metadata?: unknown;
-
-    organization_id?: unknown;
-
-    partner_user_id?: unknown;
-
-    request_id?: unknown;
-
-    user_email?: unknown;
-
-    verified_at?: unknown;
+    status: 'error';
   }
 }
 
 export interface VerificationLookupUserByEmailResponse {
-  data?:
+  data:
     | VerificationLookupUserByEmailResponse.UnionMember0
     | VerificationLookupUserByEmailResponse.UnionMember1;
 }
 
 export namespace VerificationLookupUserByEmailResponse {
   export interface UnionMember0 {
-    found: boolean;
+    /**
+     * Clerk user ID
+     */
+    clerk_user_id: string;
 
+    /**
+     * User found
+     */
+    found: true;
+
+    /**
+     * Whether user has registered passkey
+     */
     has_passkey: boolean;
 
+    /**
+     * Whether user account is active
+     */
     is_active: boolean;
-
-    clerk_user_id?: unknown;
   }
 
   export interface UnionMember1 {
-    clerk_user_id: string;
+    /**
+     * User not found
+     */
+    found: false;
 
-    found: boolean;
+    has_passkey: false;
 
-    has_passkey: boolean;
-
-    is_active: boolean;
+    is_active: false;
   }
 }
 
 export interface VerificationGetStatusParams {
   /**
-   * Type: string
+   * Verification request ID
    */
   request_id: string;
 }
 
 export interface VerificationLookupUserByEmailParams {
   /**
-   * Type: string
+   * Email address to look up
    */
   email: string;
 }

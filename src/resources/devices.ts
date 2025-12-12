@@ -5,13 +5,16 @@ import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
 export class Devices extends APIResource {
+  /**
+   * Remove device and associated passkeys
+   */
   remove(body: DeviceRemoveParams, options?: RequestOptions): APIPromise<DeviceRemoveResponse> {
     return this._client.post('/devices/remove', { body, ...options });
   }
 }
 
 export interface DeviceRemoveResponse {
-  data?: DeviceRemoveResponse.Data;
+  data: DeviceRemoveResponse.Data;
 }
 
 export namespace DeviceRemoveResponse {
@@ -25,6 +28,9 @@ export namespace DeviceRemoveResponse {
 }
 
 export interface DeviceRemoveParams {
+  /**
+   * Clerk user ID
+   */
   clerk_user_id: string;
 }
 
