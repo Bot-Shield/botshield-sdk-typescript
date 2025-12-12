@@ -2,4 +2,4 @@ onlyBuiltDependencies:
   - '@swc/core'
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
-  - '@botshield/botshield-sdk'
+  - botshield-sdk
