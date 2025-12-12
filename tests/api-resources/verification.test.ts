@@ -27,7 +27,7 @@ describe('resource verification', () => {
 
   // Prism tests are disabled
   test.skip('lookupUserByEmail: only required params', async () => {
-    const responsePromise = client.verification.lookupUserByEmail({ email: 'email' });
+    const responsePromise = client.verification.lookupUserByEmail({ email: 'dev@stainless.com' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -39,6 +39,6 @@ describe('resource verification', () => {
 
   // Prism tests are disabled
   test.skip('lookupUserByEmail: required and optional params', async () => {
-    const response = await client.verification.lookupUserByEmail({ email: 'email' });
+    const response = await client.verification.lookupUserByEmail({ email: 'dev@stainless.com' });
   });
 });
