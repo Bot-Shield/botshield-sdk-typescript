@@ -1,5 +1,5 @@
 {
-  "name": "@botshield/botshield-sdk",
+  "name": "botshield-sdk",
   "version": "0.2.0",
   "description": "The official TypeScript library for the Bot Shield API",
   "author": "Bot Shield <support@botshield.ai>",

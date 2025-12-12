@@ -1,5 +1,5 @@
-import { multipartFormRequestOptions, createForm } from '@botshield/botshield-sdk/internal/uploads';
-import { toFile } from '@botshield/botshield-sdk/core/uploads';
+import { multipartFormRequestOptions, createForm } from 'botshield-sdk/internal/uploads';
+import { toFile } from 'botshield-sdk/core/uploads';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

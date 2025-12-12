@@ -25,7 +25,7 @@ export default tseslint.config(
         {
           patterns: [
             {
-              regex: '^@botshield/botshield-sdk(/.*)?',
+              regex: '^botshield-sdk(/.*)?',
               message: 'Use a relative import, not a package import.',
             },
           ],
