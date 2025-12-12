@@ -1,8 +1,8 @@
 {
-  "name": "botshield-sdk",
+  "name": "@botshield/botshield-sdk",
   "version": "0.1.0",
-  "description": "The official TypeScript library for the Botshield SDK API",
-  "author": "Botshield SDK <>",
+  "description": "The official TypeScript library for the Bot Shield API",
+  "author": "Bot Shield <support@botshield.ai>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "type": "commonjs",
