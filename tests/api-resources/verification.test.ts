@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import BotShield from '@botshield/botshield-sdk';
+import BotShield from 'botshield-sdk';
 
 const client = new BotShield({
   apiKey: 'My API Key',
