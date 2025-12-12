@@ -5,38 +5,43 @@ import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
 export class Pass extends APIResource {
+  /**
+   * Create a new BotShield pass
+   */
   create(body: PassCreateParams, options?: RequestOptions): APIPromise<PassCreateResponse> {
     return this._client.post('/pass/create', { body, ...options });
   }
 }
 
 export interface PassCreateResponse {
-  data?: PassCreateResponse.UnionMember0 | PassCreateResponse.UnionMember1;
+  data: PassCreateResponse.BotshieldUserID | PassCreateResponse.Error;
 }
 
 export namespace PassCreateResponse {
-  export interface UnionMember0 {
-    error: UnionMember0.Error;
-
-    botshield_user_id?: unknown;
+  export interface BotshieldUserID {
+    /**
+     * Anonymous BotShield user ID
+     */
+    botshield_user_id: string;
   }
 
-  export namespace UnionMember0 {
+  export interface Error {
+    error: Error.Error;
+  }
+
+  export namespace Error {
     export interface Error {
       message: string;
 
       statusCode: number;
     }
   }
-
-  export interface UnionMember1 {
-    botshield_user_id: unknown;
-
-    error?: unknown;
-  }
 }
 
 export interface PassCreateParams {
+  /**
+   * Organization ID (optional)
+   */
   organization_id?: string;
 }
 

@@ -5,6 +5,9 @@ import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
 export class SDK extends APIResource {
+  /**
+   * Create a verification session
+   */
   createSession(
     body: SDKCreateSessionParams,
     options?: RequestOptions,
@@ -12,6 +15,9 @@ export class SDK extends APIResource {
     return this._client.post('/sdk/create-session', { body, ...options });
   }
 
+  /**
+   * Create a verification link
+   */
   createVerificationLink(
     body: SDKCreateVerificationLinkParams,
     options?: RequestOptions,
@@ -21,45 +27,59 @@ export class SDK extends APIResource {
 }
 
 export interface SDKCreateSessionResponse {
-  data?: SDKCreateSessionResponse.UnionMember0 | SDKCreateSessionResponse.UnionMember1;
+  data: SDKCreateSessionResponse.Data | SDKCreateSessionResponse.Error;
 }
 
 export namespace SDKCreateSessionResponse {
-  export interface UnionMember0 {
-    data: UnionMember0.Data;
-
-    error?: unknown;
+  export interface Data {
+    data: Data.Data;
   }
 
-  export namespace UnionMember0 {
+  export namespace Data {
     export interface Data {
+      /**
+       * ISO 8601 expiration timestamp
+       */
       expires_at: string;
 
+      /**
+       * Seconds until expiration
+       */
       expires_in_seconds: number;
 
       organization: Data.Organization;
 
+      /**
+       * Session token for verification
+       */
       session_token: string;
     }
 
     export namespace Data {
       export interface Organization {
+        /**
+         * Organization ID
+         */
         id: string;
 
-        environment: string;
+        /**
+         * Environment
+         */
+        environment: 'development' | 'production';
       }
     }
   }
 
-  export interface UnionMember1 {
-    error: UnionMember1.Error;
-
-    data?: unknown;
+  export interface Error {
+    error: Error.Error;
   }
 
-  export namespace UnionMember1 {
+  export namespace Error {
     export interface Error {
-      message: unknown;
+      /**
+       * Error message
+       */
+      message: string;
 
       statusCode: number;
     }
@@ -67,47 +87,64 @@ export namespace SDKCreateSessionResponse {
 }
 
 export interface SDKCreateVerificationLinkResponse {
-  data?: SDKCreateVerificationLinkResponse.UnionMember0 | SDKCreateVerificationLinkResponse.UnionMember1;
+  data: SDKCreateVerificationLinkResponse.Data | SDKCreateVerificationLinkResponse.Error;
 }
 
 export namespace SDKCreateVerificationLinkResponse {
-  export interface UnionMember0 {
-    data: UnionMember0.Data;
-
-    error?: unknown;
+  export interface Data {
+    data: Data.Data;
   }
 
-  export namespace UnionMember0 {
+  export namespace Data {
     export interface Data {
+      /**
+       * Deep link for mobile app
+       */
       deep_link: string;
 
+      /**
+       * ISO 8601 expiration timestamp
+       */
       expires_at: string;
 
       organization: Data.Organization;
 
+      /**
+       * QR code image URL
+       */
       qr_code_url: string;
 
+      /**
+       * Unique verification request ID
+       */
       request_id: string;
 
+      /**
+       * Web URL for verification
+       */
       web_url: string;
     }
 
     export namespace Data {
       export interface Organization {
+        /**
+         * Organization ID
+         */
         id: string;
       }
     }
   }
 
-  export interface UnionMember1 {
-    error: UnionMember1.Error;
-
-    data?: unknown;
+  export interface Error {
+    error: Error.Error;
   }
 
-  export namespace UnionMember1 {
+  export namespace Error {
     export interface Error {
-      message: unknown;
+      /**
+       * Error message
+       */
+      message: string;
 
       statusCode: number;
     }
@@ -115,16 +152,31 @@ export namespace SDKCreateVerificationLinkResponse {
 }
 
 export interface SDKCreateSessionParams {
+  /**
+   * Custom metadata to attach to session
+   */
   metadata?: { [key: string]: unknown };
 
+  /**
+   * Partner's user identifier
+   */
   partner_user_id?: string;
 }
 
 export interface SDKCreateVerificationLinkParams {
+  /**
+   * Custom metadata
+   */
   metadata?: { [key: string]: unknown };
 
+  /**
+   * URL to return to after verification
+   */
   return_url?: string;
 
+  /**
+   * User's email address (optional, for tracking)
+   */
   user_email?: string;
 }
 
