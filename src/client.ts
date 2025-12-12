@@ -17,6 +17,7 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import { DeviceRemoveParams, DeviceRemoveResponse, Devices } from './resources/devices';
+import { Pass, PassCreateParams, PassCreateResponse } from './resources/pass';
 import {
   SDK,
   SDKCreateSessionParams,
@@ -24,6 +25,13 @@ import {
   SDKCreateVerificationLinkParams,
   SDKCreateVerificationLinkResponse,
 } from './resources/sdk';
+import {
+  Verification,
+  VerificationGetStatusParams,
+  VerificationGetStatusResponse,
+  VerificationLookupUserByEmailParams,
+  VerificationLookupUserByEmailResponse,
+} from './resources/verification';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -729,10 +737,14 @@ export class BotshieldSDK {
 
   devices: API.Devices = new API.Devices(this);
   sdk: API.SDK = new API.SDK(this);
+  pass: API.Pass = new API.Pass(this);
+  verification: API.Verification = new API.Verification(this);
 }
 
 BotshieldSDK.Devices = Devices;
 BotshieldSDK.SDK = SDK;
+BotshieldSDK.Pass = Pass;
+BotshieldSDK.Verification = Verification;
 
 export declare namespace BotshieldSDK {
   export type RequestOptions = Opts.RequestOptions;
@@ -749,5 +761,19 @@ export declare namespace BotshieldSDK {
     type SDKCreateVerificationLinkResponse as SDKCreateVerificationLinkResponse,
     type SDKCreateSessionParams as SDKCreateSessionParams,
     type SDKCreateVerificationLinkParams as SDKCreateVerificationLinkParams,
+  };
+
+  export {
+    Pass as Pass,
+    type PassCreateResponse as PassCreateResponse,
+    type PassCreateParams as PassCreateParams,
+  };
+
+  export {
+    Verification as Verification,
+    type VerificationGetStatusResponse as VerificationGetStatusResponse,
+    type VerificationLookupUserByEmailResponse as VerificationLookupUserByEmailResponse,
+    type VerificationGetStatusParams as VerificationGetStatusParams,
+    type VerificationLookupUserByEmailParams as VerificationLookupUserByEmailParams,
   };
 }
