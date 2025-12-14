@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0 (2025-12-14)
+
+Full Changelog: [v1.0.0...v1.1.0](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.0.0...v1.1.0)
+
+### Features
+
+* **api:** manual updates ([52634fc](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/52634fc0060c810351fd42edb5e1b59873285fde))
+
 ## 1.0.0 (2025-12-12)
 
 Full Changelog: [v0.2.0...v1.0.0](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v0.2.0...v1.0.0)
