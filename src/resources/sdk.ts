@@ -24,6 +24,13 @@ export class SDK extends APIResource {
   ): APIPromise<SDKCreateVerificationLinkResponse> {
     return this._client.post('/sdk/create-verification-link', { body, ...options });
   }
+
+  /**
+   * Logout and invalidate a session token
+   */
+  logout(body: SDKLogoutParams, options?: RequestOptions): APIPromise<SDKLogoutResponse> {
+    return this._client.post('/sdk/logout', { body, ...options });
+  }
 }
 
 export interface SDKCreateSessionResponse {
@@ -34,15 +41,23 @@ export interface SDKCreateVerificationLinkResponse {
   data: unknown;
 }
 
+export interface SDKLogoutResponse {
+  data: unknown;
+}
+
 export interface SDKCreateSessionParams {}
 
 export interface SDKCreateVerificationLinkParams {}
+
+export interface SDKLogoutParams {}
 
 export declare namespace SDK {
   export {
     type SDKCreateSessionResponse as SDKCreateSessionResponse,
     type SDKCreateVerificationLinkResponse as SDKCreateVerificationLinkResponse,
+    type SDKLogoutResponse as SDKLogoutResponse,
     type SDKCreateSessionParams as SDKCreateSessionParams,
     type SDKCreateVerificationLinkParams as SDKCreateVerificationLinkParams,
+    type SDKLogoutParams as SDKLogoutParams,
   };
 }

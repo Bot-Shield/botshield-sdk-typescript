@@ -4,11 +4,13 @@ Types:
 
 - <code><a href="./src/resources/sdk.ts">SDKCreateSessionResponse</a></code>
 - <code><a href="./src/resources/sdk.ts">SDKCreateVerificationLinkResponse</a></code>
+- <code><a href="./src/resources/sdk.ts">SDKLogoutResponse</a></code>
 
 Methods:
 
 - <code title="post /sdk/create-session">client.sdk.<a href="./src/resources/sdk.ts">createSession</a>() -> SDKCreateSessionResponse</code>
 - <code title="post /sdk/create-verification-link">client.sdk.<a href="./src/resources/sdk.ts">createVerificationLink</a>() -> SDKCreateVerificationLinkResponse</code>
+- <code title="post /sdk/logout">client.sdk.<a href="./src/resources/sdk.ts">logout</a>() -> SDKLogoutResponse</code>
 
 # Verification
 
@@ -32,6 +34,16 @@ Methods:
 
 - <code title="post /pass/create">client.pass.<a href="./src/resources/pass.ts">create</a>() -> PassCreateResponse</code>
 
+# Users
+
+Types:
+
+- <code><a href="./src/resources/users.ts">UserUpdateMetadataResponse</a></code>
+
+Methods:
+
+- <code title="post /users/update-metadata">client.users.<a href="./src/resources/users.ts">updateMetadata</a>() -> UserUpdateMetadataResponse</code>
+
 # Devices
 
 Types:
@@ -41,3 +53,13 @@ Types:
 Methods:
 
 - <code title="post /devices/remove">client.devices.<a href="./src/resources/devices.ts">remove</a>() -> DeviceRemoveResponse</code>
+
+# Organizations
+
+Types:
+
+- <code><a href="./src/resources/organizations.ts">OrganizationAddMemberResponse</a></code>
+
+Methods:
+
+- <code title="post /organizations/add-member">client.organizations.<a href="./src/resources/organizations.ts">addMember</a>() -> OrganizationAddMemberResponse</code>
