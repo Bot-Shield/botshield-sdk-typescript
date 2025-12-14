@@ -9,8 +9,8 @@ const client = new BotShield({
 
 describe('resource devices', () => {
   // Prism tests are disabled
-  test.skip('remove: only required params', async () => {
-    const responsePromise = client.devices.remove({ clerk_user_id: 'clerk_user_id' });
+  test.skip('remove', async () => {
+    const responsePromise = client.devices.remove({});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -18,10 +18,5 @@ describe('resource devices', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('remove: required and optional params', async () => {
-    const response = await client.devices.remove({ clerk_user_id: 'clerk_user_id' });
   });
 });
