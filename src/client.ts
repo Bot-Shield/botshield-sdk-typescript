@@ -17,6 +17,11 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import { DeviceRemoveParams, DeviceRemoveResponse, Devices } from './resources/devices';
+import {
+  OrganizationAddMemberParams,
+  OrganizationAddMemberResponse,
+  Organizations,
+} from './resources/organizations';
 import { Pass, PassCreateParams, PassCreateResponse } from './resources/pass';
 import {
   SDK,
@@ -24,7 +29,10 @@ import {
   SDKCreateSessionResponse,
   SDKCreateVerificationLinkParams,
   SDKCreateVerificationLinkResponse,
+  SDKLogoutParams,
+  SDKLogoutResponse,
 } from './resources/sdk';
+import { UserUpdateMetadataParams, UserUpdateMetadataResponse, Users } from './resources/users';
 import {
   Verification,
   VerificationGetStatusResponse,
@@ -760,13 +768,17 @@ export class BotShield {
   sdk: API.SDK = new API.SDK(this);
   verification: API.Verification = new API.Verification(this);
   pass: API.Pass = new API.Pass(this);
+  users: API.Users = new API.Users(this);
   devices: API.Devices = new API.Devices(this);
+  organizations: API.Organizations = new API.Organizations(this);
 }
 
 BotShield.SDK = SDK;
 BotShield.Verification = Verification;
 BotShield.Pass = Pass;
+BotShield.Users = Users;
 BotShield.Devices = Devices;
+BotShield.Organizations = Organizations;
 
 export declare namespace BotShield {
   export type RequestOptions = Opts.RequestOptions;
@@ -775,8 +787,10 @@ export declare namespace BotShield {
     SDK as SDK,
     type SDKCreateSessionResponse as SDKCreateSessionResponse,
     type SDKCreateVerificationLinkResponse as SDKCreateVerificationLinkResponse,
+    type SDKLogoutResponse as SDKLogoutResponse,
     type SDKCreateSessionParams as SDKCreateSessionParams,
     type SDKCreateVerificationLinkParams as SDKCreateVerificationLinkParams,
+    type SDKLogoutParams as SDKLogoutParams,
   };
 
   export {
@@ -792,8 +806,20 @@ export declare namespace BotShield {
   };
 
   export {
+    Users as Users,
+    type UserUpdateMetadataResponse as UserUpdateMetadataResponse,
+    type UserUpdateMetadataParams as UserUpdateMetadataParams,
+  };
+
+  export {
     Devices as Devices,
     type DeviceRemoveResponse as DeviceRemoveResponse,
     type DeviceRemoveParams as DeviceRemoveParams,
+  };
+
+  export {
+    Organizations as Organizations,
+    type OrganizationAddMemberResponse as OrganizationAddMemberResponse,
+    type OrganizationAddMemberParams as OrganizationAddMemberParams,
   };
 }
