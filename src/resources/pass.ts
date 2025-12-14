@@ -14,36 +14,10 @@ export class Pass extends APIResource {
 }
 
 export interface PassCreateResponse {
-  data: PassCreateResponse.BotshieldUserID | PassCreateResponse.Error;
+  data: unknown;
 }
 
-export namespace PassCreateResponse {
-  export interface BotshieldUserID {
-    /**
-     * Anonymous BotShield user ID
-     */
-    botshield_user_id: string;
-  }
-
-  export interface Error {
-    error: Error.Error;
-  }
-
-  export namespace Error {
-    export interface Error {
-      message: string;
-
-      statusCode: number;
-    }
-  }
-}
-
-export interface PassCreateParams {
-  /**
-   * Organization ID (optional)
-   */
-  organization_id?: string;
-}
+export interface PassCreateParams {}
 
 export declare namespace Pass {
   export { type PassCreateResponse as PassCreateResponse, type PassCreateParams as PassCreateParams };

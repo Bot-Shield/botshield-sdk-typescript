@@ -27,9 +27,7 @@ import {
 } from './resources/sdk';
 import {
   Verification,
-  VerificationGetStatusParams,
   VerificationGetStatusResponse,
-  VerificationLookupUserByEmailParams,
   VerificationLookupUserByEmailResponse,
 } from './resources/verification';
 import { type Fetch } from './internal/builtin-types';
@@ -785,8 +783,6 @@ export declare namespace BotShield {
     Verification as Verification,
     type VerificationGetStatusResponse as VerificationGetStatusResponse,
     type VerificationLookupUserByEmailResponse as VerificationLookupUserByEmailResponse,
-    type VerificationGetStatusParams as VerificationGetStatusParams,
-    type VerificationLookupUserByEmailParams as VerificationLookupUserByEmailParams,
   };
 
   export {
