@@ -13,6 +13,4 @@ export {
   Verification,
   type VerificationGetStatusResponse,
   type VerificationLookupUserByEmailResponse,
-  type VerificationGetStatusParams,
-  type VerificationLookupUserByEmailParams,
 } from './verification';

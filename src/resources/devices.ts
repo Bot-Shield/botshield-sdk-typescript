@@ -14,25 +14,10 @@ export class Devices extends APIResource {
 }
 
 export interface DeviceRemoveResponse {
-  data: DeviceRemoveResponse.Data;
+  data: unknown;
 }
 
-export namespace DeviceRemoveResponse {
-  export interface Data {
-    message: string;
-
-    passkeys_deleted: number;
-
-    success: boolean;
-  }
-}
-
-export interface DeviceRemoveParams {
-  /**
-   * Clerk user ID
-   */
-  clerk_user_id: string;
-}
+export interface DeviceRemoveParams {}
 
 export declare namespace Devices {
   export { type DeviceRemoveResponse as DeviceRemoveResponse, type DeviceRemoveParams as DeviceRemoveParams };
