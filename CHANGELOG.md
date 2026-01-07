@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.1 (2026-01-07)
+
+Full Changelog: [v1.2.0...v1.2.1](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.0...v1.2.1)
+
+### Chores
+
+* break long lines in snippets into multiline ([5c9fbdb](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/5c9fbdb6eade8fa9baf43129ecd916c7a9d9162e))
+* **internal:** codegen related update ([286e4fd](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/286e4fd3a7fdb9b8184fd22ffc44e37aa853dd64))
+
 ## 1.2.0 (2025-12-14)
 
 Full Changelog: [v1.1.0...v1.2.0](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.1.0...v1.2.0)
