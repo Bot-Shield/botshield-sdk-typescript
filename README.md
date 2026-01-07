@@ -45,7 +45,8 @@ const client = new BotShield({
   environment: 'development', // defaults to 'production'
 });
 
-const response: BotShield.SDKCreateVerificationLinkResponse = await client.sdk.createVerificationLink();
+const response: BotShield.SDKCreateVerificationLinkResponse =
+  await client.sdk.createVerificationLink();
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
