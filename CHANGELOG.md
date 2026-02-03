@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.2.1 (2026-02-03)
+
+Full Changelog: [v1.2.0...v1.2.1](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.0...v1.2.1)
+
+### Bug Fixes
+
+* **client:** avoid memory leak with abort signals ([3eacbb4](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/3eacbb499d97a203ba7e2ddc9746659c57fc3ed0))
+
+
+### Chores
+
+* break long lines in snippets into multiline ([5c9fbdb](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/5c9fbdb6eade8fa9baf43129ecd916c7a9d9162e))
+* **ci:** upgrade `actions/github-script` ([3bcf3de](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/3bcf3dea85ed6656e6a6e0eec3ee2be3630afb6b))
+* **internal:** codegen related update ([286e4fd](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/286e4fd3a7fdb9b8184fd22ffc44e37aa853dd64))
+* **internal:** update `actions/checkout` version ([b521781](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/b52178163af9aae9c6e1e937b4bfd9d100017b5a))
+* **internal:** update lock file ([f44d4d0](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/f44d4d0ea52a1933ad2e68b7cdbddff58a2b0e3c))
+* **internal:** upgrade babel, qs, js-yaml ([b4282f5](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/b4282f5d44210e89f9152635962f575b161f7458))
+* **internal:** upgrade brace-expansion and @babel/helpers ([9618e38](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/9618e385feace4f8b233f02b170ce015fcb149b2))
+
 ## 1.2.0 (2025-12-14)
 
 Full Changelog: [v1.1.0...v1.2.0](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.1.0...v1.2.0)
