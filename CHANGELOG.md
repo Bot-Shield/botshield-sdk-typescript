@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.2.2 (2026-02-06)
+
+Full Changelog: [v1.2.1...v1.2.2](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.1...v1.2.2)
+
+### Bug Fixes
+
+* **client:** avoid removing abort listener too early ([a77884d](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/a77884dc1ee67520de0309d81d6a61bb7f25516f))
+
+
+### Chores
+
+* **client:** do not parse responses with empty content-length ([91d2068](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/91d2068cff02145bf21117155c625ca2283bcb7c))
+* **client:** restructure abort controller binding ([9f2f09e](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/9f2f09e8a5ea65d5a53b1b5d25931f1cd5e04a99))
+
 ## 1.2.1 (2026-02-03)
 
 Full Changelog: [v1.2.0...v1.2.1](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.0...v1.2.1)
