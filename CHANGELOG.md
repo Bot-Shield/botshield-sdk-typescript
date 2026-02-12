@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.3 (2026-02-12)
+
+Full Changelog: [v1.2.2...v1.2.3](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.2...v1.2.3)
+
+### Chores
+
+* **internal:** avoid type checking errors with ts-reset ([8b7d7b5](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/8b7d7b5f3a47cda279c3cb1b835e244b0751f9f8))
+* **internal:** upgrade pnpm ([48f3154](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/48f3154c50ef3ffee90f342a199d44272e2d0254))
+
 ## 1.2.2 (2026-02-06)
 
 Full Changelog: [v1.2.1...v1.2.2](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.1...v1.2.2)
