@@ -8,7 +8,7 @@ const client = new BotShield({
 });
 
 describe('resource users', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('updateMetadata', async () => {
     const responsePromise = client.users.updateMetadata({});
     const rawResponse = await responsePromise.asResponse();

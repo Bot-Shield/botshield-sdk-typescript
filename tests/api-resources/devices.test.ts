@@ -8,7 +8,7 @@ const client = new BotShield({
 });
 
 describe('resource devices', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('remove', async () => {
     const responsePromise = client.devices.remove({});
     const rawResponse = await responsePromise.asResponse();

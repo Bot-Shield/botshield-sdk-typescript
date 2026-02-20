@@ -8,7 +8,7 @@ const client = new BotShield({
 });
 
 describe('resource verification', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('getStatus', async () => {
     const responsePromise = client.verification.getStatus();
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource verification', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('lookupUserByEmail', async () => {
     const responsePromise = client.verification.lookupUserByEmail();
     const rawResponse = await responsePromise.asResponse();
