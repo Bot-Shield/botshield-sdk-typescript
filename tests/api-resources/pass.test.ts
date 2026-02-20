@@ -8,7 +8,7 @@ const client = new BotShield({
 });
 
 describe('resource pass', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create', async () => {
     const responsePromise = client.pass.create({});
     const rawResponse = await responsePromise.asResponse();
