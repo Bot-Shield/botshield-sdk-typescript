@@ -8,7 +8,7 @@ const client = new BotShield({
 });
 
 describe('resource organizations', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('addMember', async () => {
     const responsePromise = client.organizations.addMember({});
     const rawResponse = await responsePromise.asResponse();

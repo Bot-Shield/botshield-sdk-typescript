@@ -8,7 +8,7 @@ const client = new BotShield({
 });
 
 describe('resource sdk', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('createSession', async () => {
     const responsePromise = client.sdk.createSession({});
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource sdk', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('createVerificationLink', async () => {
     const responsePromise = client.sdk.createVerificationLink({});
     const rawResponse = await responsePromise.asResponse();
@@ -32,7 +32,7 @@ describe('resource sdk', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('logout', async () => {
     const responsePromise = client.sdk.logout({});
     const rawResponse = await responsePromise.asResponse();
