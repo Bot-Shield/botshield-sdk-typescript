@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.2.3 (2026-02-24)
+
+Full Changelog: [v1.2.2...v1.2.3](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.2...v1.2.3)
+
+### Bug Fixes
+
+* **docs/contributing:** correct pnpm link command ([b1befc8](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/b1befc8ad3e86eab887e116f01c54092a3e7ead7))
+
+
+### Chores
+
+* **internal/client:** fix form-urlencoded requests ([082f87e](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/082f87e55045c4440be04dbc81dbfdc105857fb7))
+* **internal:** avoid type checking errors with ts-reset ([8b7d7b5](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/8b7d7b5f3a47cda279c3cb1b835e244b0751f9f8))
+* **internal:** remove mock server code ([a3f7669](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/a3f76693c8abad6d6e6c460b4618b96d44426739))
+* **internal:** upgrade pnpm ([48f3154](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/48f3154c50ef3ffee90f342a199d44272e2d0254))
+* **internal:** upgrade pnpm version ([fe98b57](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/fe98b57d8a504c111db024a271d85801c7e0c4a1))
+* update mock server docs ([51dd9bf](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/51dd9bf9c8303f90e769bd8d5ade5259cf17c8ae))
+
 ## 1.2.2 (2026-02-06)
 
 Full Changelog: [v1.2.1...v1.2.2](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.1...v1.2.2)
