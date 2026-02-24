@@ -60,7 +60,7 @@ $ yarn link botshield-sdk
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global botshield-sdk
+$ pnpm link --global botshield-sdk
 ```
 
 ## Running tests
