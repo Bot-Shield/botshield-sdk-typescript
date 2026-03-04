@@ -4,6 +4,9 @@ import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
+/**
+ * SDK integration endpoints
+ */
 export class SDK extends APIResource {
   /**
    * Create a verification session

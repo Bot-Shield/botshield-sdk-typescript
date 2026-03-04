@@ -4,6 +4,9 @@ import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
+/**
+ * Device management
+ */
 export class Devices extends APIResource {
   /**
    * Remove device and associated passkeys
