@@ -4,6 +4,9 @@ import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
+/**
+ * Pass management
+ */
 export class Pass extends APIResource {
   /**
    * Create a new BotShield pass

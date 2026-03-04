@@ -768,11 +768,29 @@ export class BotShield {
 
   static toFile = Uploads.toFile;
 
+  /**
+   * SDK integration endpoints
+   */
   sdk: API.SDK = new API.SDK(this);
+  /**
+   * Verification status and lookup
+   */
   verification: API.Verification = new API.Verification(this);
+  /**
+   * Pass management
+   */
   pass: API.Pass = new API.Pass(this);
+  /**
+   * SDK integration endpoints
+   */
   users: API.Users = new API.Users(this);
+  /**
+   * Device management
+   */
   devices: API.Devices = new API.Devices(this);
+  /**
+   * SDK integration endpoints
+   */
   organizations: API.Organizations = new API.Organizations(this);
 }
 
