@@ -4,6 +4,9 @@ import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
+/**
+ * Verification status and lookup
+ */
 export class Verification extends APIResource {
   /**
    * Check verification status
