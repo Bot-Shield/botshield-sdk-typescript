@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.2.4 (2026-03-08)
+
+Full Changelog: [v1.2.3...v1.2.4](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.3...v1.2.4)
+
+### Bug Fixes
+
+* **client:** preserve URL params already embedded in path ([51c9b78](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/51c9b78d1093cbef5f128c5ad010a007053d3dc0))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([d8ac934](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/d8ac9348ab11d6e2c79c4ed4df3ade22d64ecf43))
+* **internal:** codegen related update ([0b481cd](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/0b481cd53192a2e498dd750213989fbc2e174d17))
+* **internal:** codegen related update ([436b126](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/436b126c95c4d0c7f473f4504732a5aaa482368f))
+* **internal:** move stringifyQuery implementation to internal function ([88d0408](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/88d04086f82f0851e2aa842028a4edec219398f6))
+
 ## 1.2.3 (2026-02-24)
 
 Full Changelog: [v1.2.2...v1.2.3](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.2...v1.2.3)
