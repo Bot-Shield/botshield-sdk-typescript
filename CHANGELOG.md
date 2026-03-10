@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.5 (2026-03-10)
+
+Full Changelog: [v1.2.4...v1.2.5](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.4...v1.2.5)
+
+### Chores
+
+* **internal:** update dependencies to address dependabot vulnerabilities ([1a03dd8](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/1a03dd8d075e3067ca690481b3d11b373d05e358))
+
 ## 1.2.4 (2026-03-08)
 
 Full Changelog: [v1.2.3...v1.2.4](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.3...v1.2.4)
