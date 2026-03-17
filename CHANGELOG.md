@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.3.0 (2026-03-17)
+
+Full Changelog: [v1.2.4...v1.3.0](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.4...v1.3.0)
+
+### Features
+
+* **api:** manual updates ([3f1cab5](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/3f1cab5930e180fbb26a2a1f5673b0249040fdaa))
+
+
+### Chores
+
+* **internal:** tweak CI branches ([0b358d3](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/0b358d336c13334f4a4363c2b6a06908ad1e79a0))
+* **internal:** update dependencies to address dependabot vulnerabilities ([1a03dd8](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/1a03dd8d075e3067ca690481b3d11b373d05e358))
+
 ## 1.2.4 (2026-03-08)
 
 Full Changelog: [v1.2.3...v1.2.4](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.3...v1.2.4)
