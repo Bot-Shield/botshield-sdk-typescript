@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.1 (2026-03-17)
+
+Full Changelog: [v1.3.0...v1.3.1](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.3.0...v1.3.1)
+
+### Chores
+
+* update SDK settings ([a72f8b2](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/a72f8b20e7474060ee195249b5b694916677eb1f))
+
 ## 1.3.0 (2026-03-17)
 
 Full Changelog: [v1.2.4...v1.3.0](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.2.4...v1.3.0)
