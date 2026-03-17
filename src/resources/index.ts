@@ -12,13 +12,19 @@ export {
   type SDKCreateSessionResponse,
   type SDKCreateVerificationLinkResponse,
   type SDKLogoutResponse,
+  type SDKRevokeVerificationResponse,
+  type SDKVerifyTokenResponse,
   type SDKCreateSessionParams,
   type SDKCreateVerificationLinkParams,
   type SDKLogoutParams,
+  type SDKRevokeVerificationParams,
+  type SDKVerifyTokenParams,
 } from './sdk';
 export { Users, type UserUpdateMetadataResponse, type UserUpdateMetadataParams } from './users';
 export {
   Verification,
   type VerificationGetStatusResponse,
   type VerificationLookupUserByEmailResponse,
+  type VerificationGetStatusParams,
+  type VerificationLookupUserByEmailParams,
 } from './verification';
