@@ -27,7 +27,10 @@ const client = new BotShield({
   environment: 'development', // defaults to 'production'
 });
 
-const response = await client.sdk.createVerificationLink();
+const response = await client.sdk.createVerificationLink({
+  return_url: 'https://yourapp.com/verified',
+  user_email: 'user@example.com',
+});
 
 console.log(response.data);
 ```
@@ -45,8 +48,13 @@ const client = new BotShield({
   environment: 'development', // defaults to 'production'
 });
 
+const params: BotShield.SDKCreateVerificationLinkParams = {
+  metadata: { cart_id: 'cart_123', action: 'checkout' },
+  return_url: 'https://yourapp.com/verified',
+  user_email: 'user@example.com',
+};
 const response: BotShield.SDKCreateVerificationLinkResponse =
-  await client.sdk.createVerificationLink();
+  await client.sdk.createVerificationLink(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -59,15 +67,21 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const response = await client.sdk.createVerificationLink().catch(async (err) => {
-  if (err instanceof BotShield.APIError) {
-    console.log(err.status); // 400
-    console.log(err.name); // BadRequestError
-    console.log(err.headers); // {server: 'nginx', ...}
-  } else {
-    throw err;
-  }
-});
+const response = await client.sdk
+  .createVerificationLink({
+    metadata: { cart_id: 'cart_123', action: 'checkout' },
+    return_url: 'https://yourapp.com/verified',
+    user_email: 'user@example.com',
+  })
+  .catch(async (err) => {
+    if (err instanceof BotShield.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 ```
 
 Error codes are as follows:
@@ -100,6 +114,10 @@ const client = new BotShield({
 
 // Or, configure per-request:
 await client.sdk.createVerificationLink({
+  metadata: { cart_id: 'cart_123', action: 'checkout' },
+  return_url: 'https://yourapp.com/verified',
+  user_email: 'user@example.com',
+}, {
   maxRetries: 5,
 });
 ```
@@ -117,6 +135,10 @@ const client = new BotShield({
 
 // Override per-request:
 await client.sdk.createVerificationLink({
+  metadata: { cart_id: 'cart_123', action: 'checkout' },
+  return_url: 'https://yourapp.com/verified',
+  user_email: 'user@example.com',
+}, {
   timeout: 5 * 1000,
 });
 ```
@@ -139,11 +161,23 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new BotShield();
 
-const response = await client.sdk.createVerificationLink().asResponse();
+const response = await client.sdk
+  .createVerificationLink({
+    metadata: { cart_id: 'cart_123', action: 'checkout' },
+    return_url: 'https://yourapp.com/verified',
+    user_email: 'user@example.com',
+  })
+  .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: response, response: raw } = await client.sdk.createVerificationLink().withResponse();
+const { data: response, response: raw } = await client.sdk
+  .createVerificationLink({
+    metadata: { cart_id: 'cart_123', action: 'checkout' },
+    return_url: 'https://yourapp.com/verified',
+    user_email: 'user@example.com',
+  })
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(response.data);
 ```

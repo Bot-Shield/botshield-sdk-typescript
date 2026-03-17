@@ -33,8 +33,8 @@ describe('resource sdk', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('logout', async () => {
-    const responsePromise = client.sdk.logout({});
+  test.skip('logout: only required params', async () => {
+    const responsePromise = client.sdk.logout({ session_token: 'session_token' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -42,5 +42,48 @@ describe('resource sdk', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('logout: required and optional params', async () => {
+    const response = await client.sdk.logout({ session_token: 'session_token' });
+  });
+
+  // Mock server tests are disabled
+  test.skip('revokeVerification: only required params', async () => {
+    const responsePromise = client.sdk.revokeVerification({ scope: 'scope' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('revokeVerification: required and optional params', async () => {
+    const response = await client.sdk.revokeVerification({
+      scope: 'scope',
+      partner_user_id: 'partner_user_id',
+      user_email: 'dev@stainless.com',
+    });
+  });
+
+  // Mock server tests are disabled
+  test.skip('verifyToken: only required params', async () => {
+    const responsePromise = client.sdk.verifyToken({ token: 'token' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('verifyToken: required and optional params', async () => {
+    const response = await client.sdk.verifyToken({ token: 'token' });
   });
 });

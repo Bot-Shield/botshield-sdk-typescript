@@ -32,11 +32,17 @@ import {
   SDKCreateVerificationLinkResponse,
   SDKLogoutParams,
   SDKLogoutResponse,
+  SDKRevokeVerificationParams,
+  SDKRevokeVerificationResponse,
+  SDKVerifyTokenParams,
+  SDKVerifyTokenResponse,
 } from './resources/sdk';
 import { UserUpdateMetadataParams, UserUpdateMetadataResponse, Users } from './resources/users';
 import {
   Verification,
+  VerificationGetStatusParams,
   VerificationGetStatusResponse,
+  VerificationLookupUserByEmailParams,
   VerificationLookupUserByEmailResponse,
 } from './resources/verification';
 import { type Fetch } from './internal/builtin-types';
@@ -810,15 +816,21 @@ export declare namespace BotShield {
     type SDKCreateSessionResponse as SDKCreateSessionResponse,
     type SDKCreateVerificationLinkResponse as SDKCreateVerificationLinkResponse,
     type SDKLogoutResponse as SDKLogoutResponse,
+    type SDKRevokeVerificationResponse as SDKRevokeVerificationResponse,
+    type SDKVerifyTokenResponse as SDKVerifyTokenResponse,
     type SDKCreateSessionParams as SDKCreateSessionParams,
     type SDKCreateVerificationLinkParams as SDKCreateVerificationLinkParams,
     type SDKLogoutParams as SDKLogoutParams,
+    type SDKRevokeVerificationParams as SDKRevokeVerificationParams,
+    type SDKVerifyTokenParams as SDKVerifyTokenParams,
   };
 
   export {
     Verification as Verification,
     type VerificationGetStatusResponse as VerificationGetStatusResponse,
     type VerificationLookupUserByEmailResponse as VerificationLookupUserByEmailResponse,
+    type VerificationGetStatusParams as VerificationGetStatusParams,
+    type VerificationLookupUserByEmailParams as VerificationLookupUserByEmailParams,
   };
 
   export {
