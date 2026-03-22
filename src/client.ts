@@ -17,27 +17,25 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { DeviceRemoveParams, DeviceRemoveResponse, Devices } from './resources/devices';
-import {
-  OrganizationAddMemberParams,
-  OrganizationAddMemberResponse,
-  Organizations,
-} from './resources/organizations';
-import { Pass, PassCreateParams, PassCreateResponse } from './resources/pass';
 import {
   SDK,
   SDKCreateSessionParams,
   SDKCreateSessionResponse,
   SDKCreateVerificationLinkParams,
   SDKCreateVerificationLinkResponse,
+  SDKGetPartnerConfigParams,
+  SDKGetPartnerConfigResponse,
   SDKLogoutParams,
   SDKLogoutResponse,
   SDKRevokeVerificationParams,
   SDKRevokeVerificationResponse,
+  SDKStoreSignalParams,
+  SDKStoreSignalResponse,
+  SDKValidateSignalParams,
+  SDKValidateSignalResponse,
   SDKVerifyTokenParams,
   SDKVerifyTokenResponse,
 } from './resources/sdk';
-import { UserUpdateMetadataParams, UserUpdateMetadataResponse, Users } from './resources/users';
 import {
   Verification,
   VerificationGetStatusParams,
@@ -776,37 +774,17 @@ export class BotShield {
   static toFile = Uploads.toFile;
 
   /**
-   * SDK integration endpoints
+   * Core SDK operations — session management, verification, token validation, and Signal Pixel scoring
    */
   sdk: API.SDK = new API.SDK(this);
   /**
-   * Verification status and lookup
+   * Verification status checking and user lookup
    */
   verification: API.Verification = new API.Verification(this);
-  /**
-   * Pass management
-   */
-  pass: API.Pass = new API.Pass(this);
-  /**
-   * SDK integration endpoints
-   */
-  users: API.Users = new API.Users(this);
-  /**
-   * Device management
-   */
-  devices: API.Devices = new API.Devices(this);
-  /**
-   * SDK integration endpoints
-   */
-  organizations: API.Organizations = new API.Organizations(this);
 }
 
 BotShield.SDK = SDK;
 BotShield.Verification = Verification;
-BotShield.Pass = Pass;
-BotShield.Users = Users;
-BotShield.Devices = Devices;
-BotShield.Organizations = Organizations;
 
 export declare namespace BotShield {
   export type RequestOptions = Opts.RequestOptions;
@@ -815,13 +793,19 @@ export declare namespace BotShield {
     SDK as SDK,
     type SDKCreateSessionResponse as SDKCreateSessionResponse,
     type SDKCreateVerificationLinkResponse as SDKCreateVerificationLinkResponse,
+    type SDKGetPartnerConfigResponse as SDKGetPartnerConfigResponse,
     type SDKLogoutResponse as SDKLogoutResponse,
     type SDKRevokeVerificationResponse as SDKRevokeVerificationResponse,
+    type SDKStoreSignalResponse as SDKStoreSignalResponse,
+    type SDKValidateSignalResponse as SDKValidateSignalResponse,
     type SDKVerifyTokenResponse as SDKVerifyTokenResponse,
     type SDKCreateSessionParams as SDKCreateSessionParams,
     type SDKCreateVerificationLinkParams as SDKCreateVerificationLinkParams,
+    type SDKGetPartnerConfigParams as SDKGetPartnerConfigParams,
     type SDKLogoutParams as SDKLogoutParams,
     type SDKRevokeVerificationParams as SDKRevokeVerificationParams,
+    type SDKStoreSignalParams as SDKStoreSignalParams,
+    type SDKValidateSignalParams as SDKValidateSignalParams,
     type SDKVerifyTokenParams as SDKVerifyTokenParams,
   };
 
@@ -831,29 +815,5 @@ export declare namespace BotShield {
     type VerificationLookupUserByEmailResponse as VerificationLookupUserByEmailResponse,
     type VerificationGetStatusParams as VerificationGetStatusParams,
     type VerificationLookupUserByEmailParams as VerificationLookupUserByEmailParams,
-  };
-
-  export {
-    Pass as Pass,
-    type PassCreateResponse as PassCreateResponse,
-    type PassCreateParams as PassCreateParams,
-  };
-
-  export {
-    Users as Users,
-    type UserUpdateMetadataResponse as UserUpdateMetadataResponse,
-    type UserUpdateMetadataParams as UserUpdateMetadataParams,
-  };
-
-  export {
-    Devices as Devices,
-    type DeviceRemoveResponse as DeviceRemoveResponse,
-    type DeviceRemoveParams as DeviceRemoveParams,
-  };
-
-  export {
-    Organizations as Organizations,
-    type OrganizationAddMemberResponse as OrganizationAddMemberResponse,
-    type OrganizationAddMemberParams as OrganizationAddMemberParams,
   };
 }
