@@ -21,7 +21,7 @@ export const newMcpServer = async (stainlessApiKey: string | undefined) =>
   new McpServer(
     {
       name: 'botshield_sdk_api',
-      version: '1.3.1',
+      version: '1.4.0',
     },
     {
       instructions: await getInstructions(stainlessApiKey),
