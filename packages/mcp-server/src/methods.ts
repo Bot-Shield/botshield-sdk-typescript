@@ -23,6 +23,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/sdk/create-verification-link',
   },
   {
+    clientCallName: 'client.sdk.getPartnerConfig',
+    fullyQualifiedName: 'sdk.getPartnerConfig',
+    httpMethod: 'get',
+    httpPath: '/sdk/partner-config',
+  },
+  {
     clientCallName: 'client.sdk.logout',
     fullyQualifiedName: 'sdk.logout',
     httpMethod: 'post',
@@ -33,6 +39,18 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'sdk.revokeVerification',
     httpMethod: 'post',
     httpPath: '/sdk/revoke-verification',
+  },
+  {
+    clientCallName: 'client.sdk.storeSignal',
+    fullyQualifiedName: 'sdk.storeSignal',
+    httpMethod: 'post',
+    httpPath: '/sdk/store-signal',
+  },
+  {
+    clientCallName: 'client.sdk.validateSignal',
+    fullyQualifiedName: 'sdk.validateSignal',
+    httpMethod: 'post',
+    httpPath: '/sdk/validate-signal',
   },
   {
     clientCallName: 'client.sdk.verifyToken',
@@ -51,30 +69,6 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'verification.lookupUserByEmail',
     httpMethod: 'get',
     httpPath: '/verification/lookup-user-by-email',
-  },
-  {
-    clientCallName: 'client.pass.create',
-    fullyQualifiedName: 'pass.create',
-    httpMethod: 'post',
-    httpPath: '/pass/create',
-  },
-  {
-    clientCallName: 'client.users.updateMetadata',
-    fullyQualifiedName: 'users.updateMetadata',
-    httpMethod: 'post',
-    httpPath: '/users/update-metadata',
-  },
-  {
-    clientCallName: 'client.devices.remove',
-    fullyQualifiedName: 'devices.remove',
-    httpMethod: 'post',
-    httpPath: '/devices/remove',
-  },
-  {
-    clientCallName: 'client.organizations.addMember',
-    fullyQualifiedName: 'organizations.addMember',
-    httpMethod: 'post',
-    httpPath: '/organizations/add-member',
   },
 ];
 

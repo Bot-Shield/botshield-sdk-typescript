@@ -59,6 +59,7 @@ const client = new BotShield({
 
 const params: BotShield.SDKCreateVerificationLinkParams = {
   metadata: { cart_id: 'cart_123', action: 'checkout' },
+  mode: 'linked-account',
   return_url: 'https://yourapp.com/verified',
   user_email: 'user@example.com',
 };
@@ -79,6 +80,7 @@ a subclass of `APIError` will be thrown:
 const response = await client.sdk
   .createVerificationLink({
     metadata: { cart_id: 'cart_123', action: 'checkout' },
+    mode: 'linked-account',
     return_url: 'https://yourapp.com/verified',
     user_email: 'user@example.com',
   })
@@ -124,6 +126,7 @@ const client = new BotShield({
 // Or, configure per-request:
 await client.sdk.createVerificationLink({
   metadata: { cart_id: 'cart_123', action: 'checkout' },
+  mode: 'linked-account',
   return_url: 'https://yourapp.com/verified',
   user_email: 'user@example.com',
 }, {
@@ -145,6 +148,7 @@ const client = new BotShield({
 // Override per-request:
 await client.sdk.createVerificationLink({
   metadata: { cart_id: 'cart_123', action: 'checkout' },
+  mode: 'linked-account',
   return_url: 'https://yourapp.com/verified',
   user_email: 'user@example.com',
 }, {
@@ -173,6 +177,7 @@ const client = new BotShield();
 const response = await client.sdk
   .createVerificationLink({
     metadata: { cart_id: 'cart_123', action: 'checkout' },
+    mode: 'linked-account',
     return_url: 'https://yourapp.com/verified',
     user_email: 'user@example.com',
   })
@@ -183,6 +188,7 @@ console.log(response.statusText); // access the underlying Response object
 const { data: response, response: raw } = await client.sdk
   .createVerificationLink({
     metadata: { cart_id: 'cart_123', action: 'checkout' },
+    mode: 'linked-account',
     return_url: 'https://yourapp.com/verified',
     user_email: 'user@example.com',
   })

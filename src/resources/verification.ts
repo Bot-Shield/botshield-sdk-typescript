@@ -5,12 +5,11 @@ import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
 /**
- * Verification status and lookup
+ * Verification status checking and user lookup
  */
 export class Verification extends APIResource {
   /**
-   * Poll for the current status of a verification request. Returns the full
-   * verification event including token on completion.
+   * Poll for verification request status. Returns signed token on completion.
    */
   getStatus(
     query: VerificationGetStatusParams,
@@ -20,8 +19,8 @@ export class Verification extends APIResource {
   }
 
   /**
-   * Check whether a user exists in BotShield and has a registered passkey before
-   * initiating verification.
+   * Check whether a user exists and has a registered passkey before initiating
+   * verification.
    */
   lookupUserByEmail(
     query: VerificationLookupUserByEmailParams,
@@ -32,17 +31,17 @@ export class Verification extends APIResource {
 }
 
 export interface VerificationGetStatusResponse {
-  found: boolean;
+  auth_mode?: 'linked-account' | 'private';
 
-  status: 'pending' | 'completed' | 'expired' | 'failed' | 'not_found';
-
-  auth_mode?: 'email' | 'anonymous';
+  confidence?: number;
 
   created_at?: string;
 
   error_message?: string;
 
   expires_at?: string;
+
+  found?: boolean;
 
   metadata?: { [key: string]: unknown };
 
@@ -58,15 +57,16 @@ export interface VerificationGetStatusResponse {
 
   sdk_type?: 'signal' | 'presence';
 
-  /**
-   * Signed JWT verification receipt (present when status=completed)
-   */
+  signal_score?: number;
+
   signed_token?: string;
+
+  status?: 'pending' | 'completed' | 'expired' | 'failed' | 'not_found';
 
   user_email?: string;
 
   /**
-   * Legacy alias for signed_token
+   * Legacy alias
    */
   verification_token?: string;
 
@@ -79,39 +79,21 @@ export interface VerificationLookupUserByEmailResponse {
 
 export namespace VerificationLookupUserByEmailResponse {
   export interface Data {
-    /**
-     * Whether a user with this email exists in Clerk
-     */
-    found: boolean;
-
-    /**
-     * Whether the user has registered passkeys
-     */
-    has_passkey: boolean;
-
-    /**
-     * Whether the user account is active (not banned/deleted)
-     */
-    is_active: boolean;
-
-    /**
-     * Clerk user ID (only present if found)
-     */
     clerk_user_id?: string;
+
+    found?: boolean;
+
+    has_passkey?: boolean;
+
+    is_active?: boolean;
   }
 }
 
 export interface VerificationGetStatusParams {
-  /**
-   * The verification request ID from create-verification-link
-   */
   request_id: string;
 }
 
 export interface VerificationLookupUserByEmailParams {
-  /**
-   * The user's email address
-   */
   email: string;
 }
 
