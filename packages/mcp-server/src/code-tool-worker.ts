@@ -106,15 +106,14 @@ const fuse = new Fuse(
   [
     'client.sdk.createSession',
     'client.sdk.createVerificationLink',
+    'client.sdk.getPartnerConfig',
     'client.sdk.logout',
     'client.sdk.revokeVerification',
+    'client.sdk.storeSignal',
+    'client.sdk.validateSignal',
     'client.sdk.verifyToken',
     'client.verification.getStatus',
     'client.verification.lookupUserByEmail',
-    'client.pass.create',
-    'client.users.updateMetadata',
-    'client.devices.remove',
-    'client.organizations.addMember',
   ],
   { threshold: 1, shouldSort: true },
 );
