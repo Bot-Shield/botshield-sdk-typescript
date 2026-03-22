@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.4.0 (2026-03-22)
+
+Full Changelog: [v1.3.1...v1.4.0](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.3.1...v1.4.0)
+
+### Features
+
+* **api:** manual updates ([d601328](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/d60132816b9520f7c7208a4e71d9f7cb11b425d2))
+
+
+### Chores
+
+* configure new SDK language ([0d23467](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/0d23467e288e96d92f158eacda88cfb579d0fdca))
+
 ## 1.3.1 (2026-03-17)
 
 Full Changelog: [v1.3.0...v1.3.1](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.3.0...v1.3.1)
