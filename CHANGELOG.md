@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.4.1 (2026-04-01)
+
+Full Changelog: [v1.4.0...v1.4.1](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.4.0...v1.4.1)
+
+### Bug Fixes
+
+* **internal:** gitignore generated `oidc` dir ([78a5fcb](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/78a5fcb73bcbe43021f92ddde1372ad923bd029d))
+
+
+### Chores
+
+* **ci:** escape input path in publish-npm workflow ([f27ba22](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/f27ba22c8d09443341da87bee49fc8ceb2560a83))
+* **ci:** skip lint on metadata-only changes ([a9afccd](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/a9afccde4620e2b8ce8671e45fc81a5b49477d11))
+* **internal:** fix MCP server TS errors that occur with required client options ([4fa6325](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/4fa6325c8bfb46ee8f4eeaef24b6d3ebc88f0e93))
+* **internal:** improve local docs search for MCP servers ([0db9e04](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/0db9e04c8789d7bf9a83749837b029a56192f02a))
+* **internal:** improve local docs search for MCP servers ([a8d180e](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/a8d180e333d920f35a12539c6110ccf96bac1b2b))
+* **internal:** support custom-instructions-path flag in MCP servers ([6bf0177](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/6bf017759e7f37311f10dbf7b7f05d5d09a67d04))
+* **internal:** support local docs search in MCP servers ([9316a35](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/9316a35ef60ca867d6166a32aafb14f48e6dba4e))
+* **internal:** update gitignore ([469d12a](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/469d12aff02609ebfbb8a041279fb97be1af28ff))
+* **mcp-server:** add support for session id, forward client info ([0faee4f](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/0faee4f77876f75cf41af7cd70083cc9713522f9))
+
 ## 1.4.0 (2026-03-22)
 
 Full Changelog: [v1.3.1...v1.4.0](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.3.1...v1.4.0)
