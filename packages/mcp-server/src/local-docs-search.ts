@@ -65,14 +65,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create_session\n\n`client.sdk.createSession(metadata?: object, partner_user_id?: string): { data: object; }`\n\n**post** `/sdk/create-session`\n\nCreates a short-lived anchor grant token (5 minutes) from an API token or site key. Use this to get a token before creating verification links.\n\n### Parameters\n\n- `metadata?: object`\n\n- `partner_user_id?: string`\n  Your internal user identifier for correlation\n\n### Returns\n\n- `{ data: { anchor_grant_expires_at: string; anchor_grant_expires_in_seconds: number; anchor_grant_token: string; expires_at: string; expires_in_seconds: number; organization: { id: string; environment: string; }; session_token: string; }; }`\n\n  - `data: { anchor_grant_expires_at: string; anchor_grant_expires_in_seconds: number; anchor_grant_token: string; expires_at: string; expires_in_seconds: number; organization: { id: string; environment: string; }; session_token: string; }`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.sdk.createSession();\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
-        example:
-          "curl https://api.botshield.ai/operations/sdk/create-session \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: $BOTSHIELD_API_KEY\" \\\n    -d '{}'",
-      },
       typescript: {
         method: 'client.sdk.createSession',
         example:
           "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.sdk.createSession();\n\nconsole.log(response.data);",
+      },
+      http: {
+        example:
+          "curl https://api.botshield.ai/operations/sdk/create-session \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: $BOTSHIELD_API_KEY\" \\\n    -d '{}'",
       },
     },
   },
@@ -101,14 +101,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create_verification_link\n\n`client.sdk.createVerificationLink(botshield_user_id?: string, metadata?: object, mode?: 'linked-account' | 'private', return_url?: string, scope?: string, sdk_type?: 'signal' | 'presence', signal_token?: string, user_email?: string, webhook_url?: string): { data: object; }`\n\n**post** `/sdk/create-verification-link`\n\nCreates a verification request with deep link, web URL, and QR code. Requires an anchor grant token from create-session.\n\n### Parameters\n\n- `botshield_user_id?: string`\n  Returning user ID to skip onboarding\n\n- `metadata?: object`\n\n- `mode?: 'linked-account' | 'private'`\n  linked-account = OAuth+passkey, private = direct WebAuthn (no PII)\n\n- `return_url?: string`\n\n- `scope?: string`\n\n- `sdk_type?: 'signal' | 'presence'`\n\n- `signal_token?: string`\n  Tamper-proof Signal Pixel token (bs_sig_...) for server-side score correlation\n\n- `user_email?: string`\n\n- `webhook_url?: string`\n\n### Returns\n\n- `{ data: { deep_link: string; expires_at: string; qr_code_url: string; request_id: string; web_url: string; auth_mode?: 'linked-account' | 'private'; organization?: { id?: string; }; scope?: string; sdk_type?: 'signal' | 'presence'; }; }`\n\n  - `data: { deep_link: string; expires_at: string; qr_code_url: string; request_id: string; web_url: string; auth_mode?: 'linked-account' | 'private'; organization?: { id?: string; }; scope?: string; sdk_type?: 'signal' | 'presence'; }`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.sdk.createVerificationLink();\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
-        example:
-          "curl https://api.botshield.ai/operations/sdk/create-verification-link \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: $BOTSHIELD_API_KEY\" \\\n    -d '{}'",
-      },
       typescript: {
         method: 'client.sdk.createVerificationLink',
         example:
           "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.sdk.createVerificationLink();\n\nconsole.log(response.data);",
+      },
+      http: {
+        example:
+          "curl https://api.botshield.ai/operations/sdk/create-verification-link \\\n    -H 'Content-Type: application/json' \\\n    -H \"Authorization: $BOTSHIELD_API_KEY\" \\\n    -d '{}'",
       },
     },
   },
@@ -127,14 +127,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## verify_token\n\n`client.sdk.verifyToken(token: string, signal_token?: string): { claims?: object; confidence?: number; reason?: string; signals?: object; valid?: boolean; }`\n\n**post** `/sdk/verify-token`\n\nValidates a signed JWT verification receipt. This is the primary server-side check. Optionally include signal_token for combined confidence scoring with Signal Pixel + Turnstile + passkey results.\n\n### Parameters\n\n- `token: string`\n  JWT verification receipt\n\n- `signal_token?: string`\n  Optional Signal Pixel token for combined confidence\n\n### Returns\n\n- `{ claims?: { auth_mode?: 'linked-account' | 'private'; botshield_user_id?: string; expires_at?: number; issued_at?: number; organization_id?: string; partner_user_id?: string; request_id?: string; timestamp?: string; user_email?: string; verified?: boolean; }; confidence?: number; reason?: string; signals?: { botshield_score?: number; passkey?: { verified?: boolean; }; turnstile?: { success?: boolean; }; }; valid?: boolean; }`\n\n  - `claims?: { auth_mode?: 'linked-account' | 'private'; botshield_user_id?: string; expires_at?: number; issued_at?: number; organization_id?: string; partner_user_id?: string; request_id?: string; timestamp?: string; user_email?: string; verified?: boolean; }`\n  - `confidence?: number`\n  - `reason?: string`\n  - `signals?: { botshield_score?: number; passkey?: { verified?: boolean; }; turnstile?: { success?: boolean; }; }`\n  - `valid?: boolean`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.sdk.verifyToken({ token: 'token' });\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
-        example:
-          'curl https://api.botshield.ai/operations/sdk/verify-token \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: $BOTSHIELD_API_KEY" \\\n    -d \'{\n          "token": "token"\n        }\'',
-      },
       typescript: {
         method: 'client.sdk.verifyToken',
         example:
           "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.sdk.verifyToken({ token: 'token' });\n\nconsole.log(response.confidence);",
+      },
+      http: {
+        example:
+          'curl https://api.botshield.ai/operations/sdk/verify-token \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: $BOTSHIELD_API_KEY" \\\n    -d \'{\n          "token": "token"\n        }\'',
       },
     },
   },
@@ -162,14 +162,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## store_signal\n\n`client.sdk.storeSignal(score: number, site_key: string, client_score?: number, country?: string, edge_score?: number, fp_hash?: string, ip_hash?: string, signals?: object, ua_hash?: string): { expires_at?: string; signal_token?: string; }`\n\n**post** `/sdk/store-signal`\n\nStores a behavioral fingerprint score server-side and returns an opaque signal_token (bs_sig_...). The client-side score can be spoofed — the signal_token maps to the real score in BotShield's database.\n\n### Parameters\n\n- `score: number`\n\n- `site_key: string`\n\n- `client_score?: number`\n\n- `country?: string`\n\n- `edge_score?: number`\n\n- `fp_hash?: string`\n\n- `ip_hash?: string`\n\n- `signals?: object`\n\n- `ua_hash?: string`\n\n### Returns\n\n- `{ expires_at?: string; signal_token?: string; }`\n\n  - `expires_at?: string`\n  - `signal_token?: string`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.sdk.storeSignal({ score: 0, site_key: 'site_key' });\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
-        example:
-          'curl https://api.botshield.ai/operations/sdk/store-signal \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: $BOTSHIELD_API_KEY" \\\n    -d \'{\n          "score": 0,\n          "site_key": "site_key"\n        }\'',
-      },
       typescript: {
         method: 'client.sdk.storeSignal',
         example:
           "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.sdk.storeSignal({ score: 0, site_key: 'site_key' });\n\nconsole.log(response.expires_at);",
+      },
+      http: {
+        example:
+          'curl https://api.botshield.ai/operations/sdk/store-signal \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: $BOTSHIELD_API_KEY" \\\n    -d \'{\n          "score": 0,\n          "site_key": "site_key"\n        }\'',
       },
     },
   },
@@ -188,14 +188,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## validate_signal\n\n`client.sdk.validateSignal(signal_token: string, verification_event_id?: string): { client_score?: number; country?: string; created_at?: string; edge_score?: number; fp_hash?: string; reason?: string; score?: number; site_key?: string; valid?: boolean; }`\n\n**post** `/sdk/validate-signal`\n\nValidates a signal_token and returns the real server-side bot score. One-time use, 10-minute expiry. This is the tamper-proof check.\n\n### Parameters\n\n- `signal_token: string`\n\n- `verification_event_id?: string`\n\n### Returns\n\n- `{ client_score?: number; country?: string; created_at?: string; edge_score?: number; fp_hash?: string; reason?: string; score?: number; site_key?: string; valid?: boolean; }`\n\n  - `client_score?: number`\n  - `country?: string`\n  - `created_at?: string`\n  - `edge_score?: number`\n  - `fp_hash?: string`\n  - `reason?: string`\n  - `score?: number`\n  - `site_key?: string`\n  - `valid?: boolean`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.sdk.validateSignal({ signal_token: 'signal_token' });\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
-        example:
-          'curl https://api.botshield.ai/operations/sdk/validate-signal \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: $BOTSHIELD_API_KEY" \\\n    -d \'{\n          "signal_token": "signal_token"\n        }\'',
-      },
       typescript: {
         method: 'client.sdk.validateSignal',
         example:
           "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.sdk.validateSignal({ signal_token: 'signal_token' });\n\nconsole.log(response.valid);",
+      },
+      http: {
+        example:
+          'curl https://api.botshield.ai/operations/sdk/validate-signal \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: $BOTSHIELD_API_KEY" \\\n    -d \'{\n          "signal_token": "signal_token"\n        }\'',
       },
     },
   },
@@ -213,14 +213,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get_partner_config\n\n`client.sdk.getPartnerConfig(site_key: string): { environment?: 'test' | 'live'; integrations?: object; }`\n\n**get** `/sdk/partner-config`\n\nReturns enabled integrations (Turnstile, etc.) for a site key. Public config only — secret keys never exposed.\n\n### Parameters\n\n- `site_key: string`\n\n### Returns\n\n- `{ environment?: 'test' | 'live'; integrations?: object; }`\n\n  - `environment?: 'test' | 'live'`\n  - `integrations?: object`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.sdk.getPartnerConfig({ site_key: 'site_key' });\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
-        example:
-          'curl https://api.botshield.ai/operations/sdk/partner-config \\\n    -H "Authorization: $BOTSHIELD_API_KEY"',
-      },
       typescript: {
         method: 'client.sdk.getPartnerConfig',
         example:
           "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.sdk.getPartnerConfig({ site_key: 'site_key' });\n\nconsole.log(response.environment);",
+      },
+      http: {
+        example:
+          'curl https://api.botshield.ai/operations/sdk/partner-config \\\n    -H "Authorization: $BOTSHIELD_API_KEY"',
       },
     },
   },
@@ -238,14 +238,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## revoke_verification\n\n`client.sdk.revokeVerification(scope: string, partner_user_id?: string, user_email?: string): { data: object; }`\n\n**post** `/sdk/revoke-verification`\n\nSoft-expires a pending verification for a scope and user. Use when create-verification-link returns 409.\n\n### Parameters\n\n- `scope: string`\n\n- `partner_user_id?: string`\n\n- `user_email?: string`\n\n### Returns\n\n- `{ data: { message?: string; revoked_count?: number; success?: boolean; }; }`\n\n  - `data: { message?: string; revoked_count?: number; success?: boolean; }`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.sdk.revokeVerification({ scope: 'scope' });\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
-        example:
-          'curl https://api.botshield.ai/operations/sdk/revoke-verification \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: $BOTSHIELD_API_KEY" \\\n    -d \'{\n          "scope": "scope"\n        }\'',
-      },
       typescript: {
         method: 'client.sdk.revokeVerification',
         example:
           "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.sdk.revokeVerification({ scope: 'scope' });\n\nconsole.log(response.data);",
+      },
+      http: {
+        example:
+          'curl https://api.botshield.ai/operations/sdk/revoke-verification \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: $BOTSHIELD_API_KEY" \\\n    -d \'{\n          "scope": "scope"\n        }\'',
       },
     },
   },
@@ -262,14 +262,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## logout\n\n`client.sdk.logout(session_token: string): { message?: string; revoked_at?: string; success?: boolean; token_found?: boolean; }`\n\n**post** `/sdk/logout`\n\nRevoke an Anchor Grant Window token\n\n### Parameters\n\n- `session_token: string`\n  The anchor grant token (bss_*) to revoke\n\n### Returns\n\n- `{ message?: string; revoked_at?: string; success?: boolean; token_found?: boolean; }`\n\n  - `message?: string`\n  - `revoked_at?: string`\n  - `success?: boolean`\n  - `token_found?: boolean`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.sdk.logout({ session_token: 'session_token' });\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
-        example:
-          'curl https://api.botshield.ai/operations/sdk/logout \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: $BOTSHIELD_API_KEY" \\\n    -d \'{\n          "session_token": "session_token"\n        }\'',
-      },
       typescript: {
         method: 'client.sdk.logout',
         example:
           "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.sdk.logout({ session_token: 'session_token' });\n\nconsole.log(response.message);",
+      },
+      http: {
+        example:
+          'curl https://api.botshield.ai/operations/sdk/logout \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: $BOTSHIELD_API_KEY" \\\n    -d \'{\n          "session_token": "session_token"\n        }\'',
       },
     },
   },
@@ -287,14 +287,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## lookup_user_by_email\n\n`client.verification.lookupUserByEmail(email: string): { data: object; }`\n\n**get** `/verification/lookup-user-by-email`\n\nCheck whether a user exists and has a registered passkey before initiating verification.\n\n### Parameters\n\n- `email: string`\n\n### Returns\n\n- `{ data: { clerk_user_id?: string; found?: boolean; has_passkey?: boolean; is_active?: boolean; }; }`\n\n  - `data: { clerk_user_id?: string; found?: boolean; has_passkey?: boolean; is_active?: boolean; }`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.verification.lookupUserByEmail({ email: 'dev@stainless.com' });\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
-        example:
-          'curl https://api.botshield.ai/operations/verification/lookup-user-by-email \\\n    -H "Authorization: $BOTSHIELD_API_KEY"',
-      },
       typescript: {
         method: 'client.verification.lookupUserByEmail',
         example:
           "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.verification.lookupUserByEmail({ email: 'dev@stainless.com' });\n\nconsole.log(response.data);",
+      },
+      http: {
+        example:
+          'curl https://api.botshield.ai/operations/verification/lookup-user-by-email \\\n    -H "Authorization: $BOTSHIELD_API_KEY"',
       },
     },
   },
@@ -312,14 +312,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get_status\n\n`client.verification.getStatus(request_id: string): { auth_mode?: 'linked-account' | 'private'; confidence?: number; created_at?: string; error_message?: string; expires_at?: string; found?: boolean; metadata?: object; organization_id?: string; partner_user_id?: string; presence_address?: string; request_id?: string; scope?: string; sdk_type?: 'signal' | 'presence'; signal_score?: number; signed_token?: string; status?: 'pending' | 'completed' | 'expired' | 'failed' | 'not_found'; user_email?: string; verification_token?: string; verified_at?: string; }`\n\n**get** `/verification/status`\n\nPoll for verification request status. Returns signed token on completion.\n\n### Parameters\n\n- `request_id: string`\n\n### Returns\n\n- `{ auth_mode?: 'linked-account' | 'private'; confidence?: number; created_at?: string; error_message?: string; expires_at?: string; found?: boolean; metadata?: object; organization_id?: string; partner_user_id?: string; presence_address?: string; request_id?: string; scope?: string; sdk_type?: 'signal' | 'presence'; signal_score?: number; signed_token?: string; status?: 'pending' | 'completed' | 'expired' | 'failed' | 'not_found'; user_email?: string; verification_token?: string; verified_at?: string; }`\n\n  - `auth_mode?: 'linked-account' | 'private'`\n  - `confidence?: number`\n  - `created_at?: string`\n  - `error_message?: string`\n  - `expires_at?: string`\n  - `found?: boolean`\n  - `metadata?: object`\n  - `organization_id?: string`\n  - `partner_user_id?: string`\n  - `presence_address?: string`\n  - `request_id?: string`\n  - `scope?: string`\n  - `sdk_type?: 'signal' | 'presence'`\n  - `signal_score?: number`\n  - `signed_token?: string`\n  - `status?: 'pending' | 'completed' | 'expired' | 'failed' | 'not_found'`\n  - `user_email?: string`\n  - `verification_token?: string`\n  - `verified_at?: string`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.verification.getStatus({ request_id: 'request_id' });\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
-        example:
-          'curl https://api.botshield.ai/operations/verification/status \\\n    -H "Authorization: $BOTSHIELD_API_KEY"',
-      },
       typescript: {
         method: 'client.verification.getStatus',
         example:
           "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.verification.getStatus({ request_id: 'request_id' });\n\nconsole.log(response.confidence);",
+      },
+      http: {
+        example:
+          'curl https://api.botshield.ai/operations/verification/status \\\n    -H "Authorization: $BOTSHIELD_API_KEY"',
       },
     },
   },
