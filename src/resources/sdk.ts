@@ -12,10 +12,7 @@ export class SDK extends APIResource {
    * Creates a short-lived anchor grant token (5 minutes) from an API token or site
    * key. Use this to get a token before creating verification links.
    */
-  createSession(
-    body: SDKCreateSessionParams,
-    options?: RequestOptions,
-  ): APIPromise<SDKCreateSessionResponse> {
+  createSession(body: SDKCreateSessionParams, options?: RequestOptions): APIPromise<SDKCreateSessionResponse> {
     return this._client.post('/sdk/create-session', { body, ...options });
   }
 
@@ -23,10 +20,7 @@ export class SDK extends APIResource {
    * Creates a verification request with deep link, web URL, and QR code. Requires an
    * anchor grant token from create-session.
    */
-  createVerificationLink(
-    body: SDKCreateVerificationLinkParams,
-    options?: RequestOptions,
-  ): APIPromise<SDKCreateVerificationLinkResponse> {
+  createVerificationLink(body: SDKCreateVerificationLinkParams, options?: RequestOptions): APIPromise<SDKCreateVerificationLinkResponse> {
     return this._client.post('/sdk/create-verification-link', { body, ...options });
   }
 
@@ -34,10 +28,7 @@ export class SDK extends APIResource {
    * Returns enabled integrations (Turnstile, etc.) for a site key. Public config
    * only — secret keys never exposed.
    */
-  getPartnerConfig(
-    query: SDKGetPartnerConfigParams,
-    options?: RequestOptions,
-  ): APIPromise<SDKGetPartnerConfigResponse> {
+  getPartnerConfig(query: SDKGetPartnerConfigParams, options?: RequestOptions): APIPromise<SDKGetPartnerConfigResponse> {
     return this._client.get('/sdk/partner-config', { query, ...options });
   }
 
@@ -52,10 +43,7 @@ export class SDK extends APIResource {
    * Soft-expires a pending verification for a scope and user. Use when
    * create-verification-link returns 409.
    */
-  revokeVerification(
-    body: SDKRevokeVerificationParams,
-    options?: RequestOptions,
-  ): APIPromise<SDKRevokeVerificationResponse> {
+  revokeVerification(body: SDKRevokeVerificationParams, options?: RequestOptions): APIPromise<SDKRevokeVerificationResponse> {
     return this._client.post('/sdk/revoke-verification', { body, ...options });
   }
 
@@ -72,10 +60,7 @@ export class SDK extends APIResource {
    * Validates a signal_token and returns the real server-side bot score. One-time
    * use, 10-minute expiry. This is the tamper-proof check.
    */
-  validateSignal(
-    body: SDKValidateSignalParams,
-    options?: RequestOptions,
-  ): APIPromise<SDKValidateSignalResponse> {
+  validateSignal(body: SDKValidateSignalParams, options?: RequestOptions): APIPromise<SDKValidateSignalResponse> {
     return this._client.post('/sdk/validate-signal', { body, ...options });
   }
 
@@ -398,6 +383,6 @@ export declare namespace SDK {
     type SDKRevokeVerificationParams as SDKRevokeVerificationParams,
     type SDKStoreSignalParams as SDKStoreSignalParams,
     type SDKValidateSignalParams as SDKValidateSignalParams,
-    type SDKVerifyTokenParams as SDKVerifyTokenParams,
+    type SDKVerifyTokenParams as SDKVerifyTokenParams
   };
 }

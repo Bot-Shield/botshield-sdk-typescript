@@ -7,70 +7,59 @@ export type SdkMethod = {
   fullyQualifiedName: string;
   httpMethod?: 'get' | 'post' | 'put' | 'patch' | 'delete' | 'query';
   httpPath?: string;
-};
+}
 
-export const sdkMethods: SdkMethod[] = [
-  {
-    clientCallName: 'client.sdk.createSession',
-    fullyQualifiedName: 'sdk.createSession',
-    httpMethod: 'post',
-    httpPath: '/sdk/create-session',
-  },
-  {
-    clientCallName: 'client.sdk.createVerificationLink',
-    fullyQualifiedName: 'sdk.createVerificationLink',
-    httpMethod: 'post',
-    httpPath: '/sdk/create-verification-link',
-  },
-  {
-    clientCallName: 'client.sdk.getPartnerConfig',
-    fullyQualifiedName: 'sdk.getPartnerConfig',
-    httpMethod: 'get',
-    httpPath: '/sdk/partner-config',
-  },
-  {
-    clientCallName: 'client.sdk.logout',
-    fullyQualifiedName: 'sdk.logout',
-    httpMethod: 'post',
-    httpPath: '/sdk/logout',
-  },
-  {
-    clientCallName: 'client.sdk.revokeVerification',
-    fullyQualifiedName: 'sdk.revokeVerification',
-    httpMethod: 'post',
-    httpPath: '/sdk/revoke-verification',
-  },
-  {
-    clientCallName: 'client.sdk.storeSignal',
-    fullyQualifiedName: 'sdk.storeSignal',
-    httpMethod: 'post',
-    httpPath: '/sdk/store-signal',
-  },
-  {
-    clientCallName: 'client.sdk.validateSignal',
-    fullyQualifiedName: 'sdk.validateSignal',
-    httpMethod: 'post',
-    httpPath: '/sdk/validate-signal',
-  },
-  {
-    clientCallName: 'client.sdk.verifyToken',
-    fullyQualifiedName: 'sdk.verifyToken',
-    httpMethod: 'post',
-    httpPath: '/sdk/verify-token',
-  },
-  {
-    clientCallName: 'client.verification.getStatus',
-    fullyQualifiedName: 'verification.getStatus',
-    httpMethod: 'get',
-    httpPath: '/verification/status',
-  },
-  {
-    clientCallName: 'client.verification.lookupUserByEmail',
-    fullyQualifiedName: 'verification.lookupUserByEmail',
-    httpMethod: 'get',
-    httpPath: '/verification/lookup-user-by-email',
-  },
-];
+export const sdkMethods: SdkMethod[] = [{
+  clientCallName: 'client.sdk.createSession',
+  fullyQualifiedName: 'sdk.createSession',
+  httpMethod: 'post',
+  httpPath: '/sdk/create-session',
+},{
+  clientCallName: 'client.sdk.createVerificationLink',
+  fullyQualifiedName: 'sdk.createVerificationLink',
+  httpMethod: 'post',
+  httpPath: '/sdk/create-verification-link',
+},{
+  clientCallName: 'client.sdk.getPartnerConfig',
+  fullyQualifiedName: 'sdk.getPartnerConfig',
+  httpMethod: 'get',
+  httpPath: '/sdk/partner-config',
+},{
+  clientCallName: 'client.sdk.logout',
+  fullyQualifiedName: 'sdk.logout',
+  httpMethod: 'post',
+  httpPath: '/sdk/logout',
+},{
+  clientCallName: 'client.sdk.revokeVerification',
+  fullyQualifiedName: 'sdk.revokeVerification',
+  httpMethod: 'post',
+  httpPath: '/sdk/revoke-verification',
+},{
+  clientCallName: 'client.sdk.storeSignal',
+  fullyQualifiedName: 'sdk.storeSignal',
+  httpMethod: 'post',
+  httpPath: '/sdk/store-signal',
+},{
+  clientCallName: 'client.sdk.validateSignal',
+  fullyQualifiedName: 'sdk.validateSignal',
+  httpMethod: 'post',
+  httpPath: '/sdk/validate-signal',
+},{
+  clientCallName: 'client.sdk.verifyToken',
+  fullyQualifiedName: 'sdk.verifyToken',
+  httpMethod: 'post',
+  httpPath: '/sdk/verify-token',
+},{
+  clientCallName: 'client.verification.getStatus',
+  fullyQualifiedName: 'verification.getStatus',
+  httpMethod: 'get',
+  httpPath: '/verification/status',
+},{
+  clientCallName: 'client.verification.lookupUserByEmail',
+  fullyQualifiedName: 'verification.lookupUserByEmail',
+  httpMethod: 'get',
+  httpPath: '/verification/lookup-user-by-email',
+}];
 
 function allowedMethodsForCodeTool(options: McpOptions | undefined): SdkMethod[] | undefined {
   if (!options) {
@@ -85,9 +74,9 @@ function allowedMethodsForCodeTool(options: McpOptions | undefined): SdkMethod[]
 
     if (options.codeAllowHttpGets) {
       // Add all methods that map to an HTTP GET
-      sdkMethods
-        .filter((method) => method.httpMethod === 'get')
-        .forEach((method) => allowedMethodsSet.add(method));
+      sdkMethods.filter((method) => method.httpMethod === 'get').forEach(
+        (method) => allowedMethodsSet.add(method)
+      );
     }
 
     if (options.codeAllowedMethods) {
@@ -96,15 +85,13 @@ function allowedMethodsForCodeTool(options: McpOptions | undefined): SdkMethod[]
         try {
           return new RegExp(pattern);
         } catch (e) {
-          throw new Error(
-            `Invalid regex pattern for allowed method: "${pattern}": ${e instanceof Error ? e.message : e}`,
-          );
+          throw new Error(`Invalid regex pattern for allowed method: "${pattern}": ${e instanceof Error ? e.message : e}`);
         }
       });
 
-      sdkMethods
-        .filter((method) => allowedRegexps.some((regexp) => regexp.test(method.fullyQualifiedName)))
-        .forEach((method) => allowedMethodsSet.add(method));
+      sdkMethods.filter((method) =>
+          allowedRegexps.some((regexp) => regexp.test(method.fullyQualifiedName))
+        ).forEach((method) => allowedMethodsSet.add(method));
     }
 
     allowedMethods = Array.from(allowedMethodsSet);
@@ -119,14 +106,12 @@ function allowedMethodsForCodeTool(options: McpOptions | undefined): SdkMethod[]
       try {
         return new RegExp(pattern);
       } catch (e) {
-        throw new Error(
-          `Invalid regex pattern for blocked method: "${pattern}": ${e instanceof Error ? e.message : e}`,
-        );
+        throw new Error(`Invalid regex pattern for blocked method: "${pattern}": ${e instanceof Error ? e.message : e}`);
       }
     });
 
-    allowedMethods = allowedMethods.filter(
-      (method) => !blockedRegexps.some((regexp) => regexp.test(method.fullyQualifiedName)),
+    allowedMethods = allowedMethods.filter((method) =>
+      !blockedRegexps.some((regexp) => regexp.test(method.fullyQualifiedName))
     );
   }
 
