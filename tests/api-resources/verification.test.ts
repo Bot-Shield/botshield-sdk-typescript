@@ -2,7 +2,10 @@
 
 import BotShield from 'botshield-sdk';
 
-const client = new BotShield({ apiKey: 'My API Key', baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010' });
+const client = new BotShield({
+  apiKey: 'My API Key',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+});
 
 describe('resource verification', () => {
   // Mock server tests are disabled
