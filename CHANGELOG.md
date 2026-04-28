@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.5.0 (2026-04-28)
+
+Full Changelog: [v1.4.1...v1.5.0](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.4.1...v1.5.0)
+
+### Features
+
+* support setting headers via env ([455431f](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/455431f777142e0dbac92323e521a416c0bd5eeb))
+
+
+### Chores
+
+* **formatter:** run prettier and eslint separately ([a9490ba](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/a9490ba4a63e16636644e53fa1c4c2b5bd412adb))
+* **internal:** codegen related update ([c091b90](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/c091b90c207f7425e15b2afbbe752c31d4bea394))
+* **internal:** codegen related update ([cb32c29](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/cb32c29487ab7dcfe3bf7bbbc276cc864d881c81))
+* **internal:** fix MCP server import ordering ([60ca537](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/60ca5376929686db1933480f65bd593d77433767))
+* **internal:** more robust bootstrap script ([0c01cbd](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/0c01cbd7d8d44623b801be05e24bbd19a0703623))
+* **internal:** show error causes in MCP servers when running in local mode ([3bacef9](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/3bacef9c7ad3d005c69248de4d308bdac592812e))
+* **internal:** support type annotations when running MCP in local execution mode ([aeed14b](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/aeed14bf545996bf431d3d117914a4f944b63185))
+* **mcp-server:** increase local docs search result count from 5 to 10 ([8b20761](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/8b20761e719a79c218c1dacb5b7567b1a491b238))
+* **mcp-server:** log client info ([2b00967](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/2b0096772c73522733735791f79752c7e5bfc070))
+* restructure docs search code ([6c685e1](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/6c685e1a8ea718b3ecd03d8c776a3d98aa5e0ce4))
+
 ## 1.4.1 (2026-04-01)
 
 Full Changelog: [v1.4.0...v1.4.1](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.4.0...v1.4.1)
