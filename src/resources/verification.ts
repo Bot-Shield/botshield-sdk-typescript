@@ -11,7 +11,10 @@ export class Verification extends APIResource {
   /**
    * Poll for verification request status. Returns signed token on completion.
    */
-  getStatus(query: VerificationGetStatusParams, options?: RequestOptions): APIPromise<VerificationGetStatusResponse> {
+  getStatus(
+    query: VerificationGetStatusParams,
+    options?: RequestOptions,
+  ): APIPromise<VerificationGetStatusResponse> {
     return this._client.get('/verification/status', { query, ...options });
   }
 
@@ -19,7 +22,10 @@ export class Verification extends APIResource {
    * Check whether a user exists and has a registered passkey before initiating
    * verification.
    */
-  lookupUserByEmail(query: VerificationLookupUserByEmailParams, options?: RequestOptions): APIPromise<VerificationLookupUserByEmailResponse> {
+  lookupUserByEmail(
+    query: VerificationLookupUserByEmailParams,
+    options?: RequestOptions,
+  ): APIPromise<VerificationLookupUserByEmailResponse> {
     return this._client.get('/verification/lookup-user-by-email', { query, ...options });
   }
 }
@@ -96,6 +102,6 @@ export declare namespace Verification {
     type VerificationGetStatusResponse as VerificationGetStatusResponse,
     type VerificationLookupUserByEmailResponse as VerificationLookupUserByEmailResponse,
     type VerificationGetStatusParams as VerificationGetStatusParams,
-    type VerificationLookupUserByEmailParams as VerificationLookupUserByEmailParams
+    type VerificationLookupUserByEmailParams as VerificationLookupUserByEmailParams,
   };
 }
