@@ -2,7 +2,10 @@
 
 import BotShield from 'botshield-sdk';
 
-const client = new BotShield({ apiKey: 'My API Key', baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010' });
+const client = new BotShield({
+  apiKey: 'My API Key',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+});
 
 describe('resource sdk', () => {
   // Mock server tests are disabled
@@ -78,10 +81,10 @@ describe('resource sdk', () => {
   // Mock server tests are disabled
   test.skip('revokeVerification: required and optional params', async () => {
     const response = await client.sdk.revokeVerification({
-    scope: 'scope',
-    partner_user_id: 'partner_user_id',
-    user_email: 'dev@stainless.com',
-  });
+      scope: 'scope',
+      partner_user_id: 'partner_user_id',
+      user_email: 'dev@stainless.com',
+    });
   });
 
   // Mock server tests are disabled
@@ -99,16 +102,16 @@ describe('resource sdk', () => {
   // Mock server tests are disabled
   test.skip('storeSignal: required and optional params', async () => {
     const response = await client.sdk.storeSignal({
-    score: 0,
-    site_key: 'site_key',
-    client_score: 0,
-    country: 'country',
-    edge_score: 0,
-    fp_hash: 'fp_hash',
-    ip_hash: 'ip_hash',
-    signals: {},
-    ua_hash: 'ua_hash',
-  });
+      score: 0,
+      site_key: 'site_key',
+      client_score: 0,
+      country: 'country',
+      edge_score: 0,
+      fp_hash: 'fp_hash',
+      ip_hash: 'ip_hash',
+      signals: {},
+      ua_hash: 'ua_hash',
+    });
   });
 
   // Mock server tests are disabled
@@ -125,7 +128,10 @@ describe('resource sdk', () => {
 
   // Mock server tests are disabled
   test.skip('validateSignal: required and optional params', async () => {
-    const response = await client.sdk.validateSignal({ signal_token: 'signal_token', verification_event_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' });
+    const response = await client.sdk.validateSignal({
+      signal_token: 'signal_token',
+      verification_event_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    });
   });
 
   // Mock server tests are disabled

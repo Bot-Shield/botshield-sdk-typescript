@@ -17,13 +17,43 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { SDK, SDKCreateSessionParams, SDKCreateSessionResponse, SDKCreateVerificationLinkParams, SDKCreateVerificationLinkResponse, SDKGetPartnerConfigParams, SDKGetPartnerConfigResponse, SDKLogoutParams, SDKLogoutResponse, SDKRevokeVerificationParams, SDKRevokeVerificationResponse, SDKStoreSignalParams, SDKStoreSignalResponse, SDKValidateSignalParams, SDKValidateSignalResponse, SDKVerifyTokenParams, SDKVerifyTokenResponse } from './resources/sdk';
-import { Verification, VerificationGetStatusParams, VerificationGetStatusResponse, VerificationLookupUserByEmailParams, VerificationLookupUserByEmailResponse } from './resources/verification';
+import {
+  SDK,
+  SDKCreateSessionParams,
+  SDKCreateSessionResponse,
+  SDKCreateVerificationLinkParams,
+  SDKCreateVerificationLinkResponse,
+  SDKGetPartnerConfigParams,
+  SDKGetPartnerConfigResponse,
+  SDKLogoutParams,
+  SDKLogoutResponse,
+  SDKRevokeVerificationParams,
+  SDKRevokeVerificationResponse,
+  SDKStoreSignalParams,
+  SDKStoreSignalResponse,
+  SDKValidateSignalParams,
+  SDKValidateSignalResponse,
+  SDKVerifyTokenParams,
+  SDKVerifyTokenResponse,
+} from './resources/sdk';
+import {
+  Verification,
+  VerificationGetStatusParams,
+  VerificationGetStatusResponse,
+  VerificationLookupUserByEmailParams,
+  VerificationLookupUserByEmailResponse,
+} from './resources/verification';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import { readEnv } from './internal/utils/env';
-import { type LogLevel, type Logger, formatRequestDetails, loggerFor, parseLogLevel } from './internal/utils/log';
+import {
+  type LogLevel,
+  type Logger,
+  formatRequestDetails,
+  loggerFor,
+  parseLogLevel,
+} from './internal/utils/log';
 import { isEmptyObj } from './internal/utils/values';
 
 const environments = {
@@ -117,7 +147,7 @@ export interface ClientOptions {
 }
 
 /**
- * API Client for interfacing with the Bot Shield API. 
+ * API Client for interfacing with the Bot Shield API.
  */
 export class BotShield {
   apiKey: string | null;
@@ -152,7 +182,6 @@ export class BotShield {
     apiKey = readEnv('BOTSHIELD_API_KEY') ?? null,
     ...opts
   }: ClientOptions = {}) {
-
     const options: ClientOptions = {
       apiKey,
       ...opts,
@@ -162,8 +191,8 @@ export class BotShield {
 
     if (baseURL && opts.environment) {
       throw new Errors.BotShieldError(
-        'Ambiguous URL; The `baseURL` option (or BOT_SHIELD_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null'
-      )
+        'Ambiguous URL; The `baseURL` option (or BOT_SHIELD_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null',
+      );
     }
 
     this.baseURL = options.baseURL || environments[options.environment || 'production'];
@@ -172,7 +201,10 @@ export class BotShield {
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
     this.logLevel = defaultLogLevel;
-    this.logLevel = parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ?? parseLogLevel(readEnv('BOT_SHIELD_LOG'), 'process.env[\'BOT_SHIELD_LOG\']', this) ?? defaultLogLevel;
+    this.logLevel =
+      parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
+      parseLogLevel(readEnv('BOT_SHIELD_LOG'), "process.env['BOT_SHIELD_LOG']", this) ??
+      defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
     this.fetch = options.fetch ?? Shims.getDefaultFetch();
@@ -198,7 +230,7 @@ export class BotShield {
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
       apiKey: this.apiKey,
-      ...options
+      ...options,
     });
     return client;
   }
@@ -211,7 +243,7 @@ export class BotShield {
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
-    return this._options.defaultQuery
+    return this._options.defaultQuery;
   }
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
@@ -222,7 +254,9 @@ export class BotShield {
       return;
     }
 
-    throw new Error('Could not resolve authentication method. Expected the apiKey to be set. Or for the "Authorization" headers to be explicitly omitted')
+    throw new Error(
+      'Could not resolve authentication method. Expected the apiKey to be set. Or for the "Authorization" headers to be explicitly omitted',
+    );
   }
 
   protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
@@ -256,7 +290,11 @@ export class BotShield {
     return Errors.APIError.generate(status, error, message, headers);
   }
 
-  buildURL(path: string, query: Record<string, unknown> | null | undefined, defaultBaseURL?: string | undefined): string {
+  buildURL(
+    path: string,
+    query: Record<string, unknown> | null | undefined,
+    defaultBaseURL?: string | undefined,
+  ): string {
     const baseURL = (!this.#baseURLOverridden() && defaultBaseURL) || this.baseURL;
     const url =
       isAbsoluteURL(path) ?
@@ -344,7 +382,9 @@ export class BotShield {
 
     await this.prepareOptions(options);
 
-    const { req, url, timeout } = await this.buildRequest(options, { retryCount: maxRetries - retriesRemaining });
+    const { req, url, timeout } = await this.buildRequest(options, {
+      retryCount: maxRetries - retriesRemaining,
+    });
 
     await this.prepareRequest(req, { url, options });
 
@@ -353,7 +393,16 @@ export class BotShield {
     const retryLogStr = retryOfRequestLogID === undefined ? '' : `, retryOf: ${retryOfRequestLogID}`;
     const startTime = Date.now();
 
-    loggerFor(this).debug(`[${requestLogID}] sending request`, formatRequestDetails({ retryOfRequestLogID, method: options.method, url, options, headers: req.headers }));
+    loggerFor(this).debug(
+      `[${requestLogID}] sending request`,
+      formatRequestDetails({
+        retryOfRequestLogID,
+        method: options.method,
+        url,
+        options,
+        headers: req.headers,
+      }),
+    );
 
     if (options.signal?.aborted) {
       throw new Errors.APIUserAbortError();
@@ -372,21 +421,45 @@ export class BotShield {
       // deno throws "TypeError: error sending request for url (https://example/): client error (Connect): tcp connect error: Operation timed out (os error 60): Operation timed out (os error 60)"
       // undici throws "TypeError: fetch failed" with cause "ConnectTimeoutError: Connect Timeout Error (attempted address: example:443, timeout: 1ms)"
       // others do not provide enough information to distinguish timeouts from other connection errors
-      const isTimeout = isAbortError(response) || /timed? ?out/i.test(String(response) + ('cause' in response ? String(response.cause) : ''))
+      const isTimeout =
+        isAbortError(response) ||
+        /timed? ?out/i.test(String(response) + ('cause' in response ? String(response.cause) : ''));
       if (retriesRemaining) {
-        loggerFor(this).info(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - ${retryMessage}`)
-        loggerFor(this).debug(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (${retryMessage})`, formatRequestDetails({ retryOfRequestLogID, url, durationMs: headersTime - startTime, message: response.message }));
+        loggerFor(this).info(
+          `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - ${retryMessage}`,
+        );
+        loggerFor(this).debug(
+          `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (${retryMessage})`,
+          formatRequestDetails({
+            retryOfRequestLogID,
+            url,
+            durationMs: headersTime - startTime,
+            message: response.message,
+          }),
+        );
         return this.retryRequest(options, retriesRemaining, retryOfRequestLogID ?? requestLogID);
       }
-      loggerFor(this).info(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - error; no more retries left`)
-      loggerFor(this).debug(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (error; no more retries left)`, formatRequestDetails({ retryOfRequestLogID, url, durationMs: headersTime - startTime, message: response.message }));
+      loggerFor(this).info(
+        `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - error; no more retries left`,
+      );
+      loggerFor(this).debug(
+        `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (error; no more retries left)`,
+        formatRequestDetails({
+          retryOfRequestLogID,
+          url,
+          durationMs: headersTime - startTime,
+          message: response.message,
+        }),
+      );
       if (isTimeout) {
         throw new Errors.APIConnectionTimeoutError();
       }
       throw new Errors.APIConnectionError({ cause: response });
     }
 
-    const responseInfo = `[${requestLogID}${retryLogStr}] ${req.method} ${url} ${response.ok ? 'succeeded' : 'failed'} with status ${response.status} in ${headersTime - startTime}ms`;
+    const responseInfo = `[${requestLogID}${retryLogStr}] ${req.method} ${url} ${
+      response.ok ? 'succeeded' : 'failed'
+    } with status ${response.status} in ${headersTime - startTime}ms`;
 
     if (!response.ok) {
       const shouldRetry = await this.shouldRetry(response);
@@ -395,27 +468,60 @@ export class BotShield {
 
         // We don't need the body of this response.
         await Shims.CancelReadableStream(response.body);
-        loggerFor(this).info(`${responseInfo} - ${retryMessage}`)
-        loggerFor(this).debug(`[${requestLogID}] response error (${retryMessage})`, formatRequestDetails({ retryOfRequestLogID, url: response.url, status: response.status, headers: response.headers, durationMs: headersTime - startTime }));
-        return this.retryRequest(options, retriesRemaining, retryOfRequestLogID ?? requestLogID, response.headers);
+        loggerFor(this).info(`${responseInfo} - ${retryMessage}`);
+        loggerFor(this).debug(
+          `[${requestLogID}] response error (${retryMessage})`,
+          formatRequestDetails({
+            retryOfRequestLogID,
+            url: response.url,
+            status: response.status,
+            headers: response.headers,
+            durationMs: headersTime - startTime,
+          }),
+        );
+        return this.retryRequest(
+          options,
+          retriesRemaining,
+          retryOfRequestLogID ?? requestLogID,
+          response.headers,
+        );
       }
 
       const retryMessage = shouldRetry ? `error; no more retries left` : `error; not retryable`;
 
-      loggerFor(this).info(`${responseInfo} - ${retryMessage}`)
+      loggerFor(this).info(`${responseInfo} - ${retryMessage}`);
 
       const errText = await response.text().catch((err: any) => castToError(err).message);
       const errJSON = safeJSON(errText) as any;
       const errMessage = errJSON ? undefined : errText;
 
-      loggerFor(this).debug(`[${requestLogID}] response error (${retryMessage})`, formatRequestDetails({ retryOfRequestLogID, url: response.url, status: response.status, headers: response.headers, message: errMessage, durationMs: Date.now() - startTime }));
+      loggerFor(this).debug(
+        `[${requestLogID}] response error (${retryMessage})`,
+        formatRequestDetails({
+          retryOfRequestLogID,
+          url: response.url,
+          status: response.status,
+          headers: response.headers,
+          message: errMessage,
+          durationMs: Date.now() - startTime,
+        }),
+      );
 
       const err = this.makeStatusError(response.status, errJSON, errMessage, response.headers);
       throw err;
     }
 
-    loggerFor(this).info(responseInfo)
-    loggerFor(this).debug(`[${requestLogID}] response start`, formatRequestDetails({ retryOfRequestLogID, url: response.url, status: response.status, headers: response.headers, durationMs: headersTime - startTime }));
+    loggerFor(this).info(responseInfo);
+    loggerFor(this).debug(
+      `[${requestLogID}] response start`,
+      formatRequestDetails({
+        retryOfRequestLogID,
+        url: response.url,
+        status: response.status,
+        headers: response.headers,
+        durationMs: headersTime - startTime,
+      }),
+    );
 
     return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
   }
@@ -432,7 +538,9 @@ export class BotShield {
 
     const timeout = setTimeout(abort, ms);
 
-    const isReadableBody = ((globalThis as any).ReadableStream && options.body instanceof (globalThis as any).ReadableStream) || (typeof options.body === "object" && options.body !== null && Symbol.asyncIterator in options.body);
+    const isReadableBody =
+      ((globalThis as any).ReadableStream && options.body instanceof (globalThis as any).ReadableStream) ||
+      (typeof options.body === 'object' && options.body !== null && Symbol.asyncIterator in options.body);
 
     const fetchOptions: RequestInit = {
       signal: controller.signal as any,
@@ -447,7 +555,6 @@ export class BotShield {
     }
 
     try {
-
       // use undefined this binding; fetch errors if bound to something else in browser/cloudflare
       return await this.fetch.call(undefined, url, fetchOptions);
     } finally {
@@ -548,11 +655,12 @@ export class BotShield {
     const req: FinalizedRequestInit = {
       method,
       headers: reqHeaders,
-      ...(options.signal && { signal: options.signal}),
-      ...((globalThis as any).ReadableStream && body instanceof (globalThis as any).ReadableStream && { duplex: "half" }),
+      ...(options.signal && { signal: options.signal }),
+      ...((globalThis as any).ReadableStream &&
+        body instanceof (globalThis as any).ReadableStream && { duplex: 'half' }),
       ...(body && { body }),
-      ...(this.fetchOptions as any ?? {}),
-      ...(options.fetchOptions as any ?? {}),
+      ...((this.fetchOptions as any) ?? {}),
+      ...((options.fetchOptions as any) ?? {}),
     };
 
     return { req, url, timeout: options.timeout };
@@ -577,15 +685,17 @@ export class BotShield {
 
     const headers = buildHeaders([
       idempotencyHeaders,
-      {Accept: 'application/json',
-      'User-Agent': this.getUserAgent(),
-      'X-Stainless-Retry-Count': String(retryCount),
-      ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
-      ...getPlatformHeaders()},
+      {
+        Accept: 'application/json',
+        'User-Agent': this.getUserAgent(),
+        'X-Stainless-Retry-Count': String(retryCount),
+        ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
+        ...getPlatformHeaders(),
+      },
       await this.authHeaders(options),
       this._options.defaultHeaders,
       bodyHeaders,
-      options.headers
+      options.headers,
     ]);
 
     this.validateHeaders(headers);
@@ -612,11 +722,9 @@ export class BotShield {
       ArrayBuffer.isView(body) ||
       body instanceof ArrayBuffer ||
       body instanceof DataView ||
-      (
-        typeof body === 'string' &&
+      (typeof body === 'string' &&
         // Preserve legacy string encoding behavior for now
-        headers.values.has('content-type')
-      ) ||
+        headers.values.has('content-type')) ||
       // `Blob` is superset of `File`
       ((globalThis as any).Blob && body instanceof (globalThis as any).Blob) ||
       // `FormData` -> `multipart/form-data`
@@ -647,7 +755,7 @@ export class BotShield {
   }
 
   static BotShield = this;
-  static DEFAULT_TIMEOUT = 60000 // 1 minute
+  static DEFAULT_TIMEOUT = 60000; // 1 minute
 
   static BotShieldError = Errors.BotShieldError;
   static APIError = Errors.APIError;
@@ -679,33 +787,33 @@ BotShield.SDK = SDK;
 BotShield.Verification = Verification;
 
 export declare namespace BotShield {
-      export type RequestOptions = Opts.RequestOptions;
+  export type RequestOptions = Opts.RequestOptions;
 
-      export {
-  SDK as SDK,
-  type SDKCreateSessionResponse as SDKCreateSessionResponse,
-  type SDKCreateVerificationLinkResponse as SDKCreateVerificationLinkResponse,
-  type SDKGetPartnerConfigResponse as SDKGetPartnerConfigResponse,
-  type SDKLogoutResponse as SDKLogoutResponse,
-  type SDKRevokeVerificationResponse as SDKRevokeVerificationResponse,
-  type SDKStoreSignalResponse as SDKStoreSignalResponse,
-  type SDKValidateSignalResponse as SDKValidateSignalResponse,
-  type SDKVerifyTokenResponse as SDKVerifyTokenResponse,
-  type SDKCreateSessionParams as SDKCreateSessionParams,
-  type SDKCreateVerificationLinkParams as SDKCreateVerificationLinkParams,
-  type SDKGetPartnerConfigParams as SDKGetPartnerConfigParams,
-  type SDKLogoutParams as SDKLogoutParams,
-  type SDKRevokeVerificationParams as SDKRevokeVerificationParams,
-  type SDKStoreSignalParams as SDKStoreSignalParams,
-  type SDKValidateSignalParams as SDKValidateSignalParams,
-  type SDKVerifyTokenParams as SDKVerifyTokenParams
-};
+  export {
+    SDK as SDK,
+    type SDKCreateSessionResponse as SDKCreateSessionResponse,
+    type SDKCreateVerificationLinkResponse as SDKCreateVerificationLinkResponse,
+    type SDKGetPartnerConfigResponse as SDKGetPartnerConfigResponse,
+    type SDKLogoutResponse as SDKLogoutResponse,
+    type SDKRevokeVerificationResponse as SDKRevokeVerificationResponse,
+    type SDKStoreSignalResponse as SDKStoreSignalResponse,
+    type SDKValidateSignalResponse as SDKValidateSignalResponse,
+    type SDKVerifyTokenResponse as SDKVerifyTokenResponse,
+    type SDKCreateSessionParams as SDKCreateSessionParams,
+    type SDKCreateVerificationLinkParams as SDKCreateVerificationLinkParams,
+    type SDKGetPartnerConfigParams as SDKGetPartnerConfigParams,
+    type SDKLogoutParams as SDKLogoutParams,
+    type SDKRevokeVerificationParams as SDKRevokeVerificationParams,
+    type SDKStoreSignalParams as SDKStoreSignalParams,
+    type SDKValidateSignalParams as SDKValidateSignalParams,
+    type SDKVerifyTokenParams as SDKVerifyTokenParams,
+  };
 
-export {
-  Verification as Verification,
-  type VerificationGetStatusResponse as VerificationGetStatusResponse,
-  type VerificationLookupUserByEmailResponse as VerificationLookupUserByEmailResponse,
-  type VerificationGetStatusParams as VerificationGetStatusParams,
-  type VerificationLookupUserByEmailParams as VerificationLookupUserByEmailParams
-};
-    }
+  export {
+    Verification as Verification,
+    type VerificationGetStatusResponse as VerificationGetStatusResponse,
+    type VerificationLookupUserByEmailResponse as VerificationLookupUserByEmailResponse,
+    type VerificationGetStatusParams as VerificationGetStatusParams,
+    type VerificationLookupUserByEmailParams as VerificationLookupUserByEmailParams,
+  };
+}
