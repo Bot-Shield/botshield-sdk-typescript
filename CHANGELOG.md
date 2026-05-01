@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.5.1 (2026-05-01)
+
+Full Changelog: [v1.5.0...v1.5.1](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.5.0...v1.5.1)
+
+### Chores
+
+* avoid formatting file that gets changed during releases ([34a2d33](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/34a2d335cc9934aede77c28f0a568b9701707187))
+* **format:** run eslint and prettier separately ([1640918](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/16409187d2f6894fb1580a108801f735dbebcd5d))
+
 ## 1.5.0 (2026-04-28)
 
 Full Changelog: [v1.4.1...v1.5.0](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.4.1...v1.5.0)
