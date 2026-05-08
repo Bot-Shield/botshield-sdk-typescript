@@ -10,6 +10,7 @@ You can run the MCP Server directly via `npx`:
 
 ```sh
 export BOTSHIELD_API_KEY="My API Key"
+export BOTSHIELD_AGENT_KEY="My Agent Key"
 export BOT_SHIELD_ENVIRONMENT="production"
 npx -y botshield-sdk-mcp@latest
 ```
@@ -29,6 +30,7 @@ For clients with a configuration JSON, it might look something like this:
       "args": ["-y", "botshield-sdk-mcp"],
       "env": {
         "BOTSHIELD_API_KEY": "My API Key",
+        "BOTSHIELD_AGENT_KEY": "My Agent Key",
         "BOT_SHIELD_ENVIRONMENT": "production"
       }
     }
@@ -41,14 +43,14 @@ For clients with a configuration JSON, it might look something like this:
 If you use Cursor, you can install the MCP server by using the button below. You will need to set your environment variables
 in Cursor's `mcp.json`, which can be found in Cursor Settings > Tools & MCP > New MCP Server.
 
-[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=botshield-sdk-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsImJvdHNoaWVsZC1zZGstbWNwIl0sImVudiI6eyJCT1RTSElFTERfQVBJX0tFWSI6Ik15IEFQSSBLZXkifX0)
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=botshield-sdk-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsImJvdHNoaWVsZC1zZGstbWNwIl0sImVudiI6eyJCT1RTSElFTERfQVBJX0tFWSI6Ik15IEFQSSBLZXkiLCJCT1RTSElFTERfQUdFTlRfS0VZIjoiTXkgQWdlbnQgS2V5In19)
 
 ### VS Code
 
 If you use MCP, you can install the MCP server by clicking the link below. You will need to set your environment variables
 in VS Code's `mcp.json`, which can be found via Command Palette > MCP: Open User Configuration.
 
-[Open VS Code](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22botshield-sdk-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22botshield-sdk-mcp%22%5D%2C%22env%22%3A%7B%22BOTSHIELD_API_KEY%22%3A%22My%20API%20Key%22%7D%7D)
+[Open VS Code](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22botshield-sdk-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22botshield-sdk-mcp%22%5D%2C%22env%22%3A%7B%22BOTSHIELD_API_KEY%22%3A%22My%20API%20Key%22%2C%22BOTSHIELD_AGENT_KEY%22%3A%22My%20Agent%20Key%22%7D%7D)
 
 ### Claude Code
 
@@ -56,7 +58,7 @@ If you use Claude Code, you can install the MCP server by running the command be
 environment variables in Claude Code's `.claude.json`, which can be found in your home directory.
 
 ```
-claude mcp add botshield_sdk_mcp_api --env BOTSHIELD_API_KEY="My API Key" -- npx -y botshield-sdk-mcp
+claude mcp add botshield_sdk_mcp_api --env BOTSHIELD_API_KEY="My API Key" BOTSHIELD_AGENT_KEY="My Agent Key" -- npx -y botshield-sdk-mcp
 ```
 
 ## Code Mode
@@ -82,8 +84,9 @@ Launching the client with `--transport=http` launches the server as a remote ser
 
 Authorization can be provided via the following headers:
 | Header | Equivalent client option | Security scheme |
-| --------------------- | ------------------------ | --------------- |
+| ----------------------- | ------------------------ | --------------- |
 | `x-botshield-api-key` | `apiKey` | ApiKeyAuth |
+| `x-botshield-agent-key` | `agentKey` | AgentKeyAuth |
 
 A configuration JSON for this server might look like this, assuming the server is hosted at `http://localhost:3000`:
 

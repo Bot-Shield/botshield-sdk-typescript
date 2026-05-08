@@ -78,6 +78,11 @@ export interface ClientOptions {
   apiKey?: string | null | undefined;
 
   /**
+   * Defaults to process.env['BOTSHIELD_AGENT_KEY'].
+   */
+  agentKey?: string | null | undefined;
+
+  /**
    * Specifies the environment to use for the API.
    *
    * Each environment maps to a different base URL:
@@ -160,6 +165,7 @@ export interface ClientOptions {
  */
 export class BotShield {
   apiKey: string | null;
+  agentKey: string | null;
 
   baseURL: string;
   maxRetries: number;
@@ -177,6 +183,7 @@ export class BotShield {
    * API Client for interfacing with the Bot Shield API.
    *
    * @param {string | null | undefined} [opts.apiKey=process.env['BOTSHIELD_API_KEY'] ?? null]
+   * @param {string | null | undefined} [opts.agentKey=process.env['BOTSHIELD_AGENT_KEY'] ?? null]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
    * @param {string} [opts.baseURL=process.env['BOT_SHIELD_BASE_URL'] ?? https://api.botshield.ai/operations] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
@@ -189,10 +196,12 @@ export class BotShield {
   constructor({
     baseURL = readEnv('BOT_SHIELD_BASE_URL'),
     apiKey = readEnv('BOTSHIELD_API_KEY') ?? null,
+    agentKey = readEnv('BOTSHIELD_AGENT_KEY') ?? null,
     ...opts
   }: ClientOptions = {}) {
     const options: ClientOptions = {
       apiKey,
+      agentKey,
       ...opts,
       baseURL,
       environment: opts.environment ?? 'production',
@@ -234,6 +243,7 @@ export class BotShield {
     this._options = options;
 
     this.apiKey = apiKey;
+    this.agentKey = agentKey;
   }
 
   /**
@@ -251,6 +261,7 @@ export class BotShield {
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
       apiKey: this.apiKey,
+      agentKey: this.agentKey,
       ...options,
     });
     return client;
@@ -275,16 +286,34 @@ export class BotShield {
       return;
     }
 
+    if (this.agentKey && values.get('authorization')) {
+      return;
+    }
+    if (nulls.has('authorization')) {
+      return;
+    }
+
     throw new Error(
-      'Could not resolve authentication method. Expected the apiKey to be set. Or for the "Authorization" headers to be explicitly omitted',
+      'Could not resolve authentication method. Expected either apiKey or agentKey to be set. Or for one of the "Authorization" or "Authorization" headers to be explicitly omitted',
     );
   }
 
   protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    return buildHeaders([await this.apiKeyAuth(opts), await this.agentKeyAuth(opts)]);
+  }
+
+  protected async apiKeyAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
     if (this.apiKey == null) {
       return undefined;
     }
     return buildHeaders([{ Authorization: this.apiKey }]);
+  }
+
+  protected async agentKeyAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    if (this.agentKey == null) {
+      return undefined;
+    }
+    return buildHeaders([{ Authorization: this.agentKey }]);
   }
 
   /**
