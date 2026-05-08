@@ -9,7 +9,11 @@ export const parseClientAuthHeaders = (req: IncomingMessage, required?: boolean)
     Array.isArray(req.headers['x-botshield-api-key']) ?
       req.headers['x-botshield-api-key'][0]
     : req.headers['x-botshield-api-key'];
-  return { apiKey };
+  const agentKey =
+    Array.isArray(req.headers['x-botshield-agent-key']) ?
+      req.headers['x-botshield-agent-key'][0]
+    : req.headers['x-botshield-agent-key'];
+  return { apiKey, agentKey };
 };
 
 export const getStainlessApiKey = (req: IncomingMessage, mcpOptions: McpOptions): string | undefined => {
