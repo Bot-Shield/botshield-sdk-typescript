@@ -77,7 +77,7 @@ describe('resource actions', () => {
       },
       request_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       user_email: 'dev@stainless.com',
-      adaptive_card_payload: {},
+      adaptive_card_payload: { foo: 'bar' },
       ttl_seconds: 60,
     });
   });
