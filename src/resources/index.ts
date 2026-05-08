@@ -1,6 +1,15 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
+  Actions,
+  type ActionCancelActionResponse,
+  type ActionCheckActionStatusResponse,
+  type ActionProposeActionResponse,
+  type ActionCancelActionParams,
+  type ActionCheckActionStatusParams,
+  type ActionProposeActionParams,
+} from './actions';
+export {
   SDK,
   type SDKCreateSessionResponse,
   type SDKCreateVerificationLinkResponse,

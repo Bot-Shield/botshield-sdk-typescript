@@ -70,6 +70,24 @@ export const sdkMethods: SdkMethod[] = [
     httpMethod: 'get',
     httpPath: '/verification/lookup-user-by-email',
   },
+  {
+    clientCallName: 'client.actions.cancelAction',
+    fullyQualifiedName: 'actions.cancelAction',
+    httpMethod: 'post',
+    httpPath: '/authlink/cancel',
+  },
+  {
+    clientCallName: 'client.actions.checkActionStatus',
+    fullyQualifiedName: 'actions.checkActionStatus',
+    httpMethod: 'get',
+    httpPath: '/authlink/check-status',
+  },
+  {
+    clientCallName: 'client.actions.proposeAction',
+    fullyQualifiedName: 'actions.proposeAction',
+    httpMethod: 'post',
+    httpPath: '/authlink/inquire',
+  },
 ];
 
 function allowedMethodsForCodeTool(options: McpOptions | undefined): SdkMethod[] | undefined {

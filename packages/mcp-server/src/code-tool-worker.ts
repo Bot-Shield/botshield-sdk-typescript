@@ -118,6 +118,9 @@ const fuse = new Fuse(
     'client.sdk.verifyToken',
     'client.verification.getStatus',
     'client.verification.lookupUserByEmail',
+    'client.actions.cancelAction',
+    'client.actions.checkActionStatus',
+    'client.actions.proposeAction',
   ],
   { threshold: 1, shouldSort: true },
 );
