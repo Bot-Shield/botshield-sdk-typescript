@@ -29,7 +29,7 @@ export const newMcpServer = async ({
   new McpServer(
     {
       name: 'botshield_sdk_api',
-      version: '1.5.1',
+      version: '1.6.0',
     },
     {
       instructions: await getInstructions({ stainlessApiKey, customInstructionsPath }),
