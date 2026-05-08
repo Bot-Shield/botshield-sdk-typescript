@@ -165,7 +165,7 @@ export interface SDKGetPartnerConfigResponse {
 
 export namespace SDKGetPartnerConfigResponse {
   export interface Integrations {
-    config?: unknown;
+    config?: { [key: string]: unknown };
 
     enabled?: boolean;
 
@@ -358,7 +358,7 @@ export interface SDKStoreSignalParams {
 
   ip_hash?: string;
 
-  signals?: unknown;
+  signals?: { [key: string]: unknown };
 
   ua_hash?: string;
 }

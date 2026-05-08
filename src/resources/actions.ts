@@ -126,7 +126,7 @@ export interface ActionProposeActionParams {
    * Allowlist: TextBlock, FactSet, ColumnSet, Container, Table, Image (bundled-asset
    * only).
    */
-  adaptive_card_payload?: unknown;
+  adaptive_card_payload?: { [key: string]: unknown };
 
   /**
    * How long the user has to respond before the proposal expires. Bounds locked by

@@ -109,7 +109,7 @@ describe('resource sdk', () => {
       edge_score: 0,
       fp_hash: 'fp_hash',
       ip_hash: 'ip_hash',
-      signals: {},
+      signals: { foo: 'bar' },
       ua_hash: 'ua_hash',
     });
   });
