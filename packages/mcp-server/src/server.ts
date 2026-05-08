@@ -9,8 +9,10 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import { ClientOptions } from 'botshield-sdk';
 import BotShield from 'botshield-sdk';
+import { codeTool } from './code-tool';
 import { getInstructions } from './instructions';
 import { McpOptions } from './options';
+import { blockedMethodsForCodeTool } from './methods';
 import { HandlerFunction, McpRequestContext, ToolCallResult, McpTool } from './types';
 import { readEnv } from './util';
 
@@ -168,6 +170,15 @@ export async function initMcpServer(params: {
  */
 export function selectTools(options?: McpOptions): McpTool[] {
   const includedTools = [];
+
+  if (options?.includeCodeTool ?? true) {
+    includedTools.push(
+      codeTool({
+        blockedMethods: blockedMethodsForCodeTool(options),
+        codeExecutionMode: options?.codeExecutionMode ?? 'stainless-sandbox',
+      }),
+    );
+  }
 
   return includedTools;
 }
