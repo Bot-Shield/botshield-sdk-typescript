@@ -1,4 +1,4 @@
 configured_endpoints: 13
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/botshield/botshield-sdk-f095a65e321b5058cbe993213b1e08c7b5626c714b2d7d92dd2eca913e140276.yml
-openapi_spec_hash: adef8ffe48ef46b379e428180ff69dc7
-config_hash: 0230a3904733b2820f7e13ca0995f808
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/botshield/botshield-sdk-faf0c1185d3a5f63a52be78d23a3263dbdabf86cbb4961fb86873c891a12a20a.yml
+openapi_spec_hash: 8a3f23feafaa338d6bb1b70793c702ff
+config_hash: 3162d3064b19b959cefd307945915d4f
