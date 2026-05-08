@@ -323,6 +323,88 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
     },
   },
+  {
+    name: 'propose_action',
+    endpoint: '/authlink/inquire',
+    httpMethod: 'post',
+    summary: 'Propose a BotShield Action',
+    description:
+      'Queue a human-presence-gated action for a BotShield user. The user receives a card on their iOS app, attests via biometric ceremony, and BotShield delivers a signed Resolution JWT to your registered callback URL. Authentication: agent key (bs_agent_<name>__<secret>) in Authorization header.',
+    stainlessPath: '(resource) actions > (method) propose_action',
+    qualified: 'client.actions.proposeAction',
+    params: [
+      'action: { category: string; summary_title: string; summary_detail?: { label?: string; value?: string; }; trusted_account_id?: string; };',
+      'request_id: string;',
+      'user_email: string;',
+      'adaptive_card_payload?: object;',
+      'ttl_seconds?: number;',
+    ],
+    response: "{ data: { card_id: string; status: 'queued'; ttl_at: string; }; }",
+    markdown:
+      "## propose_action\n\n`client.actions.proposeAction(action: { category: string; summary_title: string; summary_detail?: { label?: string; value?: string; }; trusted_account_id?: string; }, request_id: string, user_email: string, adaptive_card_payload?: object, ttl_seconds?: number): { data: object; }`\n\n**post** `/authlink/inquire`\n\nQueue a human-presence-gated action for a BotShield user. The user receives a card on their iOS app, attests via biometric ceremony, and BotShield delivers a signed Resolution JWT to your registered callback URL. Authentication: agent key (bs_agent_<name>__<secret>) in Authorization header.\n\n### Parameters\n\n- `action: { category: string; summary_title: string; summary_detail?: { label?: string; value?: string; }; trusted_account_id?: string; }`\n  - `category: string`\n    Must be in agent.allowed_action_categories AND in the partner's approved scopes for this environment.\n  - `summary_title: string`\n    Plain-English action description shown on the card (e.g. 'Has an Uber ride ready to book').\n  - `summary_detail?: { label?: string; value?: string; }`\n    Primary KPI shown on the card chrome.\n  - `trusted_account_id?: string`\n    Optional link to the user's MultiPass-linked account.\n\n- `request_id: string`\n  Agent-supplied UUID for idempotency. Re-proposing with the same request_id returns the existing card_id.\n\n- `user_email: string`\n  Email of the BotShield user to receive this proposal.\n\n- `adaptive_card_payload?: object`\n  Optional Adaptive Card v1.5 JSON shown when the user expands the card. Allowlist: TextBlock, FactSet, ColumnSet, Container, Table, Image (bundled-asset only).\n\n- `ttl_seconds?: number`\n  How long the user has to respond before the proposal expires. Bounds locked by V3 spec §3.4.\n\n### Returns\n\n- `{ data: { card_id: string; status: 'queued'; ttl_at: string; }; }`\n\n  - `data: { card_id: string; status: 'queued'; ttl_at: string; }`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.actions.proposeAction({\n  action: { category: 'travel.book', summary_title: 'summary_title' },\n  request_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  user_email: 'dev@stainless.com',\n});\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.actions.proposeAction',
+        example:
+          "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.actions.proposeAction({\n  action: { category: 'travel.book', summary_title: 'summary_title' },\n  request_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  user_email: 'dev@stainless.com',\n});\n\nconsole.log(response.data);",
+      },
+      http: {
+        example:
+          'curl https://api.botshield.ai/operations/authlink/inquire \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: $BOTSHIELD_API_KEY" \\\n    -d \'{\n          "action": {\n            "category": "travel.book",\n            "summary_title": "summary_title"\n          },\n          "request_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "user_email": "dev@stainless.com"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'check_action_status',
+    endpoint: '/authlink/check-status',
+    httpMethod: 'get',
+    summary: 'Check action proposal status',
+    description:
+      'Poll the current state of a previously-proposed action. For terminal states (approved/denied), the response carries the signed Resolution JWT.',
+    stainlessPath: '(resource) actions > (method) check_action_status',
+    qualified: 'client.actions.checkActionStatus',
+    params: ['request_id: string;'],
+    response:
+      "{ data: { status: 'queued' | 'approved' | 'denied' | 'expired' | 'cancelled'; ceremony_id?: string; delivered?: boolean; resolution_jwt?: string; verdict?: 'approve' | 'denied'; }; }",
+    markdown:
+      "## check_action_status\n\n`client.actions.checkActionStatus(request_id: string): { data: object; }`\n\n**get** `/authlink/check-status`\n\nPoll the current state of a previously-proposed action. For terminal states (approved/denied), the response carries the signed Resolution JWT.\n\n### Parameters\n\n- `request_id: string`\n\n### Returns\n\n- `{ data: { status: 'queued' | 'approved' | 'denied' | 'expired' | 'cancelled'; ceremony_id?: string; delivered?: boolean; resolution_jwt?: string; verdict?: 'approve' | 'denied'; }; }`\n\n  - `data: { status: 'queued' | 'approved' | 'denied' | 'expired' | 'cancelled'; ceremony_id?: string; delivered?: boolean; resolution_jwt?: string; verdict?: 'approve' | 'denied'; }`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.actions.checkActionStatus({ request_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.actions.checkActionStatus',
+        example:
+          "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.actions.checkActionStatus({\n  request_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});\n\nconsole.log(response.data);",
+      },
+      http: {
+        example:
+          'curl https://api.botshield.ai/operations/authlink/check-status \\\n    -H "Authorization: $BOTSHIELD_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'cancel_action',
+    endpoint: '/authlink/cancel',
+    httpMethod: 'post',
+    summary: 'Cancel a queued action proposal',
+    description:
+      'Stand down a queued action before the user responds. No-op if the proposal is already in a terminal state (TTL is cancel — silent expiry produces no Resolution).',
+    stainlessPath: '(resource) actions > (method) cancel_action',
+    qualified: 'client.actions.cancelAction',
+    params: ['request_id: string;'],
+    response: '{ data: { already_terminal?: boolean; cancelled?: boolean; }; }',
+    markdown:
+      "## cancel_action\n\n`client.actions.cancelAction(request_id: string): { data: object; }`\n\n**post** `/authlink/cancel`\n\nStand down a queued action before the user responds. No-op if the proposal is already in a terminal state (TTL is cancel — silent expiry produces no Resolution).\n\n### Parameters\n\n- `request_id: string`\n\n### Returns\n\n- `{ data: { already_terminal?: boolean; cancelled?: boolean; }; }`\n\n  - `data: { already_terminal?: boolean; cancelled?: boolean; }`\n\n### Example\n\n```typescript\nimport BotShield from 'botshield-sdk';\n\nconst client = new BotShield();\n\nconst response = await client.actions.cancelAction({ request_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.actions.cancelAction',
+        example:
+          "import BotShield from 'botshield-sdk';\n\nconst client = new BotShield({\n  apiKey: process.env['BOTSHIELD_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.actions.cancelAction({\n  request_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});\n\nconsole.log(response.data);",
+      },
+      http: {
+        example:
+          'curl https://api.botshield.ai/operations/authlink/cancel \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: $BOTSHIELD_API_KEY" \\\n    -d \'{\n          "request_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n        }\'',
+      },
+    },
+  },
 ];
 
 const EMBEDDED_READMES: { language: string; content: string }[] = [
