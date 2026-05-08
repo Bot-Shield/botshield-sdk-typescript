@@ -33,3 +33,17 @@ Methods:
 
 - <code title="get /verification/status">client.verification.<a href="./src/resources/verification.ts">getStatus</a>({ ...params }) -> VerificationGetStatusResponse</code>
 - <code title="get /verification/lookup-user-by-email">client.verification.<a href="./src/resources/verification.ts">lookupUserByEmail</a>({ ...params }) -> VerificationLookupUserByEmailResponse</code>
+
+# Actions
+
+Types:
+
+- <code><a href="./src/resources/actions.ts">ActionCancelActionResponse</a></code>
+- <code><a href="./src/resources/actions.ts">ActionCheckActionStatusResponse</a></code>
+- <code><a href="./src/resources/actions.ts">ActionProposeActionResponse</a></code>
+
+Methods:
+
+- <code title="post /authlink/cancel">client.actions.<a href="./src/resources/actions.ts">cancelAction</a>({ ...params }) -> ActionCancelActionResponse</code>
+- <code title="get /authlink/check-status">client.actions.<a href="./src/resources/actions.ts">checkActionStatus</a>({ ...params }) -> ActionCheckActionStatusResponse</code>
+- <code title="post /authlink/inquire">client.actions.<a href="./src/resources/actions.ts">proposeAction</a>({ ...params }) -> ActionProposeActionResponse</code>

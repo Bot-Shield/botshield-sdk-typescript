@@ -18,6 +18,15 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import {
+  ActionCancelActionParams,
+  ActionCancelActionResponse,
+  ActionCheckActionStatusParams,
+  ActionCheckActionStatusResponse,
+  ActionProposeActionParams,
+  ActionProposeActionResponse,
+  Actions,
+} from './resources/actions';
+import {
   SDK,
   SDKCreateSessionParams,
   SDKCreateSessionResponse,
@@ -793,10 +802,15 @@ export class BotShield {
    * Verification status checking and user lookup
    */
   verification: API.Verification = new API.Verification(this);
+  /**
+   * Queued pattern: agent proposes an action async, user attests in BotShield app, BotShield signs a Resolution JWT and POSTs it to the agent's callback URL.
+   */
+  actions: API.Actions = new API.Actions(this);
 }
 
 BotShield.SDK = SDK;
 BotShield.Verification = Verification;
+BotShield.Actions = Actions;
 
 export declare namespace BotShield {
   export type RequestOptions = Opts.RequestOptions;
@@ -827,5 +841,15 @@ export declare namespace BotShield {
     type VerificationLookupUserByEmailResponse as VerificationLookupUserByEmailResponse,
     type VerificationGetStatusParams as VerificationGetStatusParams,
     type VerificationLookupUserByEmailParams as VerificationLookupUserByEmailParams,
+  };
+
+  export {
+    Actions as Actions,
+    type ActionCancelActionResponse as ActionCancelActionResponse,
+    type ActionCheckActionStatusResponse as ActionCheckActionStatusResponse,
+    type ActionProposeActionResponse as ActionProposeActionResponse,
+    type ActionCancelActionParams as ActionCancelActionParams,
+    type ActionCheckActionStatusParams as ActionCheckActionStatusParams,
+    type ActionProposeActionParams as ActionProposeActionParams,
   };
 }
