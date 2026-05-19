@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.8.1 (2026-05-19)
+
+Full Changelog: [v1.8.0...v1.8.1](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.8.0...v1.8.1)
+
+### Bug Fixes
+
+* **typescript:** upgrade tsc-multi so that it works with Node 26 ([a526448](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/a526448718326a357d089316fb270ae2d1682b5e))
+
+
+### Chores
+
+* **tests:** remove redundant File import ([dc4ae2e](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/dc4ae2ed5b040bb698199291fc5788ce8bc8c8c2))
+
 ## 1.8.0 (2026-05-08)
 
 Full Changelog: [v1.7.0...v1.8.0](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.7.0...v1.8.0)
