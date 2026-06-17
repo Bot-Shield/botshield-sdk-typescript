@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.2 (2026-06-17)
+
+Full Changelog: [v1.8.1...v1.8.2](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.8.1...v1.8.2)
+
+### Bug Fixes
+
+* **client:** send content-type header for requests with an omitted optional body ([faa19dd](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/faa19dd6ee80da5780526296092478090e5f426d))
+
 ## 1.8.1 (2026-05-19)
 
 Full Changelog: [v1.8.0...v1.8.1](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.8.0...v1.8.1)
