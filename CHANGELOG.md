@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.3 (2026-07-11)
+
+Full Changelog: [v1.8.2...v1.8.3](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.8.2...v1.8.3)
+
+### Bug Fixes
+
+* **ci:** bump @arethetypeswrong/cli to ^0.18.0 and run CI workflows on Node 24 ([ff2a040](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/ff2a040c2c9dcbd5f842eb851a4f1a0c14b06864))
+
 ## 1.8.2 (2026-06-17)
 
 Full Changelog: [v1.8.1...v1.8.2](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.8.1...v1.8.2)
