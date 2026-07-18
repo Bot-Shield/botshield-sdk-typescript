@@ -8,7 +8,6 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
 
 <br /><br />
 > [!IMPORTANT]
-> This SDK is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/botshield/sdk). Delete this section before > publishing to a package manager.
 
 <!-- Start Summary [summary] -->
 ## Summary
@@ -103,7 +102,9 @@ Add the following server definition to your `claude_desktop_config.json` file:
         "--agent-key-auth", "...",
         "--agent-key-auth1", "...",
         "--agent-key-auth2", "...",
-        "--agent-key-auth3", "..."
+        "--agent-key-auth3", "...",
+        "--agent-key-auth4", "...",
+        "--agent-key-auth5", "..."
       ]
     }
   }
@@ -129,7 +130,9 @@ Create a `.cursor/mcp.json` file in your project root with the following content
         "--agent-key-auth", "...",
         "--agent-key-auth1", "...",
         "--agent-key-auth2", "...",
-        "--agent-key-auth3", "..."
+        "--agent-key-auth3", "...",
+        "--agent-key-auth4", "...",
+        "--agent-key-auth5", "..."
       ]
     }
   }
@@ -211,6 +214,8 @@ This SDK supports the following security schemes globally:
 | `agentKeyAuth1` | apiKey | API key |
 | `agentKeyAuth2` | apiKey | API key |
 | `agentKeyAuth3` | apiKey | API key |
+| `agentKeyAuth4` | apiKey | API key |
+| `agentKeyAuth5` | apiKey | API key |
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript
