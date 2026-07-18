@@ -1,0 +1,47 @@
+configVersion: 2.0.0
+# Generation config for the BotShield TypeScript SDK + discrete-tool MCP server.
+# Replaces the `targets.typescript` block of botshield-wg/stainless.yaml (RFC 42).
+generation:
+  sdkClassName: BotShield
+  maintainOpenAPIOrder: true
+  usageSnippets:
+    optionalPropertyRendering: withExample
+    sdkInitStyle: constructor
+  useClassNamesForArrayFields: true
+  fixes:
+    nameResolutionDec2023: true
+    nameResolutionFeb2025: true
+    parameterOrderingFeb2024: true
+    requestResponseComponentNamesFeb2024: true
+    securityFeb2025: true
+    sharedErrorComponentsApr2025: true
+  auth:
+    # Two Bearer schemes (ApiKeyAuth + AgentKeyAuth) share the Authorization header;
+    # the server routes by key prefix. Matches stainless.yaml security_schemes.
+    hoistGlobalSecurity: true
+typescript:
+  version: 1.9.0                 # continuity with the Stainless-published botshield-sdk@1.9.0
+  packageName: botshield-sdk     # was `openapi` (quickstart default)
+  author: BotShield
+  baseErrorName: BotShieldError  # matches the `BotShieldError` the Stainless SDK exported
+  # ── RFC 42 A2: discrete-tool MCP server (was Stainless Code Mode). Which ops
+  #    become tools is the affirmative allowlist in overlays/botshield-surface.yaml
+  #    (only actions.* enabled; sdk.*/verification.* disabled). ──
+  enableMCPServer: true
+  # MIGRATION FINDING: Speakeasy SILENTLY disables MCP-server generation under
+  # Zod v4 ("WARN MCP server is disabled when using Zod v4"), and v4 is its
+  # default. Must pin v3 for the MCP server to generate at all.
+  zodVersion: v3
+  moduleFormat: dual
+  responseFormat: flat
+  enumFormat: union
+  useIndexModules: true
+  methodArguments: infer-optional-args
+  imports:
+    option: openapi
+    paths:
+      callbacks: models/callbacks
+      errors: models/errors
+      operations: models/operations
+      shared: models
+      webhooks: models/webhooks
