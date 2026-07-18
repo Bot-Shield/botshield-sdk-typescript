@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.0 (2026-07-18)
+
+Full Changelog: [v1.8.3...v1.9.0](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.8.3...v1.9.0)
+
+### Features
+
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([aec7344](https://github.com/Bot-Shield/botshield-sdk-typescript/commit/aec7344984cc1c9518d3f008e44233385f0ff06e))
+
 ## 1.8.3 (2026-07-11)
 
 Full Changelog: [v1.8.2...v1.8.3](https://github.com/Bot-Shield/botshield-sdk-typescript/compare/v1.8.2...v1.8.3)
