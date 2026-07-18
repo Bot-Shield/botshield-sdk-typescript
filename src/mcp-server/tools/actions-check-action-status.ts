@@ -11,10 +11,10 @@ const args = {
 };
 
 export const tool$actionsCheckActionStatus: ToolDefinition<typeof args> = {
-  name: "check_action_status",
+  name: "check_resolution_status",
   description:
-    `Poll a proposed action. Terminal states (approved/denied) carry the signed Proof of Resolution JWT — verify with BotShield's public key.`,
-  scopes: ["queue", "queue"],
+    `Poll a proposed resolution. Terminal states (Confirmed/Denied) carry the signed Proof of Resolution JWT — verify with BotShield's public key.`,
+  scopes: ["queue", "queue", "queue"],
   args,
   tool: async (client, args, ctx) => {
     const [result, apiCall] = await actionsCheckActionStatus(

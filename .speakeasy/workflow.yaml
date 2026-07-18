@@ -15,3 +15,9 @@ targets:
         publish:
             npm:
                 token: $NPM_TOKEN
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/botshield/sdk/botshield-oas-typescript-code-samples
+            labelOverride:
+                fixedValue: Typescript (SDK)
+            blocking: false

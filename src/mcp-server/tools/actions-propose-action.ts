@@ -11,10 +11,10 @@ const args = {
 };
 
 export const tool$actionsProposeAction: ToolDefinition<typeof args> = {
-  name: "propose_action",
+  name: "propose_resolution",
   description:
-    `Queue a human-presence-gated action for a BotShield user. Returns a card_id immediately; the signed Proof of Resolution arrives async via the agent's registered callback.`,
-  scopes: ["queue", "queue"],
+    `Queue a human-presence-gated Queue card for a BotShield user. Returns a card_id immediately; the signed Proof of Resolution arrives async via the agent's registered callback.`,
+  scopes: ["queue", "queue", "queue"],
   args,
   tool: async (client, args, ctx) => {
     const [result, apiCall] = await actionsProposeAction(

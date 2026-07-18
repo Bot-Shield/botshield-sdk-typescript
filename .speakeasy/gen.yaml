@@ -45,7 +45,7 @@ typescript:
   baseErrorName: BotShieldError
   clientServerStatusCodesAsErrors: true
   constFieldsAlwaysOptional: false
-  defaultErrorName: ""
+  defaultErrorName: BotShieldDefaultError
   enableCustomCodeRegions: false
   enableMCPServer: true
   enableReactQuery: false

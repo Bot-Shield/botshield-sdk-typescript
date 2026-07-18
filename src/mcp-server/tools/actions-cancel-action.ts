@@ -11,10 +11,10 @@ const args = {
 };
 
 export const tool$actionsCancelAction: ToolDefinition<typeof args> = {
-  name: "cancel_action",
+  name: "cancel_resolution",
   description:
-    `Stand down a queued proposal before the user responds. No-op once terminal; TTL expiry produces no Resolution.`,
-  scopes: ["queue", "queue"],
+    `Stand down a queued resolution before the user responds. No-op once terminal; TTL expiry produces no Resolution.`,
+  scopes: ["queue", "queue", "queue"],
   args,
   tool: async (client, args, ctx) => {
     const [result, apiCall] = await actionsCancelAction(

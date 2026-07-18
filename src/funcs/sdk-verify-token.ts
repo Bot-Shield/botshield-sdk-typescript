@@ -111,6 +111,13 @@ async function $do(
         value: security?.apiKeyAuth1,
       },
     ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth2,
+      },
+    ],
   );
 
   const context = {
