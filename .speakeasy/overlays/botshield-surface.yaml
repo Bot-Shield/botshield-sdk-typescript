@@ -58,14 +58,19 @@ actions:
   # ────────────────────────────────────────────────────────────────────────────
   # actions / BotShield Q — the ONLY MCP-exposed resource (3 discrete tools)
   # ────────────────────────────────────────────────────────────────────────────
+  # RFC 42 A3 (Dev counter, Paul ✅): agent-facing MCP tool verb = RESOLUTION, not
+  # action ("Action card" deprecated in K.1 → Queue card; Proof of Resolution +
+  # Resolution states are the live canon). Option A: rename the exposed MCP TOOL
+  # names only (x-speakeasy-mcp.name); the SDK actions.* resource + method names
+  # (x-speakeasy-name-override) stay, trued up to resolution on the next version.
   - target: $.paths["/agentlink/inquire"].post
     update:
       x-speakeasy-group: actions
       x-speakeasy-name-override: proposeAction
       x-speakeasy-mcp:
-        name: propose_action
+        name: propose_resolution
         description: >-
-          Queue a human-presence-gated action for a BotShield user. Returns a
+          Queue a human-presence-gated Queue card for a BotShield user. Returns a
           card_id immediately; the signed Proof of Resolution arrives async via
           the agent's registered callback.
         scopes: [queue]
@@ -74,9 +79,9 @@ actions:
       x-speakeasy-group: actions
       x-speakeasy-name-override: checkActionStatus
       x-speakeasy-mcp:
-        name: check_action_status
+        name: check_resolution_status
         description: >-
-          Poll a proposed action. Terminal states (approved/denied) carry the
+          Poll a proposed resolution. Terminal states (Confirmed/Denied) carry the
           signed Proof of Resolution JWT — verify with BotShield's public key.
         scopes: [queue]
   - target: $.paths["/agentlink/cancel"].post
@@ -84,9 +89,9 @@ actions:
       x-speakeasy-group: actions
       x-speakeasy-name-override: cancelAction
       x-speakeasy-mcp:
-        name: cancel_action
+        name: cancel_resolution
         description: >-
-          Stand down a queued proposal before the user responds. No-op once
+          Stand down a queued resolution before the user responds. No-op once
           terminal; TTL expiry produces no Resolution.
         scopes: [queue]
   # ────────────────────────────────────────────────────────────────────────────
