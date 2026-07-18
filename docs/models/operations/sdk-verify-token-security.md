@@ -15,3 +15,4 @@ let value: SDKVerifyTokenSecurity = {};
 | `apiKeyAuth`       | *string*           | :heavy_minus_sign: | N/A                |
 | `apiKeyAuth1`      | *string*           | :heavy_minus_sign: | N/A                |
 | `apiKeyAuth2`      | *string*           | :heavy_minus_sign: | N/A                |
+| `apiKeyAuth3`      | *string*           | :heavy_minus_sign: | N/A                |

@@ -102,7 +102,8 @@ Add the following server definition to your `claude_desktop_config.json` file:
         "mcp", "start",
         "--agent-key-auth", "...",
         "--agent-key-auth1", "...",
-        "--agent-key-auth2", "..."
+        "--agent-key-auth2", "...",
+        "--agent-key-auth3", "..."
       ]
     }
   }
@@ -127,7 +128,8 @@ Create a `.cursor/mcp.json` file in your project root with the following content
         "mcp", "start",
         "--agent-key-auth", "...",
         "--agent-key-auth1", "...",
-        "--agent-key-auth2", "..."
+        "--agent-key-auth2", "...",
+        "--agent-key-auth3", "..."
       ]
     }
   }
@@ -208,6 +210,7 @@ This SDK supports the following security schemes globally:
 | `agentKeyAuth`  | apiKey | API key |
 | `agentKeyAuth1` | apiKey | API key |
 | `agentKeyAuth2` | apiKey | API key |
+| `agentKeyAuth3` | apiKey | API key |
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript
