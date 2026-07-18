@@ -27,7 +27,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "BotShield",
-    version: "1.9.0",
+    version: "1.9.1",
   });
 
   const client = new BotShieldCore({
