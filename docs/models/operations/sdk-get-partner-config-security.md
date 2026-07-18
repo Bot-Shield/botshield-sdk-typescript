@@ -1,0 +1,16 @@
+# SDKGetPartnerConfigSecurity
+
+## Example Usage
+
+```typescript
+import { SDKGetPartnerConfigSecurity } from "botshield-sdk/models/operations";
+
+let value: SDKGetPartnerConfigSecurity = {};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `apiKeyAuth`       | *string*           | :heavy_minus_sign: | N/A                |
+| `apiKeyAuth1`      | *string*           | :heavy_minus_sign: | N/A                |

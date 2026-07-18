@@ -1,6 +1,4 @@
 configVersion: 2.0.0
-# Generation config for the BotShield TypeScript SDK + discrete-tool MCP server.
-# Replaces the `targets.typescript` block of botshield-wg/stainless.yaml (RFC 42).
 generation:
   sdkClassName: BotShield
   maintainOpenAPIOrder: true
@@ -15,28 +13,53 @@ generation:
     requestResponseComponentNamesFeb2024: true
     securityFeb2025: true
     sharedErrorComponentsApr2025: true
+    sharedNestedComponentsJan2026: false
+    nameOverrideFeb2026: false
   auth:
-    # Two Bearer schemes (ApiKeyAuth + AgentKeyAuth) share the Authorization header;
-    # the server routes by key prefix. Matches stainless.yaml security_schemes.
+    oAuth2ClientCredentialsEnabled: false
+    oAuth2PasswordEnabled: false
     hoistGlobalSecurity: true
+  inferSSEOverload: true
+  sdkHooksConfigAccess: true
+  schemas:
+    allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: body
+  versioningStrategy: automatic
+  persistentEdits: {}
+  tests:
+    generateTests: false
+    generateNewTests: true
+    skipResponseBodyAssertions: false
 typescript:
-  version: 1.9.0                 # continuity with the Stainless-published botshield-sdk@1.9.0
-  packageName: botshield-sdk     # was `openapi` (quickstart default)
+  version: 1.9.0
+  acceptHeaderEnum: false
+  additionalDependencies:
+    dependencies: {}
+    devDependencies: {}
+    peerDependencies: {}
+  additionalPackageJSON: {}
+  additionalScripts: {}
+  alwaysIncludeInboundAndOutbound: false
+  apiPromiseHelpers: false
   author: BotShield
-  baseErrorName: BotShieldError  # matches the `BotShieldError` the Stainless SDK exported
-  # ── RFC 42 A2: discrete-tool MCP server (was Stainless Code Mode). Which ops
-  #    become tools is the affirmative allowlist in overlays/botshield-surface.yaml
-  #    (only actions.* enabled; sdk.*/verification.* disabled). ──
+  baseErrorName: BotShieldError
+  clientServerStatusCodesAsErrors: true
+  constFieldsAlwaysOptional: false
+  defaultErrorName: ""
+  enableCustomCodeRegions: false
   enableMCPServer: true
-  # MIGRATION FINDING: Speakeasy SILENTLY disables MCP-server generation under
-  # Zod v4 ("WARN MCP server is disabled when using Zod v4"), and v4 is its
-  # default. Must pin v3 for the MCP server to generate at all.
-  zodVersion: v3
-  moduleFormat: dual
-  responseFormat: flat
+  enableReactQuery: false
   enumFormat: union
-  useIndexModules: true
-  methodArguments: infer-optional-args
+  eventStreamClassName: EventStream
+  exportZodModelNamespace: false
+  fixEnumNameSanitization: false
+  flatAdditionalProperties: true
+  flattenGlobalSecurity: true
+  flatteningOrder: parameters-first
+  formStringArrayEncodeMode: array
+  forwardCompatibleEnumsByDefault: true
+  forwardCompatibleUnionsByDefault: tagged-only
+  generateExamples: true
   imports:
     option: openapi
     paths:
@@ -45,3 +68,28 @@ typescript:
       operations: models/operations
       shared: models
       webhooks: models/webhooks
+  inferUnionDiscriminators: true
+  inputModelSuffix: input
+  jsonpath: rfc9535
+  laxMode: lax
+  legacyFileNaming: false
+  maxMethodParams: 0
+  methodArguments: infer-optional-args
+  modelPropertyCasing: camel
+  moduleFormat: dual
+  multipartArrayFormat: standard
+  outputModelSuffix: output
+  packageName: botshield-sdk
+  preApplyUnionDiscriminators: true
+  preserveModelFieldNames: false
+  privateIdentifierPrefix: '#'
+  requestExtras: false
+  responseFormat: flat
+  sseFlatResponse: false
+  templateVersion: v2
+  unionStrategy: populated-fields
+  usageSDKInitImports: []
+  useIndexModules: true
+  useOxlint: true
+  useTsgo: true
+  zodVersion: v3

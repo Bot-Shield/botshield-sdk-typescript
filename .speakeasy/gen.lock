@@ -1,0 +1,494 @@
+lockVersion: 2.0.0
+id: ae7c3584-be59-4f2d-b368-1c23ba537874
+management:
+  published: true
+trackedFiles:
+  .gitattributes:
+    last_write_checksum: sha1:26d16d8297b104945139da8c25bd38feeaad3e25
+  .npmignore:
+    last_write_checksum: sha1:6572da81f2e7a978ec29c22c2210bf461c5897b2
+  .oxlintrc.json:
+    last_write_checksum: sha1:f14bd09c455fa2de0d94641369b7888d23ee62f2
+  FUNCTIONS.md:
+    last_write_checksum: sha1:0310ca88dc2b0cf246a999a6dbe26ab3505bd38d
+  RUNTIMES.md:
+    last_write_checksum: sha1:e45b854f02c357cbcfdb8c3663000e8339e16505
+  USAGE.md:
+    last_write_checksum: sha1:227220de42e8ebba135e70e286904a4462d9eebd
+  docs/lib/utils/retryconfig.md:
+    last_write_checksum: sha1:bc4454e196fcd219f5a78da690375a884f5ed07b
+  docs/models/error-response-error.md:
+    last_write_checksum: sha1:17269e27a1920756b2cb53f12f43cb3b24ec98bc
+  docs/models/errors/error-response.md:
+    last_write_checksum: sha1:3a0e454d5542f72bb6284d9829f3e7f8aa7c1af7
+  docs/models/errors/invalid-input-error.md:
+    last_write_checksum: sha1:54edbd60a429f81aef59908601166b8216109212
+  docs/models/invalid-input-error-error.md:
+    last_write_checksum: sha1:e6fd716d3a9db804ee5c55439e362934f10a8f8c
+  docs/models/operations/action.md:
+    last_write_checksum: sha1:4c916de846b7a98e3b4e597ac38d8ec14ab6ce7e
+  docs/models/operations/actions-cancel-data.md:
+    last_write_checksum: sha1:fe01149e65bb02452e9d8b0ed2c92696333b94ec
+  docs/models/operations/actions-cancel-request.md:
+    last_write_checksum: sha1:903ae1df7ac7b35d2412589d8367e0651bffbd95
+  docs/models/operations/actions-cancel-response.md:
+    last_write_checksum: sha1:9a81f1878558e7de510aa3f15c22579612ee5590
+  docs/models/operations/actions-check-status-data.md:
+    last_write_checksum: sha1:a9fd513c574f5c4c5ea243f839a13fddae7cf540
+  docs/models/operations/actions-check-status-request.md:
+    last_write_checksum: sha1:c2854e74ab0f4204efb0ac1f6482d5369eb65f3a
+  docs/models/operations/actions-check-status-response.md:
+    last_write_checksum: sha1:1566439a4cd1f0b6c0d9b2c78c191c9f9de1ac0d
+  docs/models/operations/actions-check-status-status.md:
+    last_write_checksum: sha1:affe75f1c4b01599e1ec49b20c9cc96ce38d9b9c
+  docs/models/operations/actions-propose-data.md:
+    last_write_checksum: sha1:875bb92556c49e111420fbf752d99b9ef14cd1b7
+  docs/models/operations/actions-propose-request.md:
+    last_write_checksum: sha1:477c35139e2ea5bab83cbf848b4a1ffe10f2bb85
+  docs/models/operations/actions-propose-response.md:
+    last_write_checksum: sha1:1560b556876b735494bfe112d63dde4f92a40eee
+  docs/models/operations/actions-propose-status.md:
+    last_write_checksum: sha1:bd36f72b7984b94890dba4d4b9eececa7df3421c
+  docs/models/operations/claims.md:
+    last_write_checksum: sha1:f65fdb214c38ec079ad64570e02f44f39842f757
+  docs/models/operations/data-sdk-type.md:
+    last_write_checksum: sha1:4c202e6576010e8d4214a8e66cad9ace46fe8aa5
+  docs/models/operations/environment.md:
+    last_write_checksum: sha1:666c4da81798e06ccb07ce5cfe4ebbbcbe3db6e0
+  docs/models/operations/integrations.md:
+    last_write_checksum: sha1:c9df2dc0c786c022fe7577088883123f46bab76b
+  docs/models/operations/mode.md:
+    last_write_checksum: sha1:a86a33256640f5b22ee1851529ce081efa6eb9ab
+  docs/models/operations/passkey.md:
+    last_write_checksum: sha1:22fbdebb46f396950ff6a54775e47cd84f72ab8f
+  docs/models/operations/sdk-create-session-data.md:
+    last_write_checksum: sha1:59669f0cd1cc417f83cb8834415f3f2f811db719
+  docs/models/operations/sdk-create-session-organization.md:
+    last_write_checksum: sha1:8e300f03b4fb23e99559395745d9031713b40505
+  docs/models/operations/sdk-create-session-request.md:
+    last_write_checksum: sha1:77961fc7660c97e5ccbd0fab240e3dba617cb6d9
+  docs/models/operations/sdk-create-session-response.md:
+    last_write_checksum: sha1:ef0f8979fa5b9ca4cc8da3b733b62063511d915d
+  docs/models/operations/sdk-create-session-security.md:
+    last_write_checksum: sha1:d0e36c990b64a70d69a3c5fd831c4b9cbeebe0bc
+  docs/models/operations/sdk-create-verification-link-auth-mode.md:
+    last_write_checksum: sha1:bbf796ed4237eaa8ff93fa2058c6f05d6f3dd6de
+  docs/models/operations/sdk-create-verification-link-data.md:
+    last_write_checksum: sha1:45880ac0636762b0dacd65fc135e6495af321514
+  docs/models/operations/sdk-create-verification-link-organization.md:
+    last_write_checksum: sha1:c2daa68b1c90f85c9d00de363792d9782afa9356
+  docs/models/operations/sdk-create-verification-link-request.md:
+    last_write_checksum: sha1:ad797364d267c21ce5f4a1147b68b7d7e8ad11ff
+  docs/models/operations/sdk-create-verification-link-response.md:
+    last_write_checksum: sha1:e3f733e51067923a37a2a63c9f1670187c9105a3
+  docs/models/operations/sdk-create-verification-link-security.md:
+    last_write_checksum: sha1:0c31b87d51e62c7db5900de6688294b0ede3a81d
+  docs/models/operations/sdk-get-partner-config-request.md:
+    last_write_checksum: sha1:0204aecf6c40891079146aead64000916799be3c
+  docs/models/operations/sdk-get-partner-config-response.md:
+    last_write_checksum: sha1:6096cb0b21e73b4e10f25aa82cb710e80116f038
+  docs/models/operations/sdk-get-partner-config-security.md:
+    last_write_checksum: sha1:48beaadfb1c5b829e22df865fea65dd8655bd738
+  docs/models/operations/sdk-logout-request.md:
+    last_write_checksum: sha1:629cfcfc09aacbcf85113e5622251a2a4fca4f55
+  docs/models/operations/sdk-logout-response.md:
+    last_write_checksum: sha1:25c52427e82da3ac157bbcfa109cfee978bbf571
+  docs/models/operations/sdk-logout-security.md:
+    last_write_checksum: sha1:66b20d847d0f6546caaa379558d823c6e9e79f8b
+  docs/models/operations/sdk-revoke-verification-data.md:
+    last_write_checksum: sha1:0bac38fff665f6ad60becbbac87d6f4ec88cecf6
+  docs/models/operations/sdk-revoke-verification-request.md:
+    last_write_checksum: sha1:dd5dcd52d5ea467358784cd41be4abc1edabba44
+  docs/models/operations/sdk-revoke-verification-response.md:
+    last_write_checksum: sha1:3ddd552d08947215f055262507fd6db5cf734770
+  docs/models/operations/sdk-revoke-verification-security.md:
+    last_write_checksum: sha1:a3c1f84bb8c1bcd6d6112fa9015e798413f676ad
+  docs/models/operations/sdk-store-signal-request.md:
+    last_write_checksum: sha1:7d7a968edaa9e1775746a78a22065ea17b5e5507
+  docs/models/operations/sdk-store-signal-response.md:
+    last_write_checksum: sha1:bbf5b79303bfe9e3ccd28491d80524a7b487a20b
+  docs/models/operations/sdk-store-signal-security.md:
+    last_write_checksum: sha1:a3d2f50a6299c296f5f3216576d6afb1b19f4dd4
+  docs/models/operations/sdk-type-request.md:
+    last_write_checksum: sha1:e05adc97ee4cd8d0f88b899d94b9327b3beeaed2
+  docs/models/operations/sdk-validate-signal-request.md:
+    last_write_checksum: sha1:8217be02161d93e86c6f8613a4c62a7874ef8cf9
+  docs/models/operations/sdk-validate-signal-response.md:
+    last_write_checksum: sha1:14d702a4de3c2fe589bb87973655de96017a939d
+  docs/models/operations/sdk-validate-signal-security.md:
+    last_write_checksum: sha1:8780f5e6fa17eb727eb4abfd27bc9a202876e46d
+  docs/models/operations/sdk-verify-token-auth-mode.md:
+    last_write_checksum: sha1:07e69a295ad75250af0b7870ad25bf583bcb7c8a
+  docs/models/operations/sdk-verify-token-request.md:
+    last_write_checksum: sha1:2c251725dc2082e7bc14cf499505cddce6d13689
+  docs/models/operations/sdk-verify-token-response.md:
+    last_write_checksum: sha1:4aec4c9d43b2e4e864770be2f3103765ee9de4a6
+  docs/models/operations/sdk-verify-token-security.md:
+    last_write_checksum: sha1:974c2374ecb638516bbdfd830da85c06201eb1e5
+  docs/models/operations/signals.md:
+    last_write_checksum: sha1:e3a10eb252f9e7b874e7d906107596833a35d9ff
+  docs/models/operations/summary-detail.md:
+    last_write_checksum: sha1:ef2ba6bb8871375048a76afb8218b24b29d4d722
+  docs/models/operations/turnstile.md:
+    last_write_checksum: sha1:e131f5e0b8edcec4a67facd9be70888b24514723
+  docs/models/operations/verdict.md:
+    last_write_checksum: sha1:589e47b93bd53236964ab7f2efb94ea1dc9727d6
+  docs/models/operations/verification-get-status-auth-mode.md:
+    last_write_checksum: sha1:0c5b19888c8f854885f1d2562b16be5d0eb947f0
+  docs/models/operations/verification-get-status-request.md:
+    last_write_checksum: sha1:62007eb2ed860c6e0f51ba41df7d3b0e9440358f
+  docs/models/operations/verification-get-status-response.md:
+    last_write_checksum: sha1:03ad6802219c11717cbe88c59ad82652b8b91f52
+  docs/models/operations/verification-get-status-sdk-type.md:
+    last_write_checksum: sha1:211018f59b6c470054b0461a7b8e5955cd0045cf
+  docs/models/operations/verification-get-status-security.md:
+    last_write_checksum: sha1:656e9c72debffdbae6f71ad0b550797a6b81d6e1
+  docs/models/operations/verification-get-status-status.md:
+    last_write_checksum: sha1:a177f3f2c210bf06b39238b9fa6bd8e627e17091
+  docs/models/operations/verification-lookup-user-by-email-data.md:
+    last_write_checksum: sha1:c4391d6dad6520f87b2055652be85ae97d70cfb9
+  docs/models/operations/verification-lookup-user-by-email-request.md:
+    last_write_checksum: sha1:57398d9eb5126d16b58a906438f317c4cb37a018
+  docs/models/operations/verification-lookup-user-by-email-response.md:
+    last_write_checksum: sha1:8af9aa679c875c01b6e6529c56a92297281fd2af
+  docs/models/operations/verification-lookup-user-by-email-security.md:
+    last_write_checksum: sha1:e85e62a7099c1650db471bc1bce1606da3ce91e8
+  docs/models/security.md:
+    last_write_checksum: sha1:f5ed5e8880a572088ffc131b6abca0533aa63001
+  docs/sdks/actions/README.md:
+    last_write_checksum: sha1:d5c7d90e13be9204a35c0496fa1e817080fb3f2d
+  docs/sdks/sdk/README.md:
+    last_write_checksum: sha1:9e04fff9ed8da39ec74594bab1ffef2b009fceef
+  docs/sdks/verification/README.md:
+    last_write_checksum: sha1:f10046c049e9f27df733dc94e4063b87c2409ecf
+  examples/.env.template:
+    last_write_checksum: sha1:d93b76730093a7b8ca702cf4e6560b455a308265
+  examples/README.md:
+    last_write_checksum: sha1:a150b09a088e5fa14217f0128df135a8b67099b8
+  examples/package.json:
+    last_write_checksum: sha1:f0add86896bd5e3d679027e935ef0f08f94cc6cb
+  examples/sdkCreateSession.example.ts:
+    last_write_checksum: sha1:13fbf4f31e6d5e2208c066bb87317c2d95433e37
+  jsr.json:
+    last_write_checksum: sha1:822e4950827a48cf3e22c335bed5f7e79292388e
+  package.json:
+    last_write_checksum: sha1:3e80449148d3f34fa2576712609055d835bee8f7
+  src/core.ts:
+    last_write_checksum: sha1:ce588b3eca5e3671b3e86450f6750c27004e83be
+  src/funcs/actions-cancel-action.ts:
+    last_write_checksum: sha1:454ff5132fa92b38bfd7388a3a9e8a649564bcec
+  src/funcs/actions-check-action-status.ts:
+    last_write_checksum: sha1:159aa46749a0128929a8da22be5f85f08fc36bf6
+  src/funcs/actions-propose-action.ts:
+    last_write_checksum: sha1:3660d0b7e6c7f102c075b5289154cbe63cb02de0
+  src/funcs/sdk-create-session.ts:
+    last_write_checksum: sha1:919b3e0432fb4a04853efb68aa502ad6c2496e91
+  src/funcs/sdk-create-verification-link.ts:
+    last_write_checksum: sha1:389e8cb633104c9ce324647b397d9bdc34ebd522
+  src/funcs/sdk-get-partner-config.ts:
+    last_write_checksum: sha1:c7367a6f6743c651e1f749b02c9257cad0d00581
+  src/funcs/sdk-logout.ts:
+    last_write_checksum: sha1:80bb69c17b860ba0ea40e7edb9a020e849752e57
+  src/funcs/sdk-revoke-verification.ts:
+    last_write_checksum: sha1:fea0ac6da651fd4c7feba819f02a7f1666dfa2f2
+  src/funcs/sdk-store-signal.ts:
+    last_write_checksum: sha1:eb85187f467446a49668bcb1a93fbf5465ffbc91
+  src/funcs/sdk-validate-signal.ts:
+    last_write_checksum: sha1:be7bc3e931085c94cb16794fcba936ef1b0474f3
+  src/funcs/sdk-verify-token.ts:
+    last_write_checksum: sha1:7c92b99a462065590fe8d36164beb92b6e364de2
+  src/funcs/verification-get-status.ts:
+    last_write_checksum: sha1:930f1ed76c200d9758713626c0d30f62f45777eb
+  src/funcs/verification-lookup-user-by-email.ts:
+    last_write_checksum: sha1:a623f16a5918f8d38c6c45613b6f77627f6762ca
+  src/hooks/hooks.ts:
+    last_write_checksum: sha1:3a90d88b4c6c07247db8e5f6441a79538232394e
+  src/hooks/index.ts:
+    last_write_checksum: sha1:1a11c073a6cd792932218e1d4ed36b8567bad8ef
+  src/hooks/types.ts:
+    last_write_checksum: sha1:8e6a1813e04a0a32009cb07e9772e4166658be1b
+  src/index.ts:
+    last_write_checksum: sha1:35c9cde3ae14b18b3f893a1afe8b6c44f8760f24
+  src/lib/base64.ts:
+    last_write_checksum: sha1:b0b12ddbd8625efb47c0e955a18641aeb10c6532
+  src/lib/config.ts:
+    last_write_checksum: sha1:68145d8f808d2ab1a3daabc4a20b9579ac0fe180
+  src/lib/encodings.ts:
+    last_write_checksum: sha1:7533dcb79b22b8c84ac7b90aec94317d12bad5f8
+  src/lib/files.ts:
+    last_write_checksum: sha1:795c14026405d547bfc47012f7ad9666e530fa7f
+  src/lib/http.ts:
+    last_write_checksum: sha1:a56435907625a816051aa2131d60909c59f1da27
+  src/lib/logger.ts:
+    last_write_checksum: sha1:0ec9d3a2a34c362746b767e4f9a746c055d57a7b
+  src/lib/matchers.ts:
+    last_write_checksum: sha1:c18420eabb282c6e0f36b4bc1df5b87da96e95be
+  src/lib/primitives.ts:
+    last_write_checksum: sha1:fe3abb7d6b61596e346873519bcec9b2eaa61467
+  src/lib/retries.ts:
+    last_write_checksum: sha1:42c8f6cc4c875be236230a8c760f4f32d8c1ab68
+  src/lib/schemas.ts:
+    last_write_checksum: sha1:3418c887b8963e8ce5be86cc969ac0e0d0e48095
+  src/lib/sdks.ts:
+    last_write_checksum: sha1:166a6ed059a9cafa516af66789ec2b1a9d45fca2
+  src/lib/security.ts:
+    last_write_checksum: sha1:077d1817fb0695cabb5e94948eebc0af5763dfa0
+  src/lib/url.ts:
+    last_write_checksum: sha1:3bceadd74bf0b31adf13eb06b7531077c3e07d65
+  src/mcp-server/build.mts:
+    last_write_checksum: sha1:1a7a5dc9ace5a5d707bd8d2339f76719e525e7eb
+  src/mcp-server/cli.ts:
+    last_write_checksum: sha1:7331efddde881832342fa8779d23be7445d4480c
+  src/mcp-server/cli/start/command.ts:
+    last_write_checksum: sha1:ab21069a9966e6a4c658bb1fa7164f25336ccaf2
+  src/mcp-server/cli/start/impl.ts:
+    last_write_checksum: sha1:93c0761e90c8bbb49dedda4a795ddd177f8f5924
+  src/mcp-server/console-logger.ts:
+    last_write_checksum: sha1:66e945860c8318f2a6bb9604a7720a979dacce4b
+  src/mcp-server/extensions.ts:
+    last_write_checksum: sha1:e36e4b49b77347db80debccc2e77706b0ac7f4a4
+  src/mcp-server/mcp-server.ts:
+    last_write_checksum: sha1:8a049274f0ba889dfbe3aca604b7488925752671
+  src/mcp-server/prompts.ts:
+    last_write_checksum: sha1:bb2aef109f313a4ce8dc6e8b0809fa32ac17e5b1
+  src/mcp-server/resources.ts:
+    last_write_checksum: sha1:3d0b698fe5358f7be9b6a3127967b72971880a14
+  src/mcp-server/scopes.ts:
+    last_write_checksum: sha1:ce3931ef3e19b9b676064e15d1a168a01aef034d
+  src/mcp-server/server.ts:
+    last_write_checksum: sha1:8cda6c5a5c236e5eba182ae949882924de920b98
+  src/mcp-server/shared.ts:
+    last_write_checksum: sha1:d89576cea2bef3856b7fc3e65b868875528be042
+  src/mcp-server/tools.ts:
+    last_write_checksum: sha1:b737f357af3436f2a80410eda5194eb29e8660ce
+  src/mcp-server/tools/actions-cancel-action.ts:
+    last_write_checksum: sha1:0452a646ccde23f7d0a706b6456eb72cf29d78a7
+  src/mcp-server/tools/actions-check-action-status.ts:
+    last_write_checksum: sha1:28befcf07720781fb132304ae56011a462e3df39
+  src/mcp-server/tools/actions-propose-action.ts:
+    last_write_checksum: sha1:08d1ce0836abc4e5fa0831b911b15109f3d90dcc
+  src/models/error-response.ts:
+    last_write_checksum: sha1:72cdc25ac00fca97e3428338650ea7862e3031f1
+  src/models/errors/bot-shield-default-error.ts:
+    last_write_checksum: sha1:d2ee458727e1b0ceb435cb4b34c79b540639e76c
+  src/models/errors/bot-shield-error.ts:
+    last_write_checksum: sha1:8ee3a267022373e41c3072e8e6cd14d930bda123
+  src/models/errors/error-response.ts:
+    last_write_checksum: sha1:5c2420d5d40502692b2a50c1667fe05007e01bf5
+  src/models/errors/http-client-errors.ts:
+    last_write_checksum: sha1:994ced121c54fecd0af038ccfb7855fbfd3868ec
+  src/models/errors/index.ts:
+    last_write_checksum: sha1:185b47d43507757d6a38622cf915e401e444bc73
+  src/models/errors/invalid-input-error.ts:
+    last_write_checksum: sha1:9ddf8be84011bd36ae4e907b655452dae7d44aed
+  src/models/errors/response-validation-error.ts:
+    last_write_checksum: sha1:81efad87d8d7c5d2d5ec97e85a564c1bb1aaa613
+  src/models/errors/sdk-validation-error.ts:
+    last_write_checksum: sha1:a69da17627bcc32b820544608f3400423ea53f26
+  src/models/index.ts:
+    last_write_checksum: sha1:957e9c8738ade259663b692eb856a02128a48deb
+  src/models/invalid-input-error.ts:
+    last_write_checksum: sha1:110c3d7350d03e8f49305243c01d44f19ff98033
+  src/models/operations/actions-cancel.ts:
+    last_write_checksum: sha1:53bfd4f728c4e14e480a29ac71c581c492cfd02a
+  src/models/operations/actions-check-status.ts:
+    last_write_checksum: sha1:12cac0872c912356d1ee39b411ec5dbf741c3947
+  src/models/operations/actions-propose.ts:
+    last_write_checksum: sha1:79bfb13fc17ca3e93889db6ea76517024f83bcb9
+  src/models/operations/index.ts:
+    last_write_checksum: sha1:bd8b87f94cbc4cda134144f43bef81f26e8f5369
+  src/models/operations/sdk-create-session.ts:
+    last_write_checksum: sha1:9515582cf8847e6aeed2f2b40511c2a5e9366f6c
+  src/models/operations/sdk-create-verification-link.ts:
+    last_write_checksum: sha1:1859834fc795af2beb716ec881461cb1a2c17929
+  src/models/operations/sdk-get-partner-config.ts:
+    last_write_checksum: sha1:3c611dc73b415111165cfbbbbf109b035647d976
+  src/models/operations/sdk-logout.ts:
+    last_write_checksum: sha1:8f8e03cc66dbe35d7d6c90a9f8b23542b55dafc5
+  src/models/operations/sdk-revoke-verification.ts:
+    last_write_checksum: sha1:860ceb209adbc840bc0a043374284f5c41355879
+  src/models/operations/sdk-store-signal.ts:
+    last_write_checksum: sha1:0da08e53cf8962dd7d12237e8e4d145db7eba393
+  src/models/operations/sdk-validate-signal.ts:
+    last_write_checksum: sha1:d36c874a8c4b5edcc62be23f1de05d6f32071ecc
+  src/models/operations/sdk-verify-token.ts:
+    last_write_checksum: sha1:55398e840c0363ff9f94845a3d3f1dd6d2c97f6c
+  src/models/operations/verification-get-status.ts:
+    last_write_checksum: sha1:2c7649a4970abb58a72443a3ddae9e649b4f309d
+  src/models/operations/verification-lookup-user-by-email.ts:
+    last_write_checksum: sha1:8aa6f2730e0aef3183d8474334571ccacb3ff3fb
+  src/models/security.ts:
+    last_write_checksum: sha1:d9eb9c4b4dadbc4a64cbd67553eeec7f1c98a4bc
+  src/sdk/actions.ts:
+    last_write_checksum: sha1:9877424a6977ef7300086dda4da83f1524841591
+  src/sdk/index.ts:
+    last_write_checksum: sha1:ed6d64f2a6135349aa8498b8d8cff9ba85c7fb8f
+  src/sdk/sdk.ts:
+    last_write_checksum: sha1:2d900b0e8a8b9763230396305666a4419885af60
+  src/sdk/verification.ts:
+    last_write_checksum: sha1:c027f4f8bc43f7c11a19a100263e49a649134c33
+  src/types/async.ts:
+    last_write_checksum: sha1:675d04bb4b4081dc3482f18de98674f9b446e7b4
+  src/types/blobs.ts:
+    last_write_checksum: sha1:cf45d78916671cb6345a11c97c633c64402bc27c
+  src/types/const-date-time.ts:
+    last_write_checksum: sha1:dfaaf9adfaf49808bd4c9dea0039f21b7088d9c0
+  src/types/default-to-zero-value.ts:
+    last_write_checksum: sha1:2820c0bc8e71d475e79cc6b6947ca18d93f6310c
+  src/types/enums.ts:
+    last_write_checksum: sha1:ee590453d2c87e33e89c633d37ee46907eca0e58
+  src/types/fp.ts:
+    last_write_checksum: sha1:d24994d58f37a1ca106847fcc6d2e976c6f1c093
+  src/types/index.ts:
+    last_write_checksum: sha1:a591fec0ad2231615101ebb6a95cc4d043733a6c
+  src/types/operations.ts:
+    last_write_checksum: sha1:c49e724cfb1259296381cb57bc0fcdd2eae45865
+  src/types/primitives.ts:
+    last_write_checksum: sha1:9f374d6217aa2c2e7706d8b64f40334f2bd54f5b
+  src/types/rfcdate.ts:
+    last_write_checksum: sha1:8e5f382e02fe21c2f2e24deb1b7bbf8cddd3dd16
+  src/types/smart-union.ts:
+    last_write_checksum: sha1:46a9ed4f1a5850e894569da8e13bf566dec3cb0b
+  src/types/streams.ts:
+    last_write_checksum: sha1:cc9ced2dd34a76c3a1bd7784ccda1cc3b37ab9a9
+  src/types/unrecognized.ts:
+    last_write_checksum: sha1:d33ac686528492f4cdc0dbf81ed343b4afe020fe
+  tsconfig.json:
+    last_write_checksum: sha1:79dc1550d921fefec69f8632ed3b24dad41ca2f6
+examples:
+  SdkCreateSession:
+    speakeasy-default-SDK-create-session:
+      requestBody:
+        application/json: {}
+      responses:
+        "200":
+          application/json: {"data": {"anchor_grant_token": "<value>", "anchor_grant_expires_at": "2025-05-08T10:10:53.669Z", "anchor_grant_expires_in_seconds": 691227, "session_token": "<value>", "expires_at": "2026-07-26T15:48:30.288Z", "expires_in_seconds": 52635, "organization": {"id": "<id>", "environment": "<value>"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>"}, "errors": []}
+        "401":
+          application/json: {"error": {"message": "<value>", "statusCode": 608879}}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 608879}}
+  SdkCreateVerificationLink:
+    speakeasy-default-SDK-create-verification-link:
+      requestBody:
+        application/json: {"mode": "linked-account"}
+      responses:
+        "200":
+          application/json: {"data": {"request_id": "<id>", "deep_link": "<value>", "web_url": "https://narrow-deployment.info/", "qr_code_url": "https://immense-switch.org/", "expires_at": "2026-07-18T00:53:33.017Z"}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>"}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
+        "401":
+          application/json: {"error": {"message": "<value>", "statusCode": 483550}}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 483550}}
+  SdkVerifyToken:
+    speakeasy-default-SDK-verify-token:
+      requestBody:
+        application/json: {"token": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+  SdkStoreSignal:
+    speakeasy-default-SDK-store-signal:
+      requestBody:
+        application/json: {"site_key": "<value>", "score": 229498}
+      responses:
+        "200":
+          application/json: {}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 78104}}
+  SdkValidateSignal:
+    speakeasy-default-SDK-validate-signal:
+      requestBody:
+        application/json: {"signal_token": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 927353}}
+  SdkGetPartnerConfig:
+    speakeasy-default-SDK-get-partner-config:
+      parameters:
+        query:
+          site_key: "<value>"
+      responses:
+        "200":
+          application/json: {}
+  SdkRevokeVerification:
+    speakeasy-default-SDK-revoke-verification:
+      requestBody:
+        application/json: {"scope": "<value>"}
+      responses:
+        "200":
+          application/json: {"data": {}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {}, "errors": []}
+        "401":
+          application/json: {"error": {"message": "<value>", "statusCode": 55880}}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 55880}}
+  SdkLogout:
+    speakeasy-default-SDK-logout:
+      requestBody:
+        application/json: {"session_token": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>"}, "errors": []}
+        "401":
+          application/json: {"error": {"message": "<value>", "statusCode": 315915}}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 315915}}
+  VerificationLookupUserByEmail:
+    speakeasy-default-verification-lookup-user-by-email:
+      parameters:
+        query:
+          email: "Modesto.Bartoletti@hotmail.com"
+      responses:
+        "200":
+          application/json: {"data": {}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {}, "errors": []}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 595166}}
+  VerificationGetStatus:
+    speakeasy-default-verification-get-status:
+      parameters:
+        query:
+          request_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 185970}}
+  ActionsPropose:
+    speakeasy-default-actions-propose:
+      requestBody:
+        application/json: {"request_id": "362873d8-19a4-46e6-b883-916c05dd0283", "user_email": "Corine63@hotmail.com", "action": {"summary_title": "<value>", "summary_detail": {"label": "TOTAL", "value": "$100.90"}, "category": "travel.book"}, "ttl_seconds": 600}
+      responses:
+        "200":
+          application/json: {"data": {"status": "queued", "card_id": "e29b0e76-c4f0-48a5-9b31-9c9d039eb712", "ttl_at": "2024-10-24T20:02:35.957Z"}}
+  ActionsCheckStatus:
+    speakeasy-default-actions-check-status:
+      parameters:
+        query:
+          request_id: "c70e5773-b2a4-4308-9fd3-dc42bdecfa67"
+      responses:
+        "200":
+          application/json: {"data": {"status": "expired"}}
+  ActionsCancel:
+    speakeasy-default-actions-cancel:
+      requestBody:
+        application/json: {"request_id": "12d74077-1e08-42a1-952e-3b34360158b0"}
+      responses:
+        "200":
+          application/json: {"data": {}}
+examplesVersion: 1.0.2

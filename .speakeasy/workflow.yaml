@@ -1,20 +1,17 @@
 workflowVersion: 1.0.0
-# Production Speakeasy workflow for the BotShield TS SDK + MCP server (RFC 42).
-# Source = the Speakeasy registry bundle published from botshield-wg's OpenAPI
-# (the two-repo bridge: API repo owns the spec, SDK repo owns generation) — so the
-# spec is NOT duplicated here. The overlay carries the surface + MCP gating and is
-# applied here to guarantee correctness. Generates in place (repo root).
 speakeasyVersion: latest
 sources:
-  botshield-oas:
-    inputs:
-      - location: registry.speakeasyapi.dev/botshield/sdk/botshield-oas
-    overlays:
-      - location: ./.speakeasy/overlays/botshield-surface.yaml
+    botshield-oas:
+        inputs:
+            - location: registry.speakeasyapi.dev/botshield/sdk/botshield-oas
+        overlays:
+            - location: ./.speakeasy/overlays/botshield-surface.yaml
+        registry:
+            location: registry.speakeasyapi.dev/botshield/sdk/botshield-oas
 targets:
-  botshield-sdk-ts:
-    target: typescript
-    source: botshield-oas
-    publish:
-      npm:
-        token: $NPM_TOKEN   # GitHub Actions secret on this repo [YOU]
+    botshield-sdk-ts:
+        target: typescript
+        source: botshield-oas
+        publish:
+            npm:
+                token: $NPM_TOKEN
