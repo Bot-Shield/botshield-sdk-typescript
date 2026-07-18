@@ -1,0 +1,23 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    botshield-oas:
+        inputs:
+            - location: registry.speakeasyapi.dev/botshield/sdk/botshield-oas
+        overlays:
+            - location: ./.speakeasy/overlays/botshield-surface.yaml
+        registry:
+            location: registry.speakeasyapi.dev/botshield/sdk/botshield-oas
+targets:
+    botshield-sdk-ts:
+        target: typescript
+        source: botshield-oas
+        publish:
+            npm:
+                token: $NPM_TOKEN
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/botshield/sdk/botshield-oas-typescript-code-samples
+            labelOverride:
+                fixedValue: Typescript (SDK)
+            blocking: false

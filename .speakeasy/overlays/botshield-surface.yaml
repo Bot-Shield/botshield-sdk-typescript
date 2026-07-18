@@ -1,0 +1,126 @@
+overlay: 1.0.0
+info:
+  title: BotShield SDK surface + MCP gating
+  version: 1.0.0
+# Ports the intent of botshield-wg/stainless.yaml onto the OpenAPI spec as
+# x-speakeasy-* extensions. Two jobs:
+#   1. Preserve the partner-facing surface (RFC 42 A4): resource groups + method
+#      names identical to what Stainless produced (client.sdk.*, .verification.*,
+#      .actions.proposeAction / .checkActionStatus / .cancelAction).
+#   2. MCP as an AFFIRMATIVE ALLOWLIST (RFC 42 A2): only the three actions.* Queue
+#      verbs become discrete MCP tools; every V2 sdk.*/verification.* op is
+#      x-speakeasy-mcp.disabled. This is the per-op selection Stainless deprecated
+#      (Code Mode gave only a whole-SDK sandbox + blocklist) — now honored per tool.
+#   Selection mirrors stainless.yaml: actions resource mcp:true, sdk + verification mcp:false.
+actions:
+  # ────────────────────────────────────────────────────────────────────────────
+  # Spec sanitize — Speakeasy's linter forbids literal <script tags in markdown
+  # descriptions (semantic-no-script-tags-in-markdown); Stainless did not enforce
+  # this. Rephrase info.description to drop the literal `<script src=...>` /
+  # `<botshield-verify>` tags without losing meaning. Fixed in the overlay so the
+  # WG-generated openapi-spec.json stays untouched.
+  # ────────────────────────────────────────────────────────────────────────────
+  - target: $.info
+    update:
+      description: |-
+        Human presence verification protocol with Signal Pixel passive bot scoring and third-party integrations.
+
+        BotShield provides three layers of defense:
+        1. **Signal Pixel** — passive behavioral fingerprinting (opt-in via `signals="true"`)
+        2. **Passkey Verification** — cryptographic human proof via device biometrics
+        3. **Third-party Integrations** — Cloudflare Turnstile, reCAPTCHA, and more
+
+        **Frontend SDK:** Load the BotShield script from `https://cdn.botshield.ai/sdk.js` and use `BotShield.render()` or the `botshield-verify` HTML element.
+
+        **Backend SDK:** Install `botshield-sdk` from npm and use `client.sdk.*` methods.
+  # ────────────────────────────────────────────────────────────────────────────
+  # MCP security fix — Speakeasy's MCP generator does NOT support per-operation
+  # security ("per-operation security is not supported in MCP server generation").
+  # The spec has no global security and puts AgentKeyAuth per-op on the 3 actions
+  # ops (the MCP-exposed ones), so every tool was skipped. Fix WITHOUT changing
+  # behavior: set global security = AgentKeyAuth and remove it from the actions ops
+  # (they now INHERIT the same AgentKeyAuth globally). sdk.*/verification.* keep
+  # their per-op ApiKeyAuth (they override global, and being MCP-disabled they
+  # don't reach the MCP generator). Net: identical auth per method; both keys still
+  # in the SDK (A4); MCP generator satisfied.
+  # NOTE (RFC 42): this touches the auth surface — flag for Dev's eye on co-sign.
+  # ────────────────────────────────────────────────────────────────────────────
+  - target: $
+    update:
+      security:
+        - AgentKeyAuth: []
+  - target: $.paths["/agentlink/inquire"].post.security
+    remove: true
+  - target: $.paths["/agentlink/check-status"].get.security
+    remove: true
+  - target: $.paths["/agentlink/cancel"].post.security
+    remove: true
+  # ────────────────────────────────────────────────────────────────────────────
+  # actions / BotShield Q — the ONLY MCP-exposed resource (3 discrete tools)
+  # ────────────────────────────────────────────────────────────────────────────
+  # RFC 42 A3 (Dev counter, Paul ✅): agent-facing MCP tool verb = RESOLUTION, not
+  # action ("Action card" deprecated in K.1 → Queue card; Proof of Resolution +
+  # Resolution states are the live canon). Option A: rename the exposed MCP TOOL
+  # names only (x-speakeasy-mcp.name); the SDK actions.* resource + method names
+  # (x-speakeasy-name-override) stay, trued up to resolution on the next version.
+  - target: $.paths["/agentlink/inquire"].post
+    update:
+      x-speakeasy-group: actions
+      x-speakeasy-name-override: proposeAction
+      x-speakeasy-mcp:
+        name: propose_resolution
+        description: >-
+          Queue a human-presence-gated Queue card for a BotShield user. Returns a
+          card_id immediately; the signed Proof of Resolution arrives async via
+          the agent's registered callback.
+        scopes: [queue]
+  - target: $.paths["/agentlink/check-status"].get
+    update:
+      x-speakeasy-group: actions
+      x-speakeasy-name-override: checkActionStatus
+      x-speakeasy-mcp:
+        name: check_resolution_status
+        description: >-
+          Poll a proposed resolution. Terminal states (Confirmed/Denied) carry the
+          signed Proof of Resolution JWT — verify with BotShield's public key.
+        scopes: [queue]
+  - target: $.paths["/agentlink/cancel"].post
+    update:
+      x-speakeasy-group: actions
+      x-speakeasy-name-override: cancelAction
+      x-speakeasy-mcp:
+        name: cancel_resolution
+        description: >-
+          Stand down a queued resolution before the user responds. No-op once
+          terminal; TTL expiry produces no Resolution.
+        scopes: [queue]
+  # ────────────────────────────────────────────────────────────────────────────
+  # sdk.* — V2 partner ops, EXCLUDED from MCP (mirrors stainless.yaml sdk mcp:false)
+  # ────────────────────────────────────────────────────────────────────────────
+  - target: $.paths["/sdk/create-session"].post
+    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: createSession, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/sdk/create-verification-link"].post
+    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: createVerificationLink, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/sdk/verify-token"].post
+    # security added: original spec left this unset → with global now AgentKeyAuth,
+    # pin ApiKeyAuth so it doesn't inherit the agent key (matches Stainless default).
+    # (Note: verify-token is actually public — the JWT signature is the proof — a
+    # place the spec's auth modeling is loose; flagged for cleanup, not blocking.)
+    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: verifyToken, x-speakeasy-mcp: { disabled: true }, security: [ { ApiKeyAuth: [] } ] }
+  - target: $.paths["/sdk/store-signal"].post
+    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: storeSignal, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/sdk/validate-signal"].post
+    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: validateSignal, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/sdk/partner-config"].get
+    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: getPartnerConfig, x-speakeasy-mcp: { disabled: true }, security: [ { ApiKeyAuth: [] } ] }
+  - target: $.paths["/sdk/revoke-verification"].post
+    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: revokeVerification, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/sdk/logout"].post
+    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: logout, x-speakeasy-mcp: { disabled: true } }
+  # ────────────────────────────────────────────────────────────────────────────
+  # verification.* — SDK-only, EXCLUDED from MCP (mirrors verification mcp:false)
+  # ────────────────────────────────────────────────────────────────────────────
+  - target: $.paths["/verification/lookup-user-by-email"].get
+    update: { x-speakeasy-group: verification, x-speakeasy-name-override: lookupUserByEmail, x-speakeasy-mcp: { disabled: true }, security: [ { ApiKeyAuth: [] } ] }
+  - target: $.paths["/verification/status"].get
+    update: { x-speakeasy-group: verification, x-speakeasy-name-override: getStatus, x-speakeasy-mcp: { disabled: true }, security: [ { ApiKeyAuth: [] } ] }
