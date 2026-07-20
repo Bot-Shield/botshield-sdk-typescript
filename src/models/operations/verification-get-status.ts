@@ -18,6 +18,8 @@ export type VerificationGetStatusSecurity = {
   apiKeyAuth3?: string | undefined;
   apiKeyAuth4?: string | undefined;
   apiKeyAuth5?: string | undefined;
+  apiKeyAuth6?: string | undefined;
+  apiKeyAuth7?: string | undefined;
 };
 
 export type VerificationGetStatusRequest = {
@@ -91,6 +93,8 @@ export const VerificationGetStatusSecurity$inboundSchema: z.ZodType<
   apiKeyAuth3: types.optional(types.string()),
   apiKeyAuth4: types.optional(types.string()),
   apiKeyAuth5: types.optional(types.string()),
+  apiKeyAuth6: types.optional(types.string()),
+  apiKeyAuth7: types.optional(types.string()),
 });
 /** @internal */
 export type VerificationGetStatusSecurity$Outbound = {
@@ -100,6 +104,8 @@ export type VerificationGetStatusSecurity$Outbound = {
   apiKeyAuth3?: string | undefined;
   apiKeyAuth4?: string | undefined;
   apiKeyAuth5?: string | undefined;
+  apiKeyAuth6?: string | undefined;
+  apiKeyAuth7?: string | undefined;
 };
 
 /** @internal */
@@ -114,6 +120,8 @@ export const VerificationGetStatusSecurity$outboundSchema: z.ZodType<
   apiKeyAuth3: z.string().optional(),
   apiKeyAuth4: z.string().optional(),
   apiKeyAuth5: z.string().optional(),
+  apiKeyAuth6: z.string().optional(),
+  apiKeyAuth7: z.string().optional(),
 });
 
 export function verificationGetStatusSecurityToJSON(

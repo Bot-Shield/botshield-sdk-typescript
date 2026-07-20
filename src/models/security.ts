@@ -15,6 +15,8 @@ export type Security = {
   agentKeyAuth3?: string | undefined;
   agentKeyAuth4?: string | undefined;
   agentKeyAuth5?: string | undefined;
+  agentKeyAuth6?: string | undefined;
+  agentKeyAuth7?: string | undefined;
 };
 
 /** @internal */
@@ -29,6 +31,8 @@ export const Security$inboundSchema: z.ZodType<
   agentKeyAuth3: types.optional(types.string()),
   agentKeyAuth4: types.optional(types.string()),
   agentKeyAuth5: types.optional(types.string()),
+  agentKeyAuth6: types.optional(types.string()),
+  agentKeyAuth7: types.optional(types.string()),
 });
 /** @internal */
 export type Security$Outbound = {
@@ -38,6 +42,8 @@ export type Security$Outbound = {
   agentKeyAuth3?: string | undefined;
   agentKeyAuth4?: string | undefined;
   agentKeyAuth5?: string | undefined;
+  agentKeyAuth6?: string | undefined;
+  agentKeyAuth7?: string | undefined;
 };
 
 /** @internal */
@@ -52,6 +58,8 @@ export const Security$outboundSchema: z.ZodType<
   agentKeyAuth3: z.string().optional(),
   agentKeyAuth4: z.string().optional(),
   agentKeyAuth5: z.string().optional(),
+  agentKeyAuth6: z.string().optional(),
+  agentKeyAuth7: z.string().optional(),
 });
 
 export function securityToJSON(security: Security): string {

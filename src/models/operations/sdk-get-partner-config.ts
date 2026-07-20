@@ -18,6 +18,8 @@ export type SDKGetPartnerConfigSecurity = {
   apiKeyAuth3?: string | undefined;
   apiKeyAuth4?: string | undefined;
   apiKeyAuth5?: string | undefined;
+  apiKeyAuth6?: string | undefined;
+  apiKeyAuth7?: string | undefined;
 };
 
 export type SDKGetPartnerConfigRequest = {
@@ -56,6 +58,8 @@ export const SDKGetPartnerConfigSecurity$inboundSchema: z.ZodType<
   apiKeyAuth3: types.optional(types.string()),
   apiKeyAuth4: types.optional(types.string()),
   apiKeyAuth5: types.optional(types.string()),
+  apiKeyAuth6: types.optional(types.string()),
+  apiKeyAuth7: types.optional(types.string()),
 });
 /** @internal */
 export type SDKGetPartnerConfigSecurity$Outbound = {
@@ -65,6 +69,8 @@ export type SDKGetPartnerConfigSecurity$Outbound = {
   apiKeyAuth3?: string | undefined;
   apiKeyAuth4?: string | undefined;
   apiKeyAuth5?: string | undefined;
+  apiKeyAuth6?: string | undefined;
+  apiKeyAuth7?: string | undefined;
 };
 
 /** @internal */
@@ -79,6 +85,8 @@ export const SDKGetPartnerConfigSecurity$outboundSchema: z.ZodType<
   apiKeyAuth3: z.string().optional(),
   apiKeyAuth4: z.string().optional(),
   apiKeyAuth5: z.string().optional(),
+  apiKeyAuth6: z.string().optional(),
+  apiKeyAuth7: z.string().optional(),
 });
 
 export function sdkGetPartnerConfigSecurityToJSON(

@@ -18,3 +18,5 @@ let value: Security = {};
 | `agentKeyAuth3`    | *string*           | :heavy_minus_sign: | N/A                |
 | `agentKeyAuth4`    | *string*           | :heavy_minus_sign: | N/A                |
 | `agentKeyAuth5`    | *string*           | :heavy_minus_sign: | N/A                |
+| `agentKeyAuth6`    | *string*           | :heavy_minus_sign: | N/A                |
+| `agentKeyAuth7`    | *string*           | :heavy_minus_sign: | N/A                |

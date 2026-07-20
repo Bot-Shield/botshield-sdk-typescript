@@ -18,3 +18,5 @@ let value: VerificationLookupUserByEmailSecurity = {};
 | `apiKeyAuth3`      | *string*           | :heavy_minus_sign: | N/A                |
 | `apiKeyAuth4`      | *string*           | :heavy_minus_sign: | N/A                |
 | `apiKeyAuth5`      | *string*           | :heavy_minus_sign: | N/A                |
+| `apiKeyAuth6`      | *string*           | :heavy_minus_sign: | N/A                |
+| `apiKeyAuth7`      | *string*           | :heavy_minus_sign: | N/A                |
