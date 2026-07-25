@@ -25,6 +25,16 @@ interface StartCommandFlags {
   readonly "agent-key-auth3"?: string | undefined;
   readonly "agent-key-auth4"?: string | undefined;
   readonly "agent-key-auth5"?: string | undefined;
+  readonly "agent-key-auth6"?: string | undefined;
+  readonly "agent-key-auth7"?: string | undefined;
+  readonly "agent-key-auth8"?: string | undefined;
+  readonly "agent-key-auth9"?: string | undefined;
+  readonly "agent-key-auth10"?: string | undefined;
+  readonly "agent-key-auth11"?: string | undefined;
+  readonly "agent-key-auth12"?: string | undefined;
+  readonly "agent-key-auth13"?: string | undefined;
+  readonly "agent-key-auth14"?: string | undefined;
+  readonly "agent-key-auth15"?: string | undefined;
   readonly "server-url"?: string;
   readonly "server-index"?: SDKOptions["serverIdx"];
   readonly "log-level": ConsoleLoggerLevel;
@@ -62,6 +72,16 @@ async function startStdio(flags: StartCommandFlags) {
       agentKeyAuth3: flags["agent-key-auth3"] ?? "",
       agentKeyAuth4: flags["agent-key-auth4"] ?? "",
       agentKeyAuth5: flags["agent-key-auth5"] ?? "",
+      agentKeyAuth6: flags["agent-key-auth6"] ?? "",
+      agentKeyAuth7: flags["agent-key-auth7"] ?? "",
+      agentKeyAuth8: flags["agent-key-auth8"] ?? "",
+      agentKeyAuth9: flags["agent-key-auth9"] ?? "",
+      agentKeyAuth10: flags["agent-key-auth10"] ?? "",
+      agentKeyAuth11: flags["agent-key-auth11"] ?? "",
+      agentKeyAuth12: flags["agent-key-auth12"] ?? "",
+      agentKeyAuth13: flags["agent-key-auth13"] ?? "",
+      agentKeyAuth14: flags["agent-key-auth14"] ?? "",
+      agentKeyAuth15: flags["agent-key-auth15"] ?? "",
     },
     serverURL: flags["server-url"],
     serverIdx: flags["server-index"],
@@ -90,6 +110,16 @@ async function startSSE(flags: StartCommandFlags) {
       agentKeyAuth3: flags["agent-key-auth3"] ?? "",
       agentKeyAuth4: flags["agent-key-auth4"] ?? "",
       agentKeyAuth5: flags["agent-key-auth5"] ?? "",
+      agentKeyAuth6: flags["agent-key-auth6"] ?? "",
+      agentKeyAuth7: flags["agent-key-auth7"] ?? "",
+      agentKeyAuth8: flags["agent-key-auth8"] ?? "",
+      agentKeyAuth9: flags["agent-key-auth9"] ?? "",
+      agentKeyAuth10: flags["agent-key-auth10"] ?? "",
+      agentKeyAuth11: flags["agent-key-auth11"] ?? "",
+      agentKeyAuth12: flags["agent-key-auth12"] ?? "",
+      agentKeyAuth13: flags["agent-key-auth13"] ?? "",
+      agentKeyAuth14: flags["agent-key-auth14"] ?? "",
+      agentKeyAuth15: flags["agent-key-auth15"] ?? "",
     },
     serverURL: flags["server-url"],
     serverIdx: flags["server-index"],

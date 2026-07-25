@@ -18,6 +18,16 @@ export type VerificationGetStatusSecurity = {
   apiKeyAuth3?: string | undefined;
   apiKeyAuth4?: string | undefined;
   apiKeyAuth5?: string | undefined;
+  apiKeyAuth6?: string | undefined;
+  apiKeyAuth7?: string | undefined;
+  apiKeyAuth8?: string | undefined;
+  apiKeyAuth9?: string | undefined;
+  apiKeyAuth10?: string | undefined;
+  apiKeyAuth11?: string | undefined;
+  apiKeyAuth12?: string | undefined;
+  apiKeyAuth13?: string | undefined;
+  apiKeyAuth14?: string | undefined;
+  apiKeyAuth15?: string | undefined;
 };
 
 export type VerificationGetStatusRequest = {
@@ -91,6 +101,16 @@ export const VerificationGetStatusSecurity$inboundSchema: z.ZodType<
   apiKeyAuth3: types.optional(types.string()),
   apiKeyAuth4: types.optional(types.string()),
   apiKeyAuth5: types.optional(types.string()),
+  apiKeyAuth6: types.optional(types.string()),
+  apiKeyAuth7: types.optional(types.string()),
+  apiKeyAuth8: types.optional(types.string()),
+  apiKeyAuth9: types.optional(types.string()),
+  apiKeyAuth10: types.optional(types.string()),
+  apiKeyAuth11: types.optional(types.string()),
+  apiKeyAuth12: types.optional(types.string()),
+  apiKeyAuth13: types.optional(types.string()),
+  apiKeyAuth14: types.optional(types.string()),
+  apiKeyAuth15: types.optional(types.string()),
 });
 /** @internal */
 export type VerificationGetStatusSecurity$Outbound = {
@@ -100,6 +120,16 @@ export type VerificationGetStatusSecurity$Outbound = {
   apiKeyAuth3?: string | undefined;
   apiKeyAuth4?: string | undefined;
   apiKeyAuth5?: string | undefined;
+  apiKeyAuth6?: string | undefined;
+  apiKeyAuth7?: string | undefined;
+  apiKeyAuth8?: string | undefined;
+  apiKeyAuth9?: string | undefined;
+  apiKeyAuth10?: string | undefined;
+  apiKeyAuth11?: string | undefined;
+  apiKeyAuth12?: string | undefined;
+  apiKeyAuth13?: string | undefined;
+  apiKeyAuth14?: string | undefined;
+  apiKeyAuth15?: string | undefined;
 };
 
 /** @internal */
@@ -114,6 +144,16 @@ export const VerificationGetStatusSecurity$outboundSchema: z.ZodType<
   apiKeyAuth3: z.string().optional(),
   apiKeyAuth4: z.string().optional(),
   apiKeyAuth5: z.string().optional(),
+  apiKeyAuth6: z.string().optional(),
+  apiKeyAuth7: z.string().optional(),
+  apiKeyAuth8: z.string().optional(),
+  apiKeyAuth9: z.string().optional(),
+  apiKeyAuth10: z.string().optional(),
+  apiKeyAuth11: z.string().optional(),
+  apiKeyAuth12: z.string().optional(),
+  apiKeyAuth13: z.string().optional(),
+  apiKeyAuth14: z.string().optional(),
+  apiKeyAuth15: z.string().optional(),
 });
 
 export function verificationGetStatusSecurityToJSON(
