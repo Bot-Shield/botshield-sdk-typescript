@@ -15,6 +15,32 @@ export type Security = {
   agentKeyAuth3?: string | undefined;
   agentKeyAuth4?: string | undefined;
   agentKeyAuth5?: string | undefined;
+  agentKeyAuth6?: string | undefined;
+  agentKeyAuth7?: string | undefined;
+  agentKeyAuth8?: string | undefined;
+  agentKeyAuth9?: string | undefined;
+  agentKeyAuth10?: string | undefined;
+  agentKeyAuth11?: string | undefined;
+  agentKeyAuth12?: string | undefined;
+  agentKeyAuth13?: string | undefined;
+  agentKeyAuth14?: string | undefined;
+  agentKeyAuth15?: string | undefined;
+  agentKeyAuth16?: string | undefined;
+  agentKeyAuth17?: string | undefined;
+  agentKeyAuth18?: string | undefined;
+  agentKeyAuth19?: string | undefined;
+  agentKeyAuth20?: string | undefined;
+  agentKeyAuth21?: string | undefined;
+  agentKeyAuth22?: string | undefined;
+  agentKeyAuth23?: string | undefined;
+  agentKeyAuth24?: string | undefined;
+  agentKeyAuth25?: string | undefined;
+  agentKeyAuth26?: string | undefined;
+  agentKeyAuth27?: string | undefined;
+  agentKeyAuth28?: string | undefined;
+  agentKeyAuth29?: string | undefined;
+  agentKeyAuth30?: string | undefined;
+  agentKeyAuth31?: string | undefined;
 };
 
 /** @internal */
@@ -29,6 +55,32 @@ export const Security$inboundSchema: z.ZodType<
   agentKeyAuth3: types.optional(types.string()),
   agentKeyAuth4: types.optional(types.string()),
   agentKeyAuth5: types.optional(types.string()),
+  agentKeyAuth6: types.optional(types.string()),
+  agentKeyAuth7: types.optional(types.string()),
+  agentKeyAuth8: types.optional(types.string()),
+  agentKeyAuth9: types.optional(types.string()),
+  agentKeyAuth10: types.optional(types.string()),
+  agentKeyAuth11: types.optional(types.string()),
+  agentKeyAuth12: types.optional(types.string()),
+  agentKeyAuth13: types.optional(types.string()),
+  agentKeyAuth14: types.optional(types.string()),
+  agentKeyAuth15: types.optional(types.string()),
+  agentKeyAuth16: types.optional(types.string()),
+  agentKeyAuth17: types.optional(types.string()),
+  agentKeyAuth18: types.optional(types.string()),
+  agentKeyAuth19: types.optional(types.string()),
+  agentKeyAuth20: types.optional(types.string()),
+  agentKeyAuth21: types.optional(types.string()),
+  agentKeyAuth22: types.optional(types.string()),
+  agentKeyAuth23: types.optional(types.string()),
+  agentKeyAuth24: types.optional(types.string()),
+  agentKeyAuth25: types.optional(types.string()),
+  agentKeyAuth26: types.optional(types.string()),
+  agentKeyAuth27: types.optional(types.string()),
+  agentKeyAuth28: types.optional(types.string()),
+  agentKeyAuth29: types.optional(types.string()),
+  agentKeyAuth30: types.optional(types.string()),
+  agentKeyAuth31: types.optional(types.string()),
 });
 /** @internal */
 export type Security$Outbound = {
@@ -38,6 +90,32 @@ export type Security$Outbound = {
   agentKeyAuth3?: string | undefined;
   agentKeyAuth4?: string | undefined;
   agentKeyAuth5?: string | undefined;
+  agentKeyAuth6?: string | undefined;
+  agentKeyAuth7?: string | undefined;
+  agentKeyAuth8?: string | undefined;
+  agentKeyAuth9?: string | undefined;
+  agentKeyAuth10?: string | undefined;
+  agentKeyAuth11?: string | undefined;
+  agentKeyAuth12?: string | undefined;
+  agentKeyAuth13?: string | undefined;
+  agentKeyAuth14?: string | undefined;
+  agentKeyAuth15?: string | undefined;
+  agentKeyAuth16?: string | undefined;
+  agentKeyAuth17?: string | undefined;
+  agentKeyAuth18?: string | undefined;
+  agentKeyAuth19?: string | undefined;
+  agentKeyAuth20?: string | undefined;
+  agentKeyAuth21?: string | undefined;
+  agentKeyAuth22?: string | undefined;
+  agentKeyAuth23?: string | undefined;
+  agentKeyAuth24?: string | undefined;
+  agentKeyAuth25?: string | undefined;
+  agentKeyAuth26?: string | undefined;
+  agentKeyAuth27?: string | undefined;
+  agentKeyAuth28?: string | undefined;
+  agentKeyAuth29?: string | undefined;
+  agentKeyAuth30?: string | undefined;
+  agentKeyAuth31?: string | undefined;
 };
 
 /** @internal */
@@ -52,6 +130,32 @@ export const Security$outboundSchema: z.ZodType<
   agentKeyAuth3: z.string().optional(),
   agentKeyAuth4: z.string().optional(),
   agentKeyAuth5: z.string().optional(),
+  agentKeyAuth6: z.string().optional(),
+  agentKeyAuth7: z.string().optional(),
+  agentKeyAuth8: z.string().optional(),
+  agentKeyAuth9: z.string().optional(),
+  agentKeyAuth10: z.string().optional(),
+  agentKeyAuth11: z.string().optional(),
+  agentKeyAuth12: z.string().optional(),
+  agentKeyAuth13: z.string().optional(),
+  agentKeyAuth14: z.string().optional(),
+  agentKeyAuth15: z.string().optional(),
+  agentKeyAuth16: z.string().optional(),
+  agentKeyAuth17: z.string().optional(),
+  agentKeyAuth18: z.string().optional(),
+  agentKeyAuth19: z.string().optional(),
+  agentKeyAuth20: z.string().optional(),
+  agentKeyAuth21: z.string().optional(),
+  agentKeyAuth22: z.string().optional(),
+  agentKeyAuth23: z.string().optional(),
+  agentKeyAuth24: z.string().optional(),
+  agentKeyAuth25: z.string().optional(),
+  agentKeyAuth26: z.string().optional(),
+  agentKeyAuth27: z.string().optional(),
+  agentKeyAuth28: z.string().optional(),
+  agentKeyAuth29: z.string().optional(),
+  agentKeyAuth30: z.string().optional(),
+  agentKeyAuth31: z.string().optional(),
 });
 
 export function securityToJSON(security: Security): string {

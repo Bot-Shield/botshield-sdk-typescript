@@ -91,6 +91,214 @@ export const startCommand = buildCommand({
           return z.string().parse(value);
         },
       },
+      "agent-key-auth6": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth6 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth7": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth7 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth8": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth8 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth9": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth9 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth10": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth10 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth11": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth11 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth12": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth12 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth13": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth13 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth14": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth14 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth15": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth15 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth16": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth16 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth17": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth17 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth18": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth18 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth19": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth19 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth20": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth20 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth21": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth21 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth22": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth22 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth23": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth23 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth24": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth24 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth25": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth25 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth26": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth26 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth27": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth27 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth28": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth28 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth29": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth29 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth30": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth30 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth31": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth31 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
       "server-url": {
         kind: "parsed",
         brief: "Overrides the default server URL used by the SDK",
