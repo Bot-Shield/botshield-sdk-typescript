@@ -1,6 +1,6 @@
 {
   "name": "botshield-sdk",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "author": "BotShield",
   "type": "module",
   "bin": {
@@ -28,7 +28,7 @@
     "url": "https://github.com/Bot-Shield/botshield-sdk-typescript.git"
   },
   "scripts": {
-    "lint": "oxlint --max-warnings=0 --deny-warnings src/**/*.ts src/**/*.tsx",
+    "lint": "oxlint --max-warnings=0 --deny-warnings --no-error-on-unmatched-pattern src",
     "build:mcp": "bun src/mcp-server/build.mts",
     "build": "npm run build:mcp && tshy",
     "prepublishOnly": "npm run build"
