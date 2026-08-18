@@ -104,7 +104,53 @@ Add the following server definition to your `claude_desktop_config.json` file:
         "--agent-key-auth2", "...",
         "--agent-key-auth3", "...",
         "--agent-key-auth4", "...",
-        "--agent-key-auth5", "..."
+        "--agent-key-auth5", "...",
+        "--agent-key-auth6", "...",
+        "--agent-key-auth7", "...",
+        "--agent-key-auth8", "...",
+        "--agent-key-auth9", "...",
+        "--agent-key-auth10", "...",
+        "--agent-key-auth11", "...",
+        "--agent-key-auth12", "...",
+        "--agent-key-auth13", "...",
+        "--agent-key-auth14", "...",
+        "--agent-key-auth15", "...",
+        "--agent-key-auth16", "...",
+        "--agent-key-auth17", "...",
+        "--agent-key-auth18", "...",
+        "--agent-key-auth19", "...",
+        "--agent-key-auth20", "...",
+        "--agent-key-auth21", "...",
+        "--agent-key-auth22", "...",
+        "--agent-key-auth23", "...",
+        "--agent-key-auth24", "...",
+        "--agent-key-auth25", "...",
+        "--agent-key-auth26", "...",
+        "--agent-key-auth27", "...",
+        "--agent-key-auth28", "...",
+        "--agent-key-auth29", "...",
+        "--agent-key-auth30", "...",
+        "--agent-key-auth31", "...",
+        "--agent-key-auth32", "...",
+        "--agent-key-auth33", "...",
+        "--agent-key-auth34", "...",
+        "--agent-key-auth35", "...",
+        "--agent-key-auth36", "...",
+        "--agent-key-auth37", "...",
+        "--agent-key-auth38", "...",
+        "--agent-key-auth39", "...",
+        "--agent-key-auth40", "...",
+        "--agent-key-auth41", "...",
+        "--agent-key-auth42", "...",
+        "--agent-key-auth43", "...",
+        "--agent-key-auth44", "...",
+        "--agent-key-auth45", "...",
+        "--agent-key-auth46", "...",
+        "--agent-key-auth47", "...",
+        "--agent-key-auth48", "...",
+        "--agent-key-auth49", "...",
+        "--agent-key-auth50", "...",
+        "--agent-key-auth51", "..."
       ]
     }
   }
@@ -132,7 +178,53 @@ Create a `.cursor/mcp.json` file in your project root with the following content
         "--agent-key-auth2", "...",
         "--agent-key-auth3", "...",
         "--agent-key-auth4", "...",
-        "--agent-key-auth5", "..."
+        "--agent-key-auth5", "...",
+        "--agent-key-auth6", "...",
+        "--agent-key-auth7", "...",
+        "--agent-key-auth8", "...",
+        "--agent-key-auth9", "...",
+        "--agent-key-auth10", "...",
+        "--agent-key-auth11", "...",
+        "--agent-key-auth12", "...",
+        "--agent-key-auth13", "...",
+        "--agent-key-auth14", "...",
+        "--agent-key-auth15", "...",
+        "--agent-key-auth16", "...",
+        "--agent-key-auth17", "...",
+        "--agent-key-auth18", "...",
+        "--agent-key-auth19", "...",
+        "--agent-key-auth20", "...",
+        "--agent-key-auth21", "...",
+        "--agent-key-auth22", "...",
+        "--agent-key-auth23", "...",
+        "--agent-key-auth24", "...",
+        "--agent-key-auth25", "...",
+        "--agent-key-auth26", "...",
+        "--agent-key-auth27", "...",
+        "--agent-key-auth28", "...",
+        "--agent-key-auth29", "...",
+        "--agent-key-auth30", "...",
+        "--agent-key-auth31", "...",
+        "--agent-key-auth32", "...",
+        "--agent-key-auth33", "...",
+        "--agent-key-auth34", "...",
+        "--agent-key-auth35", "...",
+        "--agent-key-auth36", "...",
+        "--agent-key-auth37", "...",
+        "--agent-key-auth38", "...",
+        "--agent-key-auth39", "...",
+        "--agent-key-auth40", "...",
+        "--agent-key-auth41", "...",
+        "--agent-key-auth42", "...",
+        "--agent-key-auth43", "...",
+        "--agent-key-auth44", "...",
+        "--agent-key-auth45", "...",
+        "--agent-key-auth46", "...",
+        "--agent-key-auth47", "...",
+        "--agent-key-auth48", "...",
+        "--agent-key-auth49", "...",
+        "--agent-key-auth50", "...",
+        "--agent-key-auth51", "..."
       ]
     }
   }
@@ -208,14 +300,60 @@ run();
 
 This SDK supports the following security schemes globally:
 
-| Name            | Type   | Scheme  |
-| --------------- | ------ | ------- |
-| `agentKeyAuth`  | apiKey | API key |
-| `agentKeyAuth1` | apiKey | API key |
-| `agentKeyAuth2` | apiKey | API key |
-| `agentKeyAuth3` | apiKey | API key |
-| `agentKeyAuth4` | apiKey | API key |
-| `agentKeyAuth5` | apiKey | API key |
+| Name             | Type   | Scheme  |
+| ---------------- | ------ | ------- |
+| `agentKeyAuth`   | apiKey | API key |
+| `agentKeyAuth1`  | apiKey | API key |
+| `agentKeyAuth2`  | apiKey | API key |
+| `agentKeyAuth3`  | apiKey | API key |
+| `agentKeyAuth4`  | apiKey | API key |
+| `agentKeyAuth5`  | apiKey | API key |
+| `agentKeyAuth6`  | apiKey | API key |
+| `agentKeyAuth7`  | apiKey | API key |
+| `agentKeyAuth8`  | apiKey | API key |
+| `agentKeyAuth9`  | apiKey | API key |
+| `agentKeyAuth10` | apiKey | API key |
+| `agentKeyAuth11` | apiKey | API key |
+| `agentKeyAuth12` | apiKey | API key |
+| `agentKeyAuth13` | apiKey | API key |
+| `agentKeyAuth14` | apiKey | API key |
+| `agentKeyAuth15` | apiKey | API key |
+| `agentKeyAuth16` | apiKey | API key |
+| `agentKeyAuth17` | apiKey | API key |
+| `agentKeyAuth18` | apiKey | API key |
+| `agentKeyAuth19` | apiKey | API key |
+| `agentKeyAuth20` | apiKey | API key |
+| `agentKeyAuth21` | apiKey | API key |
+| `agentKeyAuth22` | apiKey | API key |
+| `agentKeyAuth23` | apiKey | API key |
+| `agentKeyAuth24` | apiKey | API key |
+| `agentKeyAuth25` | apiKey | API key |
+| `agentKeyAuth26` | apiKey | API key |
+| `agentKeyAuth27` | apiKey | API key |
+| `agentKeyAuth28` | apiKey | API key |
+| `agentKeyAuth29` | apiKey | API key |
+| `agentKeyAuth30` | apiKey | API key |
+| `agentKeyAuth31` | apiKey | API key |
+| `agentKeyAuth32` | apiKey | API key |
+| `agentKeyAuth33` | apiKey | API key |
+| `agentKeyAuth34` | apiKey | API key |
+| `agentKeyAuth35` | apiKey | API key |
+| `agentKeyAuth36` | apiKey | API key |
+| `agentKeyAuth37` | apiKey | API key |
+| `agentKeyAuth38` | apiKey | API key |
+| `agentKeyAuth39` | apiKey | API key |
+| `agentKeyAuth40` | apiKey | API key |
+| `agentKeyAuth41` | apiKey | API key |
+| `agentKeyAuth42` | apiKey | API key |
+| `agentKeyAuth43` | apiKey | API key |
+| `agentKeyAuth44` | apiKey | API key |
+| `agentKeyAuth45` | apiKey | API key |
+| `agentKeyAuth46` | apiKey | API key |
+| `agentKeyAuth47` | apiKey | API key |
+| `agentKeyAuth48` | apiKey | API key |
+| `agentKeyAuth49` | apiKey | API key |
+| `agentKeyAuth50` | apiKey | API key |
+| `agentKeyAuth51` | apiKey | API key |
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript

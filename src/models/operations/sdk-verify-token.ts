@@ -18,6 +18,52 @@ export type SDKVerifyTokenSecurity = {
   apiKeyAuth3?: string | undefined;
   apiKeyAuth4?: string | undefined;
   apiKeyAuth5?: string | undefined;
+  apiKeyAuth6?: string | undefined;
+  apiKeyAuth7?: string | undefined;
+  apiKeyAuth8?: string | undefined;
+  apiKeyAuth9?: string | undefined;
+  apiKeyAuth10?: string | undefined;
+  apiKeyAuth11?: string | undefined;
+  apiKeyAuth12?: string | undefined;
+  apiKeyAuth13?: string | undefined;
+  apiKeyAuth14?: string | undefined;
+  apiKeyAuth15?: string | undefined;
+  apiKeyAuth16?: string | undefined;
+  apiKeyAuth17?: string | undefined;
+  apiKeyAuth18?: string | undefined;
+  apiKeyAuth19?: string | undefined;
+  apiKeyAuth20?: string | undefined;
+  apiKeyAuth21?: string | undefined;
+  apiKeyAuth22?: string | undefined;
+  apiKeyAuth23?: string | undefined;
+  apiKeyAuth24?: string | undefined;
+  apiKeyAuth25?: string | undefined;
+  apiKeyAuth26?: string | undefined;
+  apiKeyAuth27?: string | undefined;
+  apiKeyAuth28?: string | undefined;
+  apiKeyAuth29?: string | undefined;
+  apiKeyAuth30?: string | undefined;
+  apiKeyAuth31?: string | undefined;
+  apiKeyAuth32?: string | undefined;
+  apiKeyAuth33?: string | undefined;
+  apiKeyAuth34?: string | undefined;
+  apiKeyAuth35?: string | undefined;
+  apiKeyAuth36?: string | undefined;
+  apiKeyAuth37?: string | undefined;
+  apiKeyAuth38?: string | undefined;
+  apiKeyAuth39?: string | undefined;
+  apiKeyAuth40?: string | undefined;
+  apiKeyAuth41?: string | undefined;
+  apiKeyAuth42?: string | undefined;
+  apiKeyAuth43?: string | undefined;
+  apiKeyAuth44?: string | undefined;
+  apiKeyAuth45?: string | undefined;
+  apiKeyAuth46?: string | undefined;
+  apiKeyAuth47?: string | undefined;
+  apiKeyAuth48?: string | undefined;
+  apiKeyAuth49?: string | undefined;
+  apiKeyAuth50?: string | undefined;
+  apiKeyAuth51?: string | undefined;
 };
 
 export type SDKVerifyTokenRequest = {
@@ -93,6 +139,52 @@ export const SDKVerifyTokenSecurity$inboundSchema: z.ZodType<
   apiKeyAuth3: types.optional(types.string()),
   apiKeyAuth4: types.optional(types.string()),
   apiKeyAuth5: types.optional(types.string()),
+  apiKeyAuth6: types.optional(types.string()),
+  apiKeyAuth7: types.optional(types.string()),
+  apiKeyAuth8: types.optional(types.string()),
+  apiKeyAuth9: types.optional(types.string()),
+  apiKeyAuth10: types.optional(types.string()),
+  apiKeyAuth11: types.optional(types.string()),
+  apiKeyAuth12: types.optional(types.string()),
+  apiKeyAuth13: types.optional(types.string()),
+  apiKeyAuth14: types.optional(types.string()),
+  apiKeyAuth15: types.optional(types.string()),
+  apiKeyAuth16: types.optional(types.string()),
+  apiKeyAuth17: types.optional(types.string()),
+  apiKeyAuth18: types.optional(types.string()),
+  apiKeyAuth19: types.optional(types.string()),
+  apiKeyAuth20: types.optional(types.string()),
+  apiKeyAuth21: types.optional(types.string()),
+  apiKeyAuth22: types.optional(types.string()),
+  apiKeyAuth23: types.optional(types.string()),
+  apiKeyAuth24: types.optional(types.string()),
+  apiKeyAuth25: types.optional(types.string()),
+  apiKeyAuth26: types.optional(types.string()),
+  apiKeyAuth27: types.optional(types.string()),
+  apiKeyAuth28: types.optional(types.string()),
+  apiKeyAuth29: types.optional(types.string()),
+  apiKeyAuth30: types.optional(types.string()),
+  apiKeyAuth31: types.optional(types.string()),
+  apiKeyAuth32: types.optional(types.string()),
+  apiKeyAuth33: types.optional(types.string()),
+  apiKeyAuth34: types.optional(types.string()),
+  apiKeyAuth35: types.optional(types.string()),
+  apiKeyAuth36: types.optional(types.string()),
+  apiKeyAuth37: types.optional(types.string()),
+  apiKeyAuth38: types.optional(types.string()),
+  apiKeyAuth39: types.optional(types.string()),
+  apiKeyAuth40: types.optional(types.string()),
+  apiKeyAuth41: types.optional(types.string()),
+  apiKeyAuth42: types.optional(types.string()),
+  apiKeyAuth43: types.optional(types.string()),
+  apiKeyAuth44: types.optional(types.string()),
+  apiKeyAuth45: types.optional(types.string()),
+  apiKeyAuth46: types.optional(types.string()),
+  apiKeyAuth47: types.optional(types.string()),
+  apiKeyAuth48: types.optional(types.string()),
+  apiKeyAuth49: types.optional(types.string()),
+  apiKeyAuth50: types.optional(types.string()),
+  apiKeyAuth51: types.optional(types.string()),
 });
 /** @internal */
 export type SDKVerifyTokenSecurity$Outbound = {
@@ -102,6 +194,52 @@ export type SDKVerifyTokenSecurity$Outbound = {
   apiKeyAuth3?: string | undefined;
   apiKeyAuth4?: string | undefined;
   apiKeyAuth5?: string | undefined;
+  apiKeyAuth6?: string | undefined;
+  apiKeyAuth7?: string | undefined;
+  apiKeyAuth8?: string | undefined;
+  apiKeyAuth9?: string | undefined;
+  apiKeyAuth10?: string | undefined;
+  apiKeyAuth11?: string | undefined;
+  apiKeyAuth12?: string | undefined;
+  apiKeyAuth13?: string | undefined;
+  apiKeyAuth14?: string | undefined;
+  apiKeyAuth15?: string | undefined;
+  apiKeyAuth16?: string | undefined;
+  apiKeyAuth17?: string | undefined;
+  apiKeyAuth18?: string | undefined;
+  apiKeyAuth19?: string | undefined;
+  apiKeyAuth20?: string | undefined;
+  apiKeyAuth21?: string | undefined;
+  apiKeyAuth22?: string | undefined;
+  apiKeyAuth23?: string | undefined;
+  apiKeyAuth24?: string | undefined;
+  apiKeyAuth25?: string | undefined;
+  apiKeyAuth26?: string | undefined;
+  apiKeyAuth27?: string | undefined;
+  apiKeyAuth28?: string | undefined;
+  apiKeyAuth29?: string | undefined;
+  apiKeyAuth30?: string | undefined;
+  apiKeyAuth31?: string | undefined;
+  apiKeyAuth32?: string | undefined;
+  apiKeyAuth33?: string | undefined;
+  apiKeyAuth34?: string | undefined;
+  apiKeyAuth35?: string | undefined;
+  apiKeyAuth36?: string | undefined;
+  apiKeyAuth37?: string | undefined;
+  apiKeyAuth38?: string | undefined;
+  apiKeyAuth39?: string | undefined;
+  apiKeyAuth40?: string | undefined;
+  apiKeyAuth41?: string | undefined;
+  apiKeyAuth42?: string | undefined;
+  apiKeyAuth43?: string | undefined;
+  apiKeyAuth44?: string | undefined;
+  apiKeyAuth45?: string | undefined;
+  apiKeyAuth46?: string | undefined;
+  apiKeyAuth47?: string | undefined;
+  apiKeyAuth48?: string | undefined;
+  apiKeyAuth49?: string | undefined;
+  apiKeyAuth50?: string | undefined;
+  apiKeyAuth51?: string | undefined;
 };
 
 /** @internal */
@@ -116,6 +254,52 @@ export const SDKVerifyTokenSecurity$outboundSchema: z.ZodType<
   apiKeyAuth3: z.string().optional(),
   apiKeyAuth4: z.string().optional(),
   apiKeyAuth5: z.string().optional(),
+  apiKeyAuth6: z.string().optional(),
+  apiKeyAuth7: z.string().optional(),
+  apiKeyAuth8: z.string().optional(),
+  apiKeyAuth9: z.string().optional(),
+  apiKeyAuth10: z.string().optional(),
+  apiKeyAuth11: z.string().optional(),
+  apiKeyAuth12: z.string().optional(),
+  apiKeyAuth13: z.string().optional(),
+  apiKeyAuth14: z.string().optional(),
+  apiKeyAuth15: z.string().optional(),
+  apiKeyAuth16: z.string().optional(),
+  apiKeyAuth17: z.string().optional(),
+  apiKeyAuth18: z.string().optional(),
+  apiKeyAuth19: z.string().optional(),
+  apiKeyAuth20: z.string().optional(),
+  apiKeyAuth21: z.string().optional(),
+  apiKeyAuth22: z.string().optional(),
+  apiKeyAuth23: z.string().optional(),
+  apiKeyAuth24: z.string().optional(),
+  apiKeyAuth25: z.string().optional(),
+  apiKeyAuth26: z.string().optional(),
+  apiKeyAuth27: z.string().optional(),
+  apiKeyAuth28: z.string().optional(),
+  apiKeyAuth29: z.string().optional(),
+  apiKeyAuth30: z.string().optional(),
+  apiKeyAuth31: z.string().optional(),
+  apiKeyAuth32: z.string().optional(),
+  apiKeyAuth33: z.string().optional(),
+  apiKeyAuth34: z.string().optional(),
+  apiKeyAuth35: z.string().optional(),
+  apiKeyAuth36: z.string().optional(),
+  apiKeyAuth37: z.string().optional(),
+  apiKeyAuth38: z.string().optional(),
+  apiKeyAuth39: z.string().optional(),
+  apiKeyAuth40: z.string().optional(),
+  apiKeyAuth41: z.string().optional(),
+  apiKeyAuth42: z.string().optional(),
+  apiKeyAuth43: z.string().optional(),
+  apiKeyAuth44: z.string().optional(),
+  apiKeyAuth45: z.string().optional(),
+  apiKeyAuth46: z.string().optional(),
+  apiKeyAuth47: z.string().optional(),
+  apiKeyAuth48: z.string().optional(),
+  apiKeyAuth49: z.string().optional(),
+  apiKeyAuth50: z.string().optional(),
+  apiKeyAuth51: z.string().optional(),
 });
 
 export function sdkVerifyTokenSecurityToJSON(
