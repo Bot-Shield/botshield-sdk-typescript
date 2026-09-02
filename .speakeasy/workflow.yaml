@@ -1,5 +1,8 @@
 workflowVersion: 1.0.0
-speakeasyVersion: latest
+# Pinned to the generator that produced the published release. `latest` + the daily
+# cron opened a drift PR (2.0.1, agentKeyAuth3/4 noise) the day after 2.0.0 shipped.
+# Bump deliberately, regenerate, review the diff, then release.
+speakeasyVersion: 1.796.3
 sources:
     botshield-oas:
         inputs:
