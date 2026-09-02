@@ -1,6 +1,6 @@
 # Verdict
 
-Present only when status is approved or denied.
+null until status is approved or denied.
 
 ## Example Usage
 

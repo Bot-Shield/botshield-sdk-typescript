@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Check verification status
  *
  * @remarks
- * Poll for verification request status. Returns signed token on completion.
+ * Poll a verification request. Carries the signed attestation on completion and NO identity — no user_email, partner_user_id, auth_mode, or botshield_user_id ever cross this boundary.
  */
 export function verificationGetStatus(
   client: BotShieldCore,
@@ -125,27 +125,6 @@ async function $do(
         fieldName: "Authorization",
         type: "apiKey:header",
         value: security?.apiKeyAuth2,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth3,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth4,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth5,
       },
     ],
   );

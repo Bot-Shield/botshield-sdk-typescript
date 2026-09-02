@@ -1,18 +1,19 @@
 # SDKStoreSignalResponse
 
-Signal stored
+Signal stored. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: none — a failed store returns data.data.error.
 
 ## Example Usage
 
 ```typescript
 import { SDKStoreSignalResponse } from "botshield-sdk/models/operations";
 
-let value: SDKStoreSignalResponse = {};
+let value: SDKStoreSignalResponse = {
+  data: {},
+};
 ```
 
 ## Fields
 
-| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   |
-| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `signalToken`                                                                                 | *string*                                                                                      | :heavy_minus_sign:                                                                            | Opaque tamper-proof token (bs_sig_...)                                                        |
-| `expiresAt`                                                                                   | [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) | :heavy_minus_sign:                                                                            | N/A                                                                                           |
+| Field                                                                             | Type                                                                              | Required                                                                          | Description                                                                       |
+| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `data`                                                                            | [operations.SDKStoreSignalData](../../models/operations/sdk-store-signal-data.md) | :heavy_check_mark:                                                                | N/A                                                                               |

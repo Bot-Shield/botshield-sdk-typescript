@@ -1,6 +1,6 @@
 # ActionsCheckStatusResponse
 
-Current proposal state
+Current proposal state. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401, 404 (request_id not found), 500.
 
 ## Example Usage
 
@@ -8,9 +8,7 @@ Current proposal state
 import { ActionsCheckStatusResponse } from "botshield-sdk/models/operations";
 
 let value: ActionsCheckStatusResponse = {
-  data: {
-    status: "expired",
-  },
+  data: {},
 };
 ```
 

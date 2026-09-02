@@ -5,19 +5,15 @@
 import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import * as openEnums from "../../types/enums.js";
-import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
+import * as models from "../index.js";
 
 export type SDKVerifyTokenSecurity = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
   apiKeyAuth2?: string | undefined;
-  apiKeyAuth3?: string | undefined;
-  apiKeyAuth4?: string | undefined;
-  apiKeyAuth5?: string | undefined;
 };
 
 export type SDKVerifyTokenRequest = {
@@ -25,60 +21,44 @@ export type SDKVerifyTokenRequest = {
    * JWT verification receipt
    */
   token: string;
-  /**
-   * Optional Signal Pixel token for combined confidence
-   */
-  signalToken?: string | undefined;
 };
-
-export const SDKVerifyTokenAuthMode = {
-  LinkedAccount: "linked-account",
-  Private: "private",
-} as const;
-export type SDKVerifyTokenAuthMode = OpenEnum<typeof SDKVerifyTokenAuthMode>;
 
 export type Claims = {
   requestId?: string | undefined;
   verified?: boolean | undefined;
-  botshieldUserId?: string | undefined;
   organizationId?: string | undefined;
-  partnerUserId?: string | undefined;
-  authMode?: SDKVerifyTokenAuthMode | undefined;
-  userEmail?: string | undefined;
   timestamp?: string | undefined;
+  nonce?: string | undefined;
   issuedAt?: number | undefined;
   expiresAt?: number | undefined;
 };
 
-export type Turnstile = {
-  success?: boolean | undefined;
-};
-
-export type Passkey = {
-  verified?: boolean | undefined;
-};
-
-export type Signals = {
+export type SDKVerifyTokenDataData = {
+  valid: boolean;
   /**
-   * Signal Pixel score (0-100)
+   * Present when valid is false.
    */
-  botshieldScore?: number | undefined;
-  turnstile?: Turnstile | undefined;
-  passkey?: Passkey | undefined;
+  reason?: string | undefined;
+  /**
+   * Present when the token was valid but has expired.
+   */
+  expiredAt?: Date | null | undefined;
+  claims?: Claims | null | undefined;
+};
+
+export type SDKVerifyTokenData = {
+  data?: SDKVerifyTokenDataData | undefined;
+  /**
+   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   */
+  error?: models.ErrorBody | undefined;
 };
 
 /**
- * Validation result
+ * Validation result. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: none — an invalid token is a normal result with valid=false.
  */
 export type SDKVerifyTokenResponse = {
-  valid?: boolean | undefined;
-  reason?: string | undefined;
-  /**
-   * Combined confidence (passkey + signals + integrations)
-   */
-  confidence?: number | undefined;
-  claims?: Claims | undefined;
-  signals?: Signals | undefined;
+  data: SDKVerifyTokenData;
 };
 
 /** @internal */
@@ -90,18 +70,12 @@ export const SDKVerifyTokenSecurity$inboundSchema: z.ZodType<
   apiKeyAuth: types.optional(types.string()),
   apiKeyAuth1: types.optional(types.string()),
   apiKeyAuth2: types.optional(types.string()),
-  apiKeyAuth3: types.optional(types.string()),
-  apiKeyAuth4: types.optional(types.string()),
-  apiKeyAuth5: types.optional(types.string()),
 });
 /** @internal */
 export type SDKVerifyTokenSecurity$Outbound = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
   apiKeyAuth2?: string | undefined;
-  apiKeyAuth3?: string | undefined;
-  apiKeyAuth4?: string | undefined;
-  apiKeyAuth5?: string | undefined;
 };
 
 /** @internal */
@@ -113,9 +87,6 @@ export const SDKVerifyTokenSecurity$outboundSchema: z.ZodType<
   apiKeyAuth: z.string().optional(),
   apiKeyAuth1: z.string().optional(),
   apiKeyAuth2: z.string().optional(),
-  apiKeyAuth3: z.string().optional(),
-  apiKeyAuth4: z.string().optional(),
-  apiKeyAuth5: z.string().optional(),
 });
 
 export function sdkVerifyTokenSecurityToJSON(
@@ -142,16 +113,10 @@ export const SDKVerifyTokenRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   token: types.string(),
-  signal_token: types.optional(types.string()),
-}).transform((v) => {
-  return remap$(v, {
-    "signal_token": "signalToken",
-  });
 });
 /** @internal */
 export type SDKVerifyTokenRequest$Outbound = {
   token: string;
-  signal_token?: string | undefined;
 };
 
 /** @internal */
@@ -161,11 +126,6 @@ export const SDKVerifyTokenRequest$outboundSchema: z.ZodType<
   SDKVerifyTokenRequest
 > = z.object({
   token: z.string(),
-  signalToken: z.string().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    signalToken: "signal_token",
-  });
 });
 
 export function sdkVerifyTokenRequestToJSON(
@@ -186,39 +146,19 @@ export function sdkVerifyTokenRequestFromJSON(
 }
 
 /** @internal */
-export const SDKVerifyTokenAuthMode$inboundSchema: z.ZodType<
-  SDKVerifyTokenAuthMode,
-  z.ZodTypeDef,
-  unknown
-> = openEnums.inboundSchema(SDKVerifyTokenAuthMode);
-/** @internal */
-export const SDKVerifyTokenAuthMode$outboundSchema: z.ZodType<
-  string,
-  z.ZodTypeDef,
-  SDKVerifyTokenAuthMode
-> = openEnums.outboundSchema(SDKVerifyTokenAuthMode);
-
-/** @internal */
 export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
   .object({
     request_id: types.optional(types.string()),
     verified: types.optional(types.boolean()),
-    botshield_user_id: types.optional(types.string()),
     organization_id: types.optional(types.string()),
-    partner_user_id: types.optional(types.string()),
-    auth_mode: types.optional(SDKVerifyTokenAuthMode$inboundSchema),
-    user_email: types.optional(types.string()),
     timestamp: types.optional(types.string()),
+    nonce: types.optional(types.string()),
     issued_at: types.optional(types.number()),
     expires_at: types.optional(types.number()),
   }).transform((v) => {
     return remap$(v, {
       "request_id": "requestId",
-      "botshield_user_id": "botshieldUserId",
       "organization_id": "organizationId",
-      "partner_user_id": "partnerUserId",
-      "auth_mode": "authMode",
-      "user_email": "userEmail",
       "issued_at": "issuedAt",
       "expires_at": "expiresAt",
     });
@@ -227,12 +167,9 @@ export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
 export type Claims$Outbound = {
   request_id?: string | undefined;
   verified?: boolean | undefined;
-  botshield_user_id?: string | undefined;
   organization_id?: string | undefined;
-  partner_user_id?: string | undefined;
-  auth_mode?: string | undefined;
-  user_email?: string | undefined;
   timestamp?: string | undefined;
+  nonce?: string | undefined;
   issued_at?: number | undefined;
   expires_at?: number | undefined;
 };
@@ -245,22 +182,15 @@ export const Claims$outboundSchema: z.ZodType<
 > = z.object({
   requestId: z.string().optional(),
   verified: z.boolean().optional(),
-  botshieldUserId: z.string().optional(),
   organizationId: z.string().optional(),
-  partnerUserId: z.string().optional(),
-  authMode: SDKVerifyTokenAuthMode$outboundSchema.optional(),
-  userEmail: z.string().optional(),
   timestamp: z.string().optional(),
+  nonce: z.string().optional(),
   issuedAt: z.number().optional(),
   expiresAt: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
-    botshieldUserId: "botshield_user_id",
     organizationId: "organization_id",
-    partnerUserId: "partner_user_id",
-    authMode: "auth_mode",
-    userEmail: "user_email",
     issuedAt: "issued_at",
     expiresAt: "expires_at",
   });
@@ -280,115 +210,100 @@ export function claimsFromJSON(
 }
 
 /** @internal */
-export const Turnstile$inboundSchema: z.ZodType<
-  Turnstile,
+export const SDKVerifyTokenDataData$inboundSchema: z.ZodType<
+  SDKVerifyTokenDataData,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  success: types.optional(types.boolean()),
-});
-/** @internal */
-export type Turnstile$Outbound = {
-  success?: boolean | undefined;
-};
-
-/** @internal */
-export const Turnstile$outboundSchema: z.ZodType<
-  Turnstile$Outbound,
-  z.ZodTypeDef,
-  Turnstile
-> = z.object({
-  success: z.boolean().optional(),
-});
-
-export function turnstileToJSON(turnstile: Turnstile): string {
-  return JSON.stringify(Turnstile$outboundSchema.parse(turnstile));
-}
-export function turnstileFromJSON(
-  jsonString: string,
-): SafeParseResult<Turnstile, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Turnstile$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Turnstile' from JSON`,
-  );
-}
-
-/** @internal */
-export const Passkey$inboundSchema: z.ZodType<Passkey, z.ZodTypeDef, unknown> =
-  z.object({
-    verified: types.optional(types.boolean()),
-  });
-/** @internal */
-export type Passkey$Outbound = {
-  verified?: boolean | undefined;
-};
-
-/** @internal */
-export const Passkey$outboundSchema: z.ZodType<
-  Passkey$Outbound,
-  z.ZodTypeDef,
-  Passkey
-> = z.object({
-  verified: z.boolean().optional(),
-});
-
-export function passkeyToJSON(passkey: Passkey): string {
-  return JSON.stringify(Passkey$outboundSchema.parse(passkey));
-}
-export function passkeyFromJSON(
-  jsonString: string,
-): SafeParseResult<Passkey, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Passkey$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Passkey' from JSON`,
-  );
-}
-
-/** @internal */
-export const Signals$inboundSchema: z.ZodType<Signals, z.ZodTypeDef, unknown> =
-  z.object({
-    botshield_score: types.optional(types.number()),
-    turnstile: types.optional(z.lazy(() => Turnstile$inboundSchema)),
-    passkey: types.optional(z.lazy(() => Passkey$inboundSchema)),
-  }).transform((v) => {
-    return remap$(v, {
-      "botshield_score": "botshieldScore",
-    });
-  });
-/** @internal */
-export type Signals$Outbound = {
-  botshield_score?: number | undefined;
-  turnstile?: Turnstile$Outbound | undefined;
-  passkey?: Passkey$Outbound | undefined;
-};
-
-/** @internal */
-export const Signals$outboundSchema: z.ZodType<
-  Signals$Outbound,
-  z.ZodTypeDef,
-  Signals
-> = z.object({
-  botshieldScore: z.number().int().optional(),
-  turnstile: z.lazy(() => Turnstile$outboundSchema).optional(),
-  passkey: z.lazy(() => Passkey$outboundSchema).optional(),
+  valid: types.boolean(),
+  reason: types.optional(types.string()),
+  expired_at: z.nullable(types.date()).optional(),
+  claims: z.nullable(z.lazy(() => Claims$inboundSchema)).optional(),
 }).transform((v) => {
   return remap$(v, {
-    botshieldScore: "botshield_score",
+    "expired_at": "expiredAt",
+  });
+});
+/** @internal */
+export type SDKVerifyTokenDataData$Outbound = {
+  valid: boolean;
+  reason?: string | undefined;
+  expired_at?: string | null | undefined;
+  claims?: Claims$Outbound | null | undefined;
+};
+
+/** @internal */
+export const SDKVerifyTokenDataData$outboundSchema: z.ZodType<
+  SDKVerifyTokenDataData$Outbound,
+  z.ZodTypeDef,
+  SDKVerifyTokenDataData
+> = z.object({
+  valid: z.boolean(),
+  reason: z.string().optional(),
+  expiredAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
+  claims: z.nullable(z.lazy(() => Claims$outboundSchema)).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    expiredAt: "expired_at",
   });
 });
 
-export function signalsToJSON(signals: Signals): string {
-  return JSON.stringify(Signals$outboundSchema.parse(signals));
+export function sdkVerifyTokenDataDataToJSON(
+  sdkVerifyTokenDataData: SDKVerifyTokenDataData,
+): string {
+  return JSON.stringify(
+    SDKVerifyTokenDataData$outboundSchema.parse(sdkVerifyTokenDataData),
+  );
 }
-export function signalsFromJSON(
+export function sdkVerifyTokenDataDataFromJSON(
   jsonString: string,
-): SafeParseResult<Signals, SDKValidationError> {
+): SafeParseResult<SDKVerifyTokenDataData, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Signals$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Signals' from JSON`,
+    (x) => SDKVerifyTokenDataData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKVerifyTokenDataData' from JSON`,
+  );
+}
+
+/** @internal */
+export const SDKVerifyTokenData$inboundSchema: z.ZodType<
+  SDKVerifyTokenData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: types.optional(z.lazy(() => SDKVerifyTokenDataData$inboundSchema)),
+  error: types.optional(models.ErrorBody$inboundSchema),
+});
+/** @internal */
+export type SDKVerifyTokenData$Outbound = {
+  data?: SDKVerifyTokenDataData$Outbound | undefined;
+  error?: models.ErrorBody$Outbound | undefined;
+};
+
+/** @internal */
+export const SDKVerifyTokenData$outboundSchema: z.ZodType<
+  SDKVerifyTokenData$Outbound,
+  z.ZodTypeDef,
+  SDKVerifyTokenData
+> = z.object({
+  data: z.lazy(() => SDKVerifyTokenDataData$outboundSchema).optional(),
+  error: models.ErrorBody$outboundSchema.optional(),
+});
+
+export function sdkVerifyTokenDataToJSON(
+  sdkVerifyTokenData: SDKVerifyTokenData,
+): string {
+  return JSON.stringify(
+    SDKVerifyTokenData$outboundSchema.parse(sdkVerifyTokenData),
+  );
+}
+export function sdkVerifyTokenDataFromJSON(
+  jsonString: string,
+): SafeParseResult<SDKVerifyTokenData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SDKVerifyTokenData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKVerifyTokenData' from JSON`,
   );
 }
 
@@ -398,19 +313,11 @@ export const SDKVerifyTokenResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  valid: types.optional(types.boolean()),
-  reason: types.optional(types.string()),
-  confidence: types.optional(types.number()),
-  claims: types.optional(z.lazy(() => Claims$inboundSchema)),
-  signals: types.optional(z.lazy(() => Signals$inboundSchema)),
+  data: z.lazy(() => SDKVerifyTokenData$inboundSchema),
 });
 /** @internal */
 export type SDKVerifyTokenResponse$Outbound = {
-  valid?: boolean | undefined;
-  reason?: string | undefined;
-  confidence?: number | undefined;
-  claims?: Claims$Outbound | undefined;
-  signals?: Signals$Outbound | undefined;
+  data: SDKVerifyTokenData$Outbound;
 };
 
 /** @internal */
@@ -419,11 +326,7 @@ export const SDKVerifyTokenResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   SDKVerifyTokenResponse
 > = z.object({
-  valid: z.boolean().optional(),
-  reason: z.string().optional(),
-  confidence: z.number().optional(),
-  claims: z.lazy(() => Claims$outboundSchema).optional(),
-  signals: z.lazy(() => Signals$outboundSchema).optional(),
+  data: z.lazy(() => SDKVerifyTokenData$outboundSchema),
 });
 
 export function sdkVerifyTokenResponseToJSON(

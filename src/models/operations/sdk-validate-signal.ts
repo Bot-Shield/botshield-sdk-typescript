@@ -5,13 +5,12 @@
 import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
-
-export type SDKValidateSignalSecurity = {
-  apiKeyAuth: string;
-};
+import * as models from "../index.js";
 
 export type SDKValidateSignalRequest = {
   signalToken: string;
@@ -19,66 +18,46 @@ export type SDKValidateSignalRequest = {
 };
 
 /**
- * Validation result
+ * Present when valid is false.
  */
-export type SDKValidateSignalResponse = {
-  valid?: boolean | undefined;
+export const Reason = {
+  InvalidSignalToken: "invalid_signal_token",
+  SignalTokenExpired: "signal_token_expired",
+  SignalTokenAlreadyUsed: "signal_token_already_used",
+} as const;
+/**
+ * Present when valid is false.
+ */
+export type Reason = OpenEnum<typeof Reason>;
+
+export type SDKValidateSignalDataData = {
+  valid: boolean;
+  /**
+   * Present when valid is false.
+   */
+  reason?: Reason | undefined;
   score?: number | undefined;
   edgeScore?: number | undefined;
   clientScore?: number | undefined;
-  fpHash?: string | undefined;
   country?: string | undefined;
   siteKey?: string | undefined;
   createdAt?: Date | undefined;
-  reason?: string | undefined;
 };
 
-/** @internal */
-export const SDKValidateSignalSecurity$inboundSchema: z.ZodType<
-  SDKValidateSignalSecurity,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ApiKeyAuth: types.string(),
-}).transform((v) => {
-  return remap$(v, {
-    "ApiKeyAuth": "apiKeyAuth",
-  });
-});
-/** @internal */
-export type SDKValidateSignalSecurity$Outbound = {
-  ApiKeyAuth: string;
+export type SDKValidateSignalData = {
+  data?: SDKValidateSignalDataData | undefined;
+  /**
+   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   */
+  error?: models.ErrorBody | undefined;
 };
 
-/** @internal */
-export const SDKValidateSignalSecurity$outboundSchema: z.ZodType<
-  SDKValidateSignalSecurity$Outbound,
-  z.ZodTypeDef,
-  SDKValidateSignalSecurity
-> = z.object({
-  apiKeyAuth: z.string(),
-}).transform((v) => {
-  return remap$(v, {
-    apiKeyAuth: "ApiKeyAuth",
-  });
-});
-
-export function sdkValidateSignalSecurityToJSON(
-  sdkValidateSignalSecurity: SDKValidateSignalSecurity,
-): string {
-  return JSON.stringify(
-    SDKValidateSignalSecurity$outboundSchema.parse(sdkValidateSignalSecurity),
-  );
-}
-export function sdkValidateSignalSecurityFromJSON(
-  jsonString: string,
-): SafeParseResult<SDKValidateSignalSecurity, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => SDKValidateSignalSecurity$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'SDKValidateSignalSecurity' from JSON`,
-  );
-}
+/**
+ * Validation result. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: none — an invalid token is a normal result with valid=false.
+ */
+export type SDKValidateSignalResponse = {
+  data: SDKValidateSignalData;
+};
 
 /** @internal */
 export const SDKValidateSignalRequest$inboundSchema: z.ZodType<
@@ -133,40 +112,139 @@ export function sdkValidateSignalRequestFromJSON(
 }
 
 /** @internal */
-export const SDKValidateSignalResponse$inboundSchema: z.ZodType<
-  SDKValidateSignalResponse,
+export const Reason$inboundSchema: z.ZodType<Reason, z.ZodTypeDef, unknown> =
+  openEnums.inboundSchema(Reason);
+/** @internal */
+export const Reason$outboundSchema: z.ZodType<string, z.ZodTypeDef, Reason> =
+  openEnums.outboundSchema(Reason);
+
+/** @internal */
+export const SDKValidateSignalDataData$inboundSchema: z.ZodType<
+  SDKValidateSignalDataData,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  valid: types.optional(types.boolean()),
+  valid: types.boolean(),
+  reason: types.optional(Reason$inboundSchema),
   score: types.optional(types.number()),
   edge_score: types.optional(types.number()),
   client_score: types.optional(types.number()),
-  fp_hash: types.optional(types.string()),
   country: types.optional(types.string()),
   site_key: types.optional(types.string()),
   created_at: types.optional(types.date()),
-  reason: types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "edge_score": "edgeScore",
     "client_score": "clientScore",
-    "fp_hash": "fpHash",
     "site_key": "siteKey",
     "created_at": "createdAt",
   });
 });
 /** @internal */
-export type SDKValidateSignalResponse$Outbound = {
-  valid?: boolean | undefined;
+export type SDKValidateSignalDataData$Outbound = {
+  valid: boolean;
+  reason?: string | undefined;
   score?: number | undefined;
   edge_score?: number | undefined;
   client_score?: number | undefined;
-  fp_hash?: string | undefined;
   country?: string | undefined;
   site_key?: string | undefined;
   created_at?: string | undefined;
-  reason?: string | undefined;
+};
+
+/** @internal */
+export const SDKValidateSignalDataData$outboundSchema: z.ZodType<
+  SDKValidateSignalDataData$Outbound,
+  z.ZodTypeDef,
+  SDKValidateSignalDataData
+> = z.object({
+  valid: z.boolean(),
+  reason: Reason$outboundSchema.optional(),
+  score: z.number().int().optional(),
+  edgeScore: z.number().int().optional(),
+  clientScore: z.number().int().optional(),
+  country: z.string().optional(),
+  siteKey: z.string().optional(),
+  createdAt: z.date().transform(v => v.toISOString()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    edgeScore: "edge_score",
+    clientScore: "client_score",
+    siteKey: "site_key",
+    createdAt: "created_at",
+  });
+});
+
+export function sdkValidateSignalDataDataToJSON(
+  sdkValidateSignalDataData: SDKValidateSignalDataData,
+): string {
+  return JSON.stringify(
+    SDKValidateSignalDataData$outboundSchema.parse(sdkValidateSignalDataData),
+  );
+}
+export function sdkValidateSignalDataDataFromJSON(
+  jsonString: string,
+): SafeParseResult<SDKValidateSignalDataData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SDKValidateSignalDataData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKValidateSignalDataData' from JSON`,
+  );
+}
+
+/** @internal */
+export const SDKValidateSignalData$inboundSchema: z.ZodType<
+  SDKValidateSignalData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: types.optional(z.lazy(() => SDKValidateSignalDataData$inboundSchema)),
+  error: types.optional(models.ErrorBody$inboundSchema),
+});
+/** @internal */
+export type SDKValidateSignalData$Outbound = {
+  data?: SDKValidateSignalDataData$Outbound | undefined;
+  error?: models.ErrorBody$Outbound | undefined;
+};
+
+/** @internal */
+export const SDKValidateSignalData$outboundSchema: z.ZodType<
+  SDKValidateSignalData$Outbound,
+  z.ZodTypeDef,
+  SDKValidateSignalData
+> = z.object({
+  data: z.lazy(() => SDKValidateSignalDataData$outboundSchema).optional(),
+  error: models.ErrorBody$outboundSchema.optional(),
+});
+
+export function sdkValidateSignalDataToJSON(
+  sdkValidateSignalData: SDKValidateSignalData,
+): string {
+  return JSON.stringify(
+    SDKValidateSignalData$outboundSchema.parse(sdkValidateSignalData),
+  );
+}
+export function sdkValidateSignalDataFromJSON(
+  jsonString: string,
+): SafeParseResult<SDKValidateSignalData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SDKValidateSignalData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKValidateSignalData' from JSON`,
+  );
+}
+
+/** @internal */
+export const SDKValidateSignalResponse$inboundSchema: z.ZodType<
+  SDKValidateSignalResponse,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: z.lazy(() => SDKValidateSignalData$inboundSchema),
+});
+/** @internal */
+export type SDKValidateSignalResponse$Outbound = {
+  data: SDKValidateSignalData$Outbound;
 };
 
 /** @internal */
@@ -175,23 +253,7 @@ export const SDKValidateSignalResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   SDKValidateSignalResponse
 > = z.object({
-  valid: z.boolean().optional(),
-  score: z.number().int().optional(),
-  edgeScore: z.number().int().optional(),
-  clientScore: z.number().int().optional(),
-  fpHash: z.string().optional(),
-  country: z.string().optional(),
-  siteKey: z.string().optional(),
-  createdAt: z.date().transform(v => v.toISOString()).optional(),
-  reason: z.string().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    edgeScore: "edge_score",
-    clientScore: "client_score",
-    fpHash: "fp_hash",
-    siteKey: "site_key",
-    createdAt: "created_at",
-  });
+  data: z.lazy(() => SDKValidateSignalData$outboundSchema),
 });
 
 export function sdkValidateSignalResponseToJSON(

@@ -3,36 +3,16 @@
  */
 
 import { verificationGetStatus } from "../funcs/verification-get-status.js";
-import { verificationLookupUserByEmail } from "../funcs/verification-lookup-user-by-email.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
 export class Verification extends ClientSDK {
   /**
-   * Look up user by email
-   *
-   * @remarks
-   * Check whether a user exists and has a registered passkey before initiating verification.
-   */
-  async lookupUserByEmail(
-    security: operations.VerificationLookupUserByEmailSecurity,
-    request: operations.VerificationLookupUserByEmailRequest,
-    options?: RequestOptions,
-  ): Promise<operations.VerificationLookupUserByEmailResponse> {
-    return unwrapAsync(verificationLookupUserByEmail(
-      this,
-      security,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Check verification status
    *
    * @remarks
-   * Poll for verification request status. Returns signed token on completion.
+   * Poll a verification request. Carries the signed attestation on completion and NO identity — no user_email, partner_user_id, auth_mode, or botshield_user_id ever cross this boundary.
    */
   async getStatus(
     security: operations.VerificationGetStatusSecurity,

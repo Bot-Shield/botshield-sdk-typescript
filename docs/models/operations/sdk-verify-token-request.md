@@ -12,7 +12,6 @@ let value: SDKVerifyTokenRequest = {
 
 ## Fields
 
-| Field                                               | Type                                                | Required                                            | Description                                         |
-| --------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
-| `token`                                             | *string*                                            | :heavy_check_mark:                                  | JWT verification receipt                            |
-| `signalToken`                                       | *string*                                            | :heavy_minus_sign:                                  | Optional Signal Pixel token for combined confidence |
+| Field                    | Type                     | Required                 | Description              |
+| ------------------------ | ------------------------ | ------------------------ | ------------------------ |
+| `token`                  | *string*                 | :heavy_check_mark:       | JWT verification receipt |

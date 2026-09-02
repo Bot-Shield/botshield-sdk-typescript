@@ -1,6 +1,6 @@
 # SDKRevokeVerificationResponse
 
-Revocation result
+Revocation result. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401.
 
 ## Example Usage
 

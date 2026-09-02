@@ -10,14 +10,12 @@ import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
+import * as models from "../index.js";
 
 export type SDKGetPartnerConfigSecurity = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
   apiKeyAuth2?: string | undefined;
-  apiKeyAuth3?: string | undefined;
-  apiKeyAuth4?: string | undefined;
-  apiKeyAuth5?: string | undefined;
 };
 
 export type SDKGetPartnerConfigRequest = {
@@ -30,18 +28,41 @@ export type Integrations = {
   config?: { [k: string]: any } | undefined;
 };
 
-export const Environment = {
+/**
+ * Site key environment. Omitted when the site key is unknown or has no enabled integrations.
+ */
+export const SDKGetPartnerConfigEnvironment = {
   Test: "test",
   Live: "live",
 } as const;
-export type Environment = OpenEnum<typeof Environment>;
+/**
+ * Site key environment. Omitted when the site key is unknown or has no enabled integrations.
+ */
+export type SDKGetPartnerConfigEnvironment = OpenEnum<
+  typeof SDKGetPartnerConfigEnvironment
+>;
+
+export type SDKGetPartnerConfigDataData = {
+  integrations: { [k: string]: Integrations };
+  /**
+   * Site key environment. Omitted when the site key is unknown or has no enabled integrations.
+   */
+  environment?: SDKGetPartnerConfigEnvironment | undefined;
+};
+
+export type SDKGetPartnerConfigData = {
+  data?: SDKGetPartnerConfigDataData | undefined;
+  /**
+   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   */
+  error?: models.ErrorBody | undefined;
+};
 
 /**
- * Partner configuration
+ * Partner configuration. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: none — unknown site key returns empty integrations.
  */
 export type SDKGetPartnerConfigResponse = {
-  integrations?: { [k: string]: Integrations } | undefined;
-  environment?: Environment | undefined;
+  data: SDKGetPartnerConfigData;
 };
 
 /** @internal */
@@ -53,18 +74,12 @@ export const SDKGetPartnerConfigSecurity$inboundSchema: z.ZodType<
   apiKeyAuth: types.optional(types.string()),
   apiKeyAuth1: types.optional(types.string()),
   apiKeyAuth2: types.optional(types.string()),
-  apiKeyAuth3: types.optional(types.string()),
-  apiKeyAuth4: types.optional(types.string()),
-  apiKeyAuth5: types.optional(types.string()),
 });
 /** @internal */
 export type SDKGetPartnerConfigSecurity$Outbound = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
   apiKeyAuth2?: string | undefined;
-  apiKeyAuth3?: string | undefined;
-  apiKeyAuth4?: string | undefined;
-  apiKeyAuth5?: string | undefined;
 };
 
 /** @internal */
@@ -76,9 +91,6 @@ export const SDKGetPartnerConfigSecurity$outboundSchema: z.ZodType<
   apiKeyAuth: z.string().optional(),
   apiKeyAuth1: z.string().optional(),
   apiKeyAuth2: z.string().optional(),
-  apiKeyAuth3: z.string().optional(),
-  apiKeyAuth4: z.string().optional(),
-  apiKeyAuth5: z.string().optional(),
 });
 
 export function sdkGetPartnerConfigSecurityToJSON(
@@ -197,17 +209,103 @@ export function integrationsFromJSON(
 }
 
 /** @internal */
-export const Environment$inboundSchema: z.ZodType<
-  Environment,
+export const SDKGetPartnerConfigEnvironment$inboundSchema: z.ZodType<
+  SDKGetPartnerConfigEnvironment,
   z.ZodTypeDef,
   unknown
-> = openEnums.inboundSchema(Environment);
+> = openEnums.inboundSchema(SDKGetPartnerConfigEnvironment);
 /** @internal */
-export const Environment$outboundSchema: z.ZodType<
+export const SDKGetPartnerConfigEnvironment$outboundSchema: z.ZodType<
   string,
   z.ZodTypeDef,
-  Environment
-> = openEnums.outboundSchema(Environment);
+  SDKGetPartnerConfigEnvironment
+> = openEnums.outboundSchema(SDKGetPartnerConfigEnvironment);
+
+/** @internal */
+export const SDKGetPartnerConfigDataData$inboundSchema: z.ZodType<
+  SDKGetPartnerConfigDataData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  integrations: z.record(z.lazy(() => Integrations$inboundSchema)),
+  environment: types.optional(SDKGetPartnerConfigEnvironment$inboundSchema),
+});
+/** @internal */
+export type SDKGetPartnerConfigDataData$Outbound = {
+  integrations: { [k: string]: Integrations$Outbound };
+  environment?: string | undefined;
+};
+
+/** @internal */
+export const SDKGetPartnerConfigDataData$outboundSchema: z.ZodType<
+  SDKGetPartnerConfigDataData$Outbound,
+  z.ZodTypeDef,
+  SDKGetPartnerConfigDataData
+> = z.object({
+  integrations: z.record(z.lazy(() => Integrations$outboundSchema)),
+  environment: SDKGetPartnerConfigEnvironment$outboundSchema.optional(),
+});
+
+export function sdkGetPartnerConfigDataDataToJSON(
+  sdkGetPartnerConfigDataData: SDKGetPartnerConfigDataData,
+): string {
+  return JSON.stringify(
+    SDKGetPartnerConfigDataData$outboundSchema.parse(
+      sdkGetPartnerConfigDataData,
+    ),
+  );
+}
+export function sdkGetPartnerConfigDataDataFromJSON(
+  jsonString: string,
+): SafeParseResult<SDKGetPartnerConfigDataData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SDKGetPartnerConfigDataData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKGetPartnerConfigDataData' from JSON`,
+  );
+}
+
+/** @internal */
+export const SDKGetPartnerConfigData$inboundSchema: z.ZodType<
+  SDKGetPartnerConfigData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: types.optional(z.lazy(() => SDKGetPartnerConfigDataData$inboundSchema)),
+  error: types.optional(models.ErrorBody$inboundSchema),
+});
+/** @internal */
+export type SDKGetPartnerConfigData$Outbound = {
+  data?: SDKGetPartnerConfigDataData$Outbound | undefined;
+  error?: models.ErrorBody$Outbound | undefined;
+};
+
+/** @internal */
+export const SDKGetPartnerConfigData$outboundSchema: z.ZodType<
+  SDKGetPartnerConfigData$Outbound,
+  z.ZodTypeDef,
+  SDKGetPartnerConfigData
+> = z.object({
+  data: z.lazy(() => SDKGetPartnerConfigDataData$outboundSchema).optional(),
+  error: models.ErrorBody$outboundSchema.optional(),
+});
+
+export function sdkGetPartnerConfigDataToJSON(
+  sdkGetPartnerConfigData: SDKGetPartnerConfigData,
+): string {
+  return JSON.stringify(
+    SDKGetPartnerConfigData$outboundSchema.parse(sdkGetPartnerConfigData),
+  );
+}
+export function sdkGetPartnerConfigDataFromJSON(
+  jsonString: string,
+): SafeParseResult<SDKGetPartnerConfigData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SDKGetPartnerConfigData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKGetPartnerConfigData' from JSON`,
+  );
+}
 
 /** @internal */
 export const SDKGetPartnerConfigResponse$inboundSchema: z.ZodType<
@@ -215,15 +313,11 @@ export const SDKGetPartnerConfigResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  integrations: types.optional(
-    z.record(z.lazy(() => Integrations$inboundSchema)),
-  ),
-  environment: types.optional(Environment$inboundSchema),
+  data: z.lazy(() => SDKGetPartnerConfigData$inboundSchema),
 });
 /** @internal */
 export type SDKGetPartnerConfigResponse$Outbound = {
-  integrations?: { [k: string]: Integrations$Outbound } | undefined;
-  environment?: string | undefined;
+  data: SDKGetPartnerConfigData$Outbound;
 };
 
 /** @internal */
@@ -232,8 +326,7 @@ export const SDKGetPartnerConfigResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   SDKGetPartnerConfigResponse
 > = z.object({
-  integrations: z.record(z.lazy(() => Integrations$outboundSchema)).optional(),
-  environment: Environment$outboundSchema.optional(),
+  data: z.lazy(() => SDKGetPartnerConfigData$outboundSchema),
 });
 
 export function sdkGetPartnerConfigResponseToJSON(

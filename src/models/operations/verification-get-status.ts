@@ -10,14 +10,12 @@ import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
+import * as models from "../index.js";
 
 export type VerificationGetStatusSecurity = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
   apiKeyAuth2?: string | undefined;
-  apiKeyAuth3?: string | undefined;
-  apiKeyAuth4?: string | undefined;
-  apiKeyAuth5?: string | undefined;
 };
 
 export type VerificationGetStatusRequest = {
@@ -30,6 +28,7 @@ export const VerificationGetStatusStatus = {
   Expired: "expired",
   Failed: "failed",
   NotFound: "not_found",
+  Error: "error",
 } as const;
 export type VerificationGetStatusStatus = OpenEnum<
   typeof VerificationGetStatusStatus
@@ -43,40 +42,53 @@ export type VerificationGetStatusSDKType = OpenEnum<
   typeof VerificationGetStatusSDKType
 >;
 
-export const VerificationGetStatusAuthMode = {
-  LinkedAccount: "linked-account",
-  Private: "private",
-} as const;
-export type VerificationGetStatusAuthMode = OpenEnum<
-  typeof VerificationGetStatusAuthMode
->;
+export type Metadata = {
+  /**
+   * The gate.
+   */
+  scope?: string | null | undefined;
+  sdkType?: string | null | undefined;
+  environment?: string | null | undefined;
+  returnUrl?: string | null | undefined;
+  parentRequestId?: string | null | undefined;
+};
 
-/**
- * Verification status
- */
-export type VerificationGetStatusResponse = {
+export type VerificationGetStatusData = {
   found?: boolean | undefined;
   status?: VerificationGetStatusStatus | undefined;
   requestId?: string | undefined;
   organizationId?: string | undefined;
-  partnerUserId?: string | undefined;
-  userEmail?: string | undefined;
   createdAt?: Date | undefined;
   expiresAt?: Date | undefined;
-  verifiedAt?: Date | undefined;
-  signedToken?: string | undefined;
+  verifiedAt?: Date | null | undefined;
+  signedToken?: string | null | undefined;
   /**
    * Legacy alias
    */
-  verificationToken?: string | undefined;
-  errorMessage?: string | undefined;
-  sdkType?: VerificationGetStatusSDKType | undefined;
-  scope?: string | undefined;
-  authMode?: VerificationGetStatusAuthMode | undefined;
-  presenceAddress?: string | undefined;
-  signalScore?: number | undefined;
-  confidence?: number | undefined;
-  metadata?: { [k: string]: any } | undefined;
+  verificationToken?: string | null | undefined;
+  errorMessage?: string | null | undefined;
+  sdkType?: VerificationGetStatusSDKType | null | undefined;
+  scope?: string | null | undefined;
+  /**
+   * Only for sdk_type=presence; null on every other lane.
+   */
+  presenceAddress?: string | null | undefined;
+  metadata?: Metadata | null | undefined;
+  /**
+   * Present on not_found / error.
+   */
+  message?: string | undefined;
+  /**
+   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   */
+  error?: models.ErrorBody | undefined;
+};
+
+/**
+ * Verification status. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: none — unknown ids return status not_found.
+ */
+export type VerificationGetStatusResponse = {
+  data: VerificationGetStatusData;
 };
 
 /** @internal */
@@ -88,18 +100,12 @@ export const VerificationGetStatusSecurity$inboundSchema: z.ZodType<
   apiKeyAuth: types.optional(types.string()),
   apiKeyAuth1: types.optional(types.string()),
   apiKeyAuth2: types.optional(types.string()),
-  apiKeyAuth3: types.optional(types.string()),
-  apiKeyAuth4: types.optional(types.string()),
-  apiKeyAuth5: types.optional(types.string()),
 });
 /** @internal */
 export type VerificationGetStatusSecurity$Outbound = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
   apiKeyAuth2?: string | undefined;
-  apiKeyAuth3?: string | undefined;
-  apiKeyAuth4?: string | undefined;
-  apiKeyAuth5?: string | undefined;
 };
 
 /** @internal */
@@ -111,9 +117,6 @@ export const VerificationGetStatusSecurity$outboundSchema: z.ZodType<
   apiKeyAuth: z.string().optional(),
   apiKeyAuth1: z.string().optional(),
   apiKeyAuth2: z.string().optional(),
-  apiKeyAuth3: z.string().optional(),
-  apiKeyAuth4: z.string().optional(),
-  apiKeyAuth5: z.string().optional(),
 });
 
 export function verificationGetStatusSecurityToJSON(
@@ -211,21 +214,67 @@ export const VerificationGetStatusSDKType$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(VerificationGetStatusSDKType);
 
 /** @internal */
-export const VerificationGetStatusAuthMode$inboundSchema: z.ZodType<
-  VerificationGetStatusAuthMode,
+export const Metadata$inboundSchema: z.ZodType<
+  Metadata,
   z.ZodTypeDef,
   unknown
-> = openEnums.inboundSchema(VerificationGetStatusAuthMode);
+> = z.object({
+  scope: z.nullable(types.string()).optional(),
+  sdk_type: z.nullable(types.string()).optional(),
+  environment: z.nullable(types.string()).optional(),
+  return_url: z.nullable(types.string()).optional(),
+  parent_request_id: z.nullable(types.string()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "sdk_type": "sdkType",
+    "return_url": "returnUrl",
+    "parent_request_id": "parentRequestId",
+  });
+});
 /** @internal */
-export const VerificationGetStatusAuthMode$outboundSchema: z.ZodType<
-  string,
-  z.ZodTypeDef,
-  VerificationGetStatusAuthMode
-> = openEnums.outboundSchema(VerificationGetStatusAuthMode);
+export type Metadata$Outbound = {
+  scope?: string | null | undefined;
+  sdk_type?: string | null | undefined;
+  environment?: string | null | undefined;
+  return_url?: string | null | undefined;
+  parent_request_id?: string | null | undefined;
+};
 
 /** @internal */
-export const VerificationGetStatusResponse$inboundSchema: z.ZodType<
-  VerificationGetStatusResponse,
+export const Metadata$outboundSchema: z.ZodType<
+  Metadata$Outbound,
+  z.ZodTypeDef,
+  Metadata
+> = z.object({
+  scope: z.nullable(z.string()).optional(),
+  sdkType: z.nullable(z.string()).optional(),
+  environment: z.nullable(z.string()).optional(),
+  returnUrl: z.nullable(z.string()).optional(),
+  parentRequestId: z.nullable(z.string()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    sdkType: "sdk_type",
+    returnUrl: "return_url",
+    parentRequestId: "parent_request_id",
+  });
+});
+
+export function metadataToJSON(metadata: Metadata): string {
+  return JSON.stringify(Metadata$outboundSchema.parse(metadata));
+}
+export function metadataFromJSON(
+  jsonString: string,
+): SafeParseResult<Metadata, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Metadata$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Metadata' from JSON`,
+  );
+}
+
+/** @internal */
+export const VerificationGetStatusData$inboundSchema: z.ZodType<
+  VerificationGetStatusData,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -233,27 +282,22 @@ export const VerificationGetStatusResponse$inboundSchema: z.ZodType<
   status: types.optional(VerificationGetStatusStatus$inboundSchema),
   request_id: types.optional(types.string()),
   organization_id: types.optional(types.string()),
-  partner_user_id: types.optional(types.string()),
-  user_email: types.optional(types.string()),
   created_at: types.optional(types.date()),
   expires_at: types.optional(types.date()),
-  verified_at: types.optional(types.date()),
-  signed_token: types.optional(types.string()),
-  verification_token: types.optional(types.string()),
-  error_message: types.optional(types.string()),
-  sdk_type: types.optional(VerificationGetStatusSDKType$inboundSchema),
-  scope: types.optional(types.string()),
-  auth_mode: types.optional(VerificationGetStatusAuthMode$inboundSchema),
-  presence_address: types.optional(types.string()),
-  signal_score: types.optional(types.number()),
-  confidence: types.optional(types.number()),
-  metadata: types.optional(z.record(z.any())),
+  verified_at: z.nullable(types.date()).optional(),
+  signed_token: z.nullable(types.string()).optional(),
+  verification_token: z.nullable(types.string()).optional(),
+  error_message: z.nullable(types.string()).optional(),
+  sdk_type: z.nullable(VerificationGetStatusSDKType$inboundSchema).optional(),
+  scope: z.nullable(types.string()).optional(),
+  presence_address: z.nullable(types.string()).optional(),
+  metadata: z.nullable(z.lazy(() => Metadata$inboundSchema)).optional(),
+  message: types.optional(types.string()),
+  error: types.optional(models.ErrorBody$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
     "organization_id": "organizationId",
-    "partner_user_id": "partnerUserId",
-    "user_email": "userEmail",
     "created_at": "createdAt",
     "expires_at": "expiresAt",
     "verified_at": "verifiedAt",
@@ -261,32 +305,94 @@ export const VerificationGetStatusResponse$inboundSchema: z.ZodType<
     "verification_token": "verificationToken",
     "error_message": "errorMessage",
     "sdk_type": "sdkType",
-    "auth_mode": "authMode",
     "presence_address": "presenceAddress",
-    "signal_score": "signalScore",
   });
 });
 /** @internal */
-export type VerificationGetStatusResponse$Outbound = {
+export type VerificationGetStatusData$Outbound = {
   found?: boolean | undefined;
   status?: string | undefined;
   request_id?: string | undefined;
   organization_id?: string | undefined;
-  partner_user_id?: string | undefined;
-  user_email?: string | undefined;
   created_at?: string | undefined;
   expires_at?: string | undefined;
-  verified_at?: string | undefined;
-  signed_token?: string | undefined;
-  verification_token?: string | undefined;
-  error_message?: string | undefined;
-  sdk_type?: string | undefined;
-  scope?: string | undefined;
-  auth_mode?: string | undefined;
-  presence_address?: string | undefined;
-  signal_score?: number | undefined;
-  confidence?: number | undefined;
-  metadata?: { [k: string]: any } | undefined;
+  verified_at?: string | null | undefined;
+  signed_token?: string | null | undefined;
+  verification_token?: string | null | undefined;
+  error_message?: string | null | undefined;
+  sdk_type?: string | null | undefined;
+  scope?: string | null | undefined;
+  presence_address?: string | null | undefined;
+  metadata?: Metadata$Outbound | null | undefined;
+  message?: string | undefined;
+  error?: models.ErrorBody$Outbound | undefined;
+};
+
+/** @internal */
+export const VerificationGetStatusData$outboundSchema: z.ZodType<
+  VerificationGetStatusData$Outbound,
+  z.ZodTypeDef,
+  VerificationGetStatusData
+> = z.object({
+  found: z.boolean().optional(),
+  status: VerificationGetStatusStatus$outboundSchema.optional(),
+  requestId: z.string().optional(),
+  organizationId: z.string().optional(),
+  createdAt: z.date().transform(v => v.toISOString()).optional(),
+  expiresAt: z.date().transform(v => v.toISOString()).optional(),
+  verifiedAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
+  signedToken: z.nullable(z.string()).optional(),
+  verificationToken: z.nullable(z.string()).optional(),
+  errorMessage: z.nullable(z.string()).optional(),
+  sdkType: z.nullable(VerificationGetStatusSDKType$outboundSchema).optional(),
+  scope: z.nullable(z.string()).optional(),
+  presenceAddress: z.nullable(z.string()).optional(),
+  metadata: z.nullable(z.lazy(() => Metadata$outboundSchema)).optional(),
+  message: z.string().optional(),
+  error: models.ErrorBody$outboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    requestId: "request_id",
+    organizationId: "organization_id",
+    createdAt: "created_at",
+    expiresAt: "expires_at",
+    verifiedAt: "verified_at",
+    signedToken: "signed_token",
+    verificationToken: "verification_token",
+    errorMessage: "error_message",
+    sdkType: "sdk_type",
+    presenceAddress: "presence_address",
+  });
+});
+
+export function verificationGetStatusDataToJSON(
+  verificationGetStatusData: VerificationGetStatusData,
+): string {
+  return JSON.stringify(
+    VerificationGetStatusData$outboundSchema.parse(verificationGetStatusData),
+  );
+}
+export function verificationGetStatusDataFromJSON(
+  jsonString: string,
+): SafeParseResult<VerificationGetStatusData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => VerificationGetStatusData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'VerificationGetStatusData' from JSON`,
+  );
+}
+
+/** @internal */
+export const VerificationGetStatusResponse$inboundSchema: z.ZodType<
+  VerificationGetStatusResponse,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: z.lazy(() => VerificationGetStatusData$inboundSchema),
+});
+/** @internal */
+export type VerificationGetStatusResponse$Outbound = {
+  data: VerificationGetStatusData$Outbound;
 };
 
 /** @internal */
@@ -295,42 +401,7 @@ export const VerificationGetStatusResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   VerificationGetStatusResponse
 > = z.object({
-  found: z.boolean().optional(),
-  status: VerificationGetStatusStatus$outboundSchema.optional(),
-  requestId: z.string().optional(),
-  organizationId: z.string().optional(),
-  partnerUserId: z.string().optional(),
-  userEmail: z.string().optional(),
-  createdAt: z.date().transform(v => v.toISOString()).optional(),
-  expiresAt: z.date().transform(v => v.toISOString()).optional(),
-  verifiedAt: z.date().transform(v => v.toISOString()).optional(),
-  signedToken: z.string().optional(),
-  verificationToken: z.string().optional(),
-  errorMessage: z.string().optional(),
-  sdkType: VerificationGetStatusSDKType$outboundSchema.optional(),
-  scope: z.string().optional(),
-  authMode: VerificationGetStatusAuthMode$outboundSchema.optional(),
-  presenceAddress: z.string().optional(),
-  signalScore: z.number().int().optional(),
-  confidence: z.number().optional(),
-  metadata: z.record(z.any()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    requestId: "request_id",
-    organizationId: "organization_id",
-    partnerUserId: "partner_user_id",
-    userEmail: "user_email",
-    createdAt: "created_at",
-    expiresAt: "expires_at",
-    verifiedAt: "verified_at",
-    signedToken: "signed_token",
-    verificationToken: "verification_token",
-    errorMessage: "error_message",
-    sdkType: "sdk_type",
-    authMode: "auth_mode",
-    presenceAddress: "presence_address",
-    signalScore: "signal_score",
-  });
+  data: z.lazy(() => VerificationGetStatusData$outboundSchema),
 });
 
 export function verificationGetStatusResponseToJSON(

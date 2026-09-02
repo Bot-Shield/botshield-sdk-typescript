@@ -5,21 +5,62 @@
 import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
+import * as models from "../index.js";
 
 export type ActionsCancelRequest = {
   requestId: string;
-};
-
-export type ActionsCancelData = {
-  cancelled?: boolean | undefined;
-  alreadyTerminal?: boolean | undefined;
+  /**
+   * Optional reason, recorded on the card.
+   */
+  reason?: string | undefined;
 };
 
 /**
- * Cancellation result
+ * 'cancelled' when this call cancelled it; otherwise the card's current terminal status.
+ */
+export const ActionsCancelStatus = {
+  Queued: "queued",
+  Approved: "approved",
+  Denied: "denied",
+  Expired: "expired",
+  Cancelled: "cancelled",
+} as const;
+/**
+ * 'cancelled' when this call cancelled it; otherwise the card's current terminal status.
+ */
+export type ActionsCancelStatus = OpenEnum<typeof ActionsCancelStatus>;
+
+export type ActionsCancelDataData = {
+  /**
+   * 'cancelled' when this call cancelled it; otherwise the card's current terminal status.
+   */
+  status: ActionsCancelStatus;
+  cardId: string;
+  /**
+   * Present when this call cancelled the card.
+   */
+  cancelledAt?: Date | undefined;
+  /**
+   * true when the card was already terminal; nothing changed.
+   */
+  alreadyResolved?: boolean | undefined;
+};
+
+export type ActionsCancelData = {
+  data?: ActionsCancelDataData | undefined;
+  /**
+   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   */
+  error?: models.ErrorBody | undefined;
+};
+
+/**
+ * Cancellation result. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401, 404 (request_id not found), 500.
  */
 export type ActionsCancelResponse = {
   data: ActionsCancelData;
@@ -32,6 +73,7 @@ export const ActionsCancelRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   request_id: types.string(),
+  reason: types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
@@ -40,6 +82,7 @@ export const ActionsCancelRequest$inboundSchema: z.ZodType<
 /** @internal */
 export type ActionsCancelRequest$Outbound = {
   request_id: string;
+  reason?: string | undefined;
 };
 
 /** @internal */
@@ -49,6 +92,7 @@ export const ActionsCancelRequest$outboundSchema: z.ZodType<
   ActionsCancelRequest
 > = z.object({
   requestId: z.string(),
+  reason: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
@@ -73,22 +117,91 @@ export function actionsCancelRequestFromJSON(
 }
 
 /** @internal */
+export const ActionsCancelStatus$inboundSchema: z.ZodType<
+  ActionsCancelStatus,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(ActionsCancelStatus);
+/** @internal */
+export const ActionsCancelStatus$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  ActionsCancelStatus
+> = openEnums.outboundSchema(ActionsCancelStatus);
+
+/** @internal */
+export const ActionsCancelDataData$inboundSchema: z.ZodType<
+  ActionsCancelDataData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  status: ActionsCancelStatus$inboundSchema,
+  card_id: types.string(),
+  cancelled_at: types.optional(types.date()),
+  already_resolved: types.optional(types.boolean()),
+}).transform((v) => {
+  return remap$(v, {
+    "card_id": "cardId",
+    "cancelled_at": "cancelledAt",
+    "already_resolved": "alreadyResolved",
+  });
+});
+/** @internal */
+export type ActionsCancelDataData$Outbound = {
+  status: string;
+  card_id: string;
+  cancelled_at?: string | undefined;
+  already_resolved?: boolean | undefined;
+};
+
+/** @internal */
+export const ActionsCancelDataData$outboundSchema: z.ZodType<
+  ActionsCancelDataData$Outbound,
+  z.ZodTypeDef,
+  ActionsCancelDataData
+> = z.object({
+  status: ActionsCancelStatus$outboundSchema,
+  cardId: z.string(),
+  cancelledAt: z.date().transform(v => v.toISOString()).optional(),
+  alreadyResolved: z.boolean().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    cardId: "card_id",
+    cancelledAt: "cancelled_at",
+    alreadyResolved: "already_resolved",
+  });
+});
+
+export function actionsCancelDataDataToJSON(
+  actionsCancelDataData: ActionsCancelDataData,
+): string {
+  return JSON.stringify(
+    ActionsCancelDataData$outboundSchema.parse(actionsCancelDataData),
+  );
+}
+export function actionsCancelDataDataFromJSON(
+  jsonString: string,
+): SafeParseResult<ActionsCancelDataData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ActionsCancelDataData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ActionsCancelDataData' from JSON`,
+  );
+}
+
+/** @internal */
 export const ActionsCancelData$inboundSchema: z.ZodType<
   ActionsCancelData,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  cancelled: types.optional(types.boolean()),
-  already_terminal: types.optional(types.boolean()),
-}).transform((v) => {
-  return remap$(v, {
-    "already_terminal": "alreadyTerminal",
-  });
+  data: types.optional(z.lazy(() => ActionsCancelDataData$inboundSchema)),
+  error: types.optional(models.ErrorBody$inboundSchema),
 });
 /** @internal */
 export type ActionsCancelData$Outbound = {
-  cancelled?: boolean | undefined;
-  already_terminal?: boolean | undefined;
+  data?: ActionsCancelDataData$Outbound | undefined;
+  error?: models.ErrorBody$Outbound | undefined;
 };
 
 /** @internal */
@@ -97,12 +210,8 @@ export const ActionsCancelData$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ActionsCancelData
 > = z.object({
-  cancelled: z.boolean().optional(),
-  alreadyTerminal: z.boolean().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    alreadyTerminal: "already_terminal",
-  });
+  data: z.lazy(() => ActionsCancelDataData$outboundSchema).optional(),
+  error: models.ErrorBody$outboundSchema.optional(),
 });
 
 export function actionsCancelDataToJSON(

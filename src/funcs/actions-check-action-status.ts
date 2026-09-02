@@ -19,6 +19,7 @@ import {
   RequestTimeoutError,
   UnexpectedClientError,
 } from "../models/errors/http-client-errors.js";
+import * as errors from "../models/errors/index.js";
 import { ResponseValidationError } from "../models/errors/response-validation-error.js";
 import { SDKValidationError } from "../models/errors/sdk-validation-error.js";
 import * as operations from "../models/operations/index.js";
@@ -29,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Check action proposal status
  *
  * @remarks
- * Poll the current state of a previously-proposed action. For terminal states (approved/denied), the response carries the signed Resolution JWT.
+ * Poll the state of a proposed action. Terminal states (approved/denied) carry the signed Proof of Resolution JWT (ES256; verify against /.well-known/jwks.json — the request_id is the JWT jti). Pass wait_seconds to long-poll: the call holds up to 25s and returns as soon as the card leaves queued.
  */
 export function actionsCheckActionStatus(
   client: BotShieldCore,
@@ -38,6 +39,8 @@ export function actionsCheckActionStatus(
 ): APIPromise<
   Result<
     operations.ActionsCheckStatusResponse,
+    | errors.InvalidInputError
+    | errors.ErrorResponse
     | BotShieldError
     | ResponseValidationError
     | ConnectionError
@@ -63,6 +66,8 @@ async function $do(
   [
     Result<
       operations.ActionsCheckStatusResponse,
+      | errors.InvalidInputError
+      | errors.ErrorResponse
       | BotShieldError
       | ResponseValidationError
       | ConnectionError
@@ -90,6 +95,7 @@ async function $do(
 
   const query = encodeFormQuery({
     "request_id": payload.request_id,
+    "wait_seconds": payload.wait_seconds,
   });
 
   const headers = new Headers(compactMap({
@@ -142,8 +148,14 @@ async function $do(
   }
   const response = doResult.value;
 
+  const responseFields = {
+    HttpMeta: { Response: response, Request: req },
+  };
+
   const [result] = await M.match<
     operations.ActionsCheckStatusResponse,
+    | errors.InvalidInputError
+    | errors.ErrorResponse
     | BotShieldError
     | ResponseValidationError
     | ConnectionError
@@ -154,9 +166,11 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.ActionsCheckStatusResponse$inboundSchema),
-    M.fail([401, 404, "4XX"]),
+    M.jsonErr(400, errors.InvalidInputError$inboundSchema),
+    M.jsonErr(500, errors.ErrorResponse$inboundSchema),
+    M.fail("4XX"),
     M.fail("5XX"),
-  )(response, req);
+  )(response, req, { extraFields: responseFields });
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];
   }

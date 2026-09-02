@@ -10,6 +10,7 @@ import { ClosedEnum, OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
+import * as models from "../index.js";
 
 export type SDKCreateVerificationLinkSecurity = {
   apiKeyAuth: string;
@@ -34,9 +35,25 @@ export const Mode = {
 export type Mode = ClosedEnum<typeof Mode>;
 
 export type SDKCreateVerificationLinkRequest = {
+  /**
+   * **Deprecated.** Ignored — the value is discarded and never stored. Identity does not
+   *
+   * @remarks
+   * reach BotShield: verification is keyed on an opaque identifier. Use `partner_user_ref`
+   * if you need to correlate the verification with your own user. Will be removed in the
+   * next major version.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   */
   userEmail?: string | undefined;
+  /**
+   * Where the web flow returns after verification.
+   */
   returnUrl?: string | undefined;
   webhookUrl?: string | undefined;
+  /**
+   * The gate this request runs (the gate's action name, as listed in the Console under BotShield Census).
+   */
   scope?: string | undefined;
   sdkType?: SDKTypeRequest | undefined;
   /**
@@ -48,44 +65,64 @@ export type SDKCreateVerificationLinkRequest = {
    */
   botshieldUserId?: string | undefined;
   /**
-   * Tamper-proof Signal Pixel token (bs_sig_...) for server-side score correlation
+   * Your own reference for this user (hashed at rest, never returned). Enables BotShield ID continuity: on later visits a returning human evaluates as human_verified without a ceremony.
    */
-  signalToken?: string | undefined;
+  partnerUserRef?: string | undefined;
+  /**
+   * Write the partner_user_ref ↔ BotShield ID linkage after a successful verification. Set false as a compliance escape hatch.
+   */
+  linkOnVerify?: boolean | undefined;
+  /**
+   * The req_* id returned by the client pre-check (signal/evaluate) when this request is its presence ceremony; correlates the two events.
+   */
+  parentRequestId?: string | undefined;
   metadata?: { [k: string]: any } | undefined;
 };
 
-export const DataSDKType = {
+export const SDKCreateVerificationLinkSDKTypeResponse = {
   Signal: "signal",
   Presence: "presence",
 } as const;
-export type DataSDKType = OpenEnum<typeof DataSDKType>;
+export type SDKCreateVerificationLinkSDKTypeResponse = OpenEnum<
+  typeof SDKCreateVerificationLinkSDKTypeResponse
+>;
 
-export const SDKCreateVerificationLinkAuthMode = {
+export const AuthMode = {
   LinkedAccount: "linked-account",
   Private: "private",
 } as const;
-export type SDKCreateVerificationLinkAuthMode = OpenEnum<
-  typeof SDKCreateVerificationLinkAuthMode
->;
+export type AuthMode = OpenEnum<typeof AuthMode>;
 
 export type SDKCreateVerificationLinkOrganization = {
   id?: string | undefined;
 };
 
-export type SDKCreateVerificationLinkData = {
+export type SDKCreateVerificationLinkDataData = {
   requestId: string;
   deepLink: string;
   webUrl: string;
   qrCodeUrl: string;
   expiresAt: Date;
-  sdkType?: DataSDKType | undefined;
-  authMode?: SDKCreateVerificationLinkAuthMode | undefined;
+  sdkType?: SDKCreateVerificationLinkSDKTypeResponse | undefined;
+  authMode?: AuthMode | undefined;
   scope?: string | undefined;
   organization?: SDKCreateVerificationLinkOrganization | undefined;
+  /**
+   * Number of the user's registered devices the request was pushed to (0 when the user is unknown or has no devices).
+   */
+  pushedToDevices: number;
+};
+
+export type SDKCreateVerificationLinkData = {
+  data?: SDKCreateVerificationLinkDataData | undefined;
+  /**
+   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   */
+  error?: models.ErrorBody | undefined;
 };
 
 /**
- * Verification link created
+ * Verification link created. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 400 (partner not found / gate not active), 401, 403 (gate not in the token allowlist), 409 (pending request already exists — call revoke-verification).
  */
 export type SDKCreateVerificationLinkResponse = {
   data: SDKCreateVerificationLinkData;
@@ -170,7 +207,9 @@ export const SDKCreateVerificationLinkRequest$inboundSchema: z.ZodType<
   sdk_type: types.optional(SDKTypeRequest$inboundSchema),
   mode: Mode$inboundSchema.default("linked-account"),
   botshield_user_id: types.optional(types.string()),
-  signal_token: types.optional(types.string()),
+  partner_user_ref: types.optional(types.string()),
+  link_on_verify: types.boolean().default(true),
+  parent_request_id: types.optional(types.string()),
   metadata: types.optional(z.record(z.any())),
 }).transform((v) => {
   return remap$(v, {
@@ -179,7 +218,9 @@ export const SDKCreateVerificationLinkRequest$inboundSchema: z.ZodType<
     "webhook_url": "webhookUrl",
     "sdk_type": "sdkType",
     "botshield_user_id": "botshieldUserId",
-    "signal_token": "signalToken",
+    "partner_user_ref": "partnerUserRef",
+    "link_on_verify": "linkOnVerify",
+    "parent_request_id": "parentRequestId",
   });
 });
 /** @internal */
@@ -191,7 +232,9 @@ export type SDKCreateVerificationLinkRequest$Outbound = {
   sdk_type?: string | undefined;
   mode: string;
   botshield_user_id?: string | undefined;
-  signal_token?: string | undefined;
+  partner_user_ref?: string | undefined;
+  link_on_verify: boolean;
+  parent_request_id?: string | undefined;
   metadata?: { [k: string]: any } | undefined;
 };
 
@@ -208,7 +251,9 @@ export const SDKCreateVerificationLinkRequest$outboundSchema: z.ZodType<
   sdkType: SDKTypeRequest$outboundSchema.optional(),
   mode: Mode$outboundSchema.default("linked-account"),
   botshieldUserId: z.string().optional(),
-  signalToken: z.string().optional(),
+  partnerUserRef: z.string().optional(),
+  linkOnVerify: z.boolean().default(true),
+  parentRequestId: z.string().optional(),
   metadata: z.record(z.any()).optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -217,7 +262,9 @@ export const SDKCreateVerificationLinkRequest$outboundSchema: z.ZodType<
     webhookUrl: "webhook_url",
     sdkType: "sdk_type",
     botshieldUserId: "botshield_user_id",
-    signalToken: "signal_token",
+    partnerUserRef: "partner_user_ref",
+    linkOnVerify: "link_on_verify",
+    parentRequestId: "parent_request_id",
   });
 });
 
@@ -241,30 +288,30 @@ export function sdkCreateVerificationLinkRequestFromJSON(
 }
 
 /** @internal */
-export const DataSDKType$inboundSchema: z.ZodType<
-  DataSDKType,
+export const SDKCreateVerificationLinkSDKTypeResponse$inboundSchema: z.ZodType<
+  SDKCreateVerificationLinkSDKTypeResponse,
   z.ZodTypeDef,
   unknown
-> = openEnums.inboundSchema(DataSDKType);
+> = openEnums.inboundSchema(SDKCreateVerificationLinkSDKTypeResponse);
 /** @internal */
-export const DataSDKType$outboundSchema: z.ZodType<
+export const SDKCreateVerificationLinkSDKTypeResponse$outboundSchema: z.ZodType<
   string,
   z.ZodTypeDef,
-  DataSDKType
-> = openEnums.outboundSchema(DataSDKType);
+  SDKCreateVerificationLinkSDKTypeResponse
+> = openEnums.outboundSchema(SDKCreateVerificationLinkSDKTypeResponse);
 
 /** @internal */
-export const SDKCreateVerificationLinkAuthMode$inboundSchema: z.ZodType<
-  SDKCreateVerificationLinkAuthMode,
+export const AuthMode$inboundSchema: z.ZodType<
+  AuthMode,
   z.ZodTypeDef,
   unknown
-> = openEnums.inboundSchema(SDKCreateVerificationLinkAuthMode);
+> = openEnums.inboundSchema(AuthMode);
 /** @internal */
-export const SDKCreateVerificationLinkAuthMode$outboundSchema: z.ZodType<
+export const AuthMode$outboundSchema: z.ZodType<
   string,
   z.ZodTypeDef,
-  SDKCreateVerificationLinkAuthMode
-> = openEnums.outboundSchema(SDKCreateVerificationLinkAuthMode);
+  AuthMode
+> = openEnums.outboundSchema(AuthMode);
 
 /** @internal */
 export const SDKCreateVerificationLinkOrganization$inboundSchema: z.ZodType<
@@ -309,8 +356,8 @@ export function sdkCreateVerificationLinkOrganizationFromJSON(
 }
 
 /** @internal */
-export const SDKCreateVerificationLinkData$inboundSchema: z.ZodType<
-  SDKCreateVerificationLinkData,
+export const SDKCreateVerificationLinkDataData$inboundSchema: z.ZodType<
+  SDKCreateVerificationLinkDataData,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -319,12 +366,15 @@ export const SDKCreateVerificationLinkData$inboundSchema: z.ZodType<
   web_url: types.string(),
   qr_code_url: types.string(),
   expires_at: types.date(),
-  sdk_type: types.optional(DataSDKType$inboundSchema),
-  auth_mode: types.optional(SDKCreateVerificationLinkAuthMode$inboundSchema),
+  sdk_type: types.optional(
+    SDKCreateVerificationLinkSDKTypeResponse$inboundSchema,
+  ),
+  auth_mode: types.optional(AuthMode$inboundSchema),
   scope: types.optional(types.string()),
   organization: types.optional(
     z.lazy(() => SDKCreateVerificationLinkOrganization$inboundSchema),
   ),
+  pushed_to_devices: types.number(),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
@@ -334,10 +384,11 @@ export const SDKCreateVerificationLinkData$inboundSchema: z.ZodType<
     "expires_at": "expiresAt",
     "sdk_type": "sdkType",
     "auth_mode": "authMode",
+    "pushed_to_devices": "pushedToDevices",
   });
 });
 /** @internal */
-export type SDKCreateVerificationLinkData$Outbound = {
+export type SDKCreateVerificationLinkDataData$Outbound = {
   request_id: string;
   deep_link: string;
   web_url: string;
@@ -347,25 +398,27 @@ export type SDKCreateVerificationLinkData$Outbound = {
   auth_mode?: string | undefined;
   scope?: string | undefined;
   organization?: SDKCreateVerificationLinkOrganization$Outbound | undefined;
+  pushed_to_devices: number;
 };
 
 /** @internal */
-export const SDKCreateVerificationLinkData$outboundSchema: z.ZodType<
-  SDKCreateVerificationLinkData$Outbound,
+export const SDKCreateVerificationLinkDataData$outboundSchema: z.ZodType<
+  SDKCreateVerificationLinkDataData$Outbound,
   z.ZodTypeDef,
-  SDKCreateVerificationLinkData
+  SDKCreateVerificationLinkDataData
 > = z.object({
   requestId: z.string(),
   deepLink: z.string(),
   webUrl: z.string(),
   qrCodeUrl: z.string(),
   expiresAt: z.date().transform(v => v.toISOString()),
-  sdkType: DataSDKType$outboundSchema.optional(),
-  authMode: SDKCreateVerificationLinkAuthMode$outboundSchema.optional(),
+  sdkType: SDKCreateVerificationLinkSDKTypeResponse$outboundSchema.optional(),
+  authMode: AuthMode$outboundSchema.optional(),
   scope: z.string().optional(),
   organization: z.lazy(() =>
     SDKCreateVerificationLinkOrganization$outboundSchema
   ).optional(),
+  pushedToDevices: z.number().int(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
@@ -375,7 +428,55 @@ export const SDKCreateVerificationLinkData$outboundSchema: z.ZodType<
     expiresAt: "expires_at",
     sdkType: "sdk_type",
     authMode: "auth_mode",
+    pushedToDevices: "pushed_to_devices",
   });
+});
+
+export function sdkCreateVerificationLinkDataDataToJSON(
+  sdkCreateVerificationLinkDataData: SDKCreateVerificationLinkDataData,
+): string {
+  return JSON.stringify(
+    SDKCreateVerificationLinkDataData$outboundSchema.parse(
+      sdkCreateVerificationLinkDataData,
+    ),
+  );
+}
+export function sdkCreateVerificationLinkDataDataFromJSON(
+  jsonString: string,
+): SafeParseResult<SDKCreateVerificationLinkDataData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SDKCreateVerificationLinkDataData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKCreateVerificationLinkDataData' from JSON`,
+  );
+}
+
+/** @internal */
+export const SDKCreateVerificationLinkData$inboundSchema: z.ZodType<
+  SDKCreateVerificationLinkData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: types.optional(
+    z.lazy(() => SDKCreateVerificationLinkDataData$inboundSchema),
+  ),
+  error: types.optional(models.ErrorBody$inboundSchema),
+});
+/** @internal */
+export type SDKCreateVerificationLinkData$Outbound = {
+  data?: SDKCreateVerificationLinkDataData$Outbound | undefined;
+  error?: models.ErrorBody$Outbound | undefined;
+};
+
+/** @internal */
+export const SDKCreateVerificationLinkData$outboundSchema: z.ZodType<
+  SDKCreateVerificationLinkData$Outbound,
+  z.ZodTypeDef,
+  SDKCreateVerificationLinkData
+> = z.object({
+  data: z.lazy(() => SDKCreateVerificationLinkDataData$outboundSchema)
+    .optional(),
+  error: models.ErrorBody$outboundSchema.optional(),
 });
 
 export function sdkCreateVerificationLinkDataToJSON(

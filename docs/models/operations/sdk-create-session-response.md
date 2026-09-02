@@ -1,6 +1,6 @@
 # SDKCreateSessionResponse
 
-Anchor grant window created
+Anchor grant window created. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401 (bad or missing credential), 403 (origin not allowed for the site key).
 
 ## Example Usage
 
@@ -8,18 +8,7 @@ Anchor grant window created
 import { SDKCreateSessionResponse } from "botshield-sdk/models/operations";
 
 let value: SDKCreateSessionResponse = {
-  data: {
-    anchorGrantToken: "<value>",
-    anchorGrantExpiresAt: new Date("2024-05-07T11:24:47.060Z"),
-    anchorGrantExpiresInSeconds: 537432,
-    sessionToken: "<value>",
-    expiresAt: new Date("2025-01-05T13:05:06.609Z"),
-    expiresInSeconds: 859631,
-    organization: {
-      id: "<id>",
-      environment: "<value>",
-    },
-  },
+  data: {},
 };
 ```
 

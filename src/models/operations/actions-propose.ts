@@ -5,10 +5,12 @@
 import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { ClosedEnum } from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
+import * as models from "../index.js";
 
 /**
  * Primary KPI shown on the card chrome.
@@ -32,7 +34,7 @@ export type Action = {
    */
   category: string;
   /**
-   * Optional link to the user's MultiPass-linked account.
+   * Optional link to the user's trusted account.
    */
   trustedAccountId?: string | undefined;
 };
@@ -43,33 +45,74 @@ export type ActionsProposeRequest = {
    */
   requestId: string;
   /**
-   * Email of the BotShield user to receive this proposal.
+   * CANONICAL. The pairwise id this agent holds for the human, obtained once via the bind ceremony (agent/bind-session → claim → check-binding). Meaningless to any other agent. Provide exactly one of opaque_id, botshield_user_id, user_email.
    */
-  userEmail: string;
+  opaqueId?: string | undefined;
+  /**
+   * The user's global BotShield id. Prefer opaque_id — this key is identical across agents and can correlate a human between integrations.
+   */
+  botshieldUserId?: string | undefined;
+  /**
+   * **Deprecated.** Address the proposal with `opaque_id` (the pairwise id from the bind
+   *
+   * @remarks
+   * ceremony) instead. Will be removed in the next major version.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   */
+  userEmail?: string | undefined;
   action: Action;
   /**
    * Optional Adaptive Card v1.5 JSON shown when the user expands the card. Allowlist: TextBlock, FactSet, ColumnSet, Container, Table, Image (bundled-asset only).
    */
   adaptiveCardPayload?: { [k: string]: any } | undefined;
   /**
-   * How long the user has to respond before the proposal expires. Bounds locked by V3 spec §3.4.
+   * How long the user has to respond before the proposal expires (60–86400; default 600). Out-of-range values are rejected with ttl_below_floor / ttl_above_ceiling.
    */
   ttlSeconds?: number | undefined;
 };
 
+/**
+ * 'queued' on first proposal. On an idempotent replay (same request_id) the card's CURRENT status.
+ */
 export const ActionsProposeStatus = {
   Queued: "queued",
+  Approved: "approved",
+  Denied: "denied",
+  Expired: "expired",
+  Cancelled: "cancelled",
 } as const;
-export type ActionsProposeStatus = ClosedEnum<typeof ActionsProposeStatus>;
+/**
+ * 'queued' on first proposal. On an idempotent replay (same request_id) the card's CURRENT status.
+ */
+export type ActionsProposeStatus = OpenEnum<typeof ActionsProposeStatus>;
 
-export type ActionsProposeData = {
+export type ActionsProposeDataData = {
+  /**
+   * 'queued' on first proposal. On an idempotent replay (same request_id) the card's CURRENT status.
+   */
   status: ActionsProposeStatus;
   cardId: string;
-  ttlAt: Date;
+  /**
+   * Present on first proposal only.
+   */
+  ttlAt?: Date | undefined;
+  /**
+   * true when this request_id was already proposed; no new card was created.
+   */
+  idempotentReplay?: boolean | undefined;
+};
+
+export type ActionsProposeData = {
+  data?: ActionsProposeDataData | undefined;
+  /**
+   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   */
+  error?: models.ErrorBody | undefined;
 };
 
 /**
- * Action proposal queued
+ * Action proposal queued (or replayed). NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401, 403 (category_not_allowed), 404 (no binding for opaque_id / user not found), 422 (Adaptive Card rejected, see violations), 400 with code ttl_below_floor | ttl_above_ceiling, 500, 502 (user lookup failed).
  */
 export type ActionsProposeResponse = {
   data: ActionsProposeData;
@@ -173,13 +216,17 @@ export const ActionsProposeRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   request_id: types.string(),
-  user_email: types.string(),
+  opaque_id: types.optional(types.string()),
+  botshield_user_id: types.optional(types.string()),
+  user_email: types.optional(types.string()),
   action: z.lazy(() => Action$inboundSchema),
   adaptive_card_payload: types.optional(z.record(z.any())),
   ttl_seconds: types.number().default(600),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
+    "opaque_id": "opaqueId",
+    "botshield_user_id": "botshieldUserId",
     "user_email": "userEmail",
     "adaptive_card_payload": "adaptiveCardPayload",
     "ttl_seconds": "ttlSeconds",
@@ -188,7 +235,9 @@ export const ActionsProposeRequest$inboundSchema: z.ZodType<
 /** @internal */
 export type ActionsProposeRequest$Outbound = {
   request_id: string;
-  user_email: string;
+  opaque_id?: string | undefined;
+  botshield_user_id?: string | undefined;
+  user_email?: string | undefined;
   action: Action$Outbound;
   adaptive_card_payload?: { [k: string]: any } | undefined;
   ttl_seconds: number;
@@ -201,13 +250,17 @@ export const ActionsProposeRequest$outboundSchema: z.ZodType<
   ActionsProposeRequest
 > = z.object({
   requestId: z.string(),
-  userEmail: z.string(),
+  opaqueId: z.string().optional(),
+  botshieldUserId: z.string().optional(),
+  userEmail: z.string().optional(),
   action: z.lazy(() => Action$outboundSchema),
   adaptiveCardPayload: z.record(z.any()).optional(),
   ttlSeconds: z.number().int().default(600),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
+    opaqueId: "opaque_id",
+    botshieldUserId: "botshield_user_id",
     userEmail: "user_email",
     adaptiveCardPayload: "adaptive_card_payload",
     ttlSeconds: "ttl_seconds",
@@ -232,13 +285,77 @@ export function actionsProposeRequestFromJSON(
 }
 
 /** @internal */
-export const ActionsProposeStatus$inboundSchema: z.ZodNativeEnum<
-  typeof ActionsProposeStatus
-> = z.nativeEnum(ActionsProposeStatus);
+export const ActionsProposeStatus$inboundSchema: z.ZodType<
+  ActionsProposeStatus,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(ActionsProposeStatus);
 /** @internal */
-export const ActionsProposeStatus$outboundSchema: z.ZodNativeEnum<
-  typeof ActionsProposeStatus
-> = ActionsProposeStatus$inboundSchema;
+export const ActionsProposeStatus$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  ActionsProposeStatus
+> = openEnums.outboundSchema(ActionsProposeStatus);
+
+/** @internal */
+export const ActionsProposeDataData$inboundSchema: z.ZodType<
+  ActionsProposeDataData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  status: ActionsProposeStatus$inboundSchema,
+  card_id: types.string(),
+  ttl_at: types.optional(types.date()),
+  idempotent_replay: types.optional(types.boolean()),
+}).transform((v) => {
+  return remap$(v, {
+    "card_id": "cardId",
+    "ttl_at": "ttlAt",
+    "idempotent_replay": "idempotentReplay",
+  });
+});
+/** @internal */
+export type ActionsProposeDataData$Outbound = {
+  status: string;
+  card_id: string;
+  ttl_at?: string | undefined;
+  idempotent_replay?: boolean | undefined;
+};
+
+/** @internal */
+export const ActionsProposeDataData$outboundSchema: z.ZodType<
+  ActionsProposeDataData$Outbound,
+  z.ZodTypeDef,
+  ActionsProposeDataData
+> = z.object({
+  status: ActionsProposeStatus$outboundSchema,
+  cardId: z.string(),
+  ttlAt: z.date().transform(v => v.toISOString()).optional(),
+  idempotentReplay: z.boolean().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    cardId: "card_id",
+    ttlAt: "ttl_at",
+    idempotentReplay: "idempotent_replay",
+  });
+});
+
+export function actionsProposeDataDataToJSON(
+  actionsProposeDataData: ActionsProposeDataData,
+): string {
+  return JSON.stringify(
+    ActionsProposeDataData$outboundSchema.parse(actionsProposeDataData),
+  );
+}
+export function actionsProposeDataDataFromJSON(
+  jsonString: string,
+): SafeParseResult<ActionsProposeDataData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ActionsProposeDataData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ActionsProposeDataData' from JSON`,
+  );
+}
 
 /** @internal */
 export const ActionsProposeData$inboundSchema: z.ZodType<
@@ -246,20 +363,13 @@ export const ActionsProposeData$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  status: ActionsProposeStatus$inboundSchema,
-  card_id: types.string(),
-  ttl_at: types.date(),
-}).transform((v) => {
-  return remap$(v, {
-    "card_id": "cardId",
-    "ttl_at": "ttlAt",
-  });
+  data: types.optional(z.lazy(() => ActionsProposeDataData$inboundSchema)),
+  error: types.optional(models.ErrorBody$inboundSchema),
 });
 /** @internal */
 export type ActionsProposeData$Outbound = {
-  status: string;
-  card_id: string;
-  ttl_at: string;
+  data?: ActionsProposeDataData$Outbound | undefined;
+  error?: models.ErrorBody$Outbound | undefined;
 };
 
 /** @internal */
@@ -268,14 +378,8 @@ export const ActionsProposeData$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ActionsProposeData
 > = z.object({
-  status: ActionsProposeStatus$outboundSchema,
-  cardId: z.string(),
-  ttlAt: z.date().transform(v => v.toISOString()),
-}).transform((v) => {
-  return remap$(v, {
-    cardId: "card_id",
-    ttlAt: "ttl_at",
-  });
+  data: z.lazy(() => ActionsProposeDataData$outboundSchema).optional(),
+  error: models.ErrorBody$outboundSchema.optional(),
 });
 
 export function actionsProposeDataToJSON(

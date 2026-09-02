@@ -19,7 +19,6 @@ let value: SDKStoreSignalRequest = {
 | `score`               | *number*              | :heavy_check_mark:    | N/A                   |
 | `edgeScore`           | *number*              | :heavy_minus_sign:    | N/A                   |
 | `clientScore`         | *number*              | :heavy_minus_sign:    | N/A                   |
-| `fpHash`              | *string*              | :heavy_minus_sign:    | N/A                   |
 | `ipHash`              | *string*              | :heavy_minus_sign:    | N/A                   |
 | `uaHash`              | *string*              | :heavy_minus_sign:    | N/A                   |
 | `country`             | *string*              | :heavy_minus_sign:    | N/A                   |

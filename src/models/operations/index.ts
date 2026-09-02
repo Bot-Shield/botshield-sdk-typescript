@@ -14,4 +14,3 @@ export * from "./sdk-store-signal.js";
 export * from "./sdk-validate-signal.js";
 export * from "./sdk-verify-token.js";
 export * from "./verification-get-status.js";
-export * from "./verification-lookup-user-by-email.js";

@@ -19,6 +19,7 @@ import {
   RequestTimeoutError,
   UnexpectedClientError,
 } from "../models/errors/http-client-errors.js";
+import * as errors from "../models/errors/index.js";
 import { ResponseValidationError } from "../models/errors/response-validation-error.js";
 import { SDKValidationError } from "../models/errors/sdk-validation-error.js";
 import * as operations from "../models/operations/index.js";
@@ -29,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Cancel a queued action proposal
  *
  * @remarks
- * Stand down a queued action before the user responds. No-op if the proposal is already in a terminal state (TTL is cancel — silent expiry produces no Resolution).
+ * Stand down a queued action before the user responds. Idempotent: if the card is already terminal, returns its current status with already_resolved=true (TTL expiry produces no Resolution).
  */
 export function actionsCancelAction(
   client: BotShieldCore,
@@ -38,6 +39,8 @@ export function actionsCancelAction(
 ): APIPromise<
   Result<
     operations.ActionsCancelResponse,
+    | errors.InvalidInputError
+    | errors.ErrorResponse
     | BotShieldError
     | ResponseValidationError
     | ConnectionError
@@ -63,6 +66,8 @@ async function $do(
   [
     Result<
       operations.ActionsCancelResponse,
+      | errors.InvalidInputError
+      | errors.ErrorResponse
       | BotShieldError
       | ResponseValidationError
       | ConnectionError
@@ -138,8 +143,14 @@ async function $do(
   }
   const response = doResult.value;
 
+  const responseFields = {
+    HttpMeta: { Response: response, Request: req },
+  };
+
   const [result] = await M.match<
     operations.ActionsCancelResponse,
+    | errors.InvalidInputError
+    | errors.ErrorResponse
     | BotShieldError
     | ResponseValidationError
     | ConnectionError
@@ -150,9 +161,11 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.ActionsCancelResponse$inboundSchema),
-    M.fail([401, 404, "4XX"]),
+    M.jsonErr(400, errors.InvalidInputError$inboundSchema),
+    M.jsonErr(500, errors.ErrorResponse$inboundSchema),
+    M.fail("4XX"),
     M.fail("5XX"),
-  )(response, req);
+  )(response, req, { extraFields: responseFields });
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];
   }
