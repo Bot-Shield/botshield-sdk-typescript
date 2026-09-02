@@ -14,7 +14,7 @@ export const tool$actionsCheckActionStatus: ToolDefinition<typeof args> = {
   name: "check_resolution_status",
   description:
     `Poll a proposed resolution (pass wait_seconds up to 25 to long-poll). Terminal states (approved/denied) carry the signed Proof of Resolution JWT — verify against BotShield's JWKS; the request_id is the JWT jti.`,
-  scopes: ["queue", "queue", "queue"],
+  scopes: ["queue", "queue", "queue", "queue", "queue"],
   args,
   tool: async (client, args, ctx) => {
     const [result, apiCall] = await actionsCheckActionStatus(

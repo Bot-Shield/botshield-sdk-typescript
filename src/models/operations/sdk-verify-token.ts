@@ -14,6 +14,8 @@ export type SDKVerifyTokenSecurity = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
   apiKeyAuth2?: string | undefined;
+  apiKeyAuth3?: string | undefined;
+  apiKeyAuth4?: string | undefined;
 };
 
 export type SDKVerifyTokenRequest = {
@@ -70,12 +72,16 @@ export const SDKVerifyTokenSecurity$inboundSchema: z.ZodType<
   apiKeyAuth: types.optional(types.string()),
   apiKeyAuth1: types.optional(types.string()),
   apiKeyAuth2: types.optional(types.string()),
+  apiKeyAuth3: types.optional(types.string()),
+  apiKeyAuth4: types.optional(types.string()),
 });
 /** @internal */
 export type SDKVerifyTokenSecurity$Outbound = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
   apiKeyAuth2?: string | undefined;
+  apiKeyAuth3?: string | undefined;
+  apiKeyAuth4?: string | undefined;
 };
 
 /** @internal */
@@ -87,6 +93,8 @@ export const SDKVerifyTokenSecurity$outboundSchema: z.ZodType<
   apiKeyAuth: z.string().optional(),
   apiKeyAuth1: z.string().optional(),
   apiKeyAuth2: z.string().optional(),
+  apiKeyAuth3: z.string().optional(),
+  apiKeyAuth4: z.string().optional(),
 });
 
 export function sdkVerifyTokenSecurityToJSON(
