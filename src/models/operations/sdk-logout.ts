@@ -8,6 +8,7 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
+import * as models from "../index.js";
 
 export type SDKLogoutSecurity = {
   apiKeyAuth: string;
@@ -20,14 +21,22 @@ export type SDKLogoutRequest = {
   sessionToken: string;
 };
 
-/**
- * Token revoked
- */
-export type SDKLogoutResponse = {
+export type SDKLogoutData = {
   success?: boolean | undefined;
   message?: string | undefined;
   tokenFound?: boolean | undefined;
   revokedAt?: Date | undefined;
+  /**
+   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   */
+  error?: models.ErrorBody | undefined;
+};
+
+/**
+ * Token revoked. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401, 403 (token belongs to another organization).
+ */
+export type SDKLogoutResponse = {
+  data: SDKLogoutData;
 };
 
 /** @internal */
@@ -125,8 +134,8 @@ export function sdkLogoutRequestFromJSON(
 }
 
 /** @internal */
-export const SDKLogoutResponse$inboundSchema: z.ZodType<
-  SDKLogoutResponse,
+export const SDKLogoutData$inboundSchema: z.ZodType<
+  SDKLogoutData,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -134,6 +143,7 @@ export const SDKLogoutResponse$inboundSchema: z.ZodType<
   message: types.optional(types.string()),
   token_found: types.optional(types.boolean()),
   revoked_at: types.optional(types.date()),
+  error: types.optional(models.ErrorBody$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "token_found": "tokenFound",
@@ -141,11 +151,56 @@ export const SDKLogoutResponse$inboundSchema: z.ZodType<
   });
 });
 /** @internal */
-export type SDKLogoutResponse$Outbound = {
+export type SDKLogoutData$Outbound = {
   success?: boolean | undefined;
   message?: string | undefined;
   token_found?: boolean | undefined;
   revoked_at?: string | undefined;
+  error?: models.ErrorBody$Outbound | undefined;
+};
+
+/** @internal */
+export const SDKLogoutData$outboundSchema: z.ZodType<
+  SDKLogoutData$Outbound,
+  z.ZodTypeDef,
+  SDKLogoutData
+> = z.object({
+  success: z.boolean().optional(),
+  message: z.string().optional(),
+  tokenFound: z.boolean().optional(),
+  revokedAt: z.date().transform(v => v.toISOString()).optional(),
+  error: models.ErrorBody$outboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    tokenFound: "token_found",
+    revokedAt: "revoked_at",
+  });
+});
+
+export function sdkLogoutDataToJSON(sdkLogoutData: SDKLogoutData): string {
+  return JSON.stringify(SDKLogoutData$outboundSchema.parse(sdkLogoutData));
+}
+export function sdkLogoutDataFromJSON(
+  jsonString: string,
+): SafeParseResult<SDKLogoutData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SDKLogoutData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKLogoutData' from JSON`,
+  );
+}
+
+/** @internal */
+export const SDKLogoutResponse$inboundSchema: z.ZodType<
+  SDKLogoutResponse,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: z.lazy(() => SDKLogoutData$inboundSchema),
+});
+/** @internal */
+export type SDKLogoutResponse$Outbound = {
+  data: SDKLogoutData$Outbound;
 };
 
 /** @internal */
@@ -154,15 +209,7 @@ export const SDKLogoutResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   SDKLogoutResponse
 > = z.object({
-  success: z.boolean().optional(),
-  message: z.string().optional(),
-  tokenFound: z.boolean().optional(),
-  revokedAt: z.date().transform(v => v.toISOString()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    tokenFound: "token_found",
-    revokedAt: "revoked_at",
-  });
+  data: z.lazy(() => SDKLogoutData$outboundSchema),
 });
 
 export function sdkLogoutResponseToJSON(

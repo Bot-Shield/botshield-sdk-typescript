@@ -8,80 +8,45 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
-
-export type SDKStoreSignalSecurity = {
-  apiKeyAuth: string;
-};
+import * as models from "../index.js";
 
 export type SDKStoreSignalRequest = {
   siteKey: string;
   score: number;
   edgeScore?: number | undefined;
   clientScore?: number | undefined;
-  fpHash?: string | undefined;
   ipHash?: string | undefined;
   uaHash?: string | undefined;
   country?: string | undefined;
   signals?: { [k: string]: any } | undefined;
 };
 
-/**
- * Signal stored
- */
-export type SDKStoreSignalResponse = {
+export type SDKStoreSignalDataData = {
   /**
    * Opaque tamper-proof token (bs_sig_...)
    */
   signalToken?: string | undefined;
   expiresAt?: Date | undefined;
+  /**
+   * Present instead of signal_token when the store failed ('Failed to store signal').
+   */
+  error?: string | undefined;
 };
 
-/** @internal */
-export const SDKStoreSignalSecurity$inboundSchema: z.ZodType<
-  SDKStoreSignalSecurity,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ApiKeyAuth: types.string(),
-}).transform((v) => {
-  return remap$(v, {
-    "ApiKeyAuth": "apiKeyAuth",
-  });
-});
-/** @internal */
-export type SDKStoreSignalSecurity$Outbound = {
-  ApiKeyAuth: string;
+export type SDKStoreSignalData = {
+  data?: SDKStoreSignalDataData | undefined;
+  /**
+   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   */
+  error?: models.ErrorBody | undefined;
 };
 
-/** @internal */
-export const SDKStoreSignalSecurity$outboundSchema: z.ZodType<
-  SDKStoreSignalSecurity$Outbound,
-  z.ZodTypeDef,
-  SDKStoreSignalSecurity
-> = z.object({
-  apiKeyAuth: z.string(),
-}).transform((v) => {
-  return remap$(v, {
-    apiKeyAuth: "ApiKeyAuth",
-  });
-});
-
-export function sdkStoreSignalSecurityToJSON(
-  sdkStoreSignalSecurity: SDKStoreSignalSecurity,
-): string {
-  return JSON.stringify(
-    SDKStoreSignalSecurity$outboundSchema.parse(sdkStoreSignalSecurity),
-  );
-}
-export function sdkStoreSignalSecurityFromJSON(
-  jsonString: string,
-): SafeParseResult<SDKStoreSignalSecurity, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => SDKStoreSignalSecurity$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'SDKStoreSignalSecurity' from JSON`,
-  );
-}
+/**
+ * Signal stored. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: none — a failed store returns data.data.error.
+ */
+export type SDKStoreSignalResponse = {
+  data: SDKStoreSignalData;
+};
 
 /** @internal */
 export const SDKStoreSignalRequest$inboundSchema: z.ZodType<
@@ -93,7 +58,6 @@ export const SDKStoreSignalRequest$inboundSchema: z.ZodType<
   score: types.number(),
   edge_score: types.optional(types.number()),
   client_score: types.optional(types.number()),
-  fp_hash: types.optional(types.string()),
   ip_hash: types.optional(types.string()),
   ua_hash: types.optional(types.string()),
   country: types.optional(types.string()),
@@ -103,7 +67,6 @@ export const SDKStoreSignalRequest$inboundSchema: z.ZodType<
     "site_key": "siteKey",
     "edge_score": "edgeScore",
     "client_score": "clientScore",
-    "fp_hash": "fpHash",
     "ip_hash": "ipHash",
     "ua_hash": "uaHash",
   });
@@ -114,7 +77,6 @@ export type SDKStoreSignalRequest$Outbound = {
   score: number;
   edge_score?: number | undefined;
   client_score?: number | undefined;
-  fp_hash?: string | undefined;
   ip_hash?: string | undefined;
   ua_hash?: string | undefined;
   country?: string | undefined;
@@ -131,7 +93,6 @@ export const SDKStoreSignalRequest$outboundSchema: z.ZodType<
   score: z.number().int(),
   edgeScore: z.number().int().optional(),
   clientScore: z.number().int().optional(),
-  fpHash: z.string().optional(),
   ipHash: z.string().optional(),
   uaHash: z.string().optional(),
   country: z.string().optional(),
@@ -141,7 +102,6 @@ export const SDKStoreSignalRequest$outboundSchema: z.ZodType<
     siteKey: "site_key",
     edgeScore: "edge_score",
     clientScore: "client_score",
-    fpHash: "fp_hash",
     ipHash: "ip_hash",
     uaHash: "ua_hash",
   });
@@ -165,13 +125,14 @@ export function sdkStoreSignalRequestFromJSON(
 }
 
 /** @internal */
-export const SDKStoreSignalResponse$inboundSchema: z.ZodType<
-  SDKStoreSignalResponse,
+export const SDKStoreSignalDataData$inboundSchema: z.ZodType<
+  SDKStoreSignalDataData,
   z.ZodTypeDef,
   unknown
 > = z.object({
   signal_token: types.optional(types.string()),
   expires_at: types.optional(types.date()),
+  error: types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "signal_token": "signalToken",
@@ -179,9 +140,98 @@ export const SDKStoreSignalResponse$inboundSchema: z.ZodType<
   });
 });
 /** @internal */
-export type SDKStoreSignalResponse$Outbound = {
+export type SDKStoreSignalDataData$Outbound = {
   signal_token?: string | undefined;
   expires_at?: string | undefined;
+  error?: string | undefined;
+};
+
+/** @internal */
+export const SDKStoreSignalDataData$outboundSchema: z.ZodType<
+  SDKStoreSignalDataData$Outbound,
+  z.ZodTypeDef,
+  SDKStoreSignalDataData
+> = z.object({
+  signalToken: z.string().optional(),
+  expiresAt: z.date().transform(v => v.toISOString()).optional(),
+  error: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    signalToken: "signal_token",
+    expiresAt: "expires_at",
+  });
+});
+
+export function sdkStoreSignalDataDataToJSON(
+  sdkStoreSignalDataData: SDKStoreSignalDataData,
+): string {
+  return JSON.stringify(
+    SDKStoreSignalDataData$outboundSchema.parse(sdkStoreSignalDataData),
+  );
+}
+export function sdkStoreSignalDataDataFromJSON(
+  jsonString: string,
+): SafeParseResult<SDKStoreSignalDataData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SDKStoreSignalDataData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKStoreSignalDataData' from JSON`,
+  );
+}
+
+/** @internal */
+export const SDKStoreSignalData$inboundSchema: z.ZodType<
+  SDKStoreSignalData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: types.optional(z.lazy(() => SDKStoreSignalDataData$inboundSchema)),
+  error: types.optional(models.ErrorBody$inboundSchema),
+});
+/** @internal */
+export type SDKStoreSignalData$Outbound = {
+  data?: SDKStoreSignalDataData$Outbound | undefined;
+  error?: models.ErrorBody$Outbound | undefined;
+};
+
+/** @internal */
+export const SDKStoreSignalData$outboundSchema: z.ZodType<
+  SDKStoreSignalData$Outbound,
+  z.ZodTypeDef,
+  SDKStoreSignalData
+> = z.object({
+  data: z.lazy(() => SDKStoreSignalDataData$outboundSchema).optional(),
+  error: models.ErrorBody$outboundSchema.optional(),
+});
+
+export function sdkStoreSignalDataToJSON(
+  sdkStoreSignalData: SDKStoreSignalData,
+): string {
+  return JSON.stringify(
+    SDKStoreSignalData$outboundSchema.parse(sdkStoreSignalData),
+  );
+}
+export function sdkStoreSignalDataFromJSON(
+  jsonString: string,
+): SafeParseResult<SDKStoreSignalData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SDKStoreSignalData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKStoreSignalData' from JSON`,
+  );
+}
+
+/** @internal */
+export const SDKStoreSignalResponse$inboundSchema: z.ZodType<
+  SDKStoreSignalResponse,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: z.lazy(() => SDKStoreSignalData$inboundSchema),
+});
+/** @internal */
+export type SDKStoreSignalResponse$Outbound = {
+  data: SDKStoreSignalData$Outbound;
 };
 
 /** @internal */
@@ -190,13 +240,7 @@ export const SDKStoreSignalResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   SDKStoreSignalResponse
 > = z.object({
-  signalToken: z.string().optional(),
-  expiresAt: z.date().transform(v => v.toISOString()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    signalToken: "signal_token",
-    expiresAt: "expires_at",
-  });
+  data: z.lazy(() => SDKStoreSignalData$outboundSchema),
 });
 
 export function sdkStoreSignalResponseToJSON(

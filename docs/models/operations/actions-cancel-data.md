@@ -10,7 +10,7 @@ let value: ActionsCancelData = {};
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `cancelled`        | *boolean*          | :heavy_minus_sign: | N/A                |
-| `alreadyTerminal`  | *boolean*          | :heavy_minus_sign: | N/A                |
+| Field                                                                                            | Type                                                                                             | Required                                                                                         | Description                                                                                      |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `data`                                                                                           | [operations.ActionsCancelDataData](../../models/operations/actions-cancel-data-data.md)          | :heavy_minus_sign:                                                                               | N/A                                                                                              |
+| `error`                                                                                          | [models.ErrorBody](../../models/error-body.md)                                                   | :heavy_minus_sign:                                                                               | Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result. |

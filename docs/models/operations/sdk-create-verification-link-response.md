@@ -1,6 +1,6 @@
 # SDKCreateVerificationLinkResponse
 
-Verification link created
+Verification link created. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 400 (partner not found / gate not active), 401, 403 (gate not in the token allowlist), 409 (pending request already exists — call revoke-verification).
 
 ## Example Usage
 
@@ -8,13 +8,7 @@ Verification link created
 import { SDKCreateVerificationLinkResponse } from "botshield-sdk/models/operations";
 
 let value: SDKCreateVerificationLinkResponse = {
-  data: {
-    requestId: "<id>",
-    deepLink: "<value>",
-    webUrl: "https://agreeable-alert.info/",
-    qrCodeUrl: "https://dark-completion.name/",
-    expiresAt: new Date("2025-03-01T10:21:39.098Z"),
-  },
+  data: {},
 };
 ```
 

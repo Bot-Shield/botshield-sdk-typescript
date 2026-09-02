@@ -1,21 +1,19 @@
 # SDKVerifyTokenResponse
 
-Validation result
+Validation result. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: none — an invalid token is a normal result with valid=false.
 
 ## Example Usage
 
 ```typescript
 import { SDKVerifyTokenResponse } from "botshield-sdk/models/operations";
 
-let value: SDKVerifyTokenResponse = {};
+let value: SDKVerifyTokenResponse = {
+  data: {},
+};
 ```
 
 ## Fields
 
-| Field                                                    | Type                                                     | Required                                                 | Description                                              |
-| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| `valid`                                                  | *boolean*                                                | :heavy_minus_sign:                                       | N/A                                                      |
-| `reason`                                                 | *string*                                                 | :heavy_minus_sign:                                       | N/A                                                      |
-| `confidence`                                             | *number*                                                 | :heavy_minus_sign:                                       | Combined confidence (passkey + signals + integrations)   |
-| `claims`                                                 | [operations.Claims](../../models/operations/claims.md)   | :heavy_minus_sign:                                       | N/A                                                      |
-| `signals`                                                | [operations.Signals](../../models/operations/signals.md) | :heavy_minus_sign:                                       | N/A                                                      |
+| Field                                                                             | Type                                                                              | Required                                                                          | Description                                                                       |
+| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `data`                                                                            | [operations.SDKVerifyTokenData](../../models/operations/sdk-verify-token-data.md) | :heavy_check_mark:                                                                | N/A                                                                               |

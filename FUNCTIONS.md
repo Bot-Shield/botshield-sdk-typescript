@@ -20,21 +20,21 @@ specific category of applications.
 
 ```typescript
 import { BotShieldCore } from "botshield-sdk/core.js";
-import { sdkCreateSession } from "botshield-sdk/funcs/sdk-create-session.js";
+import { censusCreateSession } from "botshield-sdk/funcs/census-create-session.js";
 
 // Use `BotShieldCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const botShield = new BotShieldCore();
 
 async function run() {
-  const res = await sdkCreateSession(botShield, {
+  const res = await censusCreateSession(botShield, {
     apiKeyAuth: "<YOUR_API_KEY_HERE>",
   }, {});
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("sdkCreateSession failed:", res.error);
+    console.log("censusCreateSession failed:", res.error);
   }
 }
 

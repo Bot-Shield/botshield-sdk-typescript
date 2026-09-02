@@ -12,6 +12,7 @@ let value: ActionsCheckStatusRequest = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `requestId`        | *string*           | :heavy_check_mark: | N/A                |
+| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `requestId`                                                          | *string*                                                             | :heavy_check_mark:                                                   | N/A                                                                  |
+| `waitSeconds`                                                        | *number*                                                             | :heavy_minus_sign:                                                   | Long-poll hold, in seconds (0–25). Set your HTTP timeout above this. |

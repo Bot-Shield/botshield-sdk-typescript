@@ -1,6 +1,6 @@
 # ActionsProposeResponse
 
-Action proposal queued
+Action proposal queued (or replayed). NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401, 403 (category_not_allowed), 404 (no binding for opaque_id / user not found), 422 (Adaptive Card rejected, see violations), 400 with code ttl_below_floor | ttl_above_ceiling, 500, 502 (user lookup failed).
 
 ## Example Usage
 
@@ -8,11 +8,7 @@ Action proposal queued
 import { ActionsProposeResponse } from "botshield-sdk/models/operations";
 
 let value: ActionsProposeResponse = {
-  data: {
-    status: "queued",
-    cardId: "2720a10e-75fb-4752-b91b-8e65c28e6f9a",
-    ttlAt: new Date("2024-06-03T06:21:09.929Z"),
-  },
+  data: {},
 };
 ```
 

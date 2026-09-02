@@ -14,26 +14,6 @@ info:
 #   Selection mirrors stainless.yaml: actions resource mcp:true, sdk + verification mcp:false.
 actions:
   # ────────────────────────────────────────────────────────────────────────────
-  # Spec sanitize — Speakeasy's linter forbids literal <script tags in markdown
-  # descriptions (semantic-no-script-tags-in-markdown); Stainless did not enforce
-  # this. Rephrase info.description to drop the literal `<script src=...>` /
-  # `<botshield-verify>` tags without losing meaning. Fixed in the overlay so the
-  # WG-generated openapi-spec.json stays untouched.
-  # ────────────────────────────────────────────────────────────────────────────
-  - target: $.info
-    update:
-      description: |-
-        Human presence verification protocol with Signal Pixel passive bot scoring and third-party integrations.
-
-        BotShield provides three layers of defense:
-        1. **Signal Pixel** — passive behavioral fingerprinting (opt-in via `signals="true"`)
-        2. **Passkey Verification** — cryptographic human proof via device biometrics
-        3. **Third-party Integrations** — Cloudflare Turnstile, reCAPTCHA, and more
-
-        **Frontend SDK:** Load the BotShield script from `https://cdn.botshield.ai/sdk.js` and use `BotShield.render()` or the `botshield-verify` HTML element.
-
-        **Backend SDK:** Install `botshield-sdk` from npm and use `client.sdk.*` methods.
-  # ────────────────────────────────────────────────────────────────────────────
   # MCP security fix — Speakeasy's MCP generator does NOT support per-operation
   # security ("per-operation security is not supported in MCP server generation").
   # The spec has no global security and puts AgentKeyAuth per-op on the 3 actions
@@ -56,7 +36,7 @@ actions:
   - target: $.paths["/agentlink/cancel"].post.security
     remove: true
   # ────────────────────────────────────────────────────────────────────────────
-  # actions / BotShield Q — the ONLY MCP-exposed resource (3 discrete tools)
+  # actions / Agents Ask — the ONLY MCP-exposed resource (3 discrete tools)
   # ────────────────────────────────────────────────────────────────────────────
   # RFC 42 A3 (Dev counter, Paul ✅): agent-facing MCP tool verb = RESOLUTION, not
   # action ("Action card" deprecated in K.1 → Queue card; Proof of Resolution +
@@ -70,9 +50,9 @@ actions:
       x-speakeasy-mcp:
         name: propose_resolution
         description: >-
-          Queue a human-presence-gated Queue card for a BotShield user. Returns a
-          card_id immediately; the signed Proof of Resolution arrives async via
-          the agent's registered callback.
+          Propose a human-presence-gated action to a BotShield user (Agents Ask).
+          Returns a card_id immediately; the signed Proof of Resolution arrives
+          async via the agent's registered callback, or poll check_resolution_status.
         scopes: [queue]
   - target: $.paths["/agentlink/check-status"].get
     update:
@@ -81,8 +61,9 @@ actions:
       x-speakeasy-mcp:
         name: check_resolution_status
         description: >-
-          Poll a proposed resolution. Terminal states (Confirmed/Denied) carry the
-          signed Proof of Resolution JWT — verify with BotShield's public key.
+          Poll a proposed resolution (pass wait_seconds up to 25 to long-poll).
+          Terminal states (approved/denied) carry the signed Proof of Resolution
+          JWT — verify against BotShield's JWKS; the request_id is the JWT jti.
         scopes: [queue]
   - target: $.paths["/agentlink/cancel"].post
     update:
@@ -95,32 +76,70 @@ actions:
           terminal; TTL expiry produces no Resolution.
         scopes: [queue]
   # ────────────────────────────────────────────────────────────────────────────
-  # sdk.* — V2 partner ops, EXCLUDED from MCP (mirrors stainless.yaml sdk mcp:false)
+  # census.* (was sdk.*) — Census partner ops, EXCLUDED from MCP. Group renamed: a group literally
+  # named `sdk` is written to src/sdk/sdk.ts and clobbers the ROOT client class (no `BotShield`
+  # export existed in any Speakeasy build) — and Census is the K.1 name for these ops anyway.
   # ────────────────────────────────────────────────────────────────────────────
   - target: $.paths["/sdk/create-session"].post
-    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: createSession, x-speakeasy-mcp: { disabled: true } }
+    update: { x-speakeasy-group: census, x-speakeasy-name-override: createSession, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/sdk/create-verification-link"].post
-    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: createVerificationLink, x-speakeasy-mcp: { disabled: true } }
+    update: { x-speakeasy-group: census, x-speakeasy-name-override: createVerificationLink, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/sdk/verify-token"].post
     # security added: original spec left this unset → with global now AgentKeyAuth,
     # pin ApiKeyAuth so it doesn't inherit the agent key (matches Stainless default).
     # (Note: verify-token is actually public — the JWT signature is the proof — a
     # place the spec's auth modeling is loose; flagged for cleanup, not blocking.)
-    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: verifyToken, x-speakeasy-mcp: { disabled: true }, security: [ { ApiKeyAuth: [] } ] }
+    update: { x-speakeasy-group: census, x-speakeasy-name-override: verifyToken, x-speakeasy-mcp: { disabled: true }, security: [ { ApiKeyAuth: [] } ] }
   - target: $.paths["/sdk/store-signal"].post
-    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: storeSignal, x-speakeasy-mcp: { disabled: true } }
+    update: { x-speakeasy-group: census, x-speakeasy-name-override: storeSignal, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/sdk/validate-signal"].post
-    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: validateSignal, x-speakeasy-mcp: { disabled: true } }
+    update: { x-speakeasy-group: census, x-speakeasy-name-override: validateSignal, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/sdk/partner-config"].get
-    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: getPartnerConfig, x-speakeasy-mcp: { disabled: true }, security: [ { ApiKeyAuth: [] } ] }
+    update: { x-speakeasy-group: census, x-speakeasy-name-override: getPartnerConfig, x-speakeasy-mcp: { disabled: true }, security: [ { ApiKeyAuth: [] } ] }
   - target: $.paths["/sdk/revoke-verification"].post
-    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: revokeVerification, x-speakeasy-mcp: { disabled: true } }
+    update: { x-speakeasy-group: census, x-speakeasy-name-override: revokeVerification, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/sdk/logout"].post
-    update: { x-speakeasy-group: sdk, x-speakeasy-name-override: logout, x-speakeasy-mcp: { disabled: true } }
+    update: { x-speakeasy-group: census, x-speakeasy-name-override: logout, x-speakeasy-mcp: { disabled: true } }
   # ────────────────────────────────────────────────────────────────────────────
   # verification.* — SDK-only, EXCLUDED from MCP (mirrors verification mcp:false)
   # ────────────────────────────────────────────────────────────────────────────
-  - target: $.paths["/verification/lookup-user-by-email"].get
-    update: { x-speakeasy-group: verification, x-speakeasy-name-override: lookupUserByEmail, x-speakeasy-mcp: { disabled: true }, security: [ { ApiKeyAuth: [] } ] }
   - target: $.paths["/verification/status"].get
     update: { x-speakeasy-group: verification, x-speakeasy-name-override: getStatus, x-speakeasy-mcp: { disabled: true }, security: [ { ApiKeyAuth: [] } ] }
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # user_email — DEPRECATED (Stage 2b item 5, ❓18 zero-retention)
+  #
+  # Marked deprecated, NOT removed. It is a published input on three partner-
+  # facing operations, so deleting it is a breaking change that needs a major
+  # version. `deprecated: true` makes Speakeasy emit @deprecated on the generated
+  # field, which is the signal partners actually see in their editor.
+  #
+  # It already does nothing on create-verification-link: the value is discarded
+  # rather than stored (the write was severed), and verification_events.user_email
+  # is 0 of 10,567 rows — never populated. So this documents reality rather than
+  # announcing a future change.
+  #
+  # Removal is gated on: (a) a major SDK version, and (b) evidence no partner
+  # still sends it — the operations log a warning when it is supplied, which is
+  # how that evidence gets collected.
+  # ────────────────────────────────────────────────────────────────────────────
+  - target: $.paths["/sdk/create-verification-link"].post.requestBody.content["application/json"].schema.properties.user_email
+    update:
+      deprecated: true
+      description: |-
+        **Deprecated.** Ignored — the value is discarded and never stored. Identity does not
+        reach BotShield: verification is keyed on an opaque identifier. Use `partner_user_ref`
+        if you need to correlate the verification with your own user. Will be removed in the
+        next major version.
+  - target: $.paths["/sdk/revoke-verification"].post.requestBody.content["application/json"].schema.properties.user_email
+    update:
+      deprecated: true
+      description: |-
+        **Deprecated.** Use `partner_user_id` to identify whose verification to revoke.
+        Will be removed in the next major version.
+  - target: $.paths["/agentlink/inquire"].post.requestBody.content["application/json"].schema.properties.user_email
+    update:
+      deprecated: true
+      description: |-
+        **Deprecated.** Address the proposal with `opaque_id` (the pairwise id from the bind
+        ceremony) instead. Will be removed in the next major version.

@@ -10,9 +10,14 @@ import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
+import * as models from "../index.js";
 
 export type ActionsCheckStatusRequest = {
   requestId: string;
+  /**
+   * Long-poll hold, in seconds (0–25). Set your HTTP timeout above this.
+   */
+  waitSeconds?: number | undefined;
 };
 
 export const ActionsCheckStatusStatus = {
@@ -27,36 +32,47 @@ export type ActionsCheckStatusStatus = OpenEnum<
 >;
 
 /**
- * Present only when status is approved or denied.
+ * null until status is approved or denied.
  */
 export const Verdict = {
   Approve: "approve",
   Denied: "denied",
 } as const;
 /**
- * Present only when status is approved or denied.
+ * null until status is approved or denied.
  */
 export type Verdict = OpenEnum<typeof Verdict>;
 
-export type ActionsCheckStatusData = {
+export type ActionsCheckStatusDataData = {
   status: ActionsCheckStatusStatus;
+  ttlAt?: Date | null | undefined;
+  resolvedAt?: Date | null | undefined;
+  ceremonyId?: string | null | undefined;
   /**
-   * Present only when status is approved or denied.
+   * BotShield-signed Proof of Resolution JWT. null until status is approved or denied.
    */
-  verdict?: Verdict | undefined;
+  resolutionJwt?: string | null | undefined;
   /**
-   * BotShield-signed Resolution JWT. Present only when status is approved or denied. Verify with BotShield's public key.
+   * null until status is approved or denied.
    */
-  resolutionJwt?: string | undefined;
-  ceremonyId?: string | undefined;
+  verdict?: Verdict | null | undefined;
   /**
    * Whether the callback webhook has been confirmed delivered.
    */
   delivered?: boolean | undefined;
+  callbackAttempts?: number | undefined;
+};
+
+export type ActionsCheckStatusData = {
+  data?: ActionsCheckStatusDataData | undefined;
+  /**
+   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   */
+  error?: models.ErrorBody | undefined;
 };
 
 /**
- * Current proposal state
+ * Current proposal state. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401, 404 (request_id not found), 500.
  */
 export type ActionsCheckStatusResponse = {
   data: ActionsCheckStatusData;
@@ -69,14 +85,17 @@ export const ActionsCheckStatusRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   request_id: types.string(),
+  wait_seconds: types.optional(types.number()),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
+    "wait_seconds": "waitSeconds",
   });
 });
 /** @internal */
 export type ActionsCheckStatusRequest$Outbound = {
   request_id: string;
+  wait_seconds?: number | undefined;
 };
 
 /** @internal */
@@ -86,9 +105,11 @@ export const ActionsCheckStatusRequest$outboundSchema: z.ZodType<
   ActionsCheckStatusRequest
 > = z.object({
   requestId: z.string(),
+  waitSeconds: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
+    waitSeconds: "wait_seconds",
   });
 });
 
@@ -130,29 +151,94 @@ export const Verdict$outboundSchema: z.ZodType<string, z.ZodTypeDef, Verdict> =
   openEnums.outboundSchema(Verdict);
 
 /** @internal */
+export const ActionsCheckStatusDataData$inboundSchema: z.ZodType<
+  ActionsCheckStatusDataData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  status: ActionsCheckStatusStatus$inboundSchema,
+  ttl_at: z.nullable(types.date()).optional(),
+  resolved_at: z.nullable(types.date()).optional(),
+  ceremony_id: z.nullable(types.string()).optional(),
+  resolution_jwt: z.nullable(types.string()).optional(),
+  verdict: z.nullable(Verdict$inboundSchema).optional(),
+  delivered: types.optional(types.boolean()),
+  callback_attempts: types.optional(types.number()),
+}).transform((v) => {
+  return remap$(v, {
+    "ttl_at": "ttlAt",
+    "resolved_at": "resolvedAt",
+    "ceremony_id": "ceremonyId",
+    "resolution_jwt": "resolutionJwt",
+    "callback_attempts": "callbackAttempts",
+  });
+});
+/** @internal */
+export type ActionsCheckStatusDataData$Outbound = {
+  status: string;
+  ttl_at?: string | null | undefined;
+  resolved_at?: string | null | undefined;
+  ceremony_id?: string | null | undefined;
+  resolution_jwt?: string | null | undefined;
+  verdict?: string | null | undefined;
+  delivered?: boolean | undefined;
+  callback_attempts?: number | undefined;
+};
+
+/** @internal */
+export const ActionsCheckStatusDataData$outboundSchema: z.ZodType<
+  ActionsCheckStatusDataData$Outbound,
+  z.ZodTypeDef,
+  ActionsCheckStatusDataData
+> = z.object({
+  status: ActionsCheckStatusStatus$outboundSchema,
+  ttlAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
+  resolvedAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
+  ceremonyId: z.nullable(z.string()).optional(),
+  resolutionJwt: z.nullable(z.string()).optional(),
+  verdict: z.nullable(Verdict$outboundSchema).optional(),
+  delivered: z.boolean().optional(),
+  callbackAttempts: z.number().int().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    ttlAt: "ttl_at",
+    resolvedAt: "resolved_at",
+    ceremonyId: "ceremony_id",
+    resolutionJwt: "resolution_jwt",
+    callbackAttempts: "callback_attempts",
+  });
+});
+
+export function actionsCheckStatusDataDataToJSON(
+  actionsCheckStatusDataData: ActionsCheckStatusDataData,
+): string {
+  return JSON.stringify(
+    ActionsCheckStatusDataData$outboundSchema.parse(actionsCheckStatusDataData),
+  );
+}
+export function actionsCheckStatusDataDataFromJSON(
+  jsonString: string,
+): SafeParseResult<ActionsCheckStatusDataData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ActionsCheckStatusDataData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ActionsCheckStatusDataData' from JSON`,
+  );
+}
+
+/** @internal */
 export const ActionsCheckStatusData$inboundSchema: z.ZodType<
   ActionsCheckStatusData,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  status: ActionsCheckStatusStatus$inboundSchema,
-  verdict: types.optional(Verdict$inboundSchema),
-  resolution_jwt: types.optional(types.string()),
-  ceremony_id: types.optional(types.string()),
-  delivered: types.optional(types.boolean()),
-}).transform((v) => {
-  return remap$(v, {
-    "resolution_jwt": "resolutionJwt",
-    "ceremony_id": "ceremonyId",
-  });
+  data: types.optional(z.lazy(() => ActionsCheckStatusDataData$inboundSchema)),
+  error: types.optional(models.ErrorBody$inboundSchema),
 });
 /** @internal */
 export type ActionsCheckStatusData$Outbound = {
-  status: string;
-  verdict?: string | undefined;
-  resolution_jwt?: string | undefined;
-  ceremony_id?: string | undefined;
-  delivered?: boolean | undefined;
+  data?: ActionsCheckStatusDataData$Outbound | undefined;
+  error?: models.ErrorBody$Outbound | undefined;
 };
 
 /** @internal */
@@ -161,16 +247,8 @@ export const ActionsCheckStatusData$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ActionsCheckStatusData
 > = z.object({
-  status: ActionsCheckStatusStatus$outboundSchema,
-  verdict: Verdict$outboundSchema.optional(),
-  resolutionJwt: z.string().optional(),
-  ceremonyId: z.string().optional(),
-  delivered: z.boolean().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    resolutionJwt: "resolution_jwt",
-    ceremonyId: "ceremony_id",
-  });
+  data: z.lazy(() => ActionsCheckStatusDataData$outboundSchema).optional(),
+  error: models.ErrorBody$outboundSchema.optional(),
 });
 
 export function actionsCheckStatusDataToJSON(

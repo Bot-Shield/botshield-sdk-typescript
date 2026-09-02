@@ -11,10 +11,10 @@ import { unwrapAsync } from "../types/fp.js";
 
 export class Actions extends ClientSDK {
   /**
-   * Propose a BotShield Action
+   * Propose an action for human confirmation
    *
    * @remarks
-   * Queue a human-presence-gated action for a BotShield user. The user receives a card on their iOS app, attests via biometric ceremony, and BotShield delivers a signed Resolution JWT to your registered callback URL. Authentication: agent key (bs_agent_<name>__<secret>) in Authorization header.
+   * Queue a human-presence-gated action for a BotShield user. The user receives the card in the BotShield app (Agents Ask), confirms or denies with a biometric ceremony, and BotShield delivers a signed Proof of Resolution JWT to your registered callback URL (or poll check-status). Identify the user by opaque_id — the pairwise id from the bind ceremony. Authentication: agent key (bs_agent_<name>__<secret>) in the Authorization header.
    */
   async proposeAction(
     request: operations.ActionsProposeRequest,
@@ -31,7 +31,7 @@ export class Actions extends ClientSDK {
    * Check action proposal status
    *
    * @remarks
-   * Poll the current state of a previously-proposed action. For terminal states (approved/denied), the response carries the signed Resolution JWT.
+   * Poll the state of a proposed action. Terminal states (approved/denied) carry the signed Proof of Resolution JWT (ES256; verify against /.well-known/jwks.json — the request_id is the JWT jti). Pass wait_seconds to long-poll: the call holds up to 25s and returns as soon as the card leaves queued.
    */
   async checkActionStatus(
     request: operations.ActionsCheckStatusRequest,
@@ -48,7 +48,7 @@ export class Actions extends ClientSDK {
    * Cancel a queued action proposal
    *
    * @remarks
-   * Stand down a queued action before the user responds. No-op if the proposal is already in a terminal state (TTL is cancel — silent expiry produces no Resolution).
+   * Stand down a queued action before the user responds. Idempotent: if the card is already terminal, returns its current status with already_resolved=true (TTL expiry produces no Resolution).
    */
   async cancelAction(
     request: operations.ActionsCancelRequest,

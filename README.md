@@ -12,16 +12,17 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
 <!-- Start Summary [summary] -->
 ## Summary
 
-BotShield API: Human presence verification protocol with Signal Pixel passive bot scoring and third-party integrations.
+BotShield API: Human presence verification protocol.
 
-BotShield provides three layers of defense:
-1. **Signal Pixel** — passive behavioral fingerprinting (opt-in via `signals="true"`)
-2. **Passkey Verification** — cryptographic human proof via device biometrics
-3. **Third-party Integrations** — Cloudflare Turnstile, reCAPTCHA, and more
+**Census** — a partner gate (checkout, sign-up, any action moment) asks whether a live human is present. The client pre-check returns the two-result-state contract `result_state: human_verified | unavailable`; when presence is required the person confirms with a device biometric in the BotShield app and the gate receives an ES256 attestation JWT, verifiable against the public JWKS at /.well-known/jwks.json. No identity crosses the boundary.
 
-**Frontend SDK:** Load the BotShield script from `https://cdn.botshield.ai/sdk.js` and use `BotShield.render()` or the `botshield-verify` HTML element.
+**Agents Ask** — an agent proposes an action; the human confirms in the BotShield app and BotShield signs a Proof of Resolution JWT.
 
-**Backend SDK:** Install `botshield-sdk` from npm and use `client.sdk.*` methods.
+**Frontend:** load the BotShield client script from https://cdn.botshield.ai/sdk.js and place the botshield-verify element.
+
+**Backend SDK:** install `botshield-sdk` from npm and use `client.sdk.*`, `client.verification.*`, `client.actions.*`.
+
+**Response envelope:** every operation answers HTTP 200 with `{ data: ... }`. Most carry the result one level deeper (`data.data`); `logout` and `verification/status` carry it directly. Handler errors are also HTTP 200 — `data.error = { message, statusCode }` — so check `data.error` before reading a result. HTTP 400 is reserved for input validation (`InvalidInputError`), 500 for unhandled failures.
 <!-- End Summary [summary] -->
 
 <!-- Start Table of Contents [toc] -->
@@ -101,10 +102,7 @@ Add the following server definition to your `claude_desktop_config.json` file:
         "mcp", "start",
         "--agent-key-auth", "...",
         "--agent-key-auth1", "...",
-        "--agent-key-auth2", "...",
-        "--agent-key-auth3", "...",
-        "--agent-key-auth4", "...",
-        "--agent-key-auth5", "..."
+        "--agent-key-auth2", "..."
       ]
     }
   }
@@ -129,10 +127,7 @@ Create a `.cursor/mcp.json` file in your project root with the following content
         "mcp", "start",
         "--agent-key-auth", "...",
         "--agent-key-auth1", "...",
-        "--agent-key-auth2", "...",
-        "--agent-key-auth3", "...",
-        "--agent-key-auth4", "...",
-        "--agent-key-auth5", "..."
+        "--agent-key-auth2", "..."
       ]
     }
   }
@@ -189,7 +184,7 @@ import { BotShield } from "botshield-sdk";
 const botShield = new BotShield();
 
 async function run() {
-  const result = await botShield.sdk.createSession({
+  const result = await botShield.census.createSession({
     apiKeyAuth: "<YOUR_API_KEY_HERE>",
   }, {});
 
@@ -213,9 +208,6 @@ This SDK supports the following security schemes globally:
 | `agentKeyAuth`  | apiKey | API key |
 | `agentKeyAuth1` | apiKey | API key |
 | `agentKeyAuth2` | apiKey | API key |
-| `agentKeyAuth3` | apiKey | API key |
-| `agentKeyAuth4` | apiKey | API key |
-| `agentKeyAuth5` | apiKey | API key |
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript
@@ -228,17 +220,9 @@ const botShield = new BotShield({
 });
 
 async function run() {
-  const result = await botShield.actions.proposeAction({
-    requestId: "362873d8-19a4-46e6-b883-916c05dd0283",
-    userEmail: "Corine63@hotmail.com",
-    action: {
-      summaryTitle: "<value>",
-      summaryDetail: {
-        label: "TOTAL",
-        value: "$100.90",
-      },
-      category: "travel.book",
-    },
+  const result = await botShield.census.storeSignal({
+    siteKey: "<value>",
+    score: 229498,
   });
 
   console.log(result);
@@ -257,7 +241,7 @@ import { BotShield } from "botshield-sdk";
 const botShield = new BotShield();
 
 async function run() {
-  const result = await botShield.sdk.createSession({
+  const result = await botShield.census.createSession({
     apiKeyAuth: "<YOUR_API_KEY_HERE>",
   }, {});
 
@@ -277,24 +261,23 @@ run();
 
 ### [Actions](docs/sdks/actions/README.md)
 
-* [proposeAction](docs/sdks/actions/README.md#proposeaction) - Propose a BotShield Action
+* [proposeAction](docs/sdks/actions/README.md#proposeaction) - Propose an action for human confirmation
 * [checkActionStatus](docs/sdks/actions/README.md#checkactionstatus) - Check action proposal status
 * [cancelAction](docs/sdks/actions/README.md#cancelaction) - Cancel a queued action proposal
 
-### [SDK](docs/sdks/sdk/README.md)
+### [Census](docs/sdks/census/README.md)
 
-* [createSession](docs/sdks/sdk/README.md#createsession) - Create an Anchor Grant Window
-* [createVerificationLink](docs/sdks/sdk/README.md#createverificationlink) - Create a verification request
-* [verifyToken](docs/sdks/sdk/README.md#verifytoken) - Validate a verification token
-* [storeSignal](docs/sdks/sdk/README.md#storesignal) - Store a Signal Pixel bot score
-* [validateSignal](docs/sdks/sdk/README.md#validatesignal) - Validate a signal token
-* [getPartnerConfig](docs/sdks/sdk/README.md#getpartnerconfig) - Get partner configuration
-* [revokeVerification](docs/sdks/sdk/README.md#revokeverification) - Revoke a pending verification
-* [logout](docs/sdks/sdk/README.md#logout) - Revoke an Anchor Grant Window token
+* [createSession](docs/sdks/census/README.md#createsession) - Create an Anchor Grant Window
+* [createVerificationLink](docs/sdks/census/README.md#createverificationlink) - Create a verification request
+* [verifyToken](docs/sdks/census/README.md#verifytoken) - Validate a verification token
+* [storeSignal](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
+* [validateSignal](docs/sdks/census/README.md#validatesignal) - Validate a signal token
+* [getPartnerConfig](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
+* [revokeVerification](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
+* [logout](docs/sdks/census/README.md#logout) - Revoke an Anchor Grant Window token
 
 ### [Verification](docs/sdks/verification/README.md)
 
-* [lookupUserByEmail](docs/sdks/verification/README.md#lookupuserbyemail) - Look up user by email
 * [getStatus](docs/sdks/verification/README.md#getstatus) - Check verification status
 
 </details>
@@ -317,17 +300,16 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 - [`actionsCancelAction`](docs/sdks/actions/README.md#cancelaction) - Cancel a queued action proposal
 - [`actionsCheckActionStatus`](docs/sdks/actions/README.md#checkactionstatus) - Check action proposal status
-- [`actionsProposeAction`](docs/sdks/actions/README.md#proposeaction) - Propose a BotShield Action
-- [`sdkCreateSession`](docs/sdks/sdk/README.md#createsession) - Create an Anchor Grant Window
-- [`sdkCreateVerificationLink`](docs/sdks/sdk/README.md#createverificationlink) - Create a verification request
-- [`sdkGetPartnerConfig`](docs/sdks/sdk/README.md#getpartnerconfig) - Get partner configuration
-- [`sdkLogout`](docs/sdks/sdk/README.md#logout) - Revoke an Anchor Grant Window token
-- [`sdkRevokeVerification`](docs/sdks/sdk/README.md#revokeverification) - Revoke a pending verification
-- [`sdkStoreSignal`](docs/sdks/sdk/README.md#storesignal) - Store a Signal Pixel bot score
-- [`sdkValidateSignal`](docs/sdks/sdk/README.md#validatesignal) - Validate a signal token
-- [`sdkVerifyToken`](docs/sdks/sdk/README.md#verifytoken) - Validate a verification token
+- [`actionsProposeAction`](docs/sdks/actions/README.md#proposeaction) - Propose an action for human confirmation
+- [`censusCreateSession`](docs/sdks/census/README.md#createsession) - Create an Anchor Grant Window
+- [`censusCreateVerificationLink`](docs/sdks/census/README.md#createverificationlink) - Create a verification request
+- [`censusGetPartnerConfig`](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
+- [`censusLogout`](docs/sdks/census/README.md#logout) - Revoke an Anchor Grant Window token
+- [`censusRevokeVerification`](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
+- [`censusStoreSignal`](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
+- [`censusValidateSignal`](docs/sdks/census/README.md#validatesignal) - Validate a signal token
+- [`censusVerifyToken`](docs/sdks/census/README.md#verifytoken) - Validate a verification token
 - [`verificationGetStatus`](docs/sdks/verification/README.md#getstatus) - Check verification status
-- [`verificationLookupUserByEmail`](docs/sdks/verification/README.md#lookupuserbyemail) - Look up user by email
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -344,7 +326,7 @@ import { BotShield } from "botshield-sdk";
 const botShield = new BotShield();
 
 async function run() {
-  const result = await botShield.sdk.createSession(
+  const result = await botShield.census.createSession(
     {
       apiKeyAuth: "<YOUR_API_KEY_HERE>",
     },
@@ -388,7 +370,7 @@ const botShield = new BotShield({
 });
 
 async function run() {
-  const result = await botShield.sdk.createSession({
+  const result = await botShield.census.createSession({
     apiKeyAuth: "<YOUR_API_KEY_HERE>",
   }, {});
 
@@ -423,7 +405,7 @@ const botShield = new BotShield();
 
 async function run() {
   try {
-    const result = await botShield.sdk.createSession({
+    const result = await botShield.census.createSession({
       apiKeyAuth: "<YOUR_API_KEY_HERE>",
     }, {});
 
@@ -451,10 +433,12 @@ run();
 ```
 
 ### Error Classes
-**Primary error:**
+**Primary errors:**
 * [`BotShieldError`](./src/models/errors/bot-shield-error.ts): The base class for HTTP error responses.
+  * [`InvalidInputError`](./src/models/errors/invalid-input-error.ts): Invalid input. Status code `400`.
+  * [`ErrorResponse`](./src/models/errors/error-response.ts): Internal server error. Status code `500`.
 
-<details><summary>Less common errors (8)</summary>
+<details><summary>Less common errors (6)</summary>
 
 <br />
 
@@ -467,13 +451,9 @@ run();
 
 
 **Inherit from [`BotShieldError`](./src/models/errors/bot-shield-error.ts)**:
-* [`InvalidInputError`](./src/models/errors/invalid-input-error.ts): Invalid input. Status code `400`. Applicable to 8 of 13 methods.*
-* [`ErrorResponse`](./src/models/errors/error-response.ts): Unauthorized. Applicable to 8 of 13 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
-
-\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
@@ -498,7 +478,7 @@ const botShield = new BotShield({
 });
 
 async function run() {
-  const result = await botShield.sdk.createSession({
+  const result = await botShield.census.createSession({
     apiKeyAuth: "<YOUR_API_KEY_HERE>",
   }, {});
 
@@ -520,7 +500,7 @@ const botShield = new BotShield({
 });
 
 async function run() {
-  const result = await botShield.sdk.createSession({
+  const result = await botShield.census.createSession({
     apiKeyAuth: "<YOUR_API_KEY_HERE>",
   }, {});
 

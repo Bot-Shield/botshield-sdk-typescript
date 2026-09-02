@@ -8,25 +8,45 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
+import * as models from "../index.js";
 
 export type SDKRevokeVerificationSecurity = {
   apiKeyAuth: string;
 };
 
 export type SDKRevokeVerificationRequest = {
+  /**
+   * The gate's action name.
+   */
   scope: string;
+  /**
+   * **Deprecated.** Use `partner_user_id` to identify whose verification to revoke.
+   *
+   * @remarks
+   * Will be removed in the next major version.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   */
   userEmail?: string | undefined;
   partnerUserId?: string | undefined;
 };
 
-export type SDKRevokeVerificationData = {
+export type SDKRevokeVerificationDataData = {
   success?: boolean | undefined;
   revokedCount?: number | undefined;
   message?: string | undefined;
 };
 
+export type SDKRevokeVerificationData = {
+  data?: SDKRevokeVerificationDataData | undefined;
+  /**
+   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   */
+  error?: models.ErrorBody | undefined;
+};
+
 /**
- * Revocation result
+ * Revocation result. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401.
  */
 export type SDKRevokeVerificationResponse = {
   data: SDKRevokeVerificationData;
@@ -139,8 +159,8 @@ export function sdkRevokeVerificationRequestFromJSON(
 }
 
 /** @internal */
-export const SDKRevokeVerificationData$inboundSchema: z.ZodType<
-  SDKRevokeVerificationData,
+export const SDKRevokeVerificationDataData$inboundSchema: z.ZodType<
+  SDKRevokeVerificationDataData,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -153,17 +173,17 @@ export const SDKRevokeVerificationData$inboundSchema: z.ZodType<
   });
 });
 /** @internal */
-export type SDKRevokeVerificationData$Outbound = {
+export type SDKRevokeVerificationDataData$Outbound = {
   success?: boolean | undefined;
   revoked_count?: number | undefined;
   message?: string | undefined;
 };
 
 /** @internal */
-export const SDKRevokeVerificationData$outboundSchema: z.ZodType<
-  SDKRevokeVerificationData$Outbound,
+export const SDKRevokeVerificationDataData$outboundSchema: z.ZodType<
+  SDKRevokeVerificationDataData$Outbound,
   z.ZodTypeDef,
-  SDKRevokeVerificationData
+  SDKRevokeVerificationDataData
 > = z.object({
   success: z.boolean().optional(),
   revokedCount: z.number().int().optional(),
@@ -172,6 +192,52 @@ export const SDKRevokeVerificationData$outboundSchema: z.ZodType<
   return remap$(v, {
     revokedCount: "revoked_count",
   });
+});
+
+export function sdkRevokeVerificationDataDataToJSON(
+  sdkRevokeVerificationDataData: SDKRevokeVerificationDataData,
+): string {
+  return JSON.stringify(
+    SDKRevokeVerificationDataData$outboundSchema.parse(
+      sdkRevokeVerificationDataData,
+    ),
+  );
+}
+export function sdkRevokeVerificationDataDataFromJSON(
+  jsonString: string,
+): SafeParseResult<SDKRevokeVerificationDataData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SDKRevokeVerificationDataData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKRevokeVerificationDataData' from JSON`,
+  );
+}
+
+/** @internal */
+export const SDKRevokeVerificationData$inboundSchema: z.ZodType<
+  SDKRevokeVerificationData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: types.optional(
+    z.lazy(() => SDKRevokeVerificationDataData$inboundSchema),
+  ),
+  error: types.optional(models.ErrorBody$inboundSchema),
+});
+/** @internal */
+export type SDKRevokeVerificationData$Outbound = {
+  data?: SDKRevokeVerificationDataData$Outbound | undefined;
+  error?: models.ErrorBody$Outbound | undefined;
+};
+
+/** @internal */
+export const SDKRevokeVerificationData$outboundSchema: z.ZodType<
+  SDKRevokeVerificationData$Outbound,
+  z.ZodTypeDef,
+  SDKRevokeVerificationData
+> = z.object({
+  data: z.lazy(() => SDKRevokeVerificationDataData$outboundSchema).optional(),
+  error: models.ErrorBody$outboundSchema.optional(),
 });
 
 export function sdkRevokeVerificationDataToJSON(

@@ -10,8 +10,7 @@ let value: SDKRevokeVerificationData = {};
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `success`          | *boolean*          | :heavy_minus_sign: | N/A                |
-| `revokedCount`     | *number*           | :heavy_minus_sign: | N/A                |
-| `message`          | *string*           | :heavy_minus_sign: | N/A                |
+| Field                                                                                                    | Type                                                                                                     | Required                                                                                                 | Description                                                                                              |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `data`                                                                                                   | [operations.SDKRevokeVerificationDataData](../../models/operations/sdk-revoke-verification-data-data.md) | :heavy_minus_sign:                                                                                       | N/A                                                                                                      |
+| `error`                                                                                                  | [models.ErrorBody](../../models/error-body.md)                                                           | :heavy_minus_sign:                                                                                       | Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.         |

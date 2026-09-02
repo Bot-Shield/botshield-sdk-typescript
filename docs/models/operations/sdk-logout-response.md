@@ -1,20 +1,19 @@
 # SDKLogoutResponse
 
-Token revoked
+Token revoked. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401, 403 (token belongs to another organization).
 
 ## Example Usage
 
 ```typescript
 import { SDKLogoutResponse } from "botshield-sdk/models/operations";
 
-let value: SDKLogoutResponse = {};
+let value: SDKLogoutResponse = {
+  data: {},
+};
 ```
 
 ## Fields
 
-| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   |
-| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `success`                                                                                     | *boolean*                                                                                     | :heavy_minus_sign:                                                                            | N/A                                                                                           |
-| `message`                                                                                     | *string*                                                                                      | :heavy_minus_sign:                                                                            | N/A                                                                                           |
-| `tokenFound`                                                                                  | *boolean*                                                                                     | :heavy_minus_sign:                                                                            | N/A                                                                                           |
-| `revokedAt`                                                                                   | [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) | :heavy_minus_sign:                                                                            | N/A                                                                                           |
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `data`                                                                 | [operations.SDKLogoutData](../../models/operations/sdk-logout-data.md) | :heavy_check_mark:                                                     | N/A                                                                    |

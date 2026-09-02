@@ -1,6 +1,6 @@
 # ErrorResponse
 
-Unauthorized
+Internal server error
 
 ## Example Usage
 

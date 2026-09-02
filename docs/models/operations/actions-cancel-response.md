@@ -1,6 +1,6 @@
 # ActionsCancelResponse
 
-Cancellation result
+Cancellation result. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401, 404 (request_id not found), 500.
 
 ## Example Usage
 

@@ -13,5 +13,5 @@ let value: VerificationGetStatusStatus = "not_found";
 ## Values
 
 ```typescript
-"pending" | "completed" | "expired" | "failed" | "not_found" | Unrecognized<string>
+"pending" | "completed" | "expired" | "failed" | "not_found" | "error" | Unrecognized<string>
 ```

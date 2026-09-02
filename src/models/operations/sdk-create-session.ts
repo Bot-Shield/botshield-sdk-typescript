@@ -5,9 +5,12 @@
 import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
+import * as models from "../index.js";
 
 export type SDKCreateSessionSecurity = {
   apiKeyAuth: string;
@@ -21,12 +24,29 @@ export type SDKCreateSessionRequest = {
   metadata?: { [k: string]: any } | undefined;
 };
 
+/**
+ * Resolved from the credential: API token environment, or site key pk_test_ → development / pk_live_ → production.
+ */
+export const SDKCreateSessionEnvironment = {
+  Development: "development",
+  Production: "production",
+} as const;
+/**
+ * Resolved from the credential: API token environment, or site key pk_test_ → development / pk_live_ → production.
+ */
+export type SDKCreateSessionEnvironment = OpenEnum<
+  typeof SDKCreateSessionEnvironment
+>;
+
 export type SDKCreateSessionOrganization = {
   id: string;
-  environment: string;
+  /**
+   * Resolved from the credential: API token environment, or site key pk_test_ → development / pk_live_ → production.
+   */
+  environment: SDKCreateSessionEnvironment;
 };
 
-export type SDKCreateSessionData = {
+export type SDKCreateSessionDataData = {
   /**
    * Canonical grant token (Bearer bss_*)
    */
@@ -42,8 +62,16 @@ export type SDKCreateSessionData = {
   organization: SDKCreateSessionOrganization;
 };
 
+export type SDKCreateSessionData = {
+  data?: SDKCreateSessionDataData | undefined;
+  /**
+   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   */
+  error?: models.ErrorBody | undefined;
+};
+
 /**
- * Anchor grant window created
+ * Anchor grant window created. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401 (bad or missing credential), 403 (origin not allowed for the site key).
  */
 export type SDKCreateSessionResponse = {
   data: SDKCreateSessionData;
@@ -147,13 +175,26 @@ export function sdkCreateSessionRequestFromJSON(
 }
 
 /** @internal */
+export const SDKCreateSessionEnvironment$inboundSchema: z.ZodType<
+  SDKCreateSessionEnvironment,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(SDKCreateSessionEnvironment);
+/** @internal */
+export const SDKCreateSessionEnvironment$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  SDKCreateSessionEnvironment
+> = openEnums.outboundSchema(SDKCreateSessionEnvironment);
+
+/** @internal */
 export const SDKCreateSessionOrganization$inboundSchema: z.ZodType<
   SDKCreateSessionOrganization,
   z.ZodTypeDef,
   unknown
 > = z.object({
   id: types.string(),
-  environment: types.string(),
+  environment: SDKCreateSessionEnvironment$inboundSchema,
 });
 /** @internal */
 export type SDKCreateSessionOrganization$Outbound = {
@@ -168,7 +209,7 @@ export const SDKCreateSessionOrganization$outboundSchema: z.ZodType<
   SDKCreateSessionOrganization
 > = z.object({
   id: z.string(),
-  environment: z.string(),
+  environment: SDKCreateSessionEnvironment$outboundSchema,
 });
 
 export function sdkCreateSessionOrganizationToJSON(
@@ -191,8 +232,8 @@ export function sdkCreateSessionOrganizationFromJSON(
 }
 
 /** @internal */
-export const SDKCreateSessionData$inboundSchema: z.ZodType<
-  SDKCreateSessionData,
+export const SDKCreateSessionDataData$inboundSchema: z.ZodType<
+  SDKCreateSessionDataData,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -214,7 +255,7 @@ export const SDKCreateSessionData$inboundSchema: z.ZodType<
   });
 });
 /** @internal */
-export type SDKCreateSessionData$Outbound = {
+export type SDKCreateSessionDataData$Outbound = {
   anchor_grant_token: string;
   anchor_grant_expires_at: string;
   anchor_grant_expires_in_seconds: number;
@@ -225,10 +266,10 @@ export type SDKCreateSessionData$Outbound = {
 };
 
 /** @internal */
-export const SDKCreateSessionData$outboundSchema: z.ZodType<
-  SDKCreateSessionData$Outbound,
+export const SDKCreateSessionDataData$outboundSchema: z.ZodType<
+  SDKCreateSessionDataData$Outbound,
   z.ZodTypeDef,
-  SDKCreateSessionData
+  SDKCreateSessionDataData
 > = z.object({
   anchorGrantToken: z.string(),
   anchorGrantExpiresAt: z.date().transform(v => v.toISOString()),
@@ -246,6 +287,48 @@ export const SDKCreateSessionData$outboundSchema: z.ZodType<
     expiresAt: "expires_at",
     expiresInSeconds: "expires_in_seconds",
   });
+});
+
+export function sdkCreateSessionDataDataToJSON(
+  sdkCreateSessionDataData: SDKCreateSessionDataData,
+): string {
+  return JSON.stringify(
+    SDKCreateSessionDataData$outboundSchema.parse(sdkCreateSessionDataData),
+  );
+}
+export function sdkCreateSessionDataDataFromJSON(
+  jsonString: string,
+): SafeParseResult<SDKCreateSessionDataData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SDKCreateSessionDataData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKCreateSessionDataData' from JSON`,
+  );
+}
+
+/** @internal */
+export const SDKCreateSessionData$inboundSchema: z.ZodType<
+  SDKCreateSessionData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: types.optional(z.lazy(() => SDKCreateSessionDataData$inboundSchema)),
+  error: types.optional(models.ErrorBody$inboundSchema),
+});
+/** @internal */
+export type SDKCreateSessionData$Outbound = {
+  data?: SDKCreateSessionDataData$Outbound | undefined;
+  error?: models.ErrorBody$Outbound | undefined;
+};
+
+/** @internal */
+export const SDKCreateSessionData$outboundSchema: z.ZodType<
+  SDKCreateSessionData$Outbound,
+  z.ZodTypeDef,
+  SDKCreateSessionData
+> = z.object({
+  data: z.lazy(() => SDKCreateSessionDataData$outboundSchema).optional(),
+  error: models.ErrorBody$outboundSchema.optional(),
 });
 
 export function sdkCreateSessionDataToJSON(

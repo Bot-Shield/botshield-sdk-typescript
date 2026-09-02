@@ -1,18 +1,19 @@
 # SDKGetPartnerConfigResponse
 
-Partner configuration
+Partner configuration. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: none — unknown site key returns empty integrations.
 
 ## Example Usage
 
 ```typescript
 import { SDKGetPartnerConfigResponse } from "botshield-sdk/models/operations";
 
-let value: SDKGetPartnerConfigResponse = {};
+let value: SDKGetPartnerConfigResponse = {
+  data: {},
+};
 ```
 
 ## Fields
 
-| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
-| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `integrations`                                                                     | Record<string, [operations.Integrations](../../models/operations/integrations.md)> | :heavy_minus_sign:                                                                 | N/A                                                                                |
-| `environment`                                                                      | [operations.Environment](../../models/operations/environment.md)                   | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `data`                                                                                       | [operations.SDKGetPartnerConfigData](../../models/operations/sdk-get-partner-config-data.md) | :heavy_check_mark:                                                                           | N/A                                                                                          |

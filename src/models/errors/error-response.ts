@@ -7,14 +7,14 @@ import * as models from "../index.js";
 import { BotShieldError } from "./bot-shield-error.js";
 
 /**
- * Unauthorized
+ * Internal server error
  */
 export type ErrorResponseData = {
   error: models.ErrorResponseError;
 };
 
 /**
- * Unauthorized
+ * Internal server error
  */
 export class ErrorResponse extends BotShieldError {
   error: models.ErrorResponseError;
