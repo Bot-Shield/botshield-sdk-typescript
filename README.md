@@ -14,7 +14,7 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
 
 BotShield API: Human presence verification protocol.
 
-**Census** — a partner gate (checkout, sign-up, any action moment) asks whether a live human is present. The client pre-check returns the two-result-state contract `result_state: human_verified | unavailable`; when presence is required the person confirms with a device biometric in the BotShield app and the gate receives an ES256 attestation JWT, verifiable against the public JWKS at /.well-known/jwks.json. No identity crosses the boundary.
+**BotShield Human Verification** — a BotShield Gate (checkout, sign-up, any action moment) asks whether a live human is present. The client pre-check returns the two-result-state contract `result_state: human_verified | unavailable`; when presence is required the person confirms with a device biometric in the BotShield app and the gate receives an ES256 attestation JWT, verifiable against the public JWKS at /.well-known/jwks.json. No identity crosses the boundary.
 
 **Agents Ask** — an agent proposes an action; the human confirms in the BotShield app and BotShield signs a Proof of Resolution JWT.
 
