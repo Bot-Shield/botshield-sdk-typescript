@@ -14,7 +14,7 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
 
 BotShield API: Human presence verification protocol.
 
-**BotShield Human Verification** — a BotShield Gate (checkout, sign-up, any action moment) asks whether a live human is present. The client pre-check returns the two-result-state contract `result_state: human_verified | unavailable`; when presence is required the person confirms with a device biometric in the BotShield app and the gate receives an ES256 attestation JWT, verifiable against the public JWKS at /.well-known/jwks.json. No identity crosses the boundary.
+**Census** — a partner gate (checkout, sign-up, any action moment) asks whether a live human is present. The client pre-check returns the two-result-state contract `result_state: human_verified | unavailable`; when presence is required the person confirms with a device biometric in the BotShield app and the gate receives an ES256 attestation JWT, verifiable against the public JWKS at /.well-known/jwks.json. No identity crosses the boundary.
 
 **Agents Ask** — an agent proposes an action; the human confirms in the BotShield app and BotShield signs a Proof of Resolution JWT.
 
@@ -102,7 +102,20 @@ Add the following server definition to your `claude_desktop_config.json` file:
         "mcp", "start",
         "--agent-key-auth", "...",
         "--agent-key-auth1", "...",
-        "--agent-key-auth2", "..."
+        "--agent-key-auth2", "...",
+        "--agent-key-auth3", "...",
+        "--agent-key-auth4", "...",
+        "--agent-key-auth5", "...",
+        "--agent-key-auth6", "...",
+        "--agent-key-auth7", "...",
+        "--agent-key-auth8", "...",
+        "--agent-key-auth9", "...",
+        "--agent-key-auth10", "...",
+        "--agent-key-auth11", "...",
+        "--agent-key-auth12", "...",
+        "--agent-key-auth13", "...",
+        "--agent-key-auth14", "...",
+        "--agent-key-auth15", "..."
       ]
     }
   }
@@ -127,7 +140,20 @@ Create a `.cursor/mcp.json` file in your project root with the following content
         "mcp", "start",
         "--agent-key-auth", "...",
         "--agent-key-auth1", "...",
-        "--agent-key-auth2", "..."
+        "--agent-key-auth2", "...",
+        "--agent-key-auth3", "...",
+        "--agent-key-auth4", "...",
+        "--agent-key-auth5", "...",
+        "--agent-key-auth6", "...",
+        "--agent-key-auth7", "...",
+        "--agent-key-auth8", "...",
+        "--agent-key-auth9", "...",
+        "--agent-key-auth10", "...",
+        "--agent-key-auth11", "...",
+        "--agent-key-auth12", "...",
+        "--agent-key-auth13", "...",
+        "--agent-key-auth14", "...",
+        "--agent-key-auth15", "..."
       ]
     }
   }
@@ -203,11 +229,24 @@ run();
 
 This SDK supports the following security schemes globally:
 
-| Name            | Type   | Scheme  |
-| --------------- | ------ | ------- |
-| `agentKeyAuth`  | apiKey | API key |
-| `agentKeyAuth1` | apiKey | API key |
-| `agentKeyAuth2` | apiKey | API key |
+| Name             | Type   | Scheme  |
+| ---------------- | ------ | ------- |
+| `agentKeyAuth`   | apiKey | API key |
+| `agentKeyAuth1`  | apiKey | API key |
+| `agentKeyAuth2`  | apiKey | API key |
+| `agentKeyAuth3`  | apiKey | API key |
+| `agentKeyAuth4`  | apiKey | API key |
+| `agentKeyAuth5`  | apiKey | API key |
+| `agentKeyAuth6`  | apiKey | API key |
+| `agentKeyAuth7`  | apiKey | API key |
+| `agentKeyAuth8`  | apiKey | API key |
+| `agentKeyAuth9`  | apiKey | API key |
+| `agentKeyAuth10` | apiKey | API key |
+| `agentKeyAuth11` | apiKey | API key |
+| `agentKeyAuth12` | apiKey | API key |
+| `agentKeyAuth13` | apiKey | API key |
+| `agentKeyAuth14` | apiKey | API key |
+| `agentKeyAuth15` | apiKey | API key |
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript
