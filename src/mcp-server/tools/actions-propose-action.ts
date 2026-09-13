@@ -14,7 +14,24 @@ export const tool$actionsProposeAction: ToolDefinition<typeof args> = {
   name: "propose_resolution",
   description:
     `Propose a human-presence-gated action to a BotShield user (Agents Ask). Returns a card_id immediately; the signed Proof of Resolution arrives async via the agent's registered callback, or poll check_resolution_status.`,
-  scopes: ["queue", "queue", "queue"],
+  scopes: [
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+    "queue",
+  ],
   args,
   tool: async (client, args, ctx) => {
     const [result, apiCall] = await actionsProposeAction(
