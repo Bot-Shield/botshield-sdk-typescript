@@ -27,7 +27,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Revoke an Anchor Grant Window token
+ * Revoke a grant token
  */
 export function censusLogout(
   client: BotShieldCore,

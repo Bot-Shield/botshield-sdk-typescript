@@ -6,7 +6,7 @@
 import { SDKCreateVerificationLinkSecurity } from "botshield-sdk/models/operations";
 
 let value: SDKCreateVerificationLinkSecurity = {
-  apiKeyAuth: "<value>",
+  grantTokenAuth: "<value>",
 };
 ```
 
@@ -14,4 +14,4 @@ let value: SDKCreateVerificationLinkSecurity = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `apiKeyAuth`       | *string*           | :heavy_check_mark: | N/A                |
+| `grantTokenAuth`   | *string*           | :heavy_check_mark: | N/A                |

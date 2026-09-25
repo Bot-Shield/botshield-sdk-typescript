@@ -27,7 +27,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create an Anchor Grant Window
+ * Create a grant token
  *
  * @remarks
  * Creates a short-lived anchor grant token (5 minutes) from an API token or site key. Use this to get a token before creating verification links.

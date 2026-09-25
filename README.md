@@ -20,7 +20,7 @@ BotShield API: Human presence verification protocol.
 
 **Frontend:** load the BotShield client script from https://cdn.botshield.ai/sdk.js and place the botshield-verify element.
 
-**Backend SDK:** install `botshield-sdk` from npm and use `client.sdk.*`, `client.verification.*`, `client.actions.*`.
+**Backend SDK:** install `botshield-sdk` from npm and use `client.census.*`, `client.verification.*`, `client.actions.*`.
 
 **Response envelope:** every operation answers HTTP 200 with `{ data: ... }`. Most carry the result one level deeper (`data.data`); `logout` and `verification/status` carry it directly. Handler errors are also HTTP 200 — `data.error = { message, statusCode }` — so check `data.error` before reading a result. HTTP 400 is reserved for input validation (`InvalidInputError`), 500 for unhandled failures.
 <!-- End Summary [summary] -->
@@ -101,8 +101,7 @@ Add the following server definition to your `claude_desktop_config.json` file:
         "--",
         "mcp", "start",
         "--agent-key-auth", "...",
-        "--agent-key-auth1", "...",
-        "--agent-key-auth2", "..."
+        "--agent-key-auth1", "..."
       ]
     }
   }
@@ -126,8 +125,7 @@ Create a `.cursor/mcp.json` file in your project root with the following content
         "--",
         "mcp", "start",
         "--agent-key-auth", "...",
-        "--agent-key-auth1", "...",
-        "--agent-key-auth2", "..."
+        "--agent-key-auth1", "..."
       ]
     }
   }
@@ -207,7 +205,6 @@ This SDK supports the following security schemes globally:
 | --------------- | ------ | ------- |
 | `agentKeyAuth`  | apiKey | API key |
 | `agentKeyAuth1` | apiKey | API key |
-| `agentKeyAuth2` | apiKey | API key |
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript
@@ -267,14 +264,14 @@ run();
 
 ### [Census](docs/sdks/census/README.md)
 
-* [createSession](docs/sdks/census/README.md#createsession) - Create an Anchor Grant Window
+* [createSession](docs/sdks/census/README.md#createsession) - Create a grant token
 * [createVerificationLink](docs/sdks/census/README.md#createverificationlink) - Create a verification request
 * [verifyToken](docs/sdks/census/README.md#verifytoken) - Validate a verification token
 * [storeSignal](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
 * [validateSignal](docs/sdks/census/README.md#validatesignal) - Validate a signal token
 * [getPartnerConfig](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
 * [revokeVerification](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
-* [logout](docs/sdks/census/README.md#logout) - Revoke an Anchor Grant Window token
+* [logout](docs/sdks/census/README.md#logout) - Revoke a grant token
 
 ### [Verification](docs/sdks/verification/README.md)
 
@@ -301,10 +298,10 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`actionsCancelAction`](docs/sdks/actions/README.md#cancelaction) - Cancel a queued action proposal
 - [`actionsCheckActionStatus`](docs/sdks/actions/README.md#checkactionstatus) - Check action proposal status
 - [`actionsProposeAction`](docs/sdks/actions/README.md#proposeaction) - Propose an action for human confirmation
-- [`censusCreateSession`](docs/sdks/census/README.md#createsession) - Create an Anchor Grant Window
+- [`censusCreateSession`](docs/sdks/census/README.md#createsession) - Create a grant token
 - [`censusCreateVerificationLink`](docs/sdks/census/README.md#createverificationlink) - Create a verification request
 - [`censusGetPartnerConfig`](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
-- [`censusLogout`](docs/sdks/census/README.md#logout) - Revoke an Anchor Grant Window token
+- [`censusLogout`](docs/sdks/census/README.md#logout) - Revoke a grant token
 - [`censusRevokeVerification`](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
 - [`censusStoreSignal`](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
 - [`censusValidateSignal`](docs/sdks/census/README.md#validatesignal) - Validate a signal token
