@@ -107,7 +107,7 @@ async function $do(
       {
         fieldName: "Authorization",
         type: "apiKey:header",
-        value: security?.apiKeyAuth,
+        value: security?.grantTokenAuth,
       },
     ],
   );

@@ -4,14 +4,14 @@
 
 ### Available Operations
 
-* [createSession](#createsession) - Create an Anchor Grant Window
+* [createSession](#createsession) - Create a grant token
 * [createVerificationLink](#createverificationlink) - Create a verification request
 * [verifyToken](#verifytoken) - Validate a verification token
 * [storeSignal](#storesignal) - Store a Signal Pixel bot score
 * [validateSignal](#validatesignal) - Validate a signal token
 * [getPartnerConfig](#getpartnerconfig) - Get partner configuration
 * [revokeVerification](#revokeverification) - Revoke a pending verification
-* [logout](#logout) - Revoke an Anchor Grant Window token
+* [logout](#logout) - Revoke a grant token
 
 ## createSession
 
@@ -99,7 +99,7 @@ const botShield = new BotShield();
 
 async function run() {
   const result = await botShield.census.createVerificationLink({
-    apiKeyAuth: "<YOUR_API_KEY_HERE>",
+    grantTokenAuth: "<YOUR_API_KEY_HERE>",
   }, {});
 
   console.log(result);
@@ -122,7 +122,7 @@ const botShield = new BotShieldCore();
 
 async function run() {
   const res = await censusCreateVerificationLink(botShield, {
-    apiKeyAuth: "<YOUR_API_KEY_HERE>",
+    grantTokenAuth: "<YOUR_API_KEY_HERE>",
   }, {});
   if (res.ok) {
     const { value: result } = res;
@@ -531,7 +531,7 @@ run();
 
 ## logout
 
-Revoke an Anchor Grant Window token
+Revoke a grant token
 
 ### Example Usage
 

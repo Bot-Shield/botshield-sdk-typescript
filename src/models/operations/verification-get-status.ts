@@ -15,21 +15,27 @@ import * as models from "../index.js";
 export type VerificationGetStatusSecurity = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
-  apiKeyAuth2?: string | undefined;
 };
 
 export type VerificationGetStatusRequest = {
   requestId: string;
 };
 
+/**
+ * `pass` is a Recent Presence pass: the pre-check resolved the person without a new ceremony. Its record expires 60 seconds after the check, after which this endpoint reports `expired` — it never becomes `completed`. Treat `pass` as success and read it promptly.
+ */
 export const VerificationGetStatusStatus = {
   Pending: "pending",
   Completed: "completed",
+  Pass: "pass",
   Expired: "expired",
   Failed: "failed",
   NotFound: "not_found",
   Error: "error",
 } as const;
+/**
+ * `pass` is a Recent Presence pass: the pre-check resolved the person without a new ceremony. Its record expires 60 seconds after the check, after which this endpoint reports `expired` — it never becomes `completed`. Treat `pass` as success and read it promptly.
+ */
 export type VerificationGetStatusStatus = OpenEnum<
   typeof VerificationGetStatusStatus
 >;
@@ -55,6 +61,9 @@ export type Metadata = {
 
 export type VerificationGetStatusData = {
   found?: boolean | undefined;
+  /**
+   * `pass` is a Recent Presence pass: the pre-check resolved the person without a new ceremony. Its record expires 60 seconds after the check, after which this endpoint reports `expired` — it never becomes `completed`. Treat `pass` as success and read it promptly.
+   */
   status?: VerificationGetStatusStatus | undefined;
   requestId?: string | undefined;
   organizationId?: string | undefined;
@@ -99,13 +108,11 @@ export const VerificationGetStatusSecurity$inboundSchema: z.ZodType<
 > = z.object({
   apiKeyAuth: types.optional(types.string()),
   apiKeyAuth1: types.optional(types.string()),
-  apiKeyAuth2: types.optional(types.string()),
 });
 /** @internal */
 export type VerificationGetStatusSecurity$Outbound = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
-  apiKeyAuth2?: string | undefined;
 };
 
 /** @internal */
@@ -116,7 +123,6 @@ export const VerificationGetStatusSecurity$outboundSchema: z.ZodType<
 > = z.object({
   apiKeyAuth: z.string().optional(),
   apiKeyAuth1: z.string().optional(),
-  apiKeyAuth2: z.string().optional(),
 });
 
 export function verificationGetStatusSecurityToJSON(

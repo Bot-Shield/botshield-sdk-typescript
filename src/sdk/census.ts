@@ -16,7 +16,7 @@ import { unwrapAsync } from "../types/fp.js";
 
 export class Census extends ClientSDK {
   /**
-   * Create an Anchor Grant Window
+   * Create a grant token
    *
    * @remarks
    * Creates a short-lived anchor grant token (5 minutes) from an API token or site key. Use this to get a token before creating verification links.
@@ -145,7 +145,7 @@ export class Census extends ClientSDK {
   }
 
   /**
-   * Revoke an Anchor Grant Window token
+   * Revoke a grant token
    */
   async logout(
     security: operations.SDKLogoutSecurity,

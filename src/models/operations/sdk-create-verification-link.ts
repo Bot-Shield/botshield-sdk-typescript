@@ -13,7 +13,7 @@ import { SDKValidationError } from "../errors/sdk-validation-error.js";
 import * as models from "../index.js";
 
 export type SDKCreateVerificationLinkSecurity = {
-  apiKeyAuth: string;
+  grantTokenAuth: string;
 };
 
 export const SDKTypeRequest = {
@@ -50,9 +50,14 @@ export type SDKCreateVerificationLinkRequest = {
    * Where the web flow returns after verification.
    */
   returnUrl?: string | undefined;
+  /**
+   * Deprecated. Accepted and never used — webhooks are delivered to the endpoints configured in the Console.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   */
   webhookUrl?: string | undefined;
   /**
-   * The gate this request runs (the gate's action name, as listed in the Console under BotShield Census).
+   * The gate this request runs (the gate's action name, as listed in the Console under BotShield Gate).
    */
   scope?: string | undefined;
   sdkType?: SDKTypeRequest | undefined;
@@ -101,6 +106,11 @@ export type SDKCreateVerificationLinkDataData = {
   requestId: string;
   deepLink: string;
   webUrl: string;
+  /**
+   * Deprecated. Does not resolve to an image — render your own QR code from web_url.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   */
   qrCodeUrl: string;
   expiresAt: Date;
   sdkType?: SDKCreateVerificationLinkSDKTypeResponse | undefined;
@@ -134,15 +144,15 @@ export const SDKCreateVerificationLinkSecurity$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  ApiKeyAuth: types.string(),
+  GrantTokenAuth: types.string(),
 }).transform((v) => {
   return remap$(v, {
-    "ApiKeyAuth": "apiKeyAuth",
+    "GrantTokenAuth": "grantTokenAuth",
   });
 });
 /** @internal */
 export type SDKCreateVerificationLinkSecurity$Outbound = {
-  ApiKeyAuth: string;
+  GrantTokenAuth: string;
 };
 
 /** @internal */
@@ -151,10 +161,10 @@ export const SDKCreateVerificationLinkSecurity$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   SDKCreateVerificationLinkSecurity
 > = z.object({
-  apiKeyAuth: z.string(),
+  grantTokenAuth: z.string(),
 }).transform((v) => {
   return remap$(v, {
-    apiKeyAuth: "ApiKeyAuth",
+    grantTokenAuth: "GrantTokenAuth",
   });
 });
 
