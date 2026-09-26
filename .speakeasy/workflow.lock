@@ -2,8 +2,8 @@ speakeasyVersion: 1.796.3
 sources:
     botshield-oas:
         sourceNamespace: botshield-oas
-        sourceRevisionDigest: sha256:64dfe6e6a40f73b1281ad18f83814ac46e843351c7554d05652719ac89d458f0
-        sourceBlobDigest: sha256:d127b5383d77ee20cc38e0e41a2e68f4df05477abe02d21462e77cd5aeaba509
+        sourceRevisionDigest: sha256:f21dc13d6dc89815172e4ad7d1ce0940a589daf58a012d96f786cb6180138847
+        sourceBlobDigest: sha256:34eb3c02f9ea79c5315bf357303a4ac76cbb41d737497afc0b413aee35bbd585
         tags:
             - latest
             - 2.0.0
@@ -11,10 +11,10 @@ targets:
     botshield-sdk-ts:
         source: botshield-oas
         sourceNamespace: botshield-oas
-        sourceRevisionDigest: sha256:64dfe6e6a40f73b1281ad18f83814ac46e843351c7554d05652719ac89d458f0
-        sourceBlobDigest: sha256:d127b5383d77ee20cc38e0e41a2e68f4df05477abe02d21462e77cd5aeaba509
+        sourceRevisionDigest: sha256:f21dc13d6dc89815172e4ad7d1ce0940a589daf58a012d96f786cb6180138847
+        sourceBlobDigest: sha256:34eb3c02f9ea79c5315bf357303a4ac76cbb41d737497afc0b413aee35bbd585
         codeSamplesNamespace: botshield-oas-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:b97e8b46c533eec6fff4bb0ec2a25c98fdbc4a0187528a93a3a000344214a4ab
+        codeSamplesRevisionDigest: sha256:2f5edbc6a248ebe642a3e46f1673de823820939d14356146050ade5d377e56a4
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: 1.796.3
