@@ -15,6 +15,7 @@ import * as models from "../index.js";
 export type SDKGetPartnerConfigSecurity = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
+  apiKeyAuth2?: string | undefined;
 };
 
 export type SDKGetPartnerConfigRequest = {
@@ -72,11 +73,13 @@ export const SDKGetPartnerConfigSecurity$inboundSchema: z.ZodType<
 > = z.object({
   apiKeyAuth: types.optional(types.string()),
   apiKeyAuth1: types.optional(types.string()),
+  apiKeyAuth2: types.optional(types.string()),
 });
 /** @internal */
 export type SDKGetPartnerConfigSecurity$Outbound = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
+  apiKeyAuth2?: string | undefined;
 };
 
 /** @internal */
@@ -87,6 +90,7 @@ export const SDKGetPartnerConfigSecurity$outboundSchema: z.ZodType<
 > = z.object({
   apiKeyAuth: z.string().optional(),
   apiKeyAuth1: z.string().optional(),
+  apiKeyAuth2: z.string().optional(),
 });
 
 export function sdkGetPartnerConfigSecurityToJSON(
