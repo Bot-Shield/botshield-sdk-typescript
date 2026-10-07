@@ -31,7 +31,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 2.0.1
+  version: 2.0.2
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
@@ -40,7 +40,6 @@ typescript:
   additionalPackageJSON:
     description: Official TypeScript SDK for BotShield — privacy-first human verification (passkeys, no PII) and Agents Ask approvals
     homepage: https://docs.botshield.ai
-    license: MIT
     keywords:
       - botshield
       - human-verification
@@ -52,6 +51,7 @@ typescript:
       - trusted-accounts
       - agents
       - mcp
+    license: MIT
   additionalScripts: {}
   alwaysIncludeInboundAndOutbound: false
   apiPromiseHelpers: false
