@@ -1,13 +1,39 @@
 # botshield-sdk
 
-Developer-friendly & type-safe Typescript SDK specifically catered to leverage *botshield-sdk* API.
+Official TypeScript SDK for **[BotShield](https://botshield.ai)** — privacy-first human verification. A visitor proves a real person is present with the passkey already on their phone; your site learns only that the check passed. No PII, no CAPTCHA, no birthdates.
 
+[![npm](https://img.shields.io/npm/v/botshield-sdk?style=for-the-badge&labelColor=f3f4f6&color=147baa)](https://www.npmjs.com/package/botshield-sdk)
+[![Docs](https://img.shields.io/badge/DOCS-docs.botshield.ai-147baa?style=for-the-badge&labelColor=f3f4f6)](https://docs.botshield.ai)
+[![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](./LICENSE)
 [![Built by Speakeasy](https://img.shields.io/badge/Built_by-SPEAKEASY-374151?style=for-the-badge&labelColor=f3f4f6)](https://www.speakeasy.com/?utm_source=botshield-sdk&utm_campaign=typescript)
-[![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://opensource.org/licenses/MIT)
 
+**Links:** [Website](https://botshield.ai) · [Documentation](https://docs.botshield.ai) · [API reference](https://docs.botshield.ai/api-reference/overview) · [Developer Console](https://console.botshield.ai) (free plan, 1 gate) · [Live demos](https://demo.botshield.ai) · [Feedback & roadmap](https://github.com/Bot-Shield/feedback)
 
-<br /><br />
-> [!IMPORTANT]
+## Quickstart
+
+Most integrations need only the browser widget. Get a site key in the [Console](https://console.botshield.ai), then:
+
+```html
+<script src="https://cdn.botshield.ai/sdk.js"></script>
+
+<botshield-verify
+  site-key="pk_live_…"
+  scope="checkout"
+  checkout-label="Complete purchase">
+</botshield-verify>
+
+<script>
+  document.querySelector('botshield-verify')
+    .addEventListener('botshield:success', (e) => {
+      // e.detail.token — hand it to your server and confirm it there
+    });
+</script>
+```
+
+On your server, confirm the token with this SDK (`census.verifyToken`) before trusting it. Gates, age checks, Trusted Accounts and Agents Ask are configured in the Console and documented at [docs.botshield.ai](https://docs.botshield.ai): [BotShield Gate](https://docs.botshield.ai/gate/overview) · [Trusted Accounts](https://docs.botshield.ai/trusted-accounts/overview) · [Agents Ask](https://docs.botshield.ai/agents-ask/overview).
+
+> [!NOTE]
+> The SDK is generated from the BotShield OpenAPI spec by Speakeasy. Everything below this line is the generated reference.
 
 <!-- Start Summary [summary] -->
 ## Summary

@@ -131,5 +131,20 @@
   },
   "main": "./dist/commonjs/index.js",
   "types": "./dist/commonjs/index.d.ts",
-  "module": "./dist/esm/index.js"
+  "module": "./dist/esm/index.js",
+  "description": "Official TypeScript SDK for BotShield \u2014 privacy-first human verification (passkeys, no PII) and Agents Ask approvals",
+  "homepage": "https://docs.botshield.ai",
+  "license": "MIT",
+  "keywords": [
+    "botshield",
+    "human-verification",
+    "passkeys",
+    "webauthn",
+    "bot-detection",
+    "captcha-alternative",
+    "age-verification",
+    "trusted-accounts",
+    "agents",
+    "mcp"
+  ]
 }

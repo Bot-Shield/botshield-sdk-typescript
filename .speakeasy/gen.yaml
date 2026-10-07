@@ -37,7 +37,21 @@ typescript:
     dependencies: {}
     devDependencies: {}
     peerDependencies: {}
-  additionalPackageJSON: {}
+  additionalPackageJSON:
+    description: Official TypeScript SDK for BotShield — privacy-first human verification (passkeys, no PII) and Agents Ask approvals
+    homepage: https://docs.botshield.ai
+    license: MIT
+    keywords:
+      - botshield
+      - human-verification
+      - passkeys
+      - webauthn
+      - bot-detection
+      - captcha-alternative
+      - age-verification
+      - trusted-accounts
+      - agents
+      - mcp
   additionalScripts: {}
   alwaysIncludeInboundAndOutbound: false
   apiPromiseHelpers: false
