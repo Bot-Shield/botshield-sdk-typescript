@@ -30,7 +30,7 @@ Most integrations need only the browser widget. Get a site key in the [Console](
 </script>
 ```
 
-On your server, confirm the token with this SDK (`verification.verifyToken`) before trusting it. Gates, age checks, Trusted Accounts and Agents Ask are configured in the Console and documented at [docs.botshield.ai](https://docs.botshield.ai): [BotShield Gate](https://docs.botshield.ai/gate/overview) · [Trusted Accounts](https://docs.botshield.ai/trusted-accounts/overview) · [Agents Ask](https://docs.botshield.ai/agents-ask/overview).
+On your server, confirm the token with this SDK (`census.verifyToken`) before trusting it. Gates, age checks, Trusted Accounts and Agents Ask are configured in the Console and documented at [docs.botshield.ai](https://docs.botshield.ai): [BotShield Gate](https://docs.botshield.ai/gate/overview) · [Trusted Accounts](https://docs.botshield.ai/trusted-accounts/overview) · [Agents Ask](https://docs.botshield.ai/agents-ask/overview).
 
 > [!NOTE]
 > The SDK is generated from the BotShield OpenAPI spec by Speakeasy. Everything below this line is the generated reference.
