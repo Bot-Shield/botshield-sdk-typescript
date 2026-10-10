@@ -28,6 +28,9 @@ export type VerificationGetStatusSecurity = {
   apiKeyAuth12?: string | undefined;
   apiKeyAuth13?: string | undefined;
   apiKeyAuth14?: string | undefined;
+  apiKeyAuth15?: string | undefined;
+  apiKeyAuth16?: string | undefined;
+  apiKeyAuth17?: string | undefined;
 };
 
 export type VerificationGetStatusRequest = {
@@ -134,6 +137,9 @@ export const VerificationGetStatusSecurity$inboundSchema: z.ZodType<
   apiKeyAuth12: types.optional(types.string()),
   apiKeyAuth13: types.optional(types.string()),
   apiKeyAuth14: types.optional(types.string()),
+  apiKeyAuth15: types.optional(types.string()),
+  apiKeyAuth16: types.optional(types.string()),
+  apiKeyAuth17: types.optional(types.string()),
 });
 /** @internal */
 export type VerificationGetStatusSecurity$Outbound = {
@@ -152,6 +158,9 @@ export type VerificationGetStatusSecurity$Outbound = {
   apiKeyAuth12?: string | undefined;
   apiKeyAuth13?: string | undefined;
   apiKeyAuth14?: string | undefined;
+  apiKeyAuth15?: string | undefined;
+  apiKeyAuth16?: string | undefined;
+  apiKeyAuth17?: string | undefined;
 };
 
 /** @internal */
@@ -175,6 +184,9 @@ export const VerificationGetStatusSecurity$outboundSchema: z.ZodType<
   apiKeyAuth12: z.string().optional(),
   apiKeyAuth13: z.string().optional(),
   apiKeyAuth14: z.string().optional(),
+  apiKeyAuth15: z.string().optional(),
+  apiKeyAuth16: z.string().optional(),
+  apiKeyAuth17: z.string().optional(),
 });
 
 export function verificationGetStatusSecurityToJSON(
