@@ -352,6 +352,27 @@ export function resolveGlobalSecurity(
         value: security?.agentKeyAuth14,
       },
     ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.agentKeyAuth15,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.agentKeyAuth16,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.agentKeyAuth17,
+      },
+    ],
   ];
 
   if (allowedFields) {

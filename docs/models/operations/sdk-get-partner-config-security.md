@@ -27,3 +27,6 @@ let value: SDKGetPartnerConfigSecurity = {};
 | `apiKeyAuth12`     | *string*           | :heavy_minus_sign: | N/A                |
 | `apiKeyAuth13`     | *string*           | :heavy_minus_sign: | N/A                |
 | `apiKeyAuth14`     | *string*           | :heavy_minus_sign: | N/A                |
+| `apiKeyAuth15`     | *string*           | :heavy_minus_sign: | N/A                |
+| `apiKeyAuth16`     | *string*           | :heavy_minus_sign: | N/A                |
+| `apiKeyAuth17`     | *string*           | :heavy_minus_sign: | N/A                |

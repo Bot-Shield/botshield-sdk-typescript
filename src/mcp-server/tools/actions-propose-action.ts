@@ -30,6 +30,9 @@ export const tool$actionsProposeAction: ToolDefinition<typeof args> = {
     "queue",
     "queue",
     "queue",
+    "queue",
+    "queue",
+    "queue",
   ],
   args,
   tool: async (client, args, ctx) => {

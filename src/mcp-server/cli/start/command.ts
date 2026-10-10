@@ -163,6 +163,30 @@ export const startCommand = buildCommand({
           return z.string().parse(value);
         },
       },
+      "agent-key-auth15": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth15 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth16": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth16 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
+      "agent-key-auth17": {
+        kind: "parsed",
+        brief: "Sets the agentKeyAuth17 auth field for the API",
+        optional: true,
+        parse: (value) => {
+          return z.string().parse(value);
+        },
+      },
       "server-url": {
         kind: "parsed",
         brief: "Overrides the default server URL used by the SDK",

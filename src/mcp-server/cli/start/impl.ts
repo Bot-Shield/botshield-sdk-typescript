@@ -34,6 +34,9 @@ interface StartCommandFlags {
   readonly "agent-key-auth12"?: string | undefined;
   readonly "agent-key-auth13"?: string | undefined;
   readonly "agent-key-auth14"?: string | undefined;
+  readonly "agent-key-auth15"?: string | undefined;
+  readonly "agent-key-auth16"?: string | undefined;
+  readonly "agent-key-auth17"?: string | undefined;
   readonly "server-url"?: string;
   readonly "server-index"?: SDKOptions["serverIdx"];
   readonly "log-level": ConsoleLoggerLevel;
@@ -80,6 +83,9 @@ async function startStdio(flags: StartCommandFlags) {
       agentKeyAuth12: flags["agent-key-auth12"] ?? "",
       agentKeyAuth13: flags["agent-key-auth13"] ?? "",
       agentKeyAuth14: flags["agent-key-auth14"] ?? "",
+      agentKeyAuth15: flags["agent-key-auth15"] ?? "",
+      agentKeyAuth16: flags["agent-key-auth16"] ?? "",
+      agentKeyAuth17: flags["agent-key-auth17"] ?? "",
     },
     serverURL: flags["server-url"],
     serverIdx: flags["server-index"],
@@ -117,6 +123,9 @@ async function startSSE(flags: StartCommandFlags) {
       agentKeyAuth12: flags["agent-key-auth12"] ?? "",
       agentKeyAuth13: flags["agent-key-auth13"] ?? "",
       agentKeyAuth14: flags["agent-key-auth14"] ?? "",
+      agentKeyAuth15: flags["agent-key-auth15"] ?? "",
+      agentKeyAuth16: flags["agent-key-auth16"] ?? "",
+      agentKeyAuth17: flags["agent-key-auth17"] ?? "",
     },
     serverURL: flags["server-url"],
     serverIdx: flags["server-index"],
