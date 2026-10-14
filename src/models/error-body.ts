@@ -5,35 +5,50 @@
 import * as z from "zod/v3";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
 
 export type Violation = {
+  source?: string | undefined;
   type?: string | undefined;
   path?: string | undefined;
   severity?: string | undefined;
+  value?: any | undefined;
+  explanation?: string | undefined;
+  fix?: string | undefined;
 };
 
+export const Reason = {
+  Rate: "rate",
+  Concurrent: "concurrent",
+} as const;
+export type Reason = OpenEnum<typeof Reason>;
+
+export type Limits = {};
+
 /**
- * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+ * Handler error. Arrives inside `data.error` with HTTP 200. Check for it before reading the result.
  */
 export type ErrorBody = {
   message: string;
-  /**
-   * The HTTP status the error stands for (401, 403, 404, 409, 422, 500, 502).
-   */
   statusCode: number;
   /**
-   * Machine code when present, e.g. ttl_below_floor, ttl_above_ceiling.
+   * `ttl_below_floor`, `ttl_above_ceiling`, `trust_layer_rejected`, `trust_layer_unavailable`, `gate_required`, `alias_retired`, `RATE_LIMITED`.
    */
   code?: string | undefined;
   minTtlSeconds?: number | undefined;
   maxTtlSeconds?: number | undefined;
-  /**
-   * Adaptive Card TRUST-layer rejections (statusCode 422).
-   */
+  retryable?: boolean | undefined;
+  nextStep?: string | undefined;
   violations?: Array<Violation> | undefined;
+  reason?: Reason | undefined;
+  bucket?: string | undefined;
+  retryIn?: number | undefined;
+  limits?: Limits | undefined;
+  upgradeUrl?: string | undefined;
 };
 
 /** @internal */
@@ -42,15 +57,23 @@ export const Violation$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
+  source: types.optional(types.string()),
   type: types.optional(types.string()),
   path: types.optional(types.string()),
   severity: types.optional(types.string()),
+  value: types.optional(z.any()),
+  explanation: types.optional(types.string()),
+  fix: types.optional(types.string()),
 });
 /** @internal */
 export type Violation$Outbound = {
+  source?: string | undefined;
   type?: string | undefined;
   path?: string | undefined;
   severity?: string | undefined;
+  value?: any | undefined;
+  explanation?: string | undefined;
+  fix?: string | undefined;
 };
 
 /** @internal */
@@ -59,9 +82,13 @@ export const Violation$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   Violation
 > = z.object({
+  source: z.string().optional(),
   type: z.string().optional(),
   path: z.string().optional(),
   severity: z.string().optional(),
+  value: z.any().optional(),
+  explanation: z.string().optional(),
+  fix: z.string().optional(),
 });
 
 export function violationToJSON(violation: Violation): string {
@@ -78,6 +105,39 @@ export function violationFromJSON(
 }
 
 /** @internal */
+export const Reason$inboundSchema: z.ZodType<Reason, z.ZodTypeDef, unknown> =
+  openEnums.inboundSchema(Reason);
+/** @internal */
+export const Reason$outboundSchema: z.ZodType<string, z.ZodTypeDef, Reason> =
+  openEnums.outboundSchema(Reason);
+
+/** @internal */
+export const Limits$inboundSchema: z.ZodType<Limits, z.ZodTypeDef, unknown> = z
+  .object({});
+/** @internal */
+export type Limits$Outbound = {};
+
+/** @internal */
+export const Limits$outboundSchema: z.ZodType<
+  Limits$Outbound,
+  z.ZodTypeDef,
+  Limits
+> = z.object({});
+
+export function limitsToJSON(limits: Limits): string {
+  return JSON.stringify(Limits$outboundSchema.parse(limits));
+}
+export function limitsFromJSON(
+  jsonString: string,
+): SafeParseResult<Limits, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Limits$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Limits' from JSON`,
+  );
+}
+
+/** @internal */
 export const ErrorBody$inboundSchema: z.ZodType<
   ErrorBody,
   z.ZodTypeDef,
@@ -88,11 +148,21 @@ export const ErrorBody$inboundSchema: z.ZodType<
   code: types.optional(types.string()),
   min_ttl_seconds: types.optional(types.number()),
   max_ttl_seconds: types.optional(types.number()),
+  retryable: types.optional(types.boolean()),
+  next_step: types.optional(types.string()),
   violations: types.optional(z.array(z.lazy(() => Violation$inboundSchema))),
+  reason: types.optional(Reason$inboundSchema),
+  bucket: types.optional(types.string()),
+  retry_in: types.optional(types.number()),
+  limits: types.optional(z.lazy(() => Limits$inboundSchema)),
+  upgrade_url: types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "min_ttl_seconds": "minTtlSeconds",
     "max_ttl_seconds": "maxTtlSeconds",
+    "next_step": "nextStep",
+    "retry_in": "retryIn",
+    "upgrade_url": "upgradeUrl",
   });
 });
 /** @internal */
@@ -102,7 +172,14 @@ export type ErrorBody$Outbound = {
   code?: string | undefined;
   min_ttl_seconds?: number | undefined;
   max_ttl_seconds?: number | undefined;
+  retryable?: boolean | undefined;
+  next_step?: string | undefined;
   violations?: Array<Violation$Outbound> | undefined;
+  reason?: string | undefined;
+  bucket?: string | undefined;
+  retry_in?: number | undefined;
+  limits?: Limits$Outbound | undefined;
+  upgrade_url?: string | undefined;
 };
 
 /** @internal */
@@ -116,11 +193,21 @@ export const ErrorBody$outboundSchema: z.ZodType<
   code: z.string().optional(),
   minTtlSeconds: z.number().int().optional(),
   maxTtlSeconds: z.number().int().optional(),
+  retryable: z.boolean().optional(),
+  nextStep: z.string().optional(),
   violations: z.array(z.lazy(() => Violation$outboundSchema)).optional(),
+  reason: Reason$outboundSchema.optional(),
+  bucket: z.string().optional(),
+  retryIn: z.number().int().optional(),
+  limits: z.lazy(() => Limits$outboundSchema).optional(),
+  upgradeUrl: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     minTtlSeconds: "min_ttl_seconds",
     maxTtlSeconds: "max_ttl_seconds",
+    nextStep: "next_step",
+    retryIn: "retry_in",
+    upgradeUrl: "upgrade_url",
   });
 });
 

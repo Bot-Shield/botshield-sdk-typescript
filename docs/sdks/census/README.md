@@ -9,7 +9,6 @@
 * [verifyToken](#verifytoken) - Validate a verification token
 * [storeSignal](#storesignal) - Store a Signal Pixel bot score
 * [validateSignal](#validatesignal) - Validate a signal token
-* [getPartnerConfig](#getpartnerconfig) - Get partner configuration
 * [revokeVerification](#revokeverification) - Revoke a pending verification
 * [logout](#logout) - Revoke a grant token
 
@@ -159,7 +158,7 @@ run();
 
 ## verifyToken
 
-Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person.
+Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person. Each attestation is for one organization (aud = its organization_id; pass `audience` to enforce it) and one check: a repeat check is flagged `replayed` and refused from 2026-11-15.
 
 ### Example Usage
 
@@ -377,82 +376,6 @@ run();
 | errors.ErrorResponse         | 500                          | application/json             |
 | errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
 
-## getPartnerConfig
-
-Returns enabled integrations (Turnstile, etc.) for a site key. Public config only — secret keys never exposed.
-
-### Example Usage
-
-<!-- UsageSnippet language="typescript" operationID="SdkGetPartnerConfig" method="get" path="/sdk/partner-config" -->
-```typescript
-import { BotShield } from "botshield-sdk";
-
-const botShield = new BotShield();
-
-async function run() {
-  const result = await botShield.census.getPartnerConfig({
-    apiKeyAuth: "<YOUR_API_KEY_HERE>",
-  }, {
-    siteKey: "<value>",
-  });
-
-  console.log(result);
-}
-
-run();
-```
-
-### Standalone function
-
-The standalone function version of this method:
-
-```typescript
-import { BotShieldCore } from "botshield-sdk/core.js";
-import { censusGetPartnerConfig } from "botshield-sdk/funcs/census-get-partner-config.js";
-
-// Use `BotShieldCore` for best tree-shaking performance.
-// You can create one instance of it to use across an application.
-const botShield = new BotShieldCore();
-
-async function run() {
-  const res = await censusGetPartnerConfig(botShield, {
-    apiKeyAuth: "<YOUR_API_KEY_HERE>",
-  }, {
-    siteKey: "<value>",
-  });
-  if (res.ok) {
-    const { value: result } = res;
-    console.log(result);
-  } else {
-    console.log("censusGetPartnerConfig failed:", res.error);
-  }
-}
-
-run();
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.SDKGetPartnerConfigRequest](../../models/operations/sdk-get-partner-config-request.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
-| `security`                                                                                                                                                                     | [operations.SDKGetPartnerConfigSecurity](../../models/operations/sdk-get-partner-config-security.md)                                                                           | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
-| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
-
-### Response
-
-**Promise\<[operations.SDKGetPartnerConfigResponse](../../models/operations/sdk-get-partner-config-response.md)\>**
-
-### Errors
-
-| Error Type                   | Status Code                  | Content Type                 |
-| ---------------------------- | ---------------------------- | ---------------------------- |
-| errors.InvalidInputError     | 400                          | application/json             |
-| errors.ErrorResponse         | 500                          | application/json             |
-| errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
-
 ## revokeVerification
 
 Soft-expires a pending verification for a gate and user. Use when create-verification-link returns 409.
@@ -468,9 +391,7 @@ const botShield = new BotShield();
 async function run() {
   const result = await botShield.census.revokeVerification({
     apiKeyAuth: "<YOUR_API_KEY_HERE>",
-  }, {
-    scope: "<value>",
-  });
+  }, {});
 
   console.log(result);
 }
@@ -493,9 +414,7 @@ const botShield = new BotShieldCore();
 async function run() {
   const res = await censusRevokeVerification(botShield, {
     apiKeyAuth: "<YOUR_API_KEY_HERE>",
-  }, {
-    scope: "<value>",
-  });
+  }, {});
   if (res.ok) {
     const { value: result } = res;
     console.log(result);

@@ -1,13 +1,13 @@
-# Verdict
+# ActionsCheckStatusVerdict
 
 null until status is approved or denied.
 
 ## Example Usage
 
 ```typescript
-import { Verdict } from "botshield-sdk/models/operations";
+import { ActionsCheckStatusVerdict } from "botshield-sdk/models/operations";
 
-let value: Verdict = "approve";
+let value: ActionsCheckStatusVerdict = "approve";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```

@@ -17,17 +17,6 @@ export type VerificationGetStatusSecurity = {
   apiKeyAuth1?: string | undefined;
   apiKeyAuth2?: string | undefined;
   apiKeyAuth3?: string | undefined;
-  apiKeyAuth4?: string | undefined;
-  apiKeyAuth5?: string | undefined;
-  apiKeyAuth6?: string | undefined;
-  apiKeyAuth7?: string | undefined;
-  apiKeyAuth8?: string | undefined;
-  apiKeyAuth9?: string | undefined;
-  apiKeyAuth10?: string | undefined;
-  apiKeyAuth11?: string | undefined;
-  apiKeyAuth12?: string | undefined;
-  apiKeyAuth13?: string | undefined;
-  apiKeyAuth14?: string | undefined;
 };
 
 export type VerificationGetStatusRequest = {
@@ -35,7 +24,7 @@ export type VerificationGetStatusRequest = {
 };
 
 /**
- * `pass` is a Recent Presence pass: the pre-check resolved the person without a new ceremony. Its record expires 60 seconds after the check, after which this endpoint reports `expired` — it never becomes `completed`. Treat `pass` as success and read it promptly.
+ * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`.
  */
 export const VerificationGetStatusStatus = {
   Pending: "pending",
@@ -47,7 +36,7 @@ export const VerificationGetStatusStatus = {
   Error: "error",
 } as const;
 /**
- * `pass` is a Recent Presence pass: the pre-check resolved the person without a new ceremony. Its record expires 60 seconds after the check, after which this endpoint reports `expired` — it never becomes `completed`. Treat `pass` as success and read it promptly.
+ * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`.
  */
 export type VerificationGetStatusStatus = OpenEnum<
   typeof VerificationGetStatusStatus
@@ -72,10 +61,27 @@ export type Metadata = {
   parentRequestId?: string | null | undefined;
 };
 
+/**
+ * Why a request ended `failed`. Null while pending and on success. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `unavailable`: the standard Unavailable result.
+ */
+export const VerificationGetStatusReason = {
+  AlreadyTrusted: "already_trusted",
+  RebindRequiresPriorId: "rebind_requires_prior_id",
+  PassLimitReached: "pass_limit_reached",
+  RealDaysNotMet: "real_days_not_met",
+  Unavailable: "unavailable",
+} as const;
+/**
+ * Why a request ended `failed`. Null while pending and on success. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `unavailable`: the standard Unavailable result.
+ */
+export type VerificationGetStatusReason = OpenEnum<
+  typeof VerificationGetStatusReason
+>;
+
 export type VerificationGetStatusData = {
   found?: boolean | undefined;
   /**
-   * `pass` is a Recent Presence pass: the pre-check resolved the person without a new ceremony. Its record expires 60 seconds after the check, after which this endpoint reports `expired` — it never becomes `completed`. Treat `pass` as success and read it promptly.
+   * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`.
    */
   status?: VerificationGetStatusStatus | undefined;
   requestId?: string | undefined;
@@ -101,9 +107,29 @@ export type VerificationGetStatusData = {
    */
   message?: string | undefined;
   /**
-   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   * Handler error. Arrives inside `data.error` with HTTP 200. Check for it before reading the result.
    */
   error?: models.ErrorBody | undefined;
+  /**
+   * Why a request ended `failed`. Null while pending and on success. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `unavailable`: the standard Unavailable result.
+   */
+  reason?: VerificationGetStatusReason | null | undefined;
+  /**
+   * GA 3.0: on a completed ceremony, whether an active Secured Account binding exists for (your platform, platform-user-ref). Null until completed.
+   */
+  trusted?: boolean | null | undefined;
+  /**
+   * GA 3.0: on a completed ceremony, whether THIS ceremony created the binding. Null until completed.
+   */
+  firstTime?: boolean | null | undefined;
+  /**
+   * GA 3.0: this request was minted as a notarize ceremony.
+   */
+  notarize?: boolean | undefined;
+  /**
+   * Your organization's public display name, as the BotShield app shows it to the person.
+   */
+  organizationName?: string | null | undefined;
 };
 
 /**
@@ -123,17 +149,6 @@ export const VerificationGetStatusSecurity$inboundSchema: z.ZodType<
   apiKeyAuth1: types.optional(types.string()),
   apiKeyAuth2: types.optional(types.string()),
   apiKeyAuth3: types.optional(types.string()),
-  apiKeyAuth4: types.optional(types.string()),
-  apiKeyAuth5: types.optional(types.string()),
-  apiKeyAuth6: types.optional(types.string()),
-  apiKeyAuth7: types.optional(types.string()),
-  apiKeyAuth8: types.optional(types.string()),
-  apiKeyAuth9: types.optional(types.string()),
-  apiKeyAuth10: types.optional(types.string()),
-  apiKeyAuth11: types.optional(types.string()),
-  apiKeyAuth12: types.optional(types.string()),
-  apiKeyAuth13: types.optional(types.string()),
-  apiKeyAuth14: types.optional(types.string()),
 });
 /** @internal */
 export type VerificationGetStatusSecurity$Outbound = {
@@ -141,17 +156,6 @@ export type VerificationGetStatusSecurity$Outbound = {
   apiKeyAuth1?: string | undefined;
   apiKeyAuth2?: string | undefined;
   apiKeyAuth3?: string | undefined;
-  apiKeyAuth4?: string | undefined;
-  apiKeyAuth5?: string | undefined;
-  apiKeyAuth6?: string | undefined;
-  apiKeyAuth7?: string | undefined;
-  apiKeyAuth8?: string | undefined;
-  apiKeyAuth9?: string | undefined;
-  apiKeyAuth10?: string | undefined;
-  apiKeyAuth11?: string | undefined;
-  apiKeyAuth12?: string | undefined;
-  apiKeyAuth13?: string | undefined;
-  apiKeyAuth14?: string | undefined;
 };
 
 /** @internal */
@@ -164,17 +168,6 @@ export const VerificationGetStatusSecurity$outboundSchema: z.ZodType<
   apiKeyAuth1: z.string().optional(),
   apiKeyAuth2: z.string().optional(),
   apiKeyAuth3: z.string().optional(),
-  apiKeyAuth4: z.string().optional(),
-  apiKeyAuth5: z.string().optional(),
-  apiKeyAuth6: z.string().optional(),
-  apiKeyAuth7: z.string().optional(),
-  apiKeyAuth8: z.string().optional(),
-  apiKeyAuth9: z.string().optional(),
-  apiKeyAuth10: z.string().optional(),
-  apiKeyAuth11: z.string().optional(),
-  apiKeyAuth12: z.string().optional(),
-  apiKeyAuth13: z.string().optional(),
-  apiKeyAuth14: z.string().optional(),
 });
 
 export function verificationGetStatusSecurityToJSON(
@@ -331,6 +324,19 @@ export function metadataFromJSON(
 }
 
 /** @internal */
+export const VerificationGetStatusReason$inboundSchema: z.ZodType<
+  VerificationGetStatusReason,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(VerificationGetStatusReason);
+/** @internal */
+export const VerificationGetStatusReason$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  VerificationGetStatusReason
+> = openEnums.outboundSchema(VerificationGetStatusReason);
+
+/** @internal */
 export const VerificationGetStatusData$inboundSchema: z.ZodType<
   VerificationGetStatusData,
   z.ZodTypeDef,
@@ -352,6 +358,11 @@ export const VerificationGetStatusData$inboundSchema: z.ZodType<
   metadata: z.nullable(z.lazy(() => Metadata$inboundSchema)).optional(),
   message: types.optional(types.string()),
   error: types.optional(models.ErrorBody$inboundSchema),
+  reason: z.nullable(VerificationGetStatusReason$inboundSchema).optional(),
+  trusted: z.nullable(types.boolean()).optional(),
+  first_time: z.nullable(types.boolean()).optional(),
+  notarize: types.optional(types.boolean()),
+  organization_name: z.nullable(types.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
@@ -364,6 +375,8 @@ export const VerificationGetStatusData$inboundSchema: z.ZodType<
     "error_message": "errorMessage",
     "sdk_type": "sdkType",
     "presence_address": "presenceAddress",
+    "first_time": "firstTime",
+    "organization_name": "organizationName",
   });
 });
 /** @internal */
@@ -384,6 +397,11 @@ export type VerificationGetStatusData$Outbound = {
   metadata?: Metadata$Outbound | null | undefined;
   message?: string | undefined;
   error?: models.ErrorBody$Outbound | undefined;
+  reason?: string | null | undefined;
+  trusted?: boolean | null | undefined;
+  first_time?: boolean | null | undefined;
+  notarize?: boolean | undefined;
+  organization_name?: string | null | undefined;
 };
 
 /** @internal */
@@ -408,6 +426,11 @@ export const VerificationGetStatusData$outboundSchema: z.ZodType<
   metadata: z.nullable(z.lazy(() => Metadata$outboundSchema)).optional(),
   message: z.string().optional(),
   error: models.ErrorBody$outboundSchema.optional(),
+  reason: z.nullable(VerificationGetStatusReason$outboundSchema).optional(),
+  trusted: z.nullable(z.boolean()).optional(),
+  firstTime: z.nullable(z.boolean()).optional(),
+  notarize: z.boolean().optional(),
+  organizationName: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
@@ -420,6 +443,8 @@ export const VerificationGetStatusData$outboundSchema: z.ZodType<
     errorMessage: "error_message",
     sdkType: "sdk_type",
     presenceAddress: "presence_address",
+    firstTime: "first_time",
+    organizationName: "organization_name",
   });
 });
 

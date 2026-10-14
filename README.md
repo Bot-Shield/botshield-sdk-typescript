@@ -49,6 +49,8 @@ BotShield API: Human presence verification protocol.
 **Backend SDK:** install `botshield-sdk` from npm and use `client.census.*`, `client.verification.*`, `client.actions.*`.
 
 **Response envelope:** every operation answers HTTP 200 with `{ data: ... }`. Most carry the result one level deeper (`data.data`); `logout` and `verification/status` carry it directly. Handler errors are also HTTP 200 — `data.error = { message, statusCode }` — so check `data.error` before reading a result. HTTP 400 is reserved for input validation (`InvalidInputError`), 500 for unhandled failures.
+
+**Alias window (2026-10-15 → 2027-01-15):** renamed wire symbols are dual-served — old names accepted on input and emitted beside the new until the sunset; any response where an alias was used carries `Deprecation`, `Sunset` and `Link` headers and `data._deprecation`. Changelog: https://docs.botshield.ai/changelog/alias-window
 <!-- End Summary [summary] -->
 
 <!-- Start Table of Contents [toc] -->
@@ -130,18 +132,7 @@ Add the following server definition to your `claude_desktop_config.json` file:
         "--agent-key-auth", "...",
         "--agent-key-auth1", "...",
         "--agent-key-auth2", "...",
-        "--agent-key-auth3", "...",
-        "--agent-key-auth4", "...",
-        "--agent-key-auth5", "...",
-        "--agent-key-auth6", "...",
-        "--agent-key-auth7", "...",
-        "--agent-key-auth8", "...",
-        "--agent-key-auth9", "...",
-        "--agent-key-auth10", "...",
-        "--agent-key-auth11", "...",
-        "--agent-key-auth12", "...",
-        "--agent-key-auth13", "...",
-        "--agent-key-auth14", "..."
+        "--agent-key-auth3", "..."
       ]
     }
   }
@@ -167,18 +158,7 @@ Create a `.cursor/mcp.json` file in your project root with the following content
         "--agent-key-auth", "...",
         "--agent-key-auth1", "...",
         "--agent-key-auth2", "...",
-        "--agent-key-auth3", "...",
-        "--agent-key-auth4", "...",
-        "--agent-key-auth5", "...",
-        "--agent-key-auth6", "...",
-        "--agent-key-auth7", "...",
-        "--agent-key-auth8", "...",
-        "--agent-key-auth9", "...",
-        "--agent-key-auth10", "...",
-        "--agent-key-auth11", "...",
-        "--agent-key-auth12", "...",
-        "--agent-key-auth13", "...",
-        "--agent-key-auth14", "..."
+        "--agent-key-auth3", "..."
       ]
     }
   }
@@ -254,23 +234,12 @@ run();
 
 This SDK supports the following security schemes globally:
 
-| Name             | Type   | Scheme  |
-| ---------------- | ------ | ------- |
-| `agentKeyAuth`   | apiKey | API key |
-| `agentKeyAuth1`  | apiKey | API key |
-| `agentKeyAuth2`  | apiKey | API key |
-| `agentKeyAuth3`  | apiKey | API key |
-| `agentKeyAuth4`  | apiKey | API key |
-| `agentKeyAuth5`  | apiKey | API key |
-| `agentKeyAuth6`  | apiKey | API key |
-| `agentKeyAuth7`  | apiKey | API key |
-| `agentKeyAuth8`  | apiKey | API key |
-| `agentKeyAuth9`  | apiKey | API key |
-| `agentKeyAuth10` | apiKey | API key |
-| `agentKeyAuth11` | apiKey | API key |
-| `agentKeyAuth12` | apiKey | API key |
-| `agentKeyAuth13` | apiKey | API key |
-| `agentKeyAuth14` | apiKey | API key |
+| Name            | Type   | Scheme  |
+| --------------- | ------ | ------- |
+| `agentKeyAuth`  | apiKey | API key |
+| `agentKeyAuth1` | apiKey | API key |
+| `agentKeyAuth2` | apiKey | API key |
+| `agentKeyAuth3` | apiKey | API key |
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript
@@ -335,7 +304,6 @@ run();
 * [verifyToken](docs/sdks/census/README.md#verifytoken) - Validate a verification token
 * [storeSignal](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
 * [validateSignal](docs/sdks/census/README.md#validatesignal) - Validate a signal token
-* [getPartnerConfig](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
 * [revokeVerification](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
 * [logout](docs/sdks/census/README.md#logout) - Revoke a grant token
 
@@ -366,7 +334,6 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`actionsProposeAction`](docs/sdks/actions/README.md#proposeaction) - Propose an action for human confirmation
 - [`censusCreateSession`](docs/sdks/census/README.md#createsession) - Create a grant token
 - [`censusCreateVerificationLink`](docs/sdks/census/README.md#createverificationlink) - Create a verification request
-- [`censusGetPartnerConfig`](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
 - [`censusLogout`](docs/sdks/census/README.md#logout) - Revoke a grant token
 - [`censusRevokeVerification`](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
 - [`censusStoreSignal`](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score

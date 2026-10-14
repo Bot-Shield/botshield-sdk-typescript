@@ -19,3 +19,13 @@ Based on:
 - [typescript v2.0.2] .
 ### Releases
 - [NPM v2.0.2] https://www.npmjs.com/package/botshield-sdk/v/2.0.2 - .
+
+## 2026-10-14 02:41:00
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.796.3 (2.934.1) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v2.1.0] .
+### Releases
+- [NPM v2.1.0] https://www.npmjs.com/package/botshield-sdk/v/2.1.0 - .
