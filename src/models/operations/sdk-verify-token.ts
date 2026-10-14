@@ -5,6 +5,8 @@
 import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
@@ -14,18 +16,6 @@ export type SDKVerifyTokenSecurity = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
   apiKeyAuth2?: string | undefined;
-  apiKeyAuth3?: string | undefined;
-  apiKeyAuth4?: string | undefined;
-  apiKeyAuth5?: string | undefined;
-  apiKeyAuth6?: string | undefined;
-  apiKeyAuth7?: string | undefined;
-  apiKeyAuth8?: string | undefined;
-  apiKeyAuth9?: string | undefined;
-  apiKeyAuth10?: string | undefined;
-  apiKeyAuth11?: string | undefined;
-  apiKeyAuth12?: string | undefined;
-  apiKeyAuth13?: string | undefined;
-  apiKeyAuth14?: string | undefined;
 };
 
 export type SDKVerifyTokenRequest = {
@@ -33,7 +23,24 @@ export type SDKVerifyTokenRequest = {
    * JWT verification receipt
    */
   token: string;
+  /**
+   * Your organization id (the organization_id shown in Console settings). When given, a token issued for any other organization is rejected.
+   */
+  audience?: string | undefined;
 };
+
+/**
+ * Age Gate only, positive-only.
+ */
+export const AgeOver = {
+  Thirteen: 13,
+  Eighteen: 18,
+  TwentyOne: 21,
+} as const;
+/**
+ * Age Gate only, positive-only.
+ */
+export type AgeOver = OpenEnum<typeof AgeOver>;
 
 export type Claims = {
   requestId?: string | undefined;
@@ -43,7 +50,39 @@ export type Claims = {
   nonce?: string | undefined;
   issuedAt?: number | undefined;
   expiresAt?: number | undefined;
+  /**
+   * Age Gate only, positive-only.
+   */
+  ageOver?: AgeOver | undefined;
+  /**
+   * GA 3.0 Secured Accounts: an active binding exists for (your platform, platform-user-ref). Always present; false on a plain Verify Human and on tokens minted before GA 3.0.
+   */
+  trusted?: boolean | undefined;
+  /**
+   * GA 3.0: present only when trusted. Equals the binding's linked_at.
+   */
+  trustedSince?: Date | undefined;
+  /**
+   * GA 3.0: present only when trusted. The pass that minted this token.
+   */
+  lastPassAt?: Date | undefined;
+  /**
+   * The organization the token was issued for (the JWT aud claim).
+   */
+  audience?: string | null | undefined;
 };
+
+/**
+ * Present when `valid` is true. `pass` when the token records a verified human.
+ */
+export const SDKVerifyTokenVerdict = {
+  Pass: "pass",
+  Unavailable: "unavailable",
+} as const;
+/**
+ * Present when `valid` is true. `pass` when the token records a verified human.
+ */
+export type SDKVerifyTokenVerdict = OpenEnum<typeof SDKVerifyTokenVerdict>;
 
 export type SDKVerifyTokenDataData = {
   valid: boolean;
@@ -56,12 +95,24 @@ export type SDKVerifyTokenDataData = {
    */
   expiredAt?: Date | null | undefined;
   claims?: Claims | null | undefined;
+  /**
+   * true when this token was already checked once. From 2026-11-15 a second check returns valid: false (single use).
+   */
+  replayed?: boolean | undefined;
+  /**
+   * When repeat checks start failing (present when replayed is true).
+   */
+  strictSingleUseFrom?: Date | undefined;
+  /**
+   * Present when `valid` is true. `pass` when the token records a verified human.
+   */
+  verdict?: SDKVerifyTokenVerdict | undefined;
 };
 
 export type SDKVerifyTokenData = {
   data?: SDKVerifyTokenDataData | undefined;
   /**
-   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   * Handler error. Arrives inside `data.error` with HTTP 200. Check for it before reading the result.
    */
   error?: models.ErrorBody | undefined;
 };
@@ -82,36 +133,12 @@ export const SDKVerifyTokenSecurity$inboundSchema: z.ZodType<
   apiKeyAuth: types.optional(types.string()),
   apiKeyAuth1: types.optional(types.string()),
   apiKeyAuth2: types.optional(types.string()),
-  apiKeyAuth3: types.optional(types.string()),
-  apiKeyAuth4: types.optional(types.string()),
-  apiKeyAuth5: types.optional(types.string()),
-  apiKeyAuth6: types.optional(types.string()),
-  apiKeyAuth7: types.optional(types.string()),
-  apiKeyAuth8: types.optional(types.string()),
-  apiKeyAuth9: types.optional(types.string()),
-  apiKeyAuth10: types.optional(types.string()),
-  apiKeyAuth11: types.optional(types.string()),
-  apiKeyAuth12: types.optional(types.string()),
-  apiKeyAuth13: types.optional(types.string()),
-  apiKeyAuth14: types.optional(types.string()),
 });
 /** @internal */
 export type SDKVerifyTokenSecurity$Outbound = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
   apiKeyAuth2?: string | undefined;
-  apiKeyAuth3?: string | undefined;
-  apiKeyAuth4?: string | undefined;
-  apiKeyAuth5?: string | undefined;
-  apiKeyAuth6?: string | undefined;
-  apiKeyAuth7?: string | undefined;
-  apiKeyAuth8?: string | undefined;
-  apiKeyAuth9?: string | undefined;
-  apiKeyAuth10?: string | undefined;
-  apiKeyAuth11?: string | undefined;
-  apiKeyAuth12?: string | undefined;
-  apiKeyAuth13?: string | undefined;
-  apiKeyAuth14?: string | undefined;
 };
 
 /** @internal */
@@ -123,18 +150,6 @@ export const SDKVerifyTokenSecurity$outboundSchema: z.ZodType<
   apiKeyAuth: z.string().optional(),
   apiKeyAuth1: z.string().optional(),
   apiKeyAuth2: z.string().optional(),
-  apiKeyAuth3: z.string().optional(),
-  apiKeyAuth4: z.string().optional(),
-  apiKeyAuth5: z.string().optional(),
-  apiKeyAuth6: z.string().optional(),
-  apiKeyAuth7: z.string().optional(),
-  apiKeyAuth8: z.string().optional(),
-  apiKeyAuth9: z.string().optional(),
-  apiKeyAuth10: z.string().optional(),
-  apiKeyAuth11: z.string().optional(),
-  apiKeyAuth12: z.string().optional(),
-  apiKeyAuth13: z.string().optional(),
-  apiKeyAuth14: z.string().optional(),
 });
 
 export function sdkVerifyTokenSecurityToJSON(
@@ -161,10 +176,12 @@ export const SDKVerifyTokenRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   token: types.string(),
+  audience: types.optional(types.string()),
 });
 /** @internal */
 export type SDKVerifyTokenRequest$Outbound = {
   token: string;
+  audience?: string | undefined;
 };
 
 /** @internal */
@@ -174,6 +191,7 @@ export const SDKVerifyTokenRequest$outboundSchema: z.ZodType<
   SDKVerifyTokenRequest
 > = z.object({
   token: z.string(),
+  audience: z.string().optional(),
 });
 
 export function sdkVerifyTokenRequestToJSON(
@@ -194,6 +212,13 @@ export function sdkVerifyTokenRequestFromJSON(
 }
 
 /** @internal */
+export const AgeOver$inboundSchema: z.ZodType<AgeOver, z.ZodTypeDef, unknown> =
+  openEnums.inboundSchemaInt(AgeOver);
+/** @internal */
+export const AgeOver$outboundSchema: z.ZodType<number, z.ZodTypeDef, AgeOver> =
+  openEnums.outboundSchemaInt(AgeOver);
+
+/** @internal */
 export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
   .object({
     request_id: types.optional(types.string()),
@@ -203,12 +228,20 @@ export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
     nonce: types.optional(types.string()),
     issued_at: types.optional(types.number()),
     expires_at: types.optional(types.number()),
+    age_over: types.optional(AgeOver$inboundSchema),
+    trusted: types.optional(types.boolean()),
+    trusted_since: types.optional(types.date()),
+    last_pass_at: types.optional(types.date()),
+    audience: z.nullable(types.string()).optional(),
   }).transform((v) => {
     return remap$(v, {
       "request_id": "requestId",
       "organization_id": "organizationId",
       "issued_at": "issuedAt",
       "expires_at": "expiresAt",
+      "age_over": "ageOver",
+      "trusted_since": "trustedSince",
+      "last_pass_at": "lastPassAt",
     });
   });
 /** @internal */
@@ -220,6 +253,11 @@ export type Claims$Outbound = {
   nonce?: string | undefined;
   issued_at?: number | undefined;
   expires_at?: number | undefined;
+  age_over?: number | undefined;
+  trusted?: boolean | undefined;
+  trusted_since?: string | undefined;
+  last_pass_at?: string | undefined;
+  audience?: string | null | undefined;
 };
 
 /** @internal */
@@ -235,12 +273,20 @@ export const Claims$outboundSchema: z.ZodType<
   nonce: z.string().optional(),
   issuedAt: z.number().optional(),
   expiresAt: z.number().optional(),
+  ageOver: AgeOver$outboundSchema.optional(),
+  trusted: z.boolean().optional(),
+  trustedSince: z.date().transform(v => v.toISOString()).optional(),
+  lastPassAt: z.date().transform(v => v.toISOString()).optional(),
+  audience: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
     organizationId: "organization_id",
     issuedAt: "issued_at",
     expiresAt: "expires_at",
+    ageOver: "age_over",
+    trustedSince: "trusted_since",
+    lastPassAt: "last_pass_at",
   });
 });
 
@@ -258,6 +304,19 @@ export function claimsFromJSON(
 }
 
 /** @internal */
+export const SDKVerifyTokenVerdict$inboundSchema: z.ZodType<
+  SDKVerifyTokenVerdict,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(SDKVerifyTokenVerdict);
+/** @internal */
+export const SDKVerifyTokenVerdict$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  SDKVerifyTokenVerdict
+> = openEnums.outboundSchema(SDKVerifyTokenVerdict);
+
+/** @internal */
 export const SDKVerifyTokenDataData$inboundSchema: z.ZodType<
   SDKVerifyTokenDataData,
   z.ZodTypeDef,
@@ -267,9 +326,13 @@ export const SDKVerifyTokenDataData$inboundSchema: z.ZodType<
   reason: types.optional(types.string()),
   expired_at: z.nullable(types.date()).optional(),
   claims: z.nullable(z.lazy(() => Claims$inboundSchema)).optional(),
+  replayed: types.optional(types.boolean()),
+  strict_single_use_from: types.optional(types.date()),
+  verdict: types.optional(SDKVerifyTokenVerdict$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "expired_at": "expiredAt",
+    "strict_single_use_from": "strictSingleUseFrom",
   });
 });
 /** @internal */
@@ -278,6 +341,9 @@ export type SDKVerifyTokenDataData$Outbound = {
   reason?: string | undefined;
   expired_at?: string | null | undefined;
   claims?: Claims$Outbound | null | undefined;
+  replayed?: boolean | undefined;
+  strict_single_use_from?: string | undefined;
+  verdict?: string | undefined;
 };
 
 /** @internal */
@@ -290,9 +356,13 @@ export const SDKVerifyTokenDataData$outboundSchema: z.ZodType<
   reason: z.string().optional(),
   expiredAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
   claims: z.nullable(z.lazy(() => Claims$outboundSchema)).optional(),
+  replayed: z.boolean().optional(),
+  strictSingleUseFrom: z.date().transform(v => v.toISOString()).optional(),
+  verdict: SDKVerifyTokenVerdict$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     expiredAt: "expired_at",
+    strictSingleUseFrom: "strict_single_use_from",
   });
 });
 

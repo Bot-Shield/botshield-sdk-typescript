@@ -106,7 +106,7 @@ export type ActionsProposeDataData = {
 export type ActionsProposeData = {
   data?: ActionsProposeDataData | undefined;
   /**
-   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   * Handler error. Arrives inside `data.error` with HTTP 200. Check for it before reading the result.
    */
   error?: models.ErrorBody | undefined;
 };

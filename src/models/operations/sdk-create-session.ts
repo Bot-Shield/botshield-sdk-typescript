@@ -6,7 +6,7 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import * as openEnums from "../../types/enums.js";
-import { OpenEnum } from "../../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
@@ -22,31 +22,46 @@ export type SDKCreateSessionRequest = {
    */
   partnerUserId?: string | undefined;
   metadata?: { [k: string]: any } | undefined;
+  /**
+   * GA 3.0: request a notarize ceremony ("Secure your account with BotShield") for this window. A request, not a decision: the gate's Console switch (Notarize account with BotShield) is the authority and is applied when the verification link is minted. Requires partner_user_id; without it the field is ignored and the response carries notarize_fallback_reason = notarize_requires_user_ref.
+   */
+  notarize?: boolean | undefined;
 };
 
 /**
  * Resolved from the credential: API token environment, or site key pk_test_ → development / pk_live_ → production.
  */
-export const SDKCreateSessionEnvironment = {
+export const Environment = {
   Development: "development",
   Production: "production",
 } as const;
 /**
  * Resolved from the credential: API token environment, or site key pk_test_ → development / pk_live_ → production.
  */
-export type SDKCreateSessionEnvironment = OpenEnum<
-  typeof SDKCreateSessionEnvironment
->;
+export type Environment = OpenEnum<typeof Environment>;
 
 export type SDKCreateSessionOrganization = {
   id: string;
   /**
    * Resolved from the credential: API token environment, or site key pk_test_ → development / pk_live_ → production.
    */
-  environment: SDKCreateSessionEnvironment;
+  environment: Environment;
 };
 
-export type SDKCreateSessionDataData = {
+/**
+ * GA 3.0: present when notarize was requested but could not be applied.
+ */
+export const SDKCreateSessionNotarizeFallbackReason = {
+  NotarizeRequiresUserRef: "notarize_requires_user_ref",
+} as const;
+/**
+ * GA 3.0: present when notarize was requested but could not be applied.
+ */
+export type SDKCreateSessionNotarizeFallbackReason = ClosedEnum<
+  typeof SDKCreateSessionNotarizeFallbackReason
+>;
+
+export type DataNotarizeRequiresUserRef = {
   /**
    * Canonical grant token (Bearer bss_*)
    */
@@ -60,12 +75,24 @@ export type SDKCreateSessionDataData = {
   expiresAt: Date;
   expiresInSeconds: number;
   organization: SDKCreateSessionOrganization;
+  /**
+   * GA 3.0 Secured Accounts: true when an active Secured Account binding exists for (your platform, platform-user-ref). The widget skips the "Link BotShield ID" chip when true.
+   */
+  trusted?: boolean | undefined;
+  /**
+   * GA 3.0: this window requests a notarize ceremony. The decision is made at sdk/create-verification-link, where the gate's Console switch is applied.
+   */
+  notarize?: boolean | undefined;
+  /**
+   * GA 3.0: present when notarize was requested but could not be applied.
+   */
+  notarizeFallbackReason?: SDKCreateSessionNotarizeFallbackReason | undefined;
 };
 
 export type SDKCreateSessionData = {
-  data?: SDKCreateSessionDataData | undefined;
+  data?: DataNotarizeRequiresUserRef | undefined;
   /**
-   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   * Handler error. Arrives inside `data.error` with HTTP 200. Check for it before reading the result.
    */
   error?: models.ErrorBody | undefined;
 };
@@ -132,6 +159,7 @@ export const SDKCreateSessionRequest$inboundSchema: z.ZodType<
 > = z.object({
   partner_user_id: types.optional(types.string()),
   metadata: types.optional(z.record(z.any())),
+  notarize: types.optional(types.boolean()),
 }).transform((v) => {
   return remap$(v, {
     "partner_user_id": "partnerUserId",
@@ -141,6 +169,7 @@ export const SDKCreateSessionRequest$inboundSchema: z.ZodType<
 export type SDKCreateSessionRequest$Outbound = {
   partner_user_id?: string | undefined;
   metadata?: { [k: string]: any } | undefined;
+  notarize?: boolean | undefined;
 };
 
 /** @internal */
@@ -151,6 +180,7 @@ export const SDKCreateSessionRequest$outboundSchema: z.ZodType<
 > = z.object({
   partnerUserId: z.string().optional(),
   metadata: z.record(z.any()).optional(),
+  notarize: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
     partnerUserId: "partner_user_id",
@@ -175,17 +205,17 @@ export function sdkCreateSessionRequestFromJSON(
 }
 
 /** @internal */
-export const SDKCreateSessionEnvironment$inboundSchema: z.ZodType<
-  SDKCreateSessionEnvironment,
+export const Environment$inboundSchema: z.ZodType<
+  Environment,
   z.ZodTypeDef,
   unknown
-> = openEnums.inboundSchema(SDKCreateSessionEnvironment);
+> = openEnums.inboundSchema(Environment);
 /** @internal */
-export const SDKCreateSessionEnvironment$outboundSchema: z.ZodType<
+export const Environment$outboundSchema: z.ZodType<
   string,
   z.ZodTypeDef,
-  SDKCreateSessionEnvironment
-> = openEnums.outboundSchema(SDKCreateSessionEnvironment);
+  Environment
+> = openEnums.outboundSchema(Environment);
 
 /** @internal */
 export const SDKCreateSessionOrganization$inboundSchema: z.ZodType<
@@ -194,7 +224,7 @@ export const SDKCreateSessionOrganization$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: types.string(),
-  environment: SDKCreateSessionEnvironment$inboundSchema,
+  environment: Environment$inboundSchema,
 });
 /** @internal */
 export type SDKCreateSessionOrganization$Outbound = {
@@ -209,7 +239,7 @@ export const SDKCreateSessionOrganization$outboundSchema: z.ZodType<
   SDKCreateSessionOrganization
 > = z.object({
   id: z.string(),
-  environment: SDKCreateSessionEnvironment$outboundSchema,
+  environment: Environment$outboundSchema,
 });
 
 export function sdkCreateSessionOrganizationToJSON(
@@ -232,8 +262,18 @@ export function sdkCreateSessionOrganizationFromJSON(
 }
 
 /** @internal */
-export const SDKCreateSessionDataData$inboundSchema: z.ZodType<
-  SDKCreateSessionDataData,
+export const SDKCreateSessionNotarizeFallbackReason$inboundSchema:
+  z.ZodNativeEnum<typeof SDKCreateSessionNotarizeFallbackReason> = z.nativeEnum(
+    SDKCreateSessionNotarizeFallbackReason,
+  );
+/** @internal */
+export const SDKCreateSessionNotarizeFallbackReason$outboundSchema:
+  z.ZodNativeEnum<typeof SDKCreateSessionNotarizeFallbackReason> =
+    SDKCreateSessionNotarizeFallbackReason$inboundSchema;
+
+/** @internal */
+export const DataNotarizeRequiresUserRef$inboundSchema: z.ZodType<
+  DataNotarizeRequiresUserRef,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -244,6 +284,11 @@ export const SDKCreateSessionDataData$inboundSchema: z.ZodType<
   expires_at: types.date(),
   expires_in_seconds: types.number(),
   organization: z.lazy(() => SDKCreateSessionOrganization$inboundSchema),
+  trusted: types.optional(types.boolean()),
+  notarize: types.optional(types.boolean()),
+  notarize_fallback_reason: types.optional(
+    SDKCreateSessionNotarizeFallbackReason$inboundSchema,
+  ),
 }).transform((v) => {
   return remap$(v, {
     "anchor_grant_token": "anchorGrantToken",
@@ -252,10 +297,11 @@ export const SDKCreateSessionDataData$inboundSchema: z.ZodType<
     "session_token": "sessionToken",
     "expires_at": "expiresAt",
     "expires_in_seconds": "expiresInSeconds",
+    "notarize_fallback_reason": "notarizeFallbackReason",
   });
 });
 /** @internal */
-export type SDKCreateSessionDataData$Outbound = {
+export type DataNotarizeRequiresUserRef$Outbound = {
   anchor_grant_token: string;
   anchor_grant_expires_at: string;
   anchor_grant_expires_in_seconds: number;
@@ -263,13 +309,16 @@ export type SDKCreateSessionDataData$Outbound = {
   expires_at: string;
   expires_in_seconds: number;
   organization: SDKCreateSessionOrganization$Outbound;
+  trusted?: boolean | undefined;
+  notarize?: boolean | undefined;
+  notarize_fallback_reason?: string | undefined;
 };
 
 /** @internal */
-export const SDKCreateSessionDataData$outboundSchema: z.ZodType<
-  SDKCreateSessionDataData$Outbound,
+export const DataNotarizeRequiresUserRef$outboundSchema: z.ZodType<
+  DataNotarizeRequiresUserRef$Outbound,
   z.ZodTypeDef,
-  SDKCreateSessionDataData
+  DataNotarizeRequiresUserRef
 > = z.object({
   anchorGrantToken: z.string(),
   anchorGrantExpiresAt: z.date().transform(v => v.toISOString()),
@@ -278,6 +327,10 @@ export const SDKCreateSessionDataData$outboundSchema: z.ZodType<
   expiresAt: z.date().transform(v => v.toISOString()),
   expiresInSeconds: z.number().int(),
   organization: z.lazy(() => SDKCreateSessionOrganization$outboundSchema),
+  trusted: z.boolean().optional(),
+  notarize: z.boolean().optional(),
+  notarizeFallbackReason: SDKCreateSessionNotarizeFallbackReason$outboundSchema
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     anchorGrantToken: "anchor_grant_token",
@@ -286,23 +339,26 @@ export const SDKCreateSessionDataData$outboundSchema: z.ZodType<
     sessionToken: "session_token",
     expiresAt: "expires_at",
     expiresInSeconds: "expires_in_seconds",
+    notarizeFallbackReason: "notarize_fallback_reason",
   });
 });
 
-export function sdkCreateSessionDataDataToJSON(
-  sdkCreateSessionDataData: SDKCreateSessionDataData,
+export function dataNotarizeRequiresUserRefToJSON(
+  dataNotarizeRequiresUserRef: DataNotarizeRequiresUserRef,
 ): string {
   return JSON.stringify(
-    SDKCreateSessionDataData$outboundSchema.parse(sdkCreateSessionDataData),
+    DataNotarizeRequiresUserRef$outboundSchema.parse(
+      dataNotarizeRequiresUserRef,
+    ),
   );
 }
-export function sdkCreateSessionDataDataFromJSON(
+export function dataNotarizeRequiresUserRefFromJSON(
   jsonString: string,
-): SafeParseResult<SDKCreateSessionDataData, SDKValidationError> {
+): SafeParseResult<DataNotarizeRequiresUserRef, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => SDKCreateSessionDataData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'SDKCreateSessionDataData' from JSON`,
+    (x) => DataNotarizeRequiresUserRef$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'DataNotarizeRequiresUserRef' from JSON`,
   );
 }
 
@@ -312,12 +368,12 @@ export const SDKCreateSessionData$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  data: types.optional(z.lazy(() => SDKCreateSessionDataData$inboundSchema)),
+  data: types.optional(z.lazy(() => DataNotarizeRequiresUserRef$inboundSchema)),
   error: types.optional(models.ErrorBody$inboundSchema),
 });
 /** @internal */
 export type SDKCreateSessionData$Outbound = {
-  data?: SDKCreateSessionDataData$Outbound | undefined;
+  data?: DataNotarizeRequiresUserRef$Outbound | undefined;
   error?: models.ErrorBody$Outbound | undefined;
 };
 
@@ -327,7 +383,7 @@ export const SDKCreateSessionData$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   SDKCreateSessionData
 > = z.object({
-  data: z.lazy(() => SDKCreateSessionDataData$outboundSchema).optional(),
+  data: z.lazy(() => DataNotarizeRequiresUserRef$outboundSchema).optional(),
   error: models.ErrorBody$outboundSchema.optional(),
 });
 

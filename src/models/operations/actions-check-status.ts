@@ -34,14 +34,16 @@ export type ActionsCheckStatusStatus = OpenEnum<
 /**
  * null until status is approved or denied.
  */
-export const Verdict = {
+export const ActionsCheckStatusVerdict = {
   Approve: "approve",
   Denied: "denied",
 } as const;
 /**
  * null until status is approved or denied.
  */
-export type Verdict = OpenEnum<typeof Verdict>;
+export type ActionsCheckStatusVerdict = OpenEnum<
+  typeof ActionsCheckStatusVerdict
+>;
 
 export type ActionsCheckStatusDataData = {
   status: ActionsCheckStatusStatus;
@@ -55,7 +57,7 @@ export type ActionsCheckStatusDataData = {
   /**
    * null until status is approved or denied.
    */
-  verdict?: Verdict | null | undefined;
+  verdict?: ActionsCheckStatusVerdict | null | undefined;
   /**
    * Whether the callback webhook has been confirmed delivered.
    */
@@ -66,7 +68,7 @@ export type ActionsCheckStatusDataData = {
 export type ActionsCheckStatusData = {
   data?: ActionsCheckStatusDataData | undefined;
   /**
-   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   * Handler error. Arrives inside `data.error` with HTTP 200. Check for it before reading the result.
    */
   error?: models.ErrorBody | undefined;
 };
@@ -144,11 +146,17 @@ export const ActionsCheckStatusStatus$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ActionsCheckStatusStatus);
 
 /** @internal */
-export const Verdict$inboundSchema: z.ZodType<Verdict, z.ZodTypeDef, unknown> =
-  openEnums.inboundSchema(Verdict);
+export const ActionsCheckStatusVerdict$inboundSchema: z.ZodType<
+  ActionsCheckStatusVerdict,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(ActionsCheckStatusVerdict);
 /** @internal */
-export const Verdict$outboundSchema: z.ZodType<string, z.ZodTypeDef, Verdict> =
-  openEnums.outboundSchema(Verdict);
+export const ActionsCheckStatusVerdict$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  ActionsCheckStatusVerdict
+> = openEnums.outboundSchema(ActionsCheckStatusVerdict);
 
 /** @internal */
 export const ActionsCheckStatusDataData$inboundSchema: z.ZodType<
@@ -161,7 +169,7 @@ export const ActionsCheckStatusDataData$inboundSchema: z.ZodType<
   resolved_at: z.nullable(types.date()).optional(),
   ceremony_id: z.nullable(types.string()).optional(),
   resolution_jwt: z.nullable(types.string()).optional(),
-  verdict: z.nullable(Verdict$inboundSchema).optional(),
+  verdict: z.nullable(ActionsCheckStatusVerdict$inboundSchema).optional(),
   delivered: types.optional(types.boolean()),
   callback_attempts: types.optional(types.number()),
 }).transform((v) => {
@@ -196,7 +204,7 @@ export const ActionsCheckStatusDataData$outboundSchema: z.ZodType<
   resolvedAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
   ceremonyId: z.nullable(z.string()).optional(),
   resolutionJwt: z.nullable(z.string()).optional(),
-  verdict: z.nullable(Verdict$outboundSchema).optional(),
+  verdict: z.nullable(ActionsCheckStatusVerdict$outboundSchema).optional(),
   delivered: z.boolean().optional(),
   callbackAttempts: z.number().int().optional(),
 }).transform((v) => {

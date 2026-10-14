@@ -4,7 +4,6 @@
 
 import { censusCreateSession } from "../funcs/census-create-session.js";
 import { censusCreateVerificationLink } from "../funcs/census-create-verification-link.js";
-import { censusGetPartnerConfig } from "../funcs/census-get-partner-config.js";
 import { censusLogout } from "../funcs/census-logout.js";
 import { censusRevokeVerification } from "../funcs/census-revoke-verification.js";
 import { censusStoreSignal } from "../funcs/census-store-signal.js";
@@ -57,7 +56,7 @@ export class Census extends ClientSDK {
    * Validate a verification token
    *
    * @remarks
-   * Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person.
+   * Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person. Each attestation is for one organization (aud = its organization_id; pass `audience` to enforce it) and one check: a repeat check is flagged `replayed` and refused from 2026-11-15.
    */
   async verifyToken(
     security: operations.SDKVerifyTokenSecurity,
@@ -101,25 +100,6 @@ export class Census extends ClientSDK {
   ): Promise<operations.SDKValidateSignalResponse> {
     return unwrapAsync(censusValidateSignal(
       this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Get partner configuration
-   *
-   * @remarks
-   * Returns enabled integrations (Turnstile, etc.) for a site key. Public config only — secret keys never exposed.
-   */
-  async getPartnerConfig(
-    security: operations.SDKGetPartnerConfigSecurity,
-    request: operations.SDKGetPartnerConfigRequest,
-    options?: RequestOptions,
-  ): Promise<operations.SDKGetPartnerConfigResponse> {
-    return unwrapAsync(censusGetPartnerConfig(
-      this,
-      security,
       request,
       options,
     ));
