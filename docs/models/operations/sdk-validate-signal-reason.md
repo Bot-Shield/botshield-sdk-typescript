@@ -1,13 +1,13 @@
-# Reason
+# SDKValidateSignalReason
 
 Present when valid is false.
 
 ## Example Usage
 
 ```typescript
-import { Reason } from "botshield-sdk/models/operations";
+import { SDKValidateSignalReason } from "botshield-sdk/models/operations";
 
-let value: Reason = "signal_token_already_used";
+let value: SDKValidateSignalReason = "signal_token_already_used";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```

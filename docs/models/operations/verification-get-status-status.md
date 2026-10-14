@@ -1,6 +1,6 @@
 # VerificationGetStatusStatus
 
-`pass` is a Recent Presence pass: the pre-check resolved the person without a new ceremony. Its record expires 60 seconds after the check, after which this endpoint reports `expired` — it never becomes `completed`. Treat `pass` as success and read it promptly.
+`pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`.
 
 ## Example Usage
 

@@ -20,7 +20,7 @@ export type SDKValidateSignalRequest = {
 /**
  * Present when valid is false.
  */
-export const Reason = {
+export const SDKValidateSignalReason = {
   InvalidSignalToken: "invalid_signal_token",
   SignalTokenExpired: "signal_token_expired",
   SignalTokenAlreadyUsed: "signal_token_already_used",
@@ -28,14 +28,14 @@ export const Reason = {
 /**
  * Present when valid is false.
  */
-export type Reason = OpenEnum<typeof Reason>;
+export type SDKValidateSignalReason = OpenEnum<typeof SDKValidateSignalReason>;
 
 export type SDKValidateSignalDataData = {
   valid: boolean;
   /**
    * Present when valid is false.
    */
-  reason?: Reason | undefined;
+  reason?: SDKValidateSignalReason | undefined;
   score?: number | undefined;
   edgeScore?: number | undefined;
   clientScore?: number | undefined;
@@ -47,7 +47,7 @@ export type SDKValidateSignalDataData = {
 export type SDKValidateSignalData = {
   data?: SDKValidateSignalDataData | undefined;
   /**
-   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   * Handler error. Arrives inside `data.error` with HTTP 200. Check for it before reading the result.
    */
   error?: models.ErrorBody | undefined;
 };
@@ -112,11 +112,17 @@ export function sdkValidateSignalRequestFromJSON(
 }
 
 /** @internal */
-export const Reason$inboundSchema: z.ZodType<Reason, z.ZodTypeDef, unknown> =
-  openEnums.inboundSchema(Reason);
+export const SDKValidateSignalReason$inboundSchema: z.ZodType<
+  SDKValidateSignalReason,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(SDKValidateSignalReason);
 /** @internal */
-export const Reason$outboundSchema: z.ZodType<string, z.ZodTypeDef, Reason> =
-  openEnums.outboundSchema(Reason);
+export const SDKValidateSignalReason$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  SDKValidateSignalReason
+> = openEnums.outboundSchema(SDKValidateSignalReason);
 
 /** @internal */
 export const SDKValidateSignalDataData$inboundSchema: z.ZodType<
@@ -125,7 +131,7 @@ export const SDKValidateSignalDataData$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   valid: types.boolean(),
-  reason: types.optional(Reason$inboundSchema),
+  reason: types.optional(SDKValidateSignalReason$inboundSchema),
   score: types.optional(types.number()),
   edge_score: types.optional(types.number()),
   client_score: types.optional(types.number()),
@@ -159,7 +165,7 @@ export const SDKValidateSignalDataData$outboundSchema: z.ZodType<
   SDKValidateSignalDataData
 > = z.object({
   valid: z.boolean(),
-  reason: Reason$outboundSchema.optional(),
+  reason: SDKValidateSignalReason$outboundSchema.optional(),
   score: z.number().int().optional(),
   edgeScore: z.number().int().optional(),
   clientScore: z.number().int().optional(),

@@ -14,11 +14,16 @@ export type SDKRevokeVerificationSecurity = {
   apiKeyAuth: string;
 };
 
+/**
+ * One of `gate` (canonical) or `scope` (deprecated alias) is required.
+ */
 export type SDKRevokeVerificationRequest = {
   /**
-   * The gate's action name.
+   * The gate's action name. **Deprecated (alias window, sunset 2027-01-15):** use `gate`. Accepted through the window; responses carry both. https://docs.botshield.ai/changelog/alias-window
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
-  scope: string;
+  scope?: string | undefined;
   /**
    * **Deprecated.** Use `partner_user_id` to identify whose verification to revoke.
    *
@@ -29,6 +34,10 @@ export type SDKRevokeVerificationRequest = {
    */
   userEmail?: string | undefined;
   partnerUserId?: string | undefined;
+  /**
+   * The gate's action name.
+   */
+  gate?: string | undefined;
 };
 
 export type SDKRevokeVerificationDataData = {
@@ -40,7 +49,7 @@ export type SDKRevokeVerificationDataData = {
 export type SDKRevokeVerificationData = {
   data?: SDKRevokeVerificationDataData | undefined;
   /**
-   * Handler error. Arrives inside data.error with HTTP 200 — check for it before reading the result.
+   * Handler error. Arrives inside `data.error` with HTTP 200. Check for it before reading the result.
    */
   error?: models.ErrorBody | undefined;
 };
@@ -107,9 +116,10 @@ export const SDKRevokeVerificationRequest$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  scope: types.string(),
+  scope: types.optional(types.string()),
   user_email: types.optional(types.string()),
   partner_user_id: types.optional(types.string()),
+  gate: types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "user_email": "userEmail",
@@ -118,9 +128,10 @@ export const SDKRevokeVerificationRequest$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type SDKRevokeVerificationRequest$Outbound = {
-  scope: string;
+  scope?: string | undefined;
   user_email?: string | undefined;
   partner_user_id?: string | undefined;
+  gate?: string | undefined;
 };
 
 /** @internal */
@@ -129,9 +140,10 @@ export const SDKRevokeVerificationRequest$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   SDKRevokeVerificationRequest
 > = z.object({
-  scope: z.string(),
+  scope: z.string().optional(),
   userEmail: z.string().optional(),
   partnerUserId: z.string().optional(),
+  gate: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     userEmail: "user_email",

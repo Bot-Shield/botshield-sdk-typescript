@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Validate a verification token
  *
  * @remarks
- * Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person.
+ * Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person. Each attestation is for one organization (aud = its organization_id; pass `audience` to enforce it) and one check: a repeat check is flagged `replayed` and refused from 2026-11-15.
  */
 export function censusVerifyToken(
   client: BotShieldCore,
@@ -128,83 +128,6 @@ async function $do(
         fieldName: "Authorization",
         type: "apiKey:header",
         value: security?.apiKeyAuth3,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth4,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth5,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth6,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth7,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth8,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth9,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth10,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth11,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth12,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth13,
-      },
-    ],
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.apiKeyAuth14,
       },
     ],
   );

@@ -7,7 +7,6 @@ export * from "./actions-check-status.js";
 export * from "./actions-propose.js";
 export * from "./sdk-create-session.js";
 export * from "./sdk-create-verification-link.js";
-export * from "./sdk-get-partner-config.js";
 export * from "./sdk-logout.js";
 export * from "./sdk-revoke-verification.js";
 export * from "./sdk-store-signal.js";
