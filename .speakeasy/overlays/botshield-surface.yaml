@@ -143,3 +143,29 @@ actions:
       description: |-
         **Deprecated.** Address the proposal with `opaque_id` (the pairwise id from the bind
         ceremony) instead. Will be removed in the next major version.
+  # ────────────────────────────────────────────────────────────────────────────
+  # Partner surface allowlist (3.3, 2026-10-13). The engine spec also carries
+  # operations a partner cannot call with their own keys — the BotShield app's
+  # (users/linkages/*, link/resolve|accept|decline), the CDN worker's (link/mint),
+  # the widget's (sdk/partner-config) and Console-session ones (partner/linkages/*).
+  # They never belong in the public SDK or its MCP server. Same 9 operations the
+  # docs publish (docs repo scripts/build-openapi.mjs allowlist).
+  # ────────────────────────────────────────────────────────────────────────────
+  - target: $.paths["/link/mint"]
+    remove: true
+  - target: $.paths["/link/resolve"]
+    remove: true
+  - target: $.paths["/link/accept"]
+    remove: true
+  - target: $.paths["/link/decline"]
+    remove: true
+  - target: $.paths["/partner/linkages/list"]
+    remove: true
+  - target: $.paths["/partner/linkages/revoke"]
+    remove: true
+  - target: $.paths["/users/linkages/list"]
+    remove: true
+  - target: $.paths["/users/linkages/revoke"]
+    remove: true
+  - target: $.paths["/sdk/partner-config"]
+    remove: true
