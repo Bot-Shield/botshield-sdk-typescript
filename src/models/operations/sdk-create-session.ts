@@ -31,21 +31,23 @@ export type SDKCreateSessionRequest = {
 /**
  * Resolved from the credential: API token environment, or site key pk_test_ → development / pk_live_ → production.
  */
-export const Environment = {
+export const SDKCreateSessionEnvironment = {
   Development: "development",
   Production: "production",
 } as const;
 /**
  * Resolved from the credential: API token environment, or site key pk_test_ → development / pk_live_ → production.
  */
-export type Environment = OpenEnum<typeof Environment>;
+export type SDKCreateSessionEnvironment = OpenEnum<
+  typeof SDKCreateSessionEnvironment
+>;
 
 export type SDKCreateSessionOrganization = {
   id: string;
   /**
    * Resolved from the credential: API token environment, or site key pk_test_ → development / pk_live_ → production.
    */
-  environment: Environment;
+  environment: SDKCreateSessionEnvironment;
 };
 
 /**
@@ -205,17 +207,17 @@ export function sdkCreateSessionRequestFromJSON(
 }
 
 /** @internal */
-export const Environment$inboundSchema: z.ZodType<
-  Environment,
+export const SDKCreateSessionEnvironment$inboundSchema: z.ZodType<
+  SDKCreateSessionEnvironment,
   z.ZodTypeDef,
   unknown
-> = openEnums.inboundSchema(Environment);
+> = openEnums.inboundSchema(SDKCreateSessionEnvironment);
 /** @internal */
-export const Environment$outboundSchema: z.ZodType<
+export const SDKCreateSessionEnvironment$outboundSchema: z.ZodType<
   string,
   z.ZodTypeDef,
-  Environment
-> = openEnums.outboundSchema(Environment);
+  SDKCreateSessionEnvironment
+> = openEnums.outboundSchema(SDKCreateSessionEnvironment);
 
 /** @internal */
 export const SDKCreateSessionOrganization$inboundSchema: z.ZodType<
@@ -224,7 +226,7 @@ export const SDKCreateSessionOrganization$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: types.string(),
-  environment: Environment$inboundSchema,
+  environment: SDKCreateSessionEnvironment$inboundSchema,
 });
 /** @internal */
 export type SDKCreateSessionOrganization$Outbound = {
@@ -239,7 +241,7 @@ export const SDKCreateSessionOrganization$outboundSchema: z.ZodType<
   SDKCreateSessionOrganization
 > = z.object({
   id: z.string(),
-  environment: Environment$outboundSchema,
+  environment: SDKCreateSessionEnvironment$outboundSchema,
 });
 
 export function sdkCreateSessionOrganizationToJSON(

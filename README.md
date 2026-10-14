@@ -40,7 +40,7 @@ On your server, confirm the token with this SDK (`census.verifyToken`) before tr
 
 BotShield API: Human presence verification protocol.
 
-**BotShield Human Verification** — a BotShield Gate (checkout, sign-up, any action moment) asks whether a live human is present. The client pre-check returns the two-result-state contract `result_state: human_verified | unavailable`; when presence is required the person confirms with a device biometric in the BotShield app and the gate receives an ES256 attestation JWT, verifiable against the public JWKS at /.well-known/jwks.json. No identity crosses the boundary.
+**BotShield Human Verification** — a BotShield Gate (checkout, sign-up, any action moment) asks whether a live human is present. The client pre-check returns the two-result-state contract `result_state: human_verified | unavailable`; when presence is required the person confirms with their passkey in the BotShield app and the gate receives an ES256 attestation JWT, verifiable against the public JWKS at /.well-known/jwks.json. No identity crosses the boundary.
 
 **Agents Ask** — an agent proposes an action; the human confirms in the BotShield app and BotShield signs a Proof of Resolution JWT.
 
@@ -130,9 +130,7 @@ Add the following server definition to your `claude_desktop_config.json` file:
         "--",
         "mcp", "start",
         "--agent-key-auth", "...",
-        "--agent-key-auth1", "...",
-        "--agent-key-auth2", "...",
-        "--agent-key-auth3", "..."
+        "--agent-key-auth1", "..."
       ]
     }
   }
@@ -156,9 +154,7 @@ Create a `.cursor/mcp.json` file in your project root with the following content
         "--",
         "mcp", "start",
         "--agent-key-auth", "...",
-        "--agent-key-auth1", "...",
-        "--agent-key-auth2", "...",
-        "--agent-key-auth3", "..."
+        "--agent-key-auth1", "..."
       ]
     }
   }
@@ -238,8 +234,6 @@ This SDK supports the following security schemes globally:
 | --------------- | ------ | ------- |
 | `agentKeyAuth`  | apiKey | API key |
 | `agentKeyAuth1` | apiKey | API key |
-| `agentKeyAuth2` | apiKey | API key |
-| `agentKeyAuth3` | apiKey | API key |
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript
@@ -304,8 +298,15 @@ run();
 * [verifyToken](docs/sdks/census/README.md#verifytoken) - Validate a verification token
 * [storeSignal](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
 * [validateSignal](docs/sdks/census/README.md#validatesignal) - Validate a signal token
+* [getPartnerConfig](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
 * [revokeVerification](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
 * [logout](docs/sdks/census/README.md#logout) - Revoke a grant token
+
+### [SecuredAccounts](docs/sdks/securedaccounts/README.md)
+
+* [list](docs/sdks/securedaccounts/README.md#list) - List Secured Accounts
+* [revoke](docs/sdks/securedaccounts/README.md#revoke) - Revoke a Secured Account
+* [getStatus](docs/sdks/securedaccounts/README.md#getstatus) - Get Secured Account status
 
 ### [Verification](docs/sdks/verification/README.md)
 
@@ -334,11 +335,15 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`actionsProposeAction`](docs/sdks/actions/README.md#proposeaction) - Propose an action for human confirmation
 - [`censusCreateSession`](docs/sdks/census/README.md#createsession) - Create a grant token
 - [`censusCreateVerificationLink`](docs/sdks/census/README.md#createverificationlink) - Create a verification request
+- [`censusGetPartnerConfig`](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
 - [`censusLogout`](docs/sdks/census/README.md#logout) - Revoke a grant token
 - [`censusRevokeVerification`](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
 - [`censusStoreSignal`](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
 - [`censusValidateSignal`](docs/sdks/census/README.md#validatesignal) - Validate a signal token
 - [`censusVerifyToken`](docs/sdks/census/README.md#verifytoken) - Validate a verification token
+- [`securedAccountsGetStatus`](docs/sdks/securedaccounts/README.md#getstatus) - Get Secured Account status
+- [`securedAccountsList`](docs/sdks/securedaccounts/README.md#list) - List Secured Accounts
+- [`securedAccountsRevoke`](docs/sdks/securedaccounts/README.md#revoke) - Revoke a Secured Account
 - [`verificationGetStatus`](docs/sdks/verification/README.md#getstatus) - Check verification status
 
 </details>

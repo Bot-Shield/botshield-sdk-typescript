@@ -1,0 +1,18 @@
+# SecuredAccountsListRequest
+
+## Example Usage
+
+```typescript
+import { SecuredAccountsListRequest } from "botshield-sdk/models/operations";
+
+let value: SecuredAccountsListRequest = {};
+```
+
+## Fields
+
+| Field                                                                                                                                            | Type                                                                                                                                             | Required                                                                                                                                         | Description                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `platformUserRef`                                                                                                                                | *string*                                                                                                                                         | :heavy_minus_sign:                                                                                                                               | Your stable user id for the account (the same `platform_user_ref` you passed when it was secured). Hashed server-side; never stored or returned. |
+| `status`                                                                                                                                         | [operations.QueryParamStatus](../../models/operations/query-param-status.md)                                                                     | :heavy_minus_sign:                                                                                                                               | Omit for both.                                                                                                                                   |
+| `limit`                                                                                                                                          | *number*                                                                                                                                         | :heavy_minus_sign:                                                                                                                               | Page size. Default 25, max 100.                                                                                                                  |
+| `offset`                                                                                                                                         | *number*                                                                                                                                         | :heavy_minus_sign:                                                                                                                               | Default 0.                                                                                                                                       |
