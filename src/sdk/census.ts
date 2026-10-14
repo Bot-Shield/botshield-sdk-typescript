@@ -4,6 +4,7 @@
 
 import { censusCreateSession } from "../funcs/census-create-session.js";
 import { censusCreateVerificationLink } from "../funcs/census-create-verification-link.js";
+import { censusGetPartnerConfig } from "../funcs/census-get-partner-config.js";
 import { censusLogout } from "../funcs/census-logout.js";
 import { censusRevokeVerification } from "../funcs/census-revoke-verification.js";
 import { censusStoreSignal } from "../funcs/census-store-signal.js";
@@ -100,6 +101,25 @@ export class Census extends ClientSDK {
   ): Promise<operations.SDKValidateSignalResponse> {
     return unwrapAsync(censusValidateSignal(
       this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get partner configuration
+   *
+   * @remarks
+   * Returns enabled integrations (Turnstile, etc.) for a site key. Public config only — secret keys never exposed.
+   */
+  async getPartnerConfig(
+    security: operations.SDKGetPartnerConfigSecurity,
+    request: operations.SDKGetPartnerConfigRequest,
+    options?: RequestOptions,
+  ): Promise<operations.SDKGetPartnerConfigResponse> {
+    return unwrapAsync(censusGetPartnerConfig(
+      this,
+      security,
       request,
       options,
     ));

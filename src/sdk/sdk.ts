@@ -5,6 +5,7 @@
 import { ClientSDK } from "../lib/sdks.js";
 import { Actions } from "./actions.js";
 import { Census } from "./census.js";
+import { SecuredAccounts } from "./secured-accounts.js";
 import { Verification } from "./verification.js";
 
 export class BotShield extends ClientSDK {
@@ -21,5 +22,10 @@ export class BotShield extends ClientSDK {
   private _actions?: Actions;
   get actions(): Actions {
     return (this._actions ??= new Actions(this._options));
+  }
+
+  private _securedAccounts?: SecuredAccounts;
+  get securedAccounts(): SecuredAccounts {
+    return (this._securedAccounts ??= new SecuredAccounts(this._options));
   }
 }
