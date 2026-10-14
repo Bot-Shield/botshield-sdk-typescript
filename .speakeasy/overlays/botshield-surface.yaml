@@ -166,3 +166,13 @@ actions:
     remove: true
   - target: $.paths["/users/linkages/revoke"]
     remove: true
+  # ────────────────────────────────────────────────────────────────────────────
+  # Secured Accounts — partner-server API (SDK 2.2, 2026-10-13). API-key auth (per-op
+  # ApiKeyAuth in the spec). client.securedAccounts.list / revoke / getStatus.
+  # ────────────────────────────────────────────────────────────────────────────
+  - target: $.paths["/secured-accounts/list"].get
+    update: { x-speakeasy-group: securedAccounts, x-speakeasy-name-override: list, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/secured-accounts/revoke"].post
+    update: { x-speakeasy-group: securedAccounts, x-speakeasy-name-override: revoke, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/secured-accounts/status"].get
+    update: { x-speakeasy-group: securedAccounts, x-speakeasy-name-override: getStatus, x-speakeasy-mcp: { disabled: true } }
