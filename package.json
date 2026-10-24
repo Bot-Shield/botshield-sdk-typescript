@@ -1,6 +1,6 @@
 {
   "name": "botshield-sdk",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "author": "BotShield",
   "description": "Official TypeScript SDK for BotShield — privacy-first human verification (passkeys, no PII) and Agents Ask approvals",
   "homepage": "https://docs.botshield.ai",

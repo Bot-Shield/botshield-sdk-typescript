@@ -15,6 +15,16 @@ import * as models from "../index.js";
 export type SDKGetPartnerConfigSecurity = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
+  apiKeyAuth2?: string | undefined;
+  apiKeyAuth3?: string | undefined;
+  apiKeyAuth4?: string | undefined;
+  apiKeyAuth5?: string | undefined;
+  apiKeyAuth6?: string | undefined;
+  apiKeyAuth7?: string | undefined;
+  apiKeyAuth8?: string | undefined;
+  apiKeyAuth9?: string | undefined;
+  apiKeyAuth10?: string | undefined;
+  apiKeyAuth11?: string | undefined;
 };
 
 export type SDKGetPartnerConfigRequest = {
@@ -90,11 +100,31 @@ export const SDKGetPartnerConfigSecurity$inboundSchema: z.ZodType<
 > = z.object({
   apiKeyAuth: types.optional(types.string()),
   apiKeyAuth1: types.optional(types.string()),
+  apiKeyAuth2: types.optional(types.string()),
+  apiKeyAuth3: types.optional(types.string()),
+  apiKeyAuth4: types.optional(types.string()),
+  apiKeyAuth5: types.optional(types.string()),
+  apiKeyAuth6: types.optional(types.string()),
+  apiKeyAuth7: types.optional(types.string()),
+  apiKeyAuth8: types.optional(types.string()),
+  apiKeyAuth9: types.optional(types.string()),
+  apiKeyAuth10: types.optional(types.string()),
+  apiKeyAuth11: types.optional(types.string()),
 });
 /** @internal */
 export type SDKGetPartnerConfigSecurity$Outbound = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
+  apiKeyAuth2?: string | undefined;
+  apiKeyAuth3?: string | undefined;
+  apiKeyAuth4?: string | undefined;
+  apiKeyAuth5?: string | undefined;
+  apiKeyAuth6?: string | undefined;
+  apiKeyAuth7?: string | undefined;
+  apiKeyAuth8?: string | undefined;
+  apiKeyAuth9?: string | undefined;
+  apiKeyAuth10?: string | undefined;
+  apiKeyAuth11?: string | undefined;
 };
 
 /** @internal */
@@ -105,6 +135,16 @@ export const SDKGetPartnerConfigSecurity$outboundSchema: z.ZodType<
 > = z.object({
   apiKeyAuth: z.string().optional(),
   apiKeyAuth1: z.string().optional(),
+  apiKeyAuth2: z.string().optional(),
+  apiKeyAuth3: z.string().optional(),
+  apiKeyAuth4: z.string().optional(),
+  apiKeyAuth5: z.string().optional(),
+  apiKeyAuth6: z.string().optional(),
+  apiKeyAuth7: z.string().optional(),
+  apiKeyAuth8: z.string().optional(),
+  apiKeyAuth9: z.string().optional(),
+  apiKeyAuth10: z.string().optional(),
+  apiKeyAuth11: z.string().optional(),
 });
 
 export function sdkGetPartnerConfigSecurityToJSON(
