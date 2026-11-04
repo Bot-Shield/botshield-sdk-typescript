@@ -1,19 +1,19 @@
 lockVersion: 2.0.0
 id: ae7c3584-be59-4f2d-b368-1c23ba537874
 management:
-  docChecksum: bd41c53640ea3b1e00f4461879f0c3da
+  docChecksum: 469a36de9837e66a9c81ff6e2cf0a1f6
   docVersion: 2.0.0
   speakeasyVersion: 1.796.3
   generationVersion: 2.934.1
-  releaseVersion: 2.2.0
-  configChecksum: a23812ca9bfed1c2a8edc875a825138d
+  releaseVersion: 2.2.1
+  configChecksum: 817e0f2b1b5586004f6d98dd284de926
   repoURL: https://github.com/Bot-Shield/botshield-sdk-typescript.git
   installationURL: https://github.com/Bot-Shield/botshield-sdk-typescript
   published: true
 persistentEdits:
-  generation_id: a968fe84-a337-4f4a-89a4-82dd63e8ea79
-  pristine_commit_hash: 6e18e78b7cba37941b5fe15d717d24a1e49a9abb
-  pristine_tree_hash: 227ee237cd082ae2f7b937686b52a144c321676b
+  generation_id: 8268c312-efff-4a65-8cdd-493b22824781
+  pristine_commit_hash: 26d34389f9e21d97385e2c593bf259e395aef403
+  pristine_tree_hash: 666b8fad995d913fd553a6d3b5f25a4d8c4f5918
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -64,6 +64,26 @@ trackedFiles:
     id: 0ce9707cb848
     last_write_checksum: sha1:bc4454e196fcd219f5a78da690375a884f5ed07b
     pristine_git_object: 08f95f4552349360b2c0b01802aa71ec3a55d2c2
+  docs/models/age-threshold.md:
+    id: cdbbcd03a47d
+    last_write_checksum: sha1:dba5871e0efb1710fba3661c5e9b6eda9e315104
+    pristine_git_object: 52154c402a3e5cd7eb6e8bd24896b96ea632fc8a
+  docs/models/asks.md:
+    id: 6aa52139bcf8
+    last_write_checksum: sha1:c73eaa6be9ff27d8b4dcbdfad3920cbbd336fc7a
+    pristine_git_object: 8caa7910744de10178a703c41edec71000a37119
+  docs/models/bot-shield-action-environment.md:
+    id: 4924cca74a30
+    last_write_checksum: sha1:e12eae7ac020d9439bb1816d6bf32a4f536cf0b9
+    pristine_git_object: a5235657a7887c7798a3885b731ee2b64102df43
+  docs/models/bot-shield-action-state.md:
+    id: 5052bf449ca6
+    last_write_checksum: sha1:610d6f877d5c814def24bbae669397d2e01b64ff
+    pristine_git_object: b8858a25993f63b6931b3b36a83f5c4cb7cfe6a3
+  docs/models/bot-shield-action.md:
+    id: aac35293b1e1
+    last_write_checksum: sha1:efd46bec2c37f304f26e9445550509209996244b
+    pristine_git_object: 1350d4094c9d920914e09631882aa407849f5447
   docs/models/error-body.md:
     id: d05ab754838d
     last_write_checksum: sha1:41bb696b9a10e2e198b23c7955f9eced53a9a68d
@@ -80,6 +100,50 @@ trackedFiles:
     id: bcc10b5521d0
     last_write_checksum: sha1:54edbd60a429f81aef59908601166b8216109212
     pristine_git_object: 659f8161820080cd6673f08d27964055deb2b203
+  docs/models/gate-environment.md:
+    id: f056665a9033
+    last_write_checksum: sha1:a624e90d0aa90b6499424d24998a20e9183379b8
+    pristine_git_object: dc3c1da44ba20e4f9ad0e6749ecc63a2303787bc
+  docs/models/gate-link.md:
+    id: b69bb5fe7ed5
+    last_write_checksum: sha1:42e3e22d872c7cadc9463ccee8d72df530cee9d1
+    pristine_git_object: 2b927d8accd74fda54722f060b7501e78fb39947
+  docs/models/gate-policy-doc-link.md:
+    id: e89a46e343dc
+    last_write_checksum: sha1:26706080fa3398f5240eb8cef321c3f849507187
+    pristine_git_object: 949cff75f489a4fac22b87eb308e7203dce826a4
+  docs/models/gate-policy-doc-preset.md:
+    id: 6dbea62ec9a5
+    last_write_checksum: sha1:5075e74a0d5eea2527e3c42dd79f3ac1b252c157
+    pristine_git_object: 48cf71b3e25453d2db87fcf4713d4a189b15c449
+  docs/models/gate-policy-doc.md:
+    id: 5c8d755a6421
+    last_write_checksum: sha1:ad5de2ed4ba7adcbc7d576c64a89f0b768d25083
+    pristine_git_object: 3a920acfbafd7b848a4e8bd079859646d61a5711
+  docs/models/gate-preset.md:
+    id: 35941125a6b0
+    last_write_checksum: sha1:737055a69ea930252aef91ad118f02b3b35500fe
+    pristine_git_object: e1e80973d9d3b15324399f202085f830804cdcab
+  docs/models/gate-schedule.md:
+    id: d1401c12807d
+    last_write_checksum: sha1:2bcae65458f25190170d660c52edaf15a25f42e7
+    pristine_git_object: 5953379d8d60df175cb64f0431b6ce6692bdf435
+  docs/models/gate-state.md:
+    id: 7df04cce2f1f
+    last_write_checksum: sha1:19ccadb834cfcb0f2ca5253ca7eb6449a97389c4
+    pristine_git_object: e98948bb36c88516a9cc2e8d6c58b74fdf40c91c
+  docs/models/gate-type.md:
+    id: ce35603b291b
+    last_write_checksum: sha1:a135ba6fe9a341ca07ead71a4c19b6c9946c5b49
+    pristine_git_object: 8d3b6df42c9d38f08f42f778316c29a15339f871
+  docs/models/gate.md:
+    id: 734f602e20ae
+    last_write_checksum: sha1:0e40080828cb893deb31e25b5d8044baf76afb61
+    pristine_git_object: f017453e239588613dc997edac563f6054d88a68
+  docs/models/gates-api-error.md:
+    id: a9a76fe058c3
+    last_write_checksum: sha1:009da92c3e4157dc065e928f74b7f3a5d7b7f30a
+    pristine_git_object: 0bf290880e39ecb0a97e580b68b1f6b0907eb4b3
   docs/models/invalid-input-error-error.md:
     id: 4c08dc6c815f
     last_write_checksum: sha1:e6fd716d3a9db804ee5c55439e362934f10a8f8c
@@ -88,10 +152,6 @@ trackedFiles:
     id: 2b9da9f1a79f
     last_write_checksum: sha1:e3705dc1817a16320d86b8a4c6002f84c7e8a1be
     pristine_git_object: 497652ce0a79a9dbd963ccd47fbd80319ef57b9d
-  docs/models/operations/action.md:
-    id: 4adfe415d164
-    last_write_checksum: sha1:4be4a6c9960c4e5bfaeed10417347cfb1b156418
-    pristine_git_object: 5673e80bb67a045d7baf0df8b94986ec4892db65
   docs/models/operations/actions-cancel-data-data.md:
     id: 635ddd3267a1
     last_write_checksum: sha1:288e511f1f8d30a0768f350d38eacf3390251cda
@@ -136,6 +196,10 @@ trackedFiles:
     id: d885833339d8
     last_write_checksum: sha1:dbf538715319f612d5a9077efc53d86aa692873c
     pristine_git_object: 98e51bcc2ce55c1ce409acce16af9dcfac41aab5
+  docs/models/operations/actions-propose-action.md:
+    id: 3e3280f48585
+    last_write_checksum: sha1:9c761c16de4223be184bc77f4eef5cc9fd1fc208
+    pristine_git_object: 32217d68aadfe1bafaf97675c691a42d89abb1ed
   docs/models/operations/actions-propose-data-data.md:
     id: 48ebcf50e5a8
     last_write_checksum: sha1:f5827a24e6bbc45cffaa3d27edf7f18ed944d16c
@@ -146,8 +210,8 @@ trackedFiles:
     pristine_git_object: 5dc23ea40350992deb3c7b14d834a2c052a7fafb
   docs/models/operations/actions-propose-request.md:
     id: e8a609fa656c
-    last_write_checksum: sha1:8f063aebb31d7bbd83ac3be90c10a4c383d71338
-    pristine_git_object: 7d07fdcef240d3c348f743fed9c8def5fa73e131
+    last_write_checksum: sha1:67d6d93bfe75de12260286f12af6ae7aec249cd2
+    pristine_git_object: aecac8067f8b26ae6140d0f4a3dba25effaf2594
   docs/models/operations/actions-propose-response.md:
     id: ebf999e66fb9
     last_write_checksum: sha1:20dcca6b13b4117a48bfa254981bf56d4b359c10
@@ -160,30 +224,222 @@ trackedFiles:
     id: a096d8fbada5
     last_write_checksum: sha1:afa9bdf47c27a1b13376837ad8856344a6261e20
     pristine_git_object: 1cb7384ce93123ae442d78d1cba83c823f4c1ee3
-  docs/models/operations/age-threshold.md:
-    id: 4368b43dbf54
-    last_write_checksum: sha1:6da1becf5617672df9d4d4be7b7004511c863878
-    pristine_git_object: e896a320f25daf7b35e3501aa82132aed00fdee4
   docs/models/operations/auth-mode.md:
     id: dbbc99de4f28
     last_write_checksum: sha1:dafe5427fc173b53827ea11b3a296414c0ec5ec0
     pristine_git_object: c330b795c7f1d6af53a9686beec3bcf5cc5b3117
   docs/models/operations/claims.md:
     id: 618b5047d4db
-    last_write_checksum: sha1:0c1479f787c62cdbd4f19ad3f5949ead5f8063fa
-    pristine_git_object: a4e70af75dcf6029476b5b10f0fe6d645e63295c
+    last_write_checksum: sha1:af334e8c9fc969e098fdba03b7769e45409e162e
+    pristine_git_object: adaf1f8cc64c8bf954505ebea982a57f456073dd
   docs/models/operations/data-notarize-requires-user-ref.md:
     id: c9738ae58ac9
     last_write_checksum: sha1:b662a47b41c0ad9091bb4edb57f623143979cf77
     pristine_git_object: f24b31aa18ffd81d84eb5b0458aee977cd20f8b5
-  docs/models/operations/gate-type.md:
-    id: b7e67642e28d
-    last_write_checksum: sha1:750d5f51d1259f1953f83887c5ad246684f21e81
-    pristine_git_object: 7de96b7283aea7c322abf575a1eea809bfcf2788
+  docs/models/operations/gate.md:
+    id: e32d39f56835
+    last_write_checksum: sha1:15a3c1bd79830722f74dd85afea179b1b121239d
+    pristine_git_object: 9895f77f403aa669814e70d85fa4ad8c4a5400ac
+  docs/models/operations/gates-api-actions-create-data-data.md:
+    id: 678fa2571b23
+    last_write_checksum: sha1:333a30051a2d040a527c3700154d27cfae0e08f4
+    pristine_git_object: 9fc7230c0c4b31794ff780f1799b61d6d106b8f2
+  docs/models/operations/gates-api-actions-create-data.md:
+    id: ea62f7b21c4b
+    last_write_checksum: sha1:bdfc44f0973fc0e881c97f26f3b2276f91571ebd
+    pristine_git_object: afdbd2582ab5eba1e5c06e727d0cd117608af564
+  docs/models/operations/gates-api-actions-create-request.md:
+    id: bac5d68dbccb
+    last_write_checksum: sha1:fc747fdcee79ffb5672f7c3feee7215b20b75809
+    pristine_git_object: 71158c3575bf61e9733b7e950dc17ec55fc4859e
+  docs/models/operations/gates-api-actions-create-response.md:
+    id: dcabdd684ba5
+    last_write_checksum: sha1:9f9a33b5af82f71bc8a4c1c53df1a0e6d20b8223
+    pristine_git_object: 7f80eb2ffd89ca6106800eefb4d42d85d6d2f4d0
+  docs/models/operations/gates-api-actions-create-security.md:
+    id: 659a76775d4b
+    last_write_checksum: sha1:ad4b9670eff5e4a8657ea1703f2fcd7b9dfd4220
+    pristine_git_object: f22eef57a45de97053e1330bff523c9d1eefb1b2
+  docs/models/operations/gates-api-actions-list-data-data.md:
+    id: 2626410363c1
+    last_write_checksum: sha1:b9c7f08aa7df8eb2c97c0fac8be86e1704804678
+    pristine_git_object: 15ecc6c0363a1e42cbd0068cd6f56084d4605b60
+  docs/models/operations/gates-api-actions-list-data.md:
+    id: 945542435d37
+    last_write_checksum: sha1:e36f9d5cf7e7dad72e1eeb3ff0fbeb4a429a01db
+    pristine_git_object: 08ad59c8f838e61c399534a8b1298e18bdafaf7d
+  docs/models/operations/gates-api-actions-list-response.md:
+    id: e9faf12909f7
+    last_write_checksum: sha1:4ccb704ab26305cc88a2776b7636c74988015739
+    pristine_git_object: 5714bf25487bd7c9c4f6888966290f94e7d1fead
+  docs/models/operations/gates-api-actions-list-security.md:
+    id: 3f40812603df
+    last_write_checksum: sha1:c64c9dbe23716b7e89defd231bdeeb4ce171e78a
+    pristine_git_object: bddd38e2ecb331112b74f8509deaaaa309eb653d
+  docs/models/operations/gates-api-actions-set-state-data-data.md:
+    id: 1c4eabbb39fd
+    last_write_checksum: sha1:98e2451a262789656b3f1e5e85fd5cc839bad142
+    pristine_git_object: fc660921c65ecb8c8967f1d28a0c8d58dd6f16c5
+  docs/models/operations/gates-api-actions-set-state-data.md:
+    id: e4a1ab053b24
+    last_write_checksum: sha1:dd298cd5b295150c3b56d813f9e6bd7913e83376
+    pristine_git_object: 8014cb29b5bae86eb1883dd8462ea7e0273f31c1
+  docs/models/operations/gates-api-actions-set-state-request.md:
+    id: 128ca33cfca3
+    last_write_checksum: sha1:ec2cc8bcc30c228a0cbd296b76885bc6d2522b53
+    pristine_git_object: b683055a9f5fa39293aaadea7a0b06c90e70071f
+  docs/models/operations/gates-api-actions-set-state-response.md:
+    id: aed4f56b91ba
+    last_write_checksum: sha1:b0735072dfb472718faaf808448f7d9d9ce6d878
+    pristine_git_object: df2b4ae93db5579d86dc6a04cda814f7d16ca09d
+  docs/models/operations/gates-api-actions-set-state-security.md:
+    id: e0d70fecc876
+    last_write_checksum: sha1:13a7dce5da241f877039faf68e76537007aef148
+    pristine_git_object: 1a43989ee317eb706676307f2698cafe9a05954a
+  docs/models/operations/gates-api-actions-set-state-state.md:
+    id: 50af67199665
+    last_write_checksum: sha1:5cd685508e966f5267fadc314a9f3fd6c5216878
+    pristine_git_object: da2790eddf58c2c63fa289eb926aa8d81f1a6849
+  docs/models/operations/gates-api-activate-data-data.md:
+    id: 8d51bd8e26a9
+    last_write_checksum: sha1:53968b8903c40ea420d817a06eac71544049ea2e
+    pristine_git_object: c5a6ec993234ac600d1c629ff258437158c2f31e
+  docs/models/operations/gates-api-activate-data.md:
+    id: f922c1a490be
+    last_write_checksum: sha1:9de01a1accccae1db99dc2ef32173c13dd6c6398
+    pristine_git_object: 4bac6d2273862ce6c8a5b3a64bfc0fd68f268485
+  docs/models/operations/gates-api-activate-request.md:
+    id: 98d150ed60a9
+    last_write_checksum: sha1:32ed3fb4522d21f925ee00b1d517b2e83a444a26
+    pristine_git_object: c947b3024bb42a65ccc43a5df64154edd06cec48
+  docs/models/operations/gates-api-activate-response.md:
+    id: 90d778d1a4ad
+    last_write_checksum: sha1:6244091070ef7eddc99f3860bd402d094e4d350a
+    pristine_git_object: be0e71898d1aa0440313590f1dc4bb5fc110759c
+  docs/models/operations/gates-api-activate-security.md:
+    id: 052735e202f2
+    last_write_checksum: sha1:a607e7370fd4085973f02ce075df403c876a9704
+    pristine_git_object: 362c99c454ab50dbce48653feb192ca5a79da4ee
+  docs/models/operations/gates-api-cancel-data-data.md:
+    id: 7c2f24950576
+    last_write_checksum: sha1:874115dd442b62af2e9735607fa2e75b80a04275
+    pristine_git_object: 5c1d05e5e3a759d43661b41279d3bf3bf488e9ae
+  docs/models/operations/gates-api-cancel-data.md:
+    id: 1bb9b02250c4
+    last_write_checksum: sha1:2d6e31b75d88430251e70c580c025e1e324100f5
+    pristine_git_object: d7bd6d31dea4bde1d7e10bd655579bc9a6268db8
+  docs/models/operations/gates-api-cancel-request.md:
+    id: 8228b39022ab
+    last_write_checksum: sha1:baf18426b86c7062f705efc0045e108ddeec768f
+    pristine_git_object: 6c2e8a67980e79c2be5acbf3385dec516f447c9f
+  docs/models/operations/gates-api-cancel-response.md:
+    id: 709a49f014e0
+    last_write_checksum: sha1:7ae4372b656892ecb90b861442a677c8fc857e1b
+    pristine_git_object: d6c4c21301352ab5601d4dde5acc4dca5bf22b82
+  docs/models/operations/gates-api-cancel-security.md:
+    id: 1accdd458434
+    last_write_checksum: sha1:64703663d5f1ed5f6f8bb110937f1d6d1950ddb7
+    pristine_git_object: 7d7775149435f6a5432d337a322912bbd27f6d66
+  docs/models/operations/gates-api-close-data-data.md:
+    id: ebfc792b5993
+    last_write_checksum: sha1:b93238ddb8c6baeb19954847af54a7750d588623
+    pristine_git_object: 03d1cb8cb33f9176d6246bfad2449f3377227aac
+  docs/models/operations/gates-api-close-data.md:
+    id: 4ec46ffb391b
+    last_write_checksum: sha1:0cac6f08765779c38271eb6557b35c84b725e2bb
+    pristine_git_object: 10462db4743ed47fbd2c755b24711a22ece5b5b2
+  docs/models/operations/gates-api-close-request.md:
+    id: 00f2d6bae038
+    last_write_checksum: sha1:e0a871a67763bbddabfa6e622edf9a6ce04f1910
+    pristine_git_object: 5c92d924193b952a1225c3e1b50570fc47a2df5e
+  docs/models/operations/gates-api-close-response.md:
+    id: 21ac08f5337f
+    last_write_checksum: sha1:8338b8b96a63b56bfb07a603035f20e64e79eaf1
+    pristine_git_object: 2951b4f8e08be7afcfa715a070f5986524d2050f
+  docs/models/operations/gates-api-close-security.md:
+    id: dcbb507689f1
+    last_write_checksum: sha1:16cf0657c3d663005c6a3ffef48e0b65a2fa091f
+    pristine_git_object: 921825e741a4d896e5192c6832569eabc2a3c9df
+  docs/models/operations/gates-api-create-age-threshold.md:
+    id: 11b3a89c9dd4
+    last_write_checksum: sha1:88d3fb3081ccea755b9524bce8f60262a4849286
+    pristine_git_object: b8ed3f48ee216b3cb967cfc332226709487f8347
+  docs/models/operations/gates-api-create-data-data.md:
+    id: a3c98b2ced4d
+    last_write_checksum: sha1:03dd44962b683116cc38f78fe914ec6b49a2b041
+    pristine_git_object: 1359bbc07d3aff1ec53e66f9c2cd78cbcb91229d
+  docs/models/operations/gates-api-create-data.md:
+    id: 3e034705f9f9
+    last_write_checksum: sha1:00ecbe093e121b519db0bbab7594026c310e731b
+    pristine_git_object: 3d8382a8e844378134b0f45b4a510fab7b2eb61c
+  docs/models/operations/gates-api-create-gate-type.md:
+    id: c06fd3a26e17
+    last_write_checksum: sha1:81d340dcd549d96c560e13a5f16f00f79a263b56
+    pristine_git_object: 1322a0f37b84e269d81db16da457aa3dda9437f3
+  docs/models/operations/gates-api-create-preset.md:
+    id: 57a312e71d54
+    last_write_checksum: sha1:1c6bbbfd7530cd429aeeb24f9a503bc8c9acb600
+    pristine_git_object: 3c7aa97415ba82d56ac2a283f3ad53c405125409
+  docs/models/operations/gates-api-create-request.md:
+    id: 478bb79cbe89
+    last_write_checksum: sha1:8bca6080d16a223e7d86a97698a54dda2e30973b
+    pristine_git_object: e17348e692950a3c7298a192ed44aca915ac2487
+  docs/models/operations/gates-api-create-response.md:
+    id: d24f1c8311d1
+    last_write_checksum: sha1:573afd0f3d84f4220b2270bda05098e504eaef53
+    pristine_git_object: 3b44019cad8622e93d11627c91b17489decb76af
+  docs/models/operations/gates-api-create-security.md:
+    id: 547ff1a98c1a
+    last_write_checksum: sha1:79c1ce7282b28580c1ef6604bda52fea9936ee96
+    pristine_git_object: 2dd15ee851f287e89a5389f58e56d2bd3f517ce6
+  docs/models/operations/gates-api-get-data-data.md:
+    id: d8332f2b6b18
+    last_write_checksum: sha1:17eb67b932094a9a7f4512dc123488bcdf390c7d
+    pristine_git_object: 8ac6b24e99a2a26b5b0427aa1e090e1d6fe41ba8
+  docs/models/operations/gates-api-get-data.md:
+    id: e7865136177e
+    last_write_checksum: sha1:fffbf400f61c8337f06705131cdb277b2288a60b
+    pristine_git_object: a61f47cec2c6f9edcd643af748c79236c0624abf
+  docs/models/operations/gates-api-get-request.md:
+    id: e00f6026248f
+    last_write_checksum: sha1:25e63f8280da258ecd78d86088ae5aa9537156c4
+    pristine_git_object: 6d4d655ad377e4811970f91ae66e3d61bbe0e3cd
+  docs/models/operations/gates-api-get-response.md:
+    id: bfc421a820de
+    last_write_checksum: sha1:2d0da2f9dde21c620dedd0d976c1d6886c3524bd
+    pristine_git_object: 0a297b490f9c3e15bcbc11f4f872b9c6aeded73f
+  docs/models/operations/gates-api-get-security.md:
+    id: 0ce7cc884aa8
+    last_write_checksum: sha1:4aaa286e86e7d5cf3c33887f023c5ed9046b362d
+    pristine_git_object: 81cd3874ea9f1d5bab7844c4576448086d6f8f51
+  docs/models/operations/gates-api-list-data-data.md:
+    id: 32b53cd64599
+    last_write_checksum: sha1:7ee4b92d63e056899118e898ff7d0231597d1558
+    pristine_git_object: af4ef4959456dd0dd33156dd95acb932720afb35
+  docs/models/operations/gates-api-list-data.md:
+    id: 273becee7a33
+    last_write_checksum: sha1:183e0f4963b638a4d12f96e15611e061fb2d60bf
+    pristine_git_object: 3663fc5b219d6306579442b9ae0858b5f69b2f44
+  docs/models/operations/gates-api-list-request.md:
+    id: 3fde088c85ef
+    last_write_checksum: sha1:00aa7e7d91a07965e0f37e8ead7244dd581eb0c6
+    pristine_git_object: 6b4fc3201c46a5d0ce6834320b6792acf6408ce1
+  docs/models/operations/gates-api-list-response.md:
+    id: bf983b0df9cb
+    last_write_checksum: sha1:0c5ddc0a5ef04d9e428f8c9e42628c5b1c8a7fa5
+    pristine_git_object: 7c418f77a7515c9e758845fd8dc2903f4aaec614
+  docs/models/operations/gates-api-list-security.md:
+    id: ca5b2dbacddd
+    last_write_checksum: sha1:eab471df2dc8ba13e80844018272c1b8993a64d9
+    pristine_git_object: 54d3db5dea890ab1988f7c64e76e4ddd61803ce4
   docs/models/operations/integrations.md:
     id: c81024c5774d
     last_write_checksum: sha1:c9df2dc0c786c022fe7577088883123f46bab76b
     pristine_git_object: 8e73de6f03af17bbcc16f51259b07353b6ffdf26
+  docs/models/operations/link.md:
+    id: fdbab295f027
+    last_write_checksum: sha1:bdbb2c74f9c58a960b414889c105e3275a5c5592
+    pristine_git_object: 30679e91c0e57734ae09fdf10d255ae932941af1
   docs/models/operations/metadata.md:
     id: 4c22404ca93c
     last_write_checksum: sha1:9b7aa174c7431b54a95d3efe6d2089c2d3b82eb8
@@ -232,14 +488,22 @@ trackedFiles:
     id: 2a2e95f0d39b
     last_write_checksum: sha1:d0e36c990b64a70d69a3c5fd831c4b9cbeebe0bc
     pristine_git_object: 2b5cc57c0a9f8475bf38e72e9c857bd90dad6790
+  docs/models/operations/sdk-create-verification-link-age-threshold.md:
+    id: ab59e28993c3
+    last_write_checksum: sha1:785d28c3fff0fb37ea707b4f5e11af1c7d930d35
+    pristine_git_object: 02a174ab60abc2d5ae22664386b577ed2343e3ef
   docs/models/operations/sdk-create-verification-link-data-data.md:
     id: d58233071c70
-    last_write_checksum: sha1:4288847f9107dec8405a63f89399d3abf9f414f0
-    pristine_git_object: 08a38aad1d4bee40ef11cac043c263714991fcfb
+    last_write_checksum: sha1:253faadf9043bce46bcdedcd2a1c2d4e114bad42
+    pristine_git_object: 7c452f00b1a068706dfc6dca43812bd8cc0c1a92
   docs/models/operations/sdk-create-verification-link-data.md:
     id: 96206ead5e00
     last_write_checksum: sha1:8e5061394a3c5e328c7aeb129ee2e21aeaff4f4e
     pristine_git_object: c77427eaabdbb6ed20a2d85fd287b05cdb3881be
+  docs/models/operations/sdk-create-verification-link-gate-type.md:
+    id: 9a2eef4c3760
+    last_write_checksum: sha1:bf8d0de7b99b6c0681966e58005ea3e7a6386def
+    pristine_git_object: e91d6dc882b09a19f396881f9f0106efc33372dd
   docs/models/operations/sdk-create-verification-link-notarize-fallback-reason.md:
     id: b48447cb9773
     last_write_checksum: sha1:89e2528f6d376de056c6b895a4532cff680201cf
@@ -250,12 +514,12 @@ trackedFiles:
     pristine_git_object: 174db806732e5187018dda117d87a72ea606adbf
   docs/models/operations/sdk-create-verification-link-request.md:
     id: 32351d1d9cfc
-    last_write_checksum: sha1:ca96f6b859441fdf6058cc0c2cd836c9ca10d49e
-    pristine_git_object: 092bbc80f79339db2827fb8834387cbd2042e6e1
+    last_write_checksum: sha1:43e14d9faa9b458e3255b391ab94d34ddf5795ec
+    pristine_git_object: d60428dbec0e814a2a768f6e31161b2484bd163a
   docs/models/operations/sdk-create-verification-link-response.md:
     id: 94e2e8fb77e0
-    last_write_checksum: sha1:5253ce263ad0804cd8529a53d3e94010defabe00
-    pristine_git_object: 812aa71ce7a887684c2237063e70477ab646247b
+    last_write_checksum: sha1:deb6ef34b83c34e78e03f22c9884ee2b41beb7d8
+    pristine_git_object: fecc4784499972369c5acaa571dc595d37121075
   docs/models/operations/sdk-create-verification-link-sdk-type-response.md:
     id: c2e8ea10ec51
     last_write_checksum: sha1:f57317e4cb3ebedeac342eb81148300099c80b77
@@ -366,20 +630,20 @@ trackedFiles:
     pristine_git_object: ac924f2cffc49e53907a5667406f3386fd2a254d
   docs/models/operations/sdk-verify-token-data-data.md:
     id: 1e6886d36cd5
-    last_write_checksum: sha1:af3a8b8730fc649fd51426407dea87a7ca43131c
-    pristine_git_object: 9cc40b527d24d81a4bfc85a28e31ffa5ecd93177
+    last_write_checksum: sha1:1bec920a36df4ccdae46153480ca6456f2798a48
+    pristine_git_object: 21fdc91d7aa15a558e3745852569b7f130aa7cbc
   docs/models/operations/sdk-verify-token-data.md:
     id: 2d497f89e298
-    last_write_checksum: sha1:cc3f9b83c8d3d459af95a67d958e954a57f1772a
-    pristine_git_object: 89e349605ad899ba4beaccaca88999d4e9ebee27
+    last_write_checksum: sha1:52f3f21eccf2ec0795096a39852581420efe98b6
+    pristine_git_object: 3d092fc5bab5e9e08702ca72aa90032fbb685244
   docs/models/operations/sdk-verify-token-request.md:
     id: 724b5785e517
     last_write_checksum: sha1:f6c4410f707f4e1fe9c6a60cf00bfb0cb1f4da7f
     pristine_git_object: 2a4c50718d12a26155bd8c45938c9a30ee14c5f8
   docs/models/operations/sdk-verify-token-response.md:
     id: f11760f8fc5d
-    last_write_checksum: sha1:403798f0f4a697a4aaca81929c0eb7638043c13f
-    pristine_git_object: 662ba68badb01b6b1fb6bedf888b805b4efadf35
+    last_write_checksum: sha1:9a715a90d361a554babaf00de91f7250e9c0d352
+    pristine_git_object: a60db0ef8ad3943a726a5c50419f93d88f3b39f6
   docs/models/operations/sdk-verify-token-security.md:
     id: 3f4e0229a22b
     last_write_checksum: sha1:974c2374ecb638516bbdfd830da85c06201eb1e5
@@ -446,8 +710,8 @@ trackedFiles:
     pristine_git_object: b98c450b7d417d196a1b8a539f72bdb0f30f0e93
   docs/models/operations/secured-accounts-status-data-data.md:
     id: 39a21013b44e
-    last_write_checksum: sha1:bf49c1005e8e1cb9cfd5fe60e41d99fac5dd223b
-    pristine_git_object: a8c057ff3f44fe028d9030a8709bb0facb22a264
+    last_write_checksum: sha1:fb287934cc6933d24b2e23d862a4b6341759600c
+    pristine_git_object: 0fab1e16e0b19af5c8e8e4e084b01415455ed2b6
   docs/models/operations/secured-accounts-status-data.md:
     id: 62f3f618606d
     last_write_checksum: sha1:bba9e8a0224718840503d5c7036e24e58d52349d
@@ -464,10 +728,10 @@ trackedFiles:
     id: 77b4c63f0510
     last_write_checksum: sha1:94bf0e151d55550587a6ef3fb37872055858ca97
     pristine_git_object: 3a5dcad825130275615d9f51c7de2021b4deed8a
-  docs/models/operations/state.md:
-    id: c0cd319b1611
-    last_write_checksum: sha1:fca27feb75359039c9588575eb67b5b14da6ff26
-    pristine_git_object: eaa29f0c61ac000e89c937d129879c31c651f10b
+  docs/models/operations/secured-accounts-status-state.md:
+    id: 9be76637b87d
+    last_write_checksum: sha1:b6d60e0e18132f35967dc4f50397dfb8196f2fc2
+    pristine_git_object: 0c6898053a5276744cb40dcefe1ca7fe630c61ef
   docs/models/operations/summary-detail.md:
     id: 983e1b77a1f5
     last_write_checksum: sha1:ef2ba6bb8871375048a76afb8218b24b29d4d722
@@ -476,10 +740,18 @@ trackedFiles:
     id: 800efe0b9053
     last_write_checksum: sha1:0b3a1ed22ee85b4485bc1db6d0c93d4fdac3eace
     pristine_git_object: 85870405729680e3ec05ac6ef42b0de4da8bc114
+  docs/models/operations/verification-get-status-action.md:
+    id: c26540067577
+    last_write_checksum: sha1:ff3e2173041b57101c1019090ded1e3a92c1eb43
+    pristine_git_object: 2ddabeb388beb5006bc7a414d5fedc374e10a24f
   docs/models/operations/verification-get-status-data.md:
     id: 9a08294fd91e
-    last_write_checksum: sha1:082038001ff91b997fd0c7242096ea63900eca11
-    pristine_git_object: 84917eb161fa944a441653baf936050e70bb30b6
+    last_write_checksum: sha1:0e34942ebc221691e1961ba5a7edb8c58029dd97
+    pristine_git_object: f4f614cd8b40822de773238f59fd2877bfa022d4
+  docs/models/operations/verification-get-status-preset.md:
+    id: f21efc3691ab
+    last_write_checksum: sha1:939cfd8e58403ec0fc44497a1d26e581c62fe9b9
+    pristine_git_object: 8323d702fb812fbf44cd2da1eeb3deeb06a9aa0a
   docs/models/operations/verification-get-status-reason.md:
     id: 7a28a9986edc
     last_write_checksum: sha1:dc142f4b6c54d71e436841f059e4909bdc0c8e8e
@@ -490,8 +762,8 @@ trackedFiles:
     pristine_git_object: f8c0eae7329f702aad5c1928dcec524c4a51a494
   docs/models/operations/verification-get-status-response.md:
     id: a5479ce5ed77
-    last_write_checksum: sha1:46cc57133ebb3f5faf72b3d943727c5b5fb652e5
-    pristine_git_object: 63579e8514d32199b47f90d8aadc66b4f4e1d8b0
+    last_write_checksum: sha1:5ce1936c2c16e369e61d980ea97406570b8053a7
+    pristine_git_object: 526c3ac29690d766af8cdaad912c82fc0e7c090e
   docs/models/operations/verification-get-status-sdk-type.md:
     id: 173ff0203429
     last_write_checksum: sha1:211018f59b6c470054b0461a7b8e5955cd0045cf
@@ -500,30 +772,66 @@ trackedFiles:
     id: d9e3d87caa0f
     last_write_checksum: sha1:656e9c72debffdbae6f71ad0b550797a6b81d6e1
     pristine_git_object: 86db933130fb594b57748eedaee35bf1480d106f
+  docs/models/operations/verification-get-status-state.md:
+    id: 45f7d0ab770d
+    last_write_checksum: sha1:c7e8a987db19904630930261f78dfb7a79ac165a
+    pristine_git_object: 6ac5f8470667ced0f02c4b3c1aea795241767614
   docs/models/operations/verification-get-status-status.md:
     id: 733c6f94ba88
     last_write_checksum: sha1:4a6c3aeb893c65c01491194497cc3bb426146811
     pristine_git_object: e0bdebeeee5352b93a57222563fba7b89a3c456d
+  docs/models/passes-per-person.md:
+    id: c6e555015918
+    last_write_checksum: sha1:f6749100fba20e9a63ad8864734ca1881770ca30
+    pristine_git_object: d1099863f55b925100ce8643c782d68b0b04304a
+  docs/models/policy.md:
+    id: c32c4f30cd71
+    last_write_checksum: sha1:79f7f33602a89e5dba418926e1e4617e4f7f078c
+    pristine_git_object: baec4cdf9ad34444524247abe725d285fd01746f
   docs/models/reason.md:
     id: 087688da6fd4
     last_write_checksum: sha1:7520c70c61d859adf77280cb5696588c8da400d4
     pristine_git_object: 4c00a352e2923224079fe42278f14ef49c836001
+  docs/models/schedule.md:
+    id: a081eb375d4e
+    last_write_checksum: sha1:406f2b8a19947ea5bfde5b94cdaffc681a978d8d
+    pristine_git_object: 24bcf671be826ec8de628e857ab235a2354ba2c9
   docs/models/security.md:
     id: 452e4d4eb67a
     last_write_checksum: sha1:f5ed5e8880a572088ffc131b6abca0533aa63001
     pristine_git_object: f4ad252839184a33c5725e897b2d826d94a30273
+  docs/models/status.md:
+    id: 959cd204aadf
+    last_write_checksum: sha1:d089aee7b41e4c5e90ae40aeb3ccec98a69bf3e3
+    pristine_git_object: c65514717b50b749057f4415efa50db0ca0ce064
+  docs/models/version.md:
+    id: 822bb756b0bd
+    last_write_checksum: sha1:fe4bca309c809d5c0a70edfcff0e6dcb4c4ef01c
+    pristine_git_object: c8f1763f363ddd42d51da64d98288c8ea152be06
   docs/models/violation.md:
     id: 975ae3ccd33b
     last_write_checksum: sha1:3b587d03984b6d5fa2cc845a2ea2b46c535f2964
     pristine_git_object: f414c4658a12454ce43214118bfd85913499d3d9
+  docs/models/window.md:
+    id: a46f5e136575
+    last_write_checksum: sha1:c2f23d2819fdcccc34b83754d09929406d16d9c5
+    pristine_git_object: 7797515bebca1c61c5d6f409174239c4149a8e35
   docs/sdks/actions/README.md:
     id: e229cf99e666
     last_write_checksum: sha1:2e7ce887448cbc144b05b9724d3071ee521c1ba6
     pristine_git_object: d85e9d34675608322af26e55cc32789f3af9ddce
   docs/sdks/census/README.md:
     id: 9da69f9cb186
-    last_write_checksum: sha1:43de3871ff0346a43f321fce6166f06b76b68765
-    pristine_git_object: d1ce7b5008ba5a2c8baeb8ae6190b0aa0150211c
+    last_write_checksum: sha1:0e44b47ffe6bb7315ffe82f8afb6473a0c4ca7d0
+    pristine_git_object: 6e42bf68fea53a983f9904af9b7b0af9f9f80802
+  docs/sdks/gates/README.md:
+    id: e4ffb3ae282a
+    last_write_checksum: sha1:34bf953e5ee6275248a6a9480cd0fd3644a36210
+    pristine_git_object: 2392506e3c6e594547561150ce1f240082f77e1e
+  docs/sdks/gatesactions/README.md:
+    id: e5122c842b53
+    last_write_checksum: sha1:292ba978cfc93e088fb6af729e3268eb554028cb
+    pristine_git_object: 37f0cb8683ffb144c880e17d15de4112ebc05bb7
   docs/sdks/securedaccounts/README.md:
     id: fb9d1605a93e
     last_write_checksum: sha1:bad216116d649bb649316c3332b04143d4c2d8fe
@@ -550,12 +858,12 @@ trackedFiles:
     pristine_git_object: c994e1b7a211f7d61786057362363c2bd7fc7524
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:aab12241cea5021ca09dce5d56557c6ddfdfed2d
-    pristine_git_object: ca12b173e1a3864fa56d28de766701198fe675ae
+    last_write_checksum: sha1:4033fa92e2ae69fb9537c73abdf9ac24f3fd48ae
+    pristine_git_object: dc2dae866d3aeddc2b6366bc4d913ce9ad546d16
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:4ae93c82d87e3260d6b35784ef727573f5c9349d
-    pristine_git_object: 5dd55eacd99151f79fcfa363ba588a8b68e737b1
+    last_write_checksum: sha1:c0503126b75f5c07d53004376d037f892caba112
+    pristine_git_object: 5c824f5c0d8fbc6bad01e1eb1584245f6cf1ad86
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:ce588b3eca5e3671b3e86450f6750c27004e83be
@@ -602,8 +910,44 @@ trackedFiles:
     pristine_git_object: 766d759b28993fc53f8707904a156be4eb2f4d8a
   src/funcs/census-verify-token.ts:
     id: 832bed5c41b0
-    last_write_checksum: sha1:8751cd19d65aae4c71a6f782f79a18cbe3ff4eeb
-    pristine_git_object: 194a3e4cc172b288b6bd026f9f27af3b6a0aaa9c
+    last_write_checksum: sha1:3143addd14e712bdab7315e82dccb6fa7f5d2ba2
+    pristine_git_object: 4fd04cbee954afc0550f7c529ca20a83fabfbc5e
+  src/funcs/gates-actions-create.ts:
+    id: 0bd10461f395
+    last_write_checksum: sha1:6d81d678ac800fda56a166623ff4155653b06498
+    pristine_git_object: efcfcc9e841f96e70be8e97775a978b7ba01b4dd
+  src/funcs/gates-actions-list.ts:
+    id: 96e3a5fa93f4
+    last_write_checksum: sha1:e6ba26e89824e5d6600131facbf8314971e10671
+    pristine_git_object: 948bf4e576f434651d440e2403e50dc582b559c7
+  src/funcs/gates-actions-set-state.ts:
+    id: bfb538640068
+    last_write_checksum: sha1:708c7e84b07e202d99750e8d11a9fe60656c553e
+    pristine_git_object: b9fa10ad4a84cefdb267c7ca665547301a9d3438
+  src/funcs/gates-activate.ts:
+    id: 1cccf2de8b8d
+    last_write_checksum: sha1:8cbaf1a2de9c9409076ccfe85e59bb46f73d9eea
+    pristine_git_object: b91354424011b8e10eb23a91a03cdfba61daeb76
+  src/funcs/gates-cancel.ts:
+    id: ded8f76cb716
+    last_write_checksum: sha1:e597b3ab67eae7d56da5df07b97dca478f7442e9
+    pristine_git_object: 06f20e2a366dc771fc7126a1e6e0780c51e52c51
+  src/funcs/gates-close.ts:
+    id: ed6915f58e6c
+    last_write_checksum: sha1:25df8e2dadce19abcf18b7f650ca144b0c352d45
+    pristine_git_object: 97d7cd337def29f096c246c889f85b526fd8aa87
+  src/funcs/gates-create.ts:
+    id: d4f7ce0fa9aa
+    last_write_checksum: sha1:aa441d9116ff71f7617758e5c4feb4bfcaa94b98
+    pristine_git_object: fe52e8ed57775caa3d63db8d659cc82e4db27551
+  src/funcs/gates-get.ts:
+    id: e7710be46547
+    last_write_checksum: sha1:5b40172172e5c3ca0418e5e1e37797555b880115
+    pristine_git_object: 1d0ae3b06517c1b279f0c11c64ad5625c447a4bb
+  src/funcs/gates-list.ts:
+    id: 6c0c0dcfdf57
+    last_write_checksum: sha1:59e017163ba854d066106b6c2fcec6e3ad148d39
+    pristine_git_object: cbfc5253560069076ea7c64eca846e13378956f8
   src/funcs/secured-accounts-get-status.ts:
     id: 10add7b31ef1
     last_write_checksum: sha1:f626dd8db381101686be63ecbc8c3f59c6cca8d0
@@ -642,8 +986,8 @@ trackedFiles:
     pristine_git_object: 0aebd8b0a4867e35cb3348fc52921c3c0b4725b7
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:a9e63ee3b16baad4c028cc6a1d5345ee4321f1e2
-    pristine_git_object: 38c17c7807958144aecb15183f5e7dcf2c7af961
+    last_write_checksum: sha1:4e74f5bcc6cc37dd4aade98e86613c84ef9ddbe4
+    pristine_git_object: fad599773326089dc1705f35b4c34406ff3df45d
   src/lib/encodings.ts:
     id: 3bd8ead98afd
     last_write_checksum: sha1:4481b2a380f8a16856ef92c66fb370299f56d135
@@ -714,8 +1058,8 @@ trackedFiles:
     pristine_git_object: 0955a573c2ce989d63c737410ab8cc28706d9f74
   src/mcp-server/mcp-server.ts:
     id: aabbc4ab07c1
-    last_write_checksum: sha1:af12294d3fff9ba371e1119ec97cf4791449aaea
-    pristine_git_object: 0f1f4c347828ea96c68265cf77d709bb717c2a50
+    last_write_checksum: sha1:3cbf1a5ffcead3b87416acca195ed02defc251e3
+    pristine_git_object: bbdfd665ec84d7c349b7f0c71fcf7e168907b4a9
   src/mcp-server/prompts.ts:
     id: 26f3d73cbf31
     last_write_checksum: sha1:bb2aef109f313a4ce8dc6e8b0809fa32ac17e5b1
@@ -730,8 +1074,8 @@ trackedFiles:
     pristine_git_object: 29b2c51d676e7e9ec706614d36cc81d906e5f6d4
   src/mcp-server/server.ts:
     id: 2784dd48e82a
-    last_write_checksum: sha1:937637487494578dae8ba476d12a3e6334269e0f
-    pristine_git_object: b0bcc802f01d83803ad44bb8f6fd2cb5e61a6b1b
+    last_write_checksum: sha1:18b77c1e860cc0761fb88f18f7b5b1845a3dc1f2
+    pristine_git_object: dd639a86e7c9d83ed1bfca5fd2bcdea430599c3e
   src/mcp-server/shared.ts:
     id: 074e80d4be1e
     last_write_checksum: sha1:d89576cea2bef3856b7fc3e65b868875528be042
@@ -752,6 +1096,10 @@ trackedFiles:
     id: c5d269d64254
     last_write_checksum: sha1:73a88d9e2c5dd80c18a4bab2b1a7f3553fe97d92
     pristine_git_object: 27aaf8e8e6ce16997c7a7ad58f4ec1828a1d949a
+  src/models/bot-shield-action.ts:
+    id: 767b0a3f8663
+    last_write_checksum: sha1:9871693fa215ff6c9707fe28ec10930e2913fb5f
+    pristine_git_object: 182f21dc33ee167b39eb6530b9cfd189eb2a560a
   src/models/error-body.ts:
     id: 13f8450d502a
     last_write_checksum: sha1:c89b2feb91dc216f18e8232c56fbc96a0054b727
@@ -792,10 +1140,26 @@ trackedFiles:
     id: 9b17e7ef247f
     last_write_checksum: sha1:a69da17627bcc32b820544608f3400423ea53f26
     pristine_git_object: 6826e1208a5d7b7d310535d18909646522bf0fbd
+  src/models/gate-policy-doc.ts:
+    id: 23d8cd289743
+    last_write_checksum: sha1:873d3fcd4484d7fa04830c60d121609460e087ee
+    pristine_git_object: 3d467238ae4f9d3433e679e103b3420ea6a50f8a
+  src/models/gate-schedule.ts:
+    id: 416847bd31b0
+    last_write_checksum: sha1:6a41499251f9c9b8b3e6682789b13b2ed7cedd24
+    pristine_git_object: 692d6a39819f098014b29540fa454ed194248dee
+  src/models/gate.ts:
+    id: 704e0a15b0c3
+    last_write_checksum: sha1:3f64d5b24c3e4a4f5c4b13c042d12bd289685f3e
+    pristine_git_object: cb70cdb634b96dec8dc06b52e8fa238dfb24dec5
+  src/models/gates-api-error.ts:
+    id: eee4a1dd50ad
+    last_write_checksum: sha1:98f47881f71906149460457104b5758a4dcdd04f
+    pristine_git_object: da7f5132469cd311be8c3a348404804edb3eb24e
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:6619af4facb6a5f11486656a04b5ae86d63ab986
-    pristine_git_object: 95c67091dec0ab1fabc08fb330bd8d357ada55a2
+    last_write_checksum: sha1:67c2e5a901a6a0cad0238417ad562b8e7b96f575
+    pristine_git_object: 71f60b493b87bffb2519f6d8a6dc9f184b7591e7
   src/models/invalid-input-error.ts:
     id: 23171148ec6f
     last_write_checksum: sha1:110c3d7350d03e8f49305243c01d44f19ff98033
@@ -810,20 +1174,56 @@ trackedFiles:
     pristine_git_object: 7b79ff4c630f83a90fcf80f4bed7a6beab10f9f5
   src/models/operations/actions-propose.ts:
     id: 2d3a7ad5f257
-    last_write_checksum: sha1:e35be8a84f4b71e8e3d5a86eeff9a29136d9204d
-    pristine_git_object: 179554a7410a02e26ebab50902061f61670f46fe
+    last_write_checksum: sha1:3a2ede045dcf9830787714b7de055e243e20ed19
+    pristine_git_object: 4dcff52d4a64948c57775cfd790ed544199d843b
+  src/models/operations/gates-api-actions-create.ts:
+    id: dcfc21c3825a
+    last_write_checksum: sha1:ff9ec2c8dbb4bde44c4b73c53a5c066ad918a581
+    pristine_git_object: 0e24e30b57a06e0b0165429d55813104e9c8da25
+  src/models/operations/gates-api-actions-list.ts:
+    id: d80be49428f6
+    last_write_checksum: sha1:eea24af8e48e2d2277dc5b504f57f46a286704be
+    pristine_git_object: b31f20351f9767bbf48095d57b02231a257bba62
+  src/models/operations/gates-api-actions-set-state.ts:
+    id: 5ff64fe1ccd2
+    last_write_checksum: sha1:57da72c7816569e18654d304efb63533aead0abd
+    pristine_git_object: a3328201a0a9a7d92ce99259c4a0f7b6c7816df4
+  src/models/operations/gates-api-activate.ts:
+    id: 827952f0f6d5
+    last_write_checksum: sha1:fc29b57bd399ffcea59a288d73f27ea9ba0a3b8b
+    pristine_git_object: ea20618d7c07a7f85961eb4cdf332ef9fa083c76
+  src/models/operations/gates-api-cancel.ts:
+    id: 9b6c3265e3e7
+    last_write_checksum: sha1:1c1b5053c1eea8ae61cea98582eff7d3923de5a2
+    pristine_git_object: 1a195db88989480818aff33677b7da9a68e1fb45
+  src/models/operations/gates-api-close.ts:
+    id: a6b1b0a0995f
+    last_write_checksum: sha1:c0138e006112a19dce655443d64465aa53405c1e
+    pristine_git_object: 31553bcea74fbb01d891846214c03efca296719c
+  src/models/operations/gates-api-create.ts:
+    id: 7959c0a93031
+    last_write_checksum: sha1:d92b8003c7f4794d35fa5e1ecf0988cb711a262d
+    pristine_git_object: 666b7f8751e8a01da91781f2f737d3fc4ad32a7c
+  src/models/operations/gates-api-get.ts:
+    id: 088c412924aa
+    last_write_checksum: sha1:f3475d120c61435a9a616b6f15faee9b21bb1826
+    pristine_git_object: 9ae6ba2527eac39597639dc96632e3cc9abd6f26
+  src/models/operations/gates-api-list.ts:
+    id: 9c968ba122d1
+    last_write_checksum: sha1:e6aced7c9e309c1c84c24f63b5b0ddbb5394970f
+    pristine_git_object: d0ac037e974320d791f13a836b9e9455c64dbe4e
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
-    last_write_checksum: sha1:214be082a17b536c942532d57b6937c58ffe9396
-    pristine_git_object: c12a5c96f319e38d39ea8472b9042c6ff43f906d
+    last_write_checksum: sha1:5a4065353ff1b609c2955dadc53d8797f91633b7
+    pristine_git_object: 6b9514453408a530593a271bfc365b66665020c2
   src/models/operations/sdk-create-session.ts:
     id: 49bde857d1a1
     last_write_checksum: sha1:1fc66102e41c3a40fb46fca48e59f6af9812cf6d
     pristine_git_object: bb5678286f340e579d3b566546696d450d479561
   src/models/operations/sdk-create-verification-link.ts:
     id: 6bdc1ce9c42e
-    last_write_checksum: sha1:664f6d10629e45ec48187100f4c78311550a8e84
-    pristine_git_object: c5a1d346833e710ac33b2d4aa5a27cd0a6bc09ff
+    last_write_checksum: sha1:6a3b3e4103ce11dbb124c0ff127b274e539f38ba
+    pristine_git_object: 7c647c74f77434f9e590d1eab265b21e393daf4f
   src/models/operations/sdk-get-partner-config.ts:
     id: c0e4fd103d1a
     last_write_checksum: sha1:9ea4590a99fa3aac8d5b0fdb2cfddf25996c13aa
@@ -846,8 +1246,8 @@ trackedFiles:
     pristine_git_object: 104e1fdf954931a68b0f2e6ec613b7aba660b5c1
   src/models/operations/sdk-verify-token.ts:
     id: ed589224d8b5
-    last_write_checksum: sha1:f6b036e953347007521b7f11018f7c7529df2353
-    pristine_git_object: 91c08b5ec7c6883da748aa410ffad13ee2251d4c
+    last_write_checksum: sha1:47aaf7cbbc1ab41b9b0dab9fef6cf3319852a384
+    pristine_git_object: d99ac4ac53ad867cef2fddc9ede7f6ea0660b2fb
   src/models/operations/secured-accounts-list.ts:
     id: a639e1603906
     last_write_checksum: sha1:79ec02e6a856970f1360d857d40742089c3105c0
@@ -858,12 +1258,16 @@ trackedFiles:
     pristine_git_object: 77fdfb22d36f59c432cb3afab767b9b7ad042845
   src/models/operations/secured-accounts-status.ts:
     id: 4d67d6ebc8af
-    last_write_checksum: sha1:6255d39c1a8518e994ed83b4800f505d74abd2fd
-    pristine_git_object: 9856720bbe2942f3aa01e08c6fd07fa60af8b290
+    last_write_checksum: sha1:d16b5fb3c4f094c04fa284990dc783cfe143fdcf
+    pristine_git_object: 4b22650a5fbd664786c00831c7b7e82ff76d3752
   src/models/operations/verification-get-status.ts:
     id: bf68012044db
-    last_write_checksum: sha1:23407377f2e1f6516d0386c61aaae69ead2427a9
-    pristine_git_object: ecc3d59d25eb487f8175e1b1cd6516cf465ed341
+    last_write_checksum: sha1:10bd47fe57a0083b1f06eb522e5a57735b820c2d
+    pristine_git_object: 443e57fe0a6129a6512d6d149c3b8e6cb8ad381e
+  src/models/passes-per-person.ts:
+    id: eb421a6a22ec
+    last_write_checksum: sha1:476f88b6fcdab859cc75159a1a22973926c359a3
+    pristine_git_object: 7320ada3a39db3aeda0757a29734b4354659b716
   src/models/security.ts:
     id: d90c6c784ca5
     last_write_checksum: sha1:d9eb9c4b4dadbc4a64cbd67553eeec7f1c98a4bc
@@ -874,16 +1278,24 @@ trackedFiles:
     pristine_git_object: 17bd257ae659caf81195420055c9565f283f0fd4
   src/sdk/census.ts:
     id: ec5db9bf393a
-    last_write_checksum: sha1:ca7aea6aeea81f22f5d7467162e273cfa1b318c7
-    pristine_git_object: 327a3ea0e2717977aaba8fc92db8ad6865e0fd10
+    last_write_checksum: sha1:fb754ec52d9c221dd2d6f0f744ec96595376833a
+    pristine_git_object: 16e419f975be51b65bf1d313f73e698f7dc3d371
+  src/sdk/gates-actions.ts:
+    id: 75d25c4417be
+    last_write_checksum: sha1:d2417d081e7ad3cf37adf000eff688609ba9ae02
+    pristine_git_object: 586be97d503a986382e87196a512fe1a4d329fea
+  src/sdk/gates.ts:
+    id: e8269923f074
+    last_write_checksum: sha1:e691a56124252d533e328f5925443a6536502e21
+    pristine_git_object: 66893313325be53f84f7daa8c8425a58825f1ed6
   src/sdk/index.ts:
     id: a857902a703f
     last_write_checksum: sha1:ed6d64f2a6135349aa8498b8d8cff9ba85c7fb8f
     pristine_git_object: ecac2264817bb369ff2dbf0f0e9029807e67ff77
   src/sdk/sdk.ts:
     id: 784571af2f69
-    last_write_checksum: sha1:dbc5fb20c4ff59470b65fe0966e27587c9060cee
-    pristine_git_object: 4b82b5cf8b17e979bbc97114f140307eab04deba
+    last_write_checksum: sha1:8213c1d8057ee3ee3bdaeae37bc3956215e9cab6
+    pristine_git_object: 4c32d77c4af19a9770cc7854b35e1e1b22a8b631
   src/sdk/secured-accounts.ts:
     id: 8499fd32077d
     last_write_checksum: sha1:b858f7229e234fad05a4925eb799e6028856bde5
@@ -965,7 +1377,7 @@ examples:
   SdkCreateVerificationLink:
     speakeasy-default-SDK-create-verification-link:
       requestBody:
-        application/json: {"mode": "linked-account", "link_on_verify": true}
+        application/json: {"mode": "linked-account", "link_on_verify": true, "act": "dibs:listing_4417", "act_label": "Trade with sam_k — 2 GA for $180"}
       responses:
         "200":
           application/json: {"data": {}}
@@ -981,7 +1393,7 @@ examples:
         application/json: {"token": "<value>"}
       responses:
         "200":
-          application/json: {"data": {}}
+          application/json: {"data": {"data": {"valid": false, "claims": {"act": "dibs:listing_4417"}}}}
         "400":
           application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
         "500":
@@ -1065,7 +1477,7 @@ examples:
           request_id: "<id>"
       responses:
         "200":
-          application/json: {"data": {}}
+          application/json: {"data": {"gate": {"destination_host": "example.com", "per_person": {"limit": 2, "window": "ever"}, "policy_line": "2 per person · ever"}, "action": {"name": "Watch with passkey", "label": "<value>", "linked": true}}}
         "400":
           application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
         "500":
@@ -1140,12 +1552,103 @@ examples:
           application/json: {"message": "Invalid input provided", "input": {}, "errors": []}
         "500":
           application/json: {"error": {"message": "<value>", "statusCode": 38146}}
+  GatesApiCreate:
+    speakeasy-default-gates-api-create:
+      requestBody:
+        application/json: {"key": "presale-nyc-1120", "name": "NYC presale", "message": "Two tickets per fan.", "gateType": "human", "preset": "presale", "policy": {"version": 3, "link": "required", "schedule": {"opensAt": "2026-11-20T17:00:00Z"}}, "destinationUrl": "https://example.com/presale/nyc", "activate": true}
+      responses:
+        "200":
+          application/json: {"data": {"data": {"gate": {"key": "presale-nyc-1120", "name": "NYC presale", "message": "<value>", "status": "draft", "state": "scheduled", "environment": "production", "destination_url": "https://grandiose-gallery.info/", "policy": {"preset": "presale", "gate_type": "human", "age_threshold": 18, "signed_up": true, "link": "never", "passes_per_person": {"limit": 2, "window": "ever"}, "real_days_at_least": 831253, "schedule": {"opensAt": "2024-02-05T23:17:09.348Z", "closesAt": "2025-11-29T14:24:09.348Z"}, "line": "2 per person · ever"}, "placed_at": "2024-05-02T07:55:40.594Z", "placed_by_api": false}, "activated": false, "activation_error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}, "error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 720923}}
+  GatesApiActivate:
+    speakeasy-default-gates-api-activate:
+      requestBody:
+        application/json: {"key": "presale-nyc-1120"}
+      responses:
+        "200":
+          application/json: {"data": {"data": {"gate": {"key": "presale-nyc-1120", "name": "NYC presale", "message": "<value>", "status": "closed", "state": "closed", "environment": "development", "destination_url": "https://timely-ghost.biz/", "policy": {"preset": "promo", "gate_type": "human", "age_threshold": 21, "signed_up": true, "link": "optional", "passes_per_person": {"limit": 2, "window": "ever"}, "real_days_at_least": 538157, "schedule": {"opensAt": "2024-02-17T05:30:05.521Z", "closesAt": "2026-02-01T03:19:52.936Z"}, "line": "2 per person · ever"}, "placed_at": "2024-07-10T06:38:22.443Z", "placed_by_api": true}}, "error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 996265}}
+  GatesApiClose:
+    speakeasy-default-gates-api-close:
+      requestBody:
+        application/json: {"key": "presale-nyc-1120"}
+      responses:
+        "200":
+          application/json: {"data": {"error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "errors": []}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 339555}}
+  GatesApiCancel:
+    speakeasy-default-gates-api-cancel:
+      requestBody:
+        application/json: {"key": "presale-nyc-1120"}
+      responses:
+        "200":
+          application/json: {"data": {"error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {}, "errors": []}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 125216}}
+  GatesApiGet:
+    speakeasy-default-gates-api-get:
+      parameters:
+        query:
+          key: "presale-nyc-1120"
+      responses:
+        "200":
+          application/json: {"data": {"data": {"gate": {"key": "presale-nyc-1120", "name": "NYC presale", "message": null, "status": "draft", "state": "scheduled", "environment": "production", "destination_url": "https://clear-riser.info/", "policy": {"preset": "presale", "gate_type": "human", "age_threshold": 13, "signed_up": false, "link": "never", "passes_per_person": {"limit": 2, "window": "ever"}, "real_days_at_least": 521566, "schedule": {"opensAt": "2025-07-16T00:16:08.790Z", "closesAt": "2026-10-22T11:51:58.262Z"}, "line": "2 per person · ever"}, "placed_at": "2026-07-03T05:08:09.760Z", "placed_by_api": false}}, "error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 225002}}
+  GatesApiList:
+    speakeasy-default-gates-api-list:
+      parameters:
+        query:
+          limit: 50
+      responses:
+        "200":
+          application/json: {"data": {"data": {"gates": []}, "error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>"}, "errors": []}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 329268}}
+  GatesApiActionsCreate:
+    speakeasy-default-gates-api-actions-create:
+      requestBody:
+        application/json: {"name": "Watch with passkey", "actKey": "watch", "whereUrl": "https://example.com/listings"}
+      responses:
+        "200":
+          application/json: {"data": {"data": {"action": {"id": "ac71e10d-c793-4ce1-b071-ae652601f13c", "name": "Watch with passkey", "act_key": "watch", "where_url": "https://oblong-waist.name", "state": "off", "environment": "development", "placed_at": "2025-02-10T15:56:45.515Z", "turned_off_at": "2025-03-04T14:52:56.944Z"}}, "error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 184801}}
+  GatesApiActionsList:
+    speakeasy-default-gates-api-actions-list:
+      responses:
+        "200":
+          application/json: {"data": {"data": {"actions": [{"id": "9c5a6502-29fa-4f2b-b9a6-ac22631893f7", "name": "Watch with passkey", "act_key": "watch", "where_url": "https://enraged-fog.biz/", "state": "off", "environment": "development", "placed_at": "2026-11-17T22:45:39.939Z", "turned_off_at": "2025-09-23T01:36:06.249Z"}]}, "error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>"}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 685747}}
+  GatesApiActionsSetState:
+    speakeasy-default-gates-api-actions-set-state:
+      requestBody:
+        application/json: {"actKey": "watch", "state": "off"}
+      responses:
+        "200":
+          application/json: {"data": {"data": {"action": {"id": "a20612f6-1e23-4802-b863-a6cb1c18a5eb", "name": "Watch with passkey", "act_key": "watch", "where_url": "https://present-fun.org/", "state": "live", "environment": "development", "placed_at": "2026-09-29T18:11:19.959Z", "turned_off_at": "2024-10-10T18:40:50.427Z"}}, "error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 666159}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `botshield.census.verifyToken()`:  `request.security` **Changed** (Breaking ⚠️)
-  * `botshield.verification.getStatus()`:  `request.security` **Changed** (Breaking ⚠️)
-  * `botshield.census.getPartnerConfig()`: **Added**
-  * `botshield.securedAccounts.list()`: **Added**
-  * `botshield.securedAccounts.revoke()`: **Added**
-  * `botshield.securedAccounts.getStatus()`: **Added**

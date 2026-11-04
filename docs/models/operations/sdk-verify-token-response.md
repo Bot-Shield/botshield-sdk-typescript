@@ -8,7 +8,14 @@ Validation result. NOTE: handler errors also arrive here (HTTP 200) as data.erro
 import { SDKVerifyTokenResponse } from "botshield-sdk/models/operations";
 
 let value: SDKVerifyTokenResponse = {
-  data: {},
+  data: {
+    data: {
+      valid: true,
+      claims: {
+        act: "dibs:listing_4417",
+      },
+    },
+  },
 };
 ```
 

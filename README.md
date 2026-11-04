@@ -302,6 +302,21 @@ run();
 * [revokeVerification](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
 * [logout](docs/sdks/census/README.md#logout) - Revoke a grant token
 
+### [Gates](docs/sdks/gates/README.md)
+
+* [create](docs/sdks/gates/README.md#create) - Place a gate
+* [activate](docs/sdks/gates/README.md#activate) - Activate a gate
+* [close](docs/sdks/gates/README.md#close) - Close a gate
+* [cancel](docs/sdks/gates/README.md#cancel) - Cancel a gate
+* [get](docs/sdks/gates/README.md#get) - Get a gate
+* [list](docs/sdks/gates/README.md#list) - List gates
+
+#### [Gates.Actions](docs/sdks/gatesactions/README.md)
+
+* [create](docs/sdks/gatesactions/README.md#create) - Place a BotShield Action
+* [list](docs/sdks/gatesactions/README.md#list) - List BotShield Actions
+* [setState](docs/sdks/gatesactions/README.md#setstate) - Turn a BotShield Action on or off
+
 ### [SecuredAccounts](docs/sdks/securedaccounts/README.md)
 
 * [list](docs/sdks/securedaccounts/README.md#list) - List Secured Accounts
@@ -341,6 +356,15 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`censusStoreSignal`](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
 - [`censusValidateSignal`](docs/sdks/census/README.md#validatesignal) - Validate a signal token
 - [`censusVerifyToken`](docs/sdks/census/README.md#verifytoken) - Validate a verification token
+- [`gatesActionsCreate`](docs/sdks/gatesactions/README.md#create) - Place a BotShield Action
+- [`gatesActionsList`](docs/sdks/gatesactions/README.md#list) - List BotShield Actions
+- [`gatesActionsSetState`](docs/sdks/gatesactions/README.md#setstate) - Turn a BotShield Action on or off
+- [`gatesActivate`](docs/sdks/gates/README.md#activate) - Activate a gate
+- [`gatesCancel`](docs/sdks/gates/README.md#cancel) - Cancel a gate
+- [`gatesClose`](docs/sdks/gates/README.md#close) - Close a gate
+- [`gatesCreate`](docs/sdks/gates/README.md#create) - Place a gate
+- [`gatesGet`](docs/sdks/gates/README.md#get) - Get a gate
+- [`gatesList`](docs/sdks/gates/README.md#list) - List gates
 - [`securedAccountsGetStatus`](docs/sdks/securedaccounts/README.md#getstatus) - Get Secured Account status
 - [`securedAccountsList`](docs/sdks/securedaccounts/README.md#list) - List Secured Accounts
 - [`securedAccountsRevoke`](docs/sdks/securedaccounts/README.md#revoke) - Revoke a Secured Account

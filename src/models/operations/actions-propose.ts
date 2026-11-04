@@ -20,7 +20,7 @@ export type SummaryDetail = {
   value?: string | undefined;
 };
 
-export type Action = {
+export type ActionsProposeAction = {
   /**
    * Plain-English action description shown on the card (e.g. 'Has an Uber ride ready to book').
    */
@@ -61,7 +61,7 @@ export type ActionsProposeRequest = {
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   userEmail?: string | undefined;
-  action: Action;
+  action: ActionsProposeAction;
   /**
    * Optional Adaptive Card v1.5 JSON shown when the user expands the card. Allowlist: TextBlock, FactSet, ColumnSet, Container, Table, Image (bundled-asset only).
    */
@@ -157,21 +157,24 @@ export function summaryDetailFromJSON(
 }
 
 /** @internal */
-export const Action$inboundSchema: z.ZodType<Action, z.ZodTypeDef, unknown> = z
-  .object({
-    summary_title: types.string(),
-    summary_detail: types.optional(z.lazy(() => SummaryDetail$inboundSchema)),
-    category: types.string(),
-    trusted_account_id: types.optional(types.string()),
-  }).transform((v) => {
-    return remap$(v, {
-      "summary_title": "summaryTitle",
-      "summary_detail": "summaryDetail",
-      "trusted_account_id": "trustedAccountId",
-    });
+export const ActionsProposeAction$inboundSchema: z.ZodType<
+  ActionsProposeAction,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  summary_title: types.string(),
+  summary_detail: types.optional(z.lazy(() => SummaryDetail$inboundSchema)),
+  category: types.string(),
+  trusted_account_id: types.optional(types.string()),
+}).transform((v) => {
+  return remap$(v, {
+    "summary_title": "summaryTitle",
+    "summary_detail": "summaryDetail",
+    "trusted_account_id": "trustedAccountId",
   });
+});
 /** @internal */
-export type Action$Outbound = {
+export type ActionsProposeAction$Outbound = {
   summary_title: string;
   summary_detail?: SummaryDetail$Outbound | undefined;
   category: string;
@@ -179,10 +182,10 @@ export type Action$Outbound = {
 };
 
 /** @internal */
-export const Action$outboundSchema: z.ZodType<
-  Action$Outbound,
+export const ActionsProposeAction$outboundSchema: z.ZodType<
+  ActionsProposeAction$Outbound,
   z.ZodTypeDef,
-  Action
+  ActionsProposeAction
 > = z.object({
   summaryTitle: z.string(),
   summaryDetail: z.lazy(() => SummaryDetail$outboundSchema).optional(),
@@ -196,16 +199,20 @@ export const Action$outboundSchema: z.ZodType<
   });
 });
 
-export function actionToJSON(action: Action): string {
-  return JSON.stringify(Action$outboundSchema.parse(action));
+export function actionsProposeActionToJSON(
+  actionsProposeAction: ActionsProposeAction,
+): string {
+  return JSON.stringify(
+    ActionsProposeAction$outboundSchema.parse(actionsProposeAction),
+  );
 }
-export function actionFromJSON(
+export function actionsProposeActionFromJSON(
   jsonString: string,
-): SafeParseResult<Action, SDKValidationError> {
+): SafeParseResult<ActionsProposeAction, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Action$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Action' from JSON`,
+    (x) => ActionsProposeAction$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ActionsProposeAction' from JSON`,
   );
 }
 
@@ -219,7 +226,7 @@ export const ActionsProposeRequest$inboundSchema: z.ZodType<
   opaque_id: types.optional(types.string()),
   botshield_user_id: types.optional(types.string()),
   user_email: types.optional(types.string()),
-  action: z.lazy(() => Action$inboundSchema),
+  action: z.lazy(() => ActionsProposeAction$inboundSchema),
   adaptive_card_payload: types.optional(z.record(z.any())),
   ttl_seconds: types.number().default(600),
 }).transform((v) => {
@@ -238,7 +245,7 @@ export type ActionsProposeRequest$Outbound = {
   opaque_id?: string | undefined;
   botshield_user_id?: string | undefined;
   user_email?: string | undefined;
-  action: Action$Outbound;
+  action: ActionsProposeAction$Outbound;
   adaptive_card_payload?: { [k: string]: any } | undefined;
   ttl_seconds: number;
 };
@@ -253,7 +260,7 @@ export const ActionsProposeRequest$outboundSchema: z.ZodType<
   opaqueId: z.string().optional(),
   botshieldUserId: z.string().optional(),
   userEmail: z.string().optional(),
-  action: z.lazy(() => Action$outboundSchema),
+  action: z.lazy(() => ActionsProposeAction$outboundSchema),
   adaptiveCardPayload: z.record(z.any()).optional(),
   ttlSeconds: z.number().int().default(600),
 }).transform((v) => {

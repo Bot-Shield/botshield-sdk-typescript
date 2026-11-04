@@ -57,7 +57,7 @@ export class Census extends ClientSDK {
    * Validate a verification token
    *
    * @remarks
-   * Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person. Each attestation is for one organization (aud = its organization_id; pass `audience` to enforce it) and one check: a repeat check is flagged `replayed` and refused from 2026-11-15.
+   * Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person. Each attestation is for one organization (aud = its organization_id; pass `audience` to enforce it) and one check: a repeat check is refused (`valid: false`, `replayed: true`). Check it once, on your server.
    */
   async verifyToken(
     security: operations.SDKVerifyTokenSecurity,
