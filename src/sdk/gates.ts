@@ -6,6 +6,7 @@ import { gatesActivate } from "../funcs/gates-activate.js";
 import { gatesCancel } from "../funcs/gates-cancel.js";
 import { gatesClose } from "../funcs/gates-close.js";
 import { gatesCreate } from "../funcs/gates-create.js";
+import { gatesExtend } from "../funcs/gates-extend.js";
 import { gatesGet } from "../funcs/gates-get.js";
 import { gatesList } from "../funcs/gates-list.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
@@ -69,6 +70,25 @@ export class Gates extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.GatesApiCloseResponse> {
     return unwrapAsync(gatesClose(
+      this,
+      security,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Extend a gate's window
+   *
+   * @remarks
+   * Move a placed gate's closing time later. Extend-only: never earlier, never on a gate that has already closed (a closed gate is never reopened), never on a gate with no end time. Saved as the next version of the gate's policy document; every other setting is unchanged.
+   */
+  async extend(
+    security: operations.GatesApiExtendSecurity,
+    request: operations.GatesApiExtendRequest,
+    options?: RequestOptions,
+  ): Promise<operations.GatesApiExtendResponse> {
+    return unwrapAsync(gatesExtend(
       this,
       security,
       request,

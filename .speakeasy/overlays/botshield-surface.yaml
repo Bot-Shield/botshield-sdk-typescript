@@ -201,3 +201,9 @@ actions:
     update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: list, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/gates-api/actions/set-state"].post
     update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: setState, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/extend"].post
+    update: { x-speakeasy-group: gates, x-speakeasy-name-override: extend, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/actions/request"].post
+    update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: request, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/actions/request-status"].get
+    update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: requestStatus, x-speakeasy-mcp: { disabled: true } }

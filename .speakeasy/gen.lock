@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: ae7c3584-be59-4f2d-b368-1c23ba537874
 management:
-  docChecksum: 469a36de9837e66a9c81ff6e2cf0a1f6
+  docChecksum: d65ffd3e2b5f2de2c47198ff224e6260
   docVersion: 2.0.0
   speakeasyVersion: 1.796.3
   generationVersion: 2.934.1
@@ -11,9 +11,9 @@ management:
   installationURL: https://github.com/Bot-Shield/botshield-sdk-typescript
   published: true
 persistentEdits:
-  generation_id: 8268c312-efff-4a65-8cdd-493b22824781
-  pristine_commit_hash: 26d34389f9e21d97385e2c593bf259e395aef403
-  pristine_tree_hash: 666b8fad995d913fd553a6d3b5f25a4d8c4f5918
+  generation_id: 2854f30f-319d-4a9d-964c-5862db45b478
+  pristine_commit_hash: a1cf91595decf7dc65c71ec79ce0e6fabf6535e0
+  pristine_tree_hash: cec192da99fca87b789f20966cbcde1f9430c7b9
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -276,6 +276,54 @@ trackedFiles:
     id: 3f40812603df
     last_write_checksum: sha1:c64c9dbe23716b7e89defd231bdeeb4ce171e78a
     pristine_git_object: bddd38e2ecb331112b74f8509deaaaa309eb653d
+  docs/models/operations/gates-api-actions-request-data-data.md:
+    id: ac71d99ede98
+    last_write_checksum: sha1:5065e6aec43ce3a27c6a2f13c719382e0b9c1b45
+    pristine_git_object: 3c9dd28689291011360df363a94faef370ad2382
+  docs/models/operations/gates-api-actions-request-data.md:
+    id: b1e495d8cd80
+    last_write_checksum: sha1:c5913edb0bba3ef433f3c17fd68f5b60432da9dc
+    pristine_git_object: 7dd8d22163fb0dfb340d1754d3b8c2fff13f8f1b
+  docs/models/operations/gates-api-actions-request-request.md:
+    id: 21c73215b73c
+    last_write_checksum: sha1:05f731cce274aa816a541f4044dd329fcbdc9bd9
+    pristine_git_object: d53c9566d8e9ef6683347bb70ff18de70aae04f4
+  docs/models/operations/gates-api-actions-request-response.md:
+    id: 330cf3463663
+    last_write_checksum: sha1:413b862f4c96839aaad327f4121ca1b049ccbccf
+    pristine_git_object: 00766a745fee1dfba95a91c20d47989257f09279
+  docs/models/operations/gates-api-actions-request-security.md:
+    id: 57db29ab9e3a
+    last_write_checksum: sha1:3c99118f76ff621b8a6adad8a403f7640a620f86
+    pristine_git_object: fbcd131ff4cb7dd1f0896fd8a1f8241058f02acc
+  docs/models/operations/gates-api-actions-request-status-data-data.md:
+    id: fb131fa1148b
+    last_write_checksum: sha1:94c7eb74718a5ac7f9059ade20c667bd34ddbe3b
+    pristine_git_object: 7a9ad8cda296e762bbe3c78216dee0c8dde13a3c
+  docs/models/operations/gates-api-actions-request-status-data.md:
+    id: d5261fc352c0
+    last_write_checksum: sha1:1b5bb2d67beae18749e6536817713bfbbd0c9f3f
+    pristine_git_object: 9d4767ce4ba172ff589c2ee40858ee4651fb36c6
+  docs/models/operations/gates-api-actions-request-status-request.md:
+    id: f842507b9d6e
+    last_write_checksum: sha1:c2448226490233355d52d16f46702a7374cc96b3
+    pristine_git_object: 1ded5645c01d778fe3bac1fd03889a062d1edc5c
+  docs/models/operations/gates-api-actions-request-status-response.md:
+    id: d08e8762d993
+    last_write_checksum: sha1:b687bdf131d00c8526e5f71ea348ea9ca3a41af9
+    pristine_git_object: 7dbe09f6062319d271bdf058f2c35af7ec48a765
+  docs/models/operations/gates-api-actions-request-status-security.md:
+    id: 4809ec31745a
+    last_write_checksum: sha1:e6e5b4949a52448af28a21373f48c639b78517b3
+    pristine_git_object: 43383b2937b81cd48e38d1f67c34a5043463462b
+  docs/models/operations/gates-api-actions-request-status-status.md:
+    id: b034329b3a18
+    last_write_checksum: sha1:e229bc0095efbe28304d9c64e59fc54cf425da6f
+    pristine_git_object: 8416b2d9b98f5aeb5ffa482da3e1c4f57649ed95
+  docs/models/operations/gates-api-actions-request-status.md:
+    id: 1714cbc8f8b1
+    last_write_checksum: sha1:4338d1843d5a6d0b3d06128cc7e68374dea5d307
+    pristine_git_object: 5240a7436567c84ae12a2711abc61594566a7b36
   docs/models/operations/gates-api-actions-set-state-data-data.md:
     id: 1c4eabbb39fd
     last_write_checksum: sha1:98e2451a262789656b3f1e5e85fd5cc839bad142
@@ -392,6 +440,26 @@ trackedFiles:
     id: 547ff1a98c1a
     last_write_checksum: sha1:79c1ce7282b28580c1ef6604bda52fea9936ee96
     pristine_git_object: 2dd15ee851f287e89a5389f58e56d2bd3f517ce6
+  docs/models/operations/gates-api-extend-data-data.md:
+    id: 39b2fd5596ef
+    last_write_checksum: sha1:f379b4edc01ffeccbae2c4d8d3ce93f6b250e39f
+    pristine_git_object: 6c5a4bfe858a0bf976566f3eec111b8caed6df60
+  docs/models/operations/gates-api-extend-data.md:
+    id: a4bbdae68717
+    last_write_checksum: sha1:37b7ee0d791518b7359592dbeb1ac2a651ed6d50
+    pristine_git_object: 40bc679b5f9a99b469dc303ec5ae6ef3b9fdf8ac
+  docs/models/operations/gates-api-extend-request.md:
+    id: 4f7f77a8a5e8
+    last_write_checksum: sha1:9c46a1ea624e2c24f566e5a6b13b0b42d27335d5
+    pristine_git_object: 64c5103aeef344307407f86d6ae3d8544d056c77
+  docs/models/operations/gates-api-extend-response.md:
+    id: 252da74ab2b0
+    last_write_checksum: sha1:ab57f82cc4193d50562e98c4b24ac699b90c7c79
+    pristine_git_object: f1713c8090734a5991b966c8881cade56d917974
+  docs/models/operations/gates-api-extend-security.md:
+    id: 2c5369c575a5
+    last_write_checksum: sha1:8de5f5a31ae8535c7d46aca6cebdb49ab2262467
+    pristine_git_object: 4dbd33a4e88098db731be1eed67c8d29bbcd1d1c
   docs/models/operations/gates-api-get-data-data.md:
     id: d8332f2b6b18
     last_write_checksum: sha1:17eb67b932094a9a7f4512dc123488bcdf390c7d
@@ -826,12 +894,12 @@ trackedFiles:
     pristine_git_object: 6e42bf68fea53a983f9904af9b7b0af9f9f80802
   docs/sdks/gates/README.md:
     id: e4ffb3ae282a
-    last_write_checksum: sha1:34bf953e5ee6275248a6a9480cd0fd3644a36210
-    pristine_git_object: 2392506e3c6e594547561150ce1f240082f77e1e
+    last_write_checksum: sha1:a8a0078c18baa3e62df418074140ef661b6da75a
+    pristine_git_object: 9b518932e1b44657b7f544be973c1e3e9e710deb
   docs/sdks/gatesactions/README.md:
     id: e5122c842b53
-    last_write_checksum: sha1:292ba978cfc93e088fb6af729e3268eb554028cb
-    pristine_git_object: 37f0cb8683ffb144c880e17d15de4112ebc05bb7
+    last_write_checksum: sha1:3f8d1b8552553d5fe086f4296713e1abad27fe20
+    pristine_git_object: 0dde092cf8c5b764d88b81cd42d3f01d1889ccbf
   docs/sdks/securedaccounts/README.md:
     id: fb9d1605a93e
     last_write_checksum: sha1:bad216116d649bb649316c3332b04143d4c2d8fe
@@ -862,8 +930,8 @@ trackedFiles:
     pristine_git_object: dc2dae866d3aeddc2b6366bc4d913ce9ad546d16
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:c0503126b75f5c07d53004376d037f892caba112
-    pristine_git_object: 5c824f5c0d8fbc6bad01e1eb1584245f6cf1ad86
+    last_write_checksum: sha1:1ab940b4b059306f6f87c8312ee84a9be42700ad
+    pristine_git_object: 531e065dd82259b06dc4a1919b34a0b2cb55708e
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:ce588b3eca5e3671b3e86450f6750c27004e83be
@@ -920,6 +988,14 @@ trackedFiles:
     id: 96e3a5fa93f4
     last_write_checksum: sha1:e6ba26e89824e5d6600131facbf8314971e10671
     pristine_git_object: 948bf4e576f434651d440e2403e50dc582b559c7
+  src/funcs/gates-actions-request-status.ts:
+    id: 962d9f4e742d
+    last_write_checksum: sha1:616788632f7fbabaf11959a3dd4455e302ad678d
+    pristine_git_object: 559a1ca1bd9201566c20ade5da91c0d65eceb542
+  src/funcs/gates-actions-request.ts:
+    id: a12081797f1c
+    last_write_checksum: sha1:a173dc5fdafb4ce70012a7ee75691b0343ccbbf4
+    pristine_git_object: 4c36071247a65bb38c71bcf1fc642ed382847faf
   src/funcs/gates-actions-set-state.ts:
     id: bfb538640068
     last_write_checksum: sha1:708c7e84b07e202d99750e8d11a9fe60656c553e
@@ -940,6 +1016,10 @@ trackedFiles:
     id: d4f7ce0fa9aa
     last_write_checksum: sha1:aa441d9116ff71f7617758e5c4feb4bfcaa94b98
     pristine_git_object: fe52e8ed57775caa3d63db8d659cc82e4db27551
+  src/funcs/gates-extend.ts:
+    id: 0ed77423d890
+    last_write_checksum: sha1:e7d42c4ca2c61f4b6a0002ce9d8da297b57d0686
+    pristine_git_object: f6817623f28ab8e23a867c2c90085f44006d4cd1
   src/funcs/gates-get.ts:
     id: e7710be46547
     last_write_checksum: sha1:5b40172172e5c3ca0418e5e1e37797555b880115
@@ -1184,6 +1264,14 @@ trackedFiles:
     id: d80be49428f6
     last_write_checksum: sha1:eea24af8e48e2d2277dc5b504f57f46a286704be
     pristine_git_object: b31f20351f9767bbf48095d57b02231a257bba62
+  src/models/operations/gates-api-actions-request-status.ts:
+    id: e5d8fb991fdc
+    last_write_checksum: sha1:04f02d2af3d65263e50eff7e6016419b8babe236
+    pristine_git_object: 2a4b1383fecfa969d948fab9776848cc8bfb3603
+  src/models/operations/gates-api-actions-request.ts:
+    id: 0be67e93adeb
+    last_write_checksum: sha1:fa4e0c85da06cc1f8d3f62d56b650d39497b8479
+    pristine_git_object: db4d87f4f75f20a5fb37949a059c7e65c9c160ba
   src/models/operations/gates-api-actions-set-state.ts:
     id: 5ff64fe1ccd2
     last_write_checksum: sha1:57da72c7816569e18654d304efb63533aead0abd
@@ -1204,6 +1292,10 @@ trackedFiles:
     id: 7959c0a93031
     last_write_checksum: sha1:d92b8003c7f4794d35fa5e1ecf0988cb711a262d
     pristine_git_object: 666b7f8751e8a01da91781f2f737d3fc4ad32a7c
+  src/models/operations/gates-api-extend.ts:
+    id: 4f7fcda6ca3d
+    last_write_checksum: sha1:46662a5af19905c7859d92f5775944a5ac3347cc
+    pristine_git_object: c5640815221485b1b59cea56b89831d8847c54cc
   src/models/operations/gates-api-get.ts:
     id: 088c412924aa
     last_write_checksum: sha1:f3475d120c61435a9a616b6f15faee9b21bb1826
@@ -1214,8 +1306,8 @@ trackedFiles:
     pristine_git_object: d0ac037e974320d791f13a836b9e9455c64dbe4e
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
-    last_write_checksum: sha1:5a4065353ff1b609c2955dadc53d8797f91633b7
-    pristine_git_object: 6b9514453408a530593a271bfc365b66665020c2
+    last_write_checksum: sha1:8db68e120719cb7033354757583abd67476e0ad5
+    pristine_git_object: d7bd7e9993c4209a35babd316168c90248d74cec
   src/models/operations/sdk-create-session.ts:
     id: 49bde857d1a1
     last_write_checksum: sha1:1fc66102e41c3a40fb46fca48e59f6af9812cf6d
@@ -1282,12 +1374,12 @@ trackedFiles:
     pristine_git_object: 16e419f975be51b65bf1d313f73e698f7dc3d371
   src/sdk/gates-actions.ts:
     id: 75d25c4417be
-    last_write_checksum: sha1:d2417d081e7ad3cf37adf000eff688609ba9ae02
-    pristine_git_object: 586be97d503a986382e87196a512fe1a4d329fea
+    last_write_checksum: sha1:87d4ba4565670fa32481a264609b9948e0eb7742
+    pristine_git_object: 5c7991d69f00b4906231ca7ed695b84e354272ac
   src/sdk/gates.ts:
     id: e8269923f074
-    last_write_checksum: sha1:e691a56124252d533e328f5925443a6536502e21
-    pristine_git_object: 66893313325be53f84f7daa8c8425a58825f1ed6
+    last_write_checksum: sha1:5c33c8f58a59f2b2ca58b2bb1d1e2c89ed071c62
+    pristine_git_object: a7c67e903debe96ef12d3c826180d0845f7708ca
   src/sdk/index.ts:
     id: a857902a703f
     last_write_checksum: sha1:ed6d64f2a6135349aa8498b8d8cff9ba85c7fb8f
@@ -1651,4 +1743,38 @@ examples:
           application/json: {"message": "Invalid input provided", "input": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
         "500":
           application/json: {"error": {"message": "<value>", "statusCode": 666159}}
+  GatesApiExtend:
+    speakeasy-default-gates-api-extend:
+      requestBody:
+        application/json: {"key": "presale-nyc-1120", "closesAt": "2026-11-21T04:00:00Z"}
+      responses:
+        "200":
+          application/json: {"data": {"data": {"gate": {"key": "presale-nyc-1120", "name": "NYC presale", "message": "<value>", "status": "active", "state": "closed", "environment": "production", "destination_url": "https://grandiose-pepper.info/", "policy": null, "placed_at": "2024-10-30T12:02:00.300Z", "placed_by_api": true}, "extended": false, "version": 30046}, "error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 800197}}
+  GatesApiActionsRequest:
+    speakeasy-default-gates-api-actions-request:
+      requestBody:
+        application/json: {"request_id": "2f889dad-53b3-45e5-ad5d-3dbcdb76f719", "agent": "couchtour", "act": "hold:3f1c…:9a0b1c2d3e4f5a6b", "act_label": "Hold Summer ’26 tee · $40", "partner_user_ref": "<value>", "requested_by": "Muse", "ttl_seconds": 600}
+      responses:
+        "200":
+          application/json: {"data": {"error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {}, "errors": [{"propertyPath": "<value>", "invalidValue": "<value>", "message": "<value>"}]}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 74688}}
+  GatesApiActionsRequestStatus:
+    speakeasy-default-gates-api-actions-request-status:
+      parameters:
+        query:
+          request_id: "753c942e-4eb0-46f9-920b-5bedc30126bb"
+      responses:
+        "200":
+          application/json: {"data": {"error": {"message": "<value>", "statusCode": 409, "code": "gate_key_taken"}}}
+        "400":
+          application/json: {"message": "Invalid input provided", "input": {"key": "<value>"}, "errors": []}
+        "500":
+          application/json: {"error": {"message": "<value>", "statusCode": 690233}}
 examplesVersion: 1.0.2

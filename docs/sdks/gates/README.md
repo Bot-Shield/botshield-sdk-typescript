@@ -7,6 +7,7 @@
 * [create](#create) - Place a gate
 * [activate](#activate) - Activate a gate
 * [close](#close) - Close a gate
+* [extend](#extend) - Extend a gate's window
 * [cancel](#cancel) - Cancel a gate
 * [get](#get) - Get a gate
 * [list](#list) - List gates
@@ -254,6 +255,84 @@ run();
 ### Response
 
 **Promise\<[operations.GatesApiCloseResponse](../../models/operations/gates-api-close-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.InvalidInputError     | 400                          | application/json             |
+| errors.ErrorResponse         | 500                          | application/json             |
+| errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
+
+## extend
+
+Move a placed gate's closing time later. Extend-only: never earlier, never on a gate that has already closed (a closed gate is never reopened), never on a gate with no end time. Saved as the next version of the gate's policy document; every other setting is unchanged.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="GatesApiExtend" method="post" path="/gates-api/extend" -->
+```typescript
+import { BotShield } from "botshield-sdk";
+
+const botShield = new BotShield();
+
+async function run() {
+  const result = await botShield.gates.extend({
+    gatesKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    key: "presale-nyc-1120",
+    closesAt: new Date("2026-11-21T04:00:00Z"),
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { BotShieldCore } from "botshield-sdk/core.js";
+import { gatesExtend } from "botshield-sdk/funcs/gates-extend.js";
+
+// Use `BotShieldCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const botShield = new BotShieldCore();
+
+async function run() {
+  const res = await gatesExtend(botShield, {
+    gatesKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    key: "presale-nyc-1120",
+    closesAt: new Date("2026-11-21T04:00:00Z"),
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("gatesExtend failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GatesApiExtendRequest](../../models/operations/gates-api-extend-request.md)                                                                                        | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.GatesApiExtendSecurity](../../models/operations/gates-api-extend-security.md)                                                                                      | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.GatesApiExtendResponse](../../models/operations/gates-api-extend-response.md)\>**
 
 ### Errors
 

@@ -307,6 +307,7 @@ run();
 * [create](docs/sdks/gates/README.md#create) - Place a gate
 * [activate](docs/sdks/gates/README.md#activate) - Activate a gate
 * [close](docs/sdks/gates/README.md#close) - Close a gate
+* [extend](docs/sdks/gates/README.md#extend) - Extend a gate's window
 * [cancel](docs/sdks/gates/README.md#cancel) - Cancel a gate
 * [get](docs/sdks/gates/README.md#get) - Get a gate
 * [list](docs/sdks/gates/README.md#list) - List gates
@@ -316,6 +317,8 @@ run();
 * [create](docs/sdks/gatesactions/README.md#create) - Place a BotShield Action
 * [list](docs/sdks/gatesactions/README.md#list) - List BotShield Actions
 * [setState](docs/sdks/gatesactions/README.md#setstate) - Turn a BotShield Action on or off
+* [request](docs/sdks/gatesactions/README.md#request) - Ask a linked person to confirm an action
+* [requestStatus](docs/sdks/gatesactions/README.md#requeststatus) - Where an action request stands
 
 ### [SecuredAccounts](docs/sdks/securedaccounts/README.md)
 
@@ -358,11 +361,14 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`censusVerifyToken`](docs/sdks/census/README.md#verifytoken) - Validate a verification token
 - [`gatesActionsCreate`](docs/sdks/gatesactions/README.md#create) - Place a BotShield Action
 - [`gatesActionsList`](docs/sdks/gatesactions/README.md#list) - List BotShield Actions
+- [`gatesActionsRequest`](docs/sdks/gatesactions/README.md#request) - Ask a linked person to confirm an action
+- [`gatesActionsRequestStatus`](docs/sdks/gatesactions/README.md#requeststatus) - Where an action request stands
 - [`gatesActionsSetState`](docs/sdks/gatesactions/README.md#setstate) - Turn a BotShield Action on or off
 - [`gatesActivate`](docs/sdks/gates/README.md#activate) - Activate a gate
 - [`gatesCancel`](docs/sdks/gates/README.md#cancel) - Cancel a gate
 - [`gatesClose`](docs/sdks/gates/README.md#close) - Close a gate
 - [`gatesCreate`](docs/sdks/gates/README.md#create) - Place a gate
+- [`gatesExtend`](docs/sdks/gates/README.md#extend) - Extend a gate's window
 - [`gatesGet`](docs/sdks/gates/README.md#get) - Get a gate
 - [`gatesList`](docs/sdks/gates/README.md#list) - List gates
 - [`securedAccountsGetStatus`](docs/sdks/securedaccounts/README.md#getstatus) - Get Secured Account status

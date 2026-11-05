@@ -4,6 +4,8 @@
 
 import { gatesActionsCreate } from "../funcs/gates-actions-create.js";
 import { gatesActionsList } from "../funcs/gates-actions-list.js";
+import { gatesActionsRequestStatus } from "../funcs/gates-actions-request-status.js";
+import { gatesActionsRequest } from "../funcs/gates-actions-request.js";
 import { gatesActionsSetState } from "../funcs/gates-actions-set-state.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -58,6 +60,44 @@ export class GatesActions extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.GatesApiActionsSetStateResponse> {
     return unwrapAsync(gatesActionsSetState(
+      this,
+      security,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Ask a linked person to confirm an action
+   *
+   * @remarks
+   * An agent asks, a person confirms. Puts ONE BotShield Action in front of a person already linked to your company, as a card in their BotShield app naming the agent that asked. The person approves with their passkey, which signs the act itself. Collect the action token with gates-api/actions/request-status and check it with sdk/verify-token (claims.act), exactly as for a tapped action. Idempotent on (agent, request_id).
+   */
+  async request(
+    security: operations.GatesApiActionsRequestSecurity,
+    request: operations.GatesApiActionsRequestRequest,
+    options?: RequestOptions,
+  ): Promise<operations.GatesApiActionsRequestResponse> {
+    return unwrapAsync(gatesActionsRequest(
+      this,
+      security,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Where an action request stands
+   *
+   * @remarks
+   * Status of a request from gates-api/actions/request. `wait_seconds` (≤ 25) holds the call until the status changes. Once `approved`, `token` is the action token (claims.act) for `token_expires_in` seconds — check it with sdk/verify-token; it works once. After the collection window (10 minutes from the approval) the status stays `approved` with `token: null`.
+   */
+  async requestStatus(
+    security: operations.GatesApiActionsRequestStatusSecurity,
+    request: operations.GatesApiActionsRequestStatusRequest,
+    options?: RequestOptions,
+  ): Promise<operations.GatesApiActionsRequestStatusResponse> {
+    return unwrapAsync(gatesActionsRequestStatus(
       this,
       security,
       request,
