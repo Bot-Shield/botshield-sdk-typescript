@@ -176,3 +176,34 @@ actions:
     update: { x-speakeasy-group: securedAccounts, x-speakeasy-name-override: revoke, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/secured-accounts/status"].get
     update: { x-speakeasy-group: securedAccounts, x-speakeasy-name-override: getStatus, x-speakeasy-mcp: { disabled: true } }
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # gates.* — Gates API (3.4): a company's server places and runs its own gates and
+  # BotShield Actions with a bs_ key granted `gates:write` (per-op GatesKeyAuth in the
+  # spec). EXCLUDED from MCP. client.gates.create / activate / close / cancel / get /
+  # list · client.gates.actions.create / list / setState
+  # ────────────────────────────────────────────────────────────────────────────
+  - target: $.paths["/gates-api/create"].post
+    update: { x-speakeasy-group: gates, x-speakeasy-name-override: create, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/activate"].post
+    update: { x-speakeasy-group: gates, x-speakeasy-name-override: activate, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/close"].post
+    update: { x-speakeasy-group: gates, x-speakeasy-name-override: close, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/cancel"].post
+    update: { x-speakeasy-group: gates, x-speakeasy-name-override: cancel, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/get"].get
+    update: { x-speakeasy-group: gates, x-speakeasy-name-override: get, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/list"].get
+    update: { x-speakeasy-group: gates, x-speakeasy-name-override: list, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/actions/create"].post
+    update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: create, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/actions/list"].get
+    update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: list, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/actions/set-state"].post
+    update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: setState, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/extend"].post
+    update: { x-speakeasy-group: gates, x-speakeasy-name-override: extend, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/actions/request"].post
+    update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: request, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/gates-api/actions/request-status"].get
+    update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: requestStatus, x-speakeasy-mcp: { disabled: true } }

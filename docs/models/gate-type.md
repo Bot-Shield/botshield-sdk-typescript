@@ -1,11 +1,9 @@
 # GateType
 
-The gate's type. An Age Gate never notarizes (widget suppresses the chip).
-
 ## Example Usage
 
 ```typescript
-import { GateType } from "botshield-sdk/models/operations";
+import { GateType } from "botshield-sdk/models";
 
 let value: GateType = "age";
 

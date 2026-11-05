@@ -76,6 +76,99 @@ export type VerificationGetStatusReason = OpenEnum<
   typeof VerificationGetStatusReason
 >;
 
+export const VerificationGetStatusPreset = {
+  Presale: "presale",
+  Promo: "promo",
+  Drop: "drop",
+  Vote: "vote",
+  Reservation: "reservation",
+  Claim: "claim",
+} as const;
+export type VerificationGetStatusPreset = OpenEnum<
+  typeof VerificationGetStatusPreset
+>;
+
+/**
+ * Whether a pass links the person to your platform (told before it happens).
+ */
+export const Link = {
+  Required: "required",
+  Optional: "optional",
+  Never: "never",
+} as const;
+/**
+ * Whether a pass links the person to your platform (told before it happens).
+ */
+export type Link = OpenEnum<typeof Link>;
+
+export const VerificationGetStatusState = {
+  Scheduled: "scheduled",
+  Open: "open",
+  Closed: "closed",
+} as const;
+export type VerificationGetStatusState = OpenEnum<
+  typeof VerificationGetStatusState
+>;
+
+/**
+ * The gate as the person meets it on the arrival card — display facts about the GATE, never about anyone. Null when the request has no gate.
+ */
+export type Gate = {
+  gateName?: string | null | undefined;
+  /**
+   * The gate's line to people.
+   */
+  message?: string | null | undefined;
+  /**
+   * The gate's destination — null until this request is completed and verified.
+   */
+  destinationUrl?: string | null | undefined;
+  /**
+   * The destination's host (https only, `www.` dropped), shown before a pass so the card can say where it goes.
+   */
+  destinationHost?: string | null | undefined;
+  preset?: VerificationGetStatusPreset | null | undefined;
+  /**
+   * Whether a pass links the person to your platform (told before it happens).
+   */
+  link?: Link | undefined;
+  /**
+   * Whether the person (or your ref on this request) is already linked to your platform. Null when not known here.
+   */
+  linked?: boolean | null | undefined;
+  signedUpRequired?: boolean | undefined;
+  /**
+   * Passes per person. Null = as often as they like.
+   */
+  perPerson?: models.PassesPerPerson | null | undefined;
+  /**
+   * Distinct proving days the BotShield ID needs. 0 = anyone.
+   */
+  realDays?: number | undefined;
+  policyLine?: string | undefined;
+  state?: VerificationGetStatusState | undefined;
+  opensAt?: Date | null | undefined;
+  closesAt?: Date | null | undefined;
+};
+
+/**
+ * BotShield Actions: what this tap confirms. Null on every non-action request. The `act` string itself is never shown here.
+ */
+export type VerificationGetStatusAction = {
+  /**
+   * The action's name.
+   */
+  name: string;
+  /**
+   * The `act_label` sent with the request.
+   */
+  label: string | null;
+  /**
+   * Whether your ref on this request is already linked to your platform. Null when not known.
+   */
+  linked: boolean | null;
+};
+
 export type VerificationGetStatusData = {
   found?: boolean | undefined;
   /**
@@ -128,6 +221,14 @@ export type VerificationGetStatusData = {
    * Your organization's public display name, as the BotShield app shows it to the person.
    */
   organizationName?: string | null | undefined;
+  /**
+   * The gate as the person meets it on the arrival card — display facts about the GATE, never about anyone. Null when the request has no gate.
+   */
+  gate?: Gate | null | undefined;
+  /**
+   * BotShield Actions: what this tap confirms. Null on every non-action request. The `act` string itself is never shown here.
+   */
+  action?: VerificationGetStatusAction | null | undefined;
 };
 
 /**
@@ -329,6 +430,178 @@ export const VerificationGetStatusReason$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(VerificationGetStatusReason);
 
 /** @internal */
+export const VerificationGetStatusPreset$inboundSchema: z.ZodType<
+  VerificationGetStatusPreset,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(VerificationGetStatusPreset);
+/** @internal */
+export const VerificationGetStatusPreset$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  VerificationGetStatusPreset
+> = openEnums.outboundSchema(VerificationGetStatusPreset);
+
+/** @internal */
+export const Link$inboundSchema: z.ZodType<Link, z.ZodTypeDef, unknown> =
+  openEnums.inboundSchema(Link);
+/** @internal */
+export const Link$outboundSchema: z.ZodType<string, z.ZodTypeDef, Link> =
+  openEnums.outboundSchema(Link);
+
+/** @internal */
+export const VerificationGetStatusState$inboundSchema: z.ZodType<
+  VerificationGetStatusState,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(VerificationGetStatusState);
+/** @internal */
+export const VerificationGetStatusState$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  VerificationGetStatusState
+> = openEnums.outboundSchema(VerificationGetStatusState);
+
+/** @internal */
+export const Gate$inboundSchema: z.ZodType<Gate, z.ZodTypeDef, unknown> = z
+  .object({
+    gate_name: z.nullable(types.string()).optional(),
+    message: z.nullable(types.string()).optional(),
+    destination_url: z.nullable(types.string()).optional(),
+    destination_host: z.nullable(types.string()).optional(),
+    preset: z.nullable(VerificationGetStatusPreset$inboundSchema).optional(),
+    link: types.optional(Link$inboundSchema),
+    linked: z.nullable(types.boolean()).optional(),
+    signed_up_required: types.optional(types.boolean()),
+    per_person: z.nullable(models.PassesPerPerson$inboundSchema).optional(),
+    real_days: types.optional(types.number()),
+    policy_line: types.optional(types.string()),
+    state: types.optional(VerificationGetStatusState$inboundSchema),
+    opens_at: z.nullable(types.date()).optional(),
+    closes_at: z.nullable(types.date()).optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      "gate_name": "gateName",
+      "destination_url": "destinationUrl",
+      "destination_host": "destinationHost",
+      "signed_up_required": "signedUpRequired",
+      "per_person": "perPerson",
+      "real_days": "realDays",
+      "policy_line": "policyLine",
+      "opens_at": "opensAt",
+      "closes_at": "closesAt",
+    });
+  });
+/** @internal */
+export type Gate$Outbound = {
+  gate_name?: string | null | undefined;
+  message?: string | null | undefined;
+  destination_url?: string | null | undefined;
+  destination_host?: string | null | undefined;
+  preset?: string | null | undefined;
+  link?: string | undefined;
+  linked?: boolean | null | undefined;
+  signed_up_required?: boolean | undefined;
+  per_person?: models.PassesPerPerson$Outbound | null | undefined;
+  real_days?: number | undefined;
+  policy_line?: string | undefined;
+  state?: string | undefined;
+  opens_at?: string | null | undefined;
+  closes_at?: string | null | undefined;
+};
+
+/** @internal */
+export const Gate$outboundSchema: z.ZodType<Gate$Outbound, z.ZodTypeDef, Gate> =
+  z.object({
+    gateName: z.nullable(z.string()).optional(),
+    message: z.nullable(z.string()).optional(),
+    destinationUrl: z.nullable(z.string()).optional(),
+    destinationHost: z.nullable(z.string()).optional(),
+    preset: z.nullable(VerificationGetStatusPreset$outboundSchema).optional(),
+    link: Link$outboundSchema.optional(),
+    linked: z.nullable(z.boolean()).optional(),
+    signedUpRequired: z.boolean().optional(),
+    perPerson: z.nullable(models.PassesPerPerson$outboundSchema).optional(),
+    realDays: z.number().int().optional(),
+    policyLine: z.string().optional(),
+    state: VerificationGetStatusState$outboundSchema.optional(),
+    opensAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
+    closesAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      gateName: "gate_name",
+      destinationUrl: "destination_url",
+      destinationHost: "destination_host",
+      signedUpRequired: "signed_up_required",
+      perPerson: "per_person",
+      realDays: "real_days",
+      policyLine: "policy_line",
+      opensAt: "opens_at",
+      closesAt: "closes_at",
+    });
+  });
+
+export function gateToJSON(gate: Gate): string {
+  return JSON.stringify(Gate$outboundSchema.parse(gate));
+}
+export function gateFromJSON(
+  jsonString: string,
+): SafeParseResult<Gate, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Gate$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Gate' from JSON`,
+  );
+}
+
+/** @internal */
+export const VerificationGetStatusAction$inboundSchema: z.ZodType<
+  VerificationGetStatusAction,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  name: types.string(),
+  label: types.nullable(types.string()),
+  linked: types.nullable(types.boolean()),
+});
+/** @internal */
+export type VerificationGetStatusAction$Outbound = {
+  name: string;
+  label: string | null;
+  linked: boolean | null;
+};
+
+/** @internal */
+export const VerificationGetStatusAction$outboundSchema: z.ZodType<
+  VerificationGetStatusAction$Outbound,
+  z.ZodTypeDef,
+  VerificationGetStatusAction
+> = z.object({
+  name: z.string(),
+  label: z.nullable(z.string()),
+  linked: z.nullable(z.boolean()),
+});
+
+export function verificationGetStatusActionToJSON(
+  verificationGetStatusAction: VerificationGetStatusAction,
+): string {
+  return JSON.stringify(
+    VerificationGetStatusAction$outboundSchema.parse(
+      verificationGetStatusAction,
+    ),
+  );
+}
+export function verificationGetStatusActionFromJSON(
+  jsonString: string,
+): SafeParseResult<VerificationGetStatusAction, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => VerificationGetStatusAction$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'VerificationGetStatusAction' from JSON`,
+  );
+}
+
+/** @internal */
 export const VerificationGetStatusData$inboundSchema: z.ZodType<
   VerificationGetStatusData,
   z.ZodTypeDef,
@@ -355,6 +628,9 @@ export const VerificationGetStatusData$inboundSchema: z.ZodType<
   first_time: z.nullable(types.boolean()).optional(),
   notarize: types.optional(types.boolean()),
   organization_name: z.nullable(types.string()).optional(),
+  gate: z.nullable(z.lazy(() => Gate$inboundSchema)).optional(),
+  action: z.nullable(z.lazy(() => VerificationGetStatusAction$inboundSchema))
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
@@ -394,6 +670,8 @@ export type VerificationGetStatusData$Outbound = {
   first_time?: boolean | null | undefined;
   notarize?: boolean | undefined;
   organization_name?: string | null | undefined;
+  gate?: Gate$Outbound | null | undefined;
+  action?: VerificationGetStatusAction$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -423,6 +701,9 @@ export const VerificationGetStatusData$outboundSchema: z.ZodType<
   firstTime: z.nullable(z.boolean()).optional(),
   notarize: z.boolean().optional(),
   organizationName: z.nullable(z.string()).optional(),
+  gate: z.nullable(z.lazy(() => Gate$outboundSchema)).optional(),
+  action: z.nullable(z.lazy(() => VerificationGetStatusAction$outboundSchema))
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",

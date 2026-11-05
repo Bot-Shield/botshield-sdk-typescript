@@ -69,6 +69,10 @@ export type Claims = {
    * The organization the token was issued for (the JWT aud claim).
    */
   audience?: string | null | undefined;
+  /**
+   * BotShield Actions: the `act` this tap was for, echoed verbatim (your own string, e.g. `dibs:listing_4417`). Present only on tokens minted for an action.
+   */
+  act?: string | undefined;
 };
 
 /**
@@ -95,13 +99,9 @@ export type SDKVerifyTokenDataData = {
   expiredAt?: Date | null | undefined;
   claims?: Claims | null | undefined;
   /**
-   * true when this token was already checked once. From 2026-11-15 a second check returns valid: false (single use).
+   * true when this token was already checked once — the check is refused (valid: false). Each token is valid for one check.
    */
   replayed?: boolean | undefined;
-  /**
-   * When repeat checks start failing (present when replayed is true).
-   */
-  strictSingleUseFrom?: Date | undefined;
   /**
    * Present when `valid` is true. `pass` when the token records a verified human.
    */
@@ -229,6 +229,7 @@ export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
     trusted_since: types.optional(types.date()),
     last_pass_at: types.optional(types.date()),
     audience: z.nullable(types.string()).optional(),
+    act: types.optional(types.string()),
   }).transform((v) => {
     return remap$(v, {
       "request_id": "requestId",
@@ -254,6 +255,7 @@ export type Claims$Outbound = {
   trusted_since?: string | undefined;
   last_pass_at?: string | undefined;
   audience?: string | null | undefined;
+  act?: string | undefined;
 };
 
 /** @internal */
@@ -274,6 +276,7 @@ export const Claims$outboundSchema: z.ZodType<
   trustedSince: z.date().transform(v => v.toISOString()).optional(),
   lastPassAt: z.date().transform(v => v.toISOString()).optional(),
   audience: z.nullable(z.string()).optional(),
+  act: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
@@ -323,12 +326,10 @@ export const SDKVerifyTokenDataData$inboundSchema: z.ZodType<
   expired_at: z.nullable(types.date()).optional(),
   claims: z.nullable(z.lazy(() => Claims$inboundSchema)).optional(),
   replayed: types.optional(types.boolean()),
-  strict_single_use_from: types.optional(types.date()),
   verdict: types.optional(SDKVerifyTokenVerdict$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "expired_at": "expiredAt",
-    "strict_single_use_from": "strictSingleUseFrom",
   });
 });
 /** @internal */
@@ -338,7 +339,6 @@ export type SDKVerifyTokenDataData$Outbound = {
   expired_at?: string | null | undefined;
   claims?: Claims$Outbound | null | undefined;
   replayed?: boolean | undefined;
-  strict_single_use_from?: string | undefined;
   verdict?: string | undefined;
 };
 
@@ -353,12 +353,10 @@ export const SDKVerifyTokenDataData$outboundSchema: z.ZodType<
   expiredAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
   claims: z.nullable(z.lazy(() => Claims$outboundSchema)).optional(),
   replayed: z.boolean().optional(),
-  strictSingleUseFrom: z.date().transform(v => v.toISOString()).optional(),
   verdict: SDKVerifyTokenVerdict$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     expiredAt: "expired_at",
-    strictSingleUseFrom: "strict_single_use_from",
   });
 });
 
