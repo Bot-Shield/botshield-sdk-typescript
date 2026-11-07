@@ -8,21 +8,7 @@ Verification status. NOTE: handler errors also arrive here (HTTP 200) as data.er
 import { VerificationGetStatusResponse } from "botshield-sdk/models/operations";
 
 let value: VerificationGetStatusResponse = {
-  data: {
-    gate: {
-      destinationHost: "example.com",
-      perPerson: {
-        limit: 2,
-        window: "ever",
-      },
-      policyLine: "2 per person · ever",
-    },
-    action: {
-      name: "Watch with passkey",
-      label: "<value>",
-      linked: false,
-    },
-  },
+  data: {},
 };
 ```
 

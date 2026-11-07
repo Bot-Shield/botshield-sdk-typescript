@@ -130,7 +130,31 @@ Add the following server definition to your `claude_desktop_config.json` file:
         "--",
         "mcp", "start",
         "--agent-key-auth", "...",
-        "--agent-key-auth1", "..."
+        "--agent-key-auth1", "...",
+        "--agent-key-auth2", "...",
+        "--agent-key-auth3", "...",
+        "--agent-key-auth4", "...",
+        "--agent-key-auth5", "...",
+        "--agent-key-auth6", "...",
+        "--agent-key-auth7", "...",
+        "--agent-key-auth8", "...",
+        "--agent-key-auth9", "...",
+        "--agent-key-auth10", "...",
+        "--agent-key-auth11", "...",
+        "--agent-key-auth12", "...",
+        "--agent-key-auth13", "...",
+        "--agent-key-auth14", "...",
+        "--agent-key-auth15", "...",
+        "--agent-key-auth16", "...",
+        "--agent-key-auth17", "...",
+        "--agent-key-auth18", "...",
+        "--agent-key-auth19", "...",
+        "--agent-key-auth20", "...",
+        "--agent-key-auth21", "...",
+        "--agent-key-auth22", "...",
+        "--agent-key-auth23", "...",
+        "--agent-key-auth24", "...",
+        "--agent-key-auth25", "..."
       ]
     }
   }
@@ -154,7 +178,31 @@ Create a `.cursor/mcp.json` file in your project root with the following content
         "--",
         "mcp", "start",
         "--agent-key-auth", "...",
-        "--agent-key-auth1", "..."
+        "--agent-key-auth1", "...",
+        "--agent-key-auth2", "...",
+        "--agent-key-auth3", "...",
+        "--agent-key-auth4", "...",
+        "--agent-key-auth5", "...",
+        "--agent-key-auth6", "...",
+        "--agent-key-auth7", "...",
+        "--agent-key-auth8", "...",
+        "--agent-key-auth9", "...",
+        "--agent-key-auth10", "...",
+        "--agent-key-auth11", "...",
+        "--agent-key-auth12", "...",
+        "--agent-key-auth13", "...",
+        "--agent-key-auth14", "...",
+        "--agent-key-auth15", "...",
+        "--agent-key-auth16", "...",
+        "--agent-key-auth17", "...",
+        "--agent-key-auth18", "...",
+        "--agent-key-auth19", "...",
+        "--agent-key-auth20", "...",
+        "--agent-key-auth21", "...",
+        "--agent-key-auth22", "...",
+        "--agent-key-auth23", "...",
+        "--agent-key-auth24", "...",
+        "--agent-key-auth25", "..."
       ]
     }
   }
@@ -230,10 +278,34 @@ run();
 
 This SDK supports the following security schemes globally:
 
-| Name            | Type   | Scheme  |
-| --------------- | ------ | ------- |
-| `agentKeyAuth`  | apiKey | API key |
-| `agentKeyAuth1` | apiKey | API key |
+| Name             | Type   | Scheme  |
+| ---------------- | ------ | ------- |
+| `agentKeyAuth`   | apiKey | API key |
+| `agentKeyAuth1`  | apiKey | API key |
+| `agentKeyAuth2`  | apiKey | API key |
+| `agentKeyAuth3`  | apiKey | API key |
+| `agentKeyAuth4`  | apiKey | API key |
+| `agentKeyAuth5`  | apiKey | API key |
+| `agentKeyAuth6`  | apiKey | API key |
+| `agentKeyAuth7`  | apiKey | API key |
+| `agentKeyAuth8`  | apiKey | API key |
+| `agentKeyAuth9`  | apiKey | API key |
+| `agentKeyAuth10` | apiKey | API key |
+| `agentKeyAuth11` | apiKey | API key |
+| `agentKeyAuth12` | apiKey | API key |
+| `agentKeyAuth13` | apiKey | API key |
+| `agentKeyAuth14` | apiKey | API key |
+| `agentKeyAuth15` | apiKey | API key |
+| `agentKeyAuth16` | apiKey | API key |
+| `agentKeyAuth17` | apiKey | API key |
+| `agentKeyAuth18` | apiKey | API key |
+| `agentKeyAuth19` | apiKey | API key |
+| `agentKeyAuth20` | apiKey | API key |
+| `agentKeyAuth21` | apiKey | API key |
+| `agentKeyAuth22` | apiKey | API key |
+| `agentKeyAuth23` | apiKey | API key |
+| `agentKeyAuth24` | apiKey | API key |
+| `agentKeyAuth25` | apiKey | API key |
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript
@@ -302,24 +374,6 @@ run();
 * [revokeVerification](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
 * [logout](docs/sdks/census/README.md#logout) - Revoke a grant token
 
-### [Gates](docs/sdks/gates/README.md)
-
-* [create](docs/sdks/gates/README.md#create) - Place a gate
-* [activate](docs/sdks/gates/README.md#activate) - Activate a gate
-* [close](docs/sdks/gates/README.md#close) - Close a gate
-* [extend](docs/sdks/gates/README.md#extend) - Extend a gate's window
-* [cancel](docs/sdks/gates/README.md#cancel) - Cancel a gate
-* [get](docs/sdks/gates/README.md#get) - Get a gate
-* [list](docs/sdks/gates/README.md#list) - List gates
-
-#### [Gates.Actions](docs/sdks/gatesactions/README.md)
-
-* [create](docs/sdks/gatesactions/README.md#create) - Place a BotShield Action
-* [list](docs/sdks/gatesactions/README.md#list) - List BotShield Actions
-* [setState](docs/sdks/gatesactions/README.md#setstate) - Turn a BotShield Action on or off
-* [request](docs/sdks/gatesactions/README.md#request) - Ask a linked person to confirm an action
-* [requestStatus](docs/sdks/gatesactions/README.md#requeststatus) - Where an action request stands
-
 ### [SecuredAccounts](docs/sdks/securedaccounts/README.md)
 
 * [list](docs/sdks/securedaccounts/README.md#list) - List Secured Accounts
@@ -359,18 +413,6 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`censusStoreSignal`](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
 - [`censusValidateSignal`](docs/sdks/census/README.md#validatesignal) - Validate a signal token
 - [`censusVerifyToken`](docs/sdks/census/README.md#verifytoken) - Validate a verification token
-- [`gatesActionsCreate`](docs/sdks/gatesactions/README.md#create) - Place a BotShield Action
-- [`gatesActionsList`](docs/sdks/gatesactions/README.md#list) - List BotShield Actions
-- [`gatesActionsRequest`](docs/sdks/gatesactions/README.md#request) - Ask a linked person to confirm an action
-- [`gatesActionsRequestStatus`](docs/sdks/gatesactions/README.md#requeststatus) - Where an action request stands
-- [`gatesActionsSetState`](docs/sdks/gatesactions/README.md#setstate) - Turn a BotShield Action on or off
-- [`gatesActivate`](docs/sdks/gates/README.md#activate) - Activate a gate
-- [`gatesCancel`](docs/sdks/gates/README.md#cancel) - Cancel a gate
-- [`gatesClose`](docs/sdks/gates/README.md#close) - Close a gate
-- [`gatesCreate`](docs/sdks/gates/README.md#create) - Place a gate
-- [`gatesExtend`](docs/sdks/gates/README.md#extend) - Extend a gate's window
-- [`gatesGet`](docs/sdks/gates/README.md#get) - Get a gate
-- [`gatesList`](docs/sdks/gates/README.md#list) - List gates
 - [`securedAccountsGetStatus`](docs/sdks/securedaccounts/README.md#getstatus) - Get Secured Account status
 - [`securedAccountsList`](docs/sdks/securedaccounts/README.md#list) - List Secured Accounts
 - [`securedAccountsRevoke`](docs/sdks/securedaccounts/README.md#revoke) - Revoke a Secured Account
