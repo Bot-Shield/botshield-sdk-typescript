@@ -5,14 +5,7 @@
 ```typescript
 import { SDKVerifyTokenData } from "botshield-sdk/models/operations";
 
-let value: SDKVerifyTokenData = {
-  data: {
-    valid: true,
-    claims: {
-      act: "dibs:listing_4417",
-    },
-  },
-};
+let value: SDKVerifyTokenData = {};
 ```
 
 ## Fields

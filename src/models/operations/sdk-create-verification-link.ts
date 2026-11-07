@@ -72,7 +72,7 @@ export type SDKCreateVerificationLinkRequest = {
    */
   botshieldUserId?: string | undefined;
   /**
-   * Your own reference for this user (hashed at rest, never returned). Enables BotShield ID continuity: on later visits a returning human evaluates as human_verified without a ceremony. Required on a gate whose policy is `link: required` (`link_requires_user_ref`) and with `act` (`action_requires_user_ref`).
+   * Your own reference for this user (hashed at rest, never returned). Enables BotShield ID continuity: on later visits a returning human evaluates as human_verified without a ceremony.
    */
   partnerUserRef?: string | undefined;
   /**
@@ -92,14 +92,6 @@ export type SDKCreateVerificationLinkRequest = {
    * The gate this request runs (the gate's action name, as listed in the Console under BotShield Gate).
    */
   gate?: string | undefined;
-  /**
-   * BotShield Actions: the act this tap is for — e.g. `watch` or `dibs:listing_4417`. The part before the first ':' must name a placed, live BotShield Action (Console → Verified Accounts › BotShield Actions, or the Gates API); the rest is yours and is never read — it rides the signed token as the `act` claim (verify-token echoes it verbatim), so your own check can tell one tap from another. Never together with `gate`/`scope` (`action_not_a_gate`). An action always stands on a verified account: `partner_user_ref` is required (`action_requires_user_ref`) and the tap runs the linking ceremony.
-   */
-  act?: string | undefined;
-  /**
-   * What the person is confirming, shown verbatim on their card (e.g. "Trade with sam_k — 2 GA for $180"). Only with `act` (`act_label_without_act`). Display only — it is NOT in the token; bind terms through `act` (e.g. a hash of them), which the token carries.
-   */
-  actLabel?: string | undefined;
 };
 
 export const SDKCreateVerificationLinkSDKTypeResponse = {
@@ -123,21 +115,19 @@ export type SDKCreateVerificationLinkOrganization = {
 /**
  * The gate's type. An Age Gate never notarizes (widget suppresses the chip).
  */
-export const SDKCreateVerificationLinkGateType = {
+export const GateType = {
   Human: "human",
   Age: "age",
 } as const;
 /**
  * The gate's type. An Age Gate never notarizes (widget suppresses the chip).
  */
-export type SDKCreateVerificationLinkGateType = OpenEnum<
-  typeof SDKCreateVerificationLinkGateType
->;
+export type GateType = OpenEnum<typeof GateType>;
 
 /**
  * Age Gate only.
  */
-export const SDKCreateVerificationLinkAgeThreshold = {
+export const AgeThreshold = {
   Thirteen: 13,
   Eighteen: 18,
   TwentyOne: 21,
@@ -145,9 +135,7 @@ export const SDKCreateVerificationLinkAgeThreshold = {
 /**
  * Age Gate only.
  */
-export type SDKCreateVerificationLinkAgeThreshold = OpenEnum<
-  typeof SDKCreateVerificationLinkAgeThreshold
->;
+export type AgeThreshold = OpenEnum<typeof AgeThreshold>;
 
 /**
  * GA 3.0: present when notarize was requested but could not be applied. notarize_not_enabled = the gate's Console switch is off; the switch is the authority and the request field cannot turn the offer on.
@@ -191,11 +179,11 @@ export type SDKCreateVerificationLinkDataData = {
   /**
    * The gate's type. An Age Gate never notarizes (widget suppresses the chip).
    */
-  gateType?: SDKCreateVerificationLinkGateType | undefined;
+  gateType?: GateType | undefined;
   /**
    * Age Gate only.
    */
-  ageThreshold?: SDKCreateVerificationLinkAgeThreshold | undefined;
+  ageThreshold?: AgeThreshold | undefined;
   /**
    * GA 3.0 Secured Accounts: true when an active Secured Account binding exists for (your platform, platform-user-ref). The widget skips the "Link BotShield ID" chip when true.
    */
@@ -225,7 +213,7 @@ export type SDKCreateVerificationLinkData = {
 };
 
 /**
- * Verification link created. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 400 (partner not found / gate not active), 401, 403 (gate not in the token allowlist), 409 (pending request already exists — call revoke-verification). BotShield Actions and linking codes (`data.error.code`): `act_label_without_act` (400), `action_not_a_gate` (400), `action_invalid` (400 — act malformed), `action_not_found` (400 — no action with that key here), `action_off` (409), `action_requires_user_ref` (400), `link_requires_user_ref` (400 — the gate's policy is `link: required` and no partner_user_ref was sent).
+ * Verification link created. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 400 (partner not found / gate not active), 401, 403 (gate not in the token allowlist), 409 (pending request already exists — call revoke-verification).
  */
 export type SDKCreateVerificationLinkResponse = {
   data: SDKCreateVerificationLinkData;
@@ -316,8 +304,6 @@ export const SDKCreateVerificationLinkRequest$inboundSchema: z.ZodType<
   metadata: types.optional(z.record(z.any())),
   notarize: types.optional(types.boolean()),
   gate: types.optional(types.string()),
-  act: types.optional(types.string()),
-  act_label: types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "user_email": "userEmail",
@@ -328,7 +314,6 @@ export const SDKCreateVerificationLinkRequest$inboundSchema: z.ZodType<
     "partner_user_ref": "partnerUserRef",
     "link_on_verify": "linkOnVerify",
     "parent_request_id": "parentRequestId",
-    "act_label": "actLabel",
   });
 });
 /** @internal */
@@ -346,8 +331,6 @@ export type SDKCreateVerificationLinkRequest$Outbound = {
   metadata?: { [k: string]: any } | undefined;
   notarize?: boolean | undefined;
   gate?: string | undefined;
-  act?: string | undefined;
-  act_label?: string | undefined;
 };
 
 /** @internal */
@@ -369,8 +352,6 @@ export const SDKCreateVerificationLinkRequest$outboundSchema: z.ZodType<
   metadata: z.record(z.any()).optional(),
   notarize: z.boolean().optional(),
   gate: z.string().optional(),
-  act: z.string().optional(),
-  actLabel: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     userEmail: "user_email",
@@ -381,7 +362,6 @@ export const SDKCreateVerificationLinkRequest$outboundSchema: z.ZodType<
     partnerUserRef: "partner_user_ref",
     linkOnVerify: "link_on_verify",
     parentRequestId: "parent_request_id",
-    actLabel: "act_label",
   });
 });
 
@@ -473,30 +453,30 @@ export function sdkCreateVerificationLinkOrganizationFromJSON(
 }
 
 /** @internal */
-export const SDKCreateVerificationLinkGateType$inboundSchema: z.ZodType<
-  SDKCreateVerificationLinkGateType,
+export const GateType$inboundSchema: z.ZodType<
+  GateType,
   z.ZodTypeDef,
   unknown
-> = openEnums.inboundSchema(SDKCreateVerificationLinkGateType);
+> = openEnums.inboundSchema(GateType);
 /** @internal */
-export const SDKCreateVerificationLinkGateType$outboundSchema: z.ZodType<
+export const GateType$outboundSchema: z.ZodType<
   string,
   z.ZodTypeDef,
-  SDKCreateVerificationLinkGateType
-> = openEnums.outboundSchema(SDKCreateVerificationLinkGateType);
+  GateType
+> = openEnums.outboundSchema(GateType);
 
 /** @internal */
-export const SDKCreateVerificationLinkAgeThreshold$inboundSchema: z.ZodType<
-  SDKCreateVerificationLinkAgeThreshold,
+export const AgeThreshold$inboundSchema: z.ZodType<
+  AgeThreshold,
   z.ZodTypeDef,
   unknown
-> = openEnums.inboundSchemaInt(SDKCreateVerificationLinkAgeThreshold);
+> = openEnums.inboundSchemaInt(AgeThreshold);
 /** @internal */
-export const SDKCreateVerificationLinkAgeThreshold$outboundSchema: z.ZodType<
+export const AgeThreshold$outboundSchema: z.ZodType<
   number,
   z.ZodTypeDef,
-  SDKCreateVerificationLinkAgeThreshold
-> = openEnums.outboundSchemaInt(SDKCreateVerificationLinkAgeThreshold);
+  AgeThreshold
+> = openEnums.outboundSchemaInt(AgeThreshold);
 
 /** @internal */
 export const SDKCreateVerificationLinkNotarizeFallbackReason$inboundSchema:
@@ -533,10 +513,8 @@ export const SDKCreateVerificationLinkDataData$inboundSchema: z.ZodType<
     z.lazy(() => SDKCreateVerificationLinkOrganization$inboundSchema),
   ),
   pushed_to_devices: types.number(),
-  gate_type: types.optional(SDKCreateVerificationLinkGateType$inboundSchema),
-  age_threshold: types.optional(
-    SDKCreateVerificationLinkAgeThreshold$inboundSchema,
-  ),
+  gate_type: types.optional(GateType$inboundSchema),
+  age_threshold: types.optional(AgeThreshold$inboundSchema),
   trusted: types.optional(types.boolean()),
   notarize: types.optional(types.boolean()),
   notarize_fallback_reason: types.optional(
@@ -596,8 +574,8 @@ export const SDKCreateVerificationLinkDataData$outboundSchema: z.ZodType<
     SDKCreateVerificationLinkOrganization$outboundSchema
   ).optional(),
   pushedToDevices: z.number().int(),
-  gateType: SDKCreateVerificationLinkGateType$outboundSchema.optional(),
-  ageThreshold: SDKCreateVerificationLinkAgeThreshold$outboundSchema.optional(),
+  gateType: GateType$outboundSchema.optional(),
+  ageThreshold: AgeThreshold$outboundSchema.optional(),
   trusted: z.boolean().optional(),
   notarize: z.boolean().optional(),
   notarizeFallbackReason:
