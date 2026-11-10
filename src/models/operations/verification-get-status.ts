@@ -59,23 +59,6 @@ export type Metadata = {
   parentRequestId?: string | null | undefined;
 };
 
-/**
- * Why a request ended `failed`. Null while pending and on success. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `unavailable`: the standard Unavailable result.
- */
-export const VerificationGetStatusReason = {
-  AlreadyTrusted: "already_trusted",
-  RebindRequiresPriorId: "rebind_requires_prior_id",
-  PassLimitReached: "pass_limit_reached",
-  RealDaysNotMet: "real_days_not_met",
-  Unavailable: "unavailable",
-} as const;
-/**
- * Why a request ended `failed`. Null while pending and on success. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `unavailable`: the standard Unavailable result.
- */
-export type VerificationGetStatusReason = OpenEnum<
-  typeof VerificationGetStatusReason
->;
-
 export const VerificationGetStatusPreset = {
   Presale: "presale",
   Promo: "promo",
@@ -169,6 +152,20 @@ export type VerificationGetStatusAction = {
   linked: boolean | null;
 };
 
+/**
+ * The gate kind this request runs. `human` on every non-gate request.
+ */
+export const VerificationGetStatusGateType = {
+  Human: "human",
+  Age: "age",
+} as const;
+/**
+ * The gate kind this request runs. `human` on every non-gate request.
+ */
+export type VerificationGetStatusGateType = OpenEnum<
+  typeof VerificationGetStatusGateType
+>;
+
 export type VerificationGetStatusData = {
   found?: boolean | undefined;
   /**
@@ -202,9 +199,9 @@ export type VerificationGetStatusData = {
    */
   error?: models.ErrorBody | undefined;
   /**
-   * Why a request ended `failed`. Null while pending and on success. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `unavailable`: the standard Unavailable result.
+   * Why a request ended `failed`. Null while pending and on success. An open set — treat unknown values as `unavailable`. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `gate_not_open`, `signup_required`, `link_requires_user_ref`: the gate's policy refused. `action_off`: the BotShield Action was turned off mid-tap. `action_requires_user_ref`: an action request without a linking ceremony. `unavailable`: the standard Unavailable result.
    */
-  reason?: VerificationGetStatusReason | null | undefined;
+  reason?: string | null | undefined;
   /**
    * GA 3.0: on a completed ceremony, whether an active Secured Account binding exists for (your platform, platform-user-ref). Null until completed.
    */
@@ -229,6 +226,30 @@ export type VerificationGetStatusData = {
    * BotShield Actions: what this tap confirms. Null on every non-action request. The `act` string itself is never shown here.
    */
   action?: VerificationGetStatusAction | null | undefined;
+  /**
+   * Your organization's mark (logo) URL, if set.
+   */
+  organizationMarkUrl?: string | null | undefined;
+  /**
+   * Number matching: the number the screen shows once the phone has scanned, while the request waits for the person's pick. Null otherwise.
+   */
+  matchNumber?: number | null | undefined;
+  /**
+   * The gate kind this request runs. `human` on every non-gate request.
+   */
+  gateType?: VerificationGetStatusGateType | undefined;
+  /**
+   * Age Gate only: the threshold asked (13, 18 or 21).
+   */
+  ageThreshold?: number | null | undefined;
+  /**
+   * Age Gate only, once completed. Positive-only: `over_<n>` or `unavailable`.
+   */
+  ageVerdict?: string | null | undefined;
+  /**
+   * Age Gate only, once completed: where the age answer came from.
+   */
+  ageSource?: string | null | undefined;
 };
 
 /**
@@ -417,19 +438,6 @@ export function metadataFromJSON(
 }
 
 /** @internal */
-export const VerificationGetStatusReason$inboundSchema: z.ZodType<
-  VerificationGetStatusReason,
-  z.ZodTypeDef,
-  unknown
-> = openEnums.inboundSchema(VerificationGetStatusReason);
-/** @internal */
-export const VerificationGetStatusReason$outboundSchema: z.ZodType<
-  string,
-  z.ZodTypeDef,
-  VerificationGetStatusReason
-> = openEnums.outboundSchema(VerificationGetStatusReason);
-
-/** @internal */
 export const VerificationGetStatusPreset$inboundSchema: z.ZodType<
   VerificationGetStatusPreset,
   z.ZodTypeDef,
@@ -602,6 +610,19 @@ export function verificationGetStatusActionFromJSON(
 }
 
 /** @internal */
+export const VerificationGetStatusGateType$inboundSchema: z.ZodType<
+  VerificationGetStatusGateType,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(VerificationGetStatusGateType);
+/** @internal */
+export const VerificationGetStatusGateType$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  VerificationGetStatusGateType
+> = openEnums.outboundSchema(VerificationGetStatusGateType);
+
+/** @internal */
 export const VerificationGetStatusData$inboundSchema: z.ZodType<
   VerificationGetStatusData,
   z.ZodTypeDef,
@@ -623,7 +644,7 @@ export const VerificationGetStatusData$inboundSchema: z.ZodType<
   metadata: z.nullable(z.lazy(() => Metadata$inboundSchema)).optional(),
   message: types.optional(types.string()),
   error: types.optional(models.ErrorBody$inboundSchema),
-  reason: z.nullable(VerificationGetStatusReason$inboundSchema).optional(),
+  reason: z.nullable(types.string()).optional(),
   trusted: z.nullable(types.boolean()).optional(),
   first_time: z.nullable(types.boolean()).optional(),
   notarize: types.optional(types.boolean()),
@@ -631,6 +652,12 @@ export const VerificationGetStatusData$inboundSchema: z.ZodType<
   gate: z.nullable(z.lazy(() => Gate$inboundSchema)).optional(),
   action: z.nullable(z.lazy(() => VerificationGetStatusAction$inboundSchema))
     .optional(),
+  organization_mark_url: z.nullable(types.string()).optional(),
+  match_number: z.nullable(types.number()).optional(),
+  gate_type: types.optional(VerificationGetStatusGateType$inboundSchema),
+  age_threshold: z.nullable(types.number()).optional(),
+  age_verdict: z.nullable(types.string()).optional(),
+  age_source: z.nullable(types.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
@@ -645,6 +672,12 @@ export const VerificationGetStatusData$inboundSchema: z.ZodType<
     "presence_address": "presenceAddress",
     "first_time": "firstTime",
     "organization_name": "organizationName",
+    "organization_mark_url": "organizationMarkUrl",
+    "match_number": "matchNumber",
+    "gate_type": "gateType",
+    "age_threshold": "ageThreshold",
+    "age_verdict": "ageVerdict",
+    "age_source": "ageSource",
   });
 });
 /** @internal */
@@ -672,6 +705,12 @@ export type VerificationGetStatusData$Outbound = {
   organization_name?: string | null | undefined;
   gate?: Gate$Outbound | null | undefined;
   action?: VerificationGetStatusAction$Outbound | null | undefined;
+  organization_mark_url?: string | null | undefined;
+  match_number?: number | null | undefined;
+  gate_type?: string | undefined;
+  age_threshold?: number | null | undefined;
+  age_verdict?: string | null | undefined;
+  age_source?: string | null | undefined;
 };
 
 /** @internal */
@@ -696,7 +735,7 @@ export const VerificationGetStatusData$outboundSchema: z.ZodType<
   metadata: z.nullable(z.lazy(() => Metadata$outboundSchema)).optional(),
   message: z.string().optional(),
   error: models.ErrorBody$outboundSchema.optional(),
-  reason: z.nullable(VerificationGetStatusReason$outboundSchema).optional(),
+  reason: z.nullable(z.string()).optional(),
   trusted: z.nullable(z.boolean()).optional(),
   firstTime: z.nullable(z.boolean()).optional(),
   notarize: z.boolean().optional(),
@@ -704,6 +743,12 @@ export const VerificationGetStatusData$outboundSchema: z.ZodType<
   gate: z.nullable(z.lazy(() => Gate$outboundSchema)).optional(),
   action: z.nullable(z.lazy(() => VerificationGetStatusAction$outboundSchema))
     .optional(),
+  organizationMarkUrl: z.nullable(z.string()).optional(),
+  matchNumber: z.nullable(z.number().int()).optional(),
+  gateType: VerificationGetStatusGateType$outboundSchema.optional(),
+  ageThreshold: z.nullable(z.number().int()).optional(),
+  ageVerdict: z.nullable(z.string()).optional(),
+  ageSource: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
@@ -718,6 +763,12 @@ export const VerificationGetStatusData$outboundSchema: z.ZodType<
     presenceAddress: "presence_address",
     firstTime: "first_time",
     organizationName: "organization_name",
+    organizationMarkUrl: "organization_mark_url",
+    matchNumber: "match_number",
+    gateType: "gate_type",
+    ageThreshold: "age_threshold",
+    ageVerdict: "age_verdict",
+    ageSource: "age_source",
   });
 });
 

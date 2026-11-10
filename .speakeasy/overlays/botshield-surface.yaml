@@ -207,3 +207,14 @@ actions:
     update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: request, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/gates-api/actions/request-status"].get
     update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: requestStatus, x-speakeasy-mcp: { disabled: true } }
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # inlinePasskey.* — the partner inline passkey lane (SDK 2.3). PUBLIC: the request_id
+  # is the credential, so `security: []` in the spec overrides the global AgentKeyAuth
+  # above. EXCLUDED from MCP (a browser/app ceremony, not an agent tool).
+  # client.inlinePasskey.getOptions / .complete
+  # ────────────────────────────────────────────────────────────────────────────
+  - target: $.paths["/request/passkey-options"].post
+    update: { x-speakeasy-group: inlinePasskey, x-speakeasy-name-override: getOptions, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/request/passkey-complete"].post
+    update: { x-speakeasy-group: inlinePasskey, x-speakeasy-name-override: complete, x-speakeasy-mcp: { disabled: true } }

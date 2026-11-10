@@ -22,7 +22,7 @@ interface StartCommandFlags {
   readonly "agent-key-auth"?: string | undefined;
   readonly "agent-key-auth1"?: string | undefined;
   readonly "server-url"?: string;
-  readonly "server-index"?: SDKOptions["serverIdx"];
+  readonly server?: SDKOptions["server"];
   readonly "log-level": ConsoleLoggerLevel;
   readonly env?: [string, string][];
 }
@@ -56,7 +56,7 @@ async function startStdio(flags: StartCommandFlags) {
       agentKeyAuth1: flags["agent-key-auth1"] ?? "",
     },
     serverURL: flags["server-url"],
-    serverIdx: flags["server-index"],
+    server: flags.server,
   });
   await server.connect(transport);
 
@@ -80,7 +80,7 @@ async function startSSE(flags: StartCommandFlags) {
       agentKeyAuth1: flags["agent-key-auth1"] ?? "",
     },
     serverURL: flags["server-url"],
-    serverIdx: flags["server-index"],
+    server: flags.server,
   });
   let transport: SSEServerTransport | undefined;
   const controller = new AbortController();

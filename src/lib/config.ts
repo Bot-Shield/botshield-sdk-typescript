@@ -9,18 +9,25 @@ import { RetryConfig } from "./retries.js";
 import { Params, pathToFunc } from "./url.js";
 
 /**
+ * Production (default)
+ */
+export const ServerProduction = "production";
+/**
+ * Staging
+ */
+export const ServerStaging = "staging";
+/**
+ * Local development
+ */
+export const ServerLocal = "local";
+/**
  * Contains the list of servers available to the SDK
  */
-export const ServerList = [
-  /**
-   * Local development
-   */
-  "http://localhost:9991/operations",
-  /**
-   * Production
-   */
-  "https://api.botshield.ai/operations",
-] as const;
+export const ServerList = {
+  [ServerProduction]: "https://api.botshield.ai/operations",
+  [ServerStaging]: "https://wg-staging.botshield.ai/operations",
+  [ServerLocal]: "http://localhost:9991/operations",
+} as const;
 
 export type SDKOptions = {
   /**
@@ -32,7 +39,7 @@ export type SDKOptions = {
   /**
    * Allows overriding the default server used by the SDK
    */
-  serverIdx?: number | undefined;
+  server?: keyof typeof ServerList | undefined;
   /**
    * Allows overriding the default server URL used by the SDK
    */
@@ -55,11 +62,8 @@ export function serverURLFromOptions(options: SDKOptions): URL | null {
   const params: Params = {};
 
   if (!serverURL) {
-    const serverIdx = options.serverIdx ?? 0;
-    if (serverIdx < 0 || serverIdx >= ServerList.length) {
-      throw new Error(`Invalid server index ${serverIdx}`);
-    }
-    serverURL = ServerList[serverIdx] || "";
+    const server = options.server ?? ServerProduction;
+    serverURL = ServerList[server] || "";
   }
 
   const u = pathToFunc(serverURL)(params);
@@ -69,7 +73,7 @@ export function serverURLFromOptions(options: SDKOptions): URL | null {
 export const SDK_METADATA = {
   language: "typescript",
   openapiDocVersion: "2.0.0",
-  sdkVersion: "2.2.1",
+  sdkVersion: "2.3.0",
   genVersion: "2.934.1",
-  userAgent: "speakeasy-sdk/typescript 2.2.1 2.934.1 2.0.0 botshield-sdk",
+  userAgent: "speakeasy-sdk/typescript 2.3.0 2.934.1 2.0.0 botshield-sdk",
 } as const;
