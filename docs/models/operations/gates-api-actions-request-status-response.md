@@ -1,6 +1,6 @@
 # GatesApiActionsRequestStatusResponse
 
-The request. Errors as data.error — codes: `invalid_key`, `gates_scope_required`, `request_not_found` (404).
+The request. Errors as data.error — codes: `invalid_key` (401), `gates_scope_required` (403), `org_not_found` (404), `request_not_found` (404).
 
 ## Example Usage
 

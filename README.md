@@ -320,6 +320,11 @@ run();
 * [request](docs/sdks/gatesactions/README.md#request) - Ask a linked person to confirm an action
 * [requestStatus](docs/sdks/gatesactions/README.md#requeststatus) - Where an action request stands
 
+### [InlinePasskey](docs/sdks/inlinepasskey/README.md)
+
+* [getOptions](docs/sdks/inlinepasskey/README.md#getoptions) - Start the inline passkey for one request
+* [complete](docs/sdks/inlinepasskey/README.md#complete) - Finish the inline passkey for one request
+
 ### [SecuredAccounts](docs/sdks/securedaccounts/README.md)
 
 * [list](docs/sdks/securedaccounts/README.md#list) - List Secured Accounts
@@ -371,6 +376,8 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`gatesExtend`](docs/sdks/gates/README.md#extend) - Extend a gate's window
 - [`gatesGet`](docs/sdks/gates/README.md#get) - Get a gate
 - [`gatesList`](docs/sdks/gates/README.md#list) - List gates
+- [`inlinePasskeyComplete`](docs/sdks/inlinepasskey/README.md#complete) - Finish the inline passkey for one request
+- [`inlinePasskeyGetOptions`](docs/sdks/inlinepasskey/README.md#getoptions) - Start the inline passkey for one request
 - [`securedAccountsGetStatus`](docs/sdks/securedaccounts/README.md#getstatus) - Get Secured Account status
 - [`securedAccountsList`](docs/sdks/securedaccounts/README.md#list) - List Secured Accounts
 - [`securedAccountsRevoke`](docs/sdks/securedaccounts/README.md#revoke) - Revoke a Secured Account
@@ -524,14 +531,15 @@ run();
 <!-- Start Server Selection [server] -->
 ## Server Selection
 
-### Select Server by Index
+### Select Server by Name
 
-You can override the default server globally by passing a server index to the `serverIdx: number` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the indexes associated with the available servers:
+You can override the default server globally by passing a server name to the `server: keyof typeof ServerList` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the names associated with the available servers:
 
-| #   | Server                                | Description       |
-| --- | ------------------------------------- | ----------------- |
-| 0   | `http://localhost:9991/operations`    | Local development |
-| 1   | `https://api.botshield.ai/operations` | Production        |
+| Name         | Server                                       | Description          |
+| ------------ | -------------------------------------------- | -------------------- |
+| `production` | `https://api.botshield.ai/operations`        | Production (default) |
+| `staging`    | `https://wg-staging.botshield.ai/operations` | Staging              |
+| `local`      | `http://localhost:9991/operations`           | Local development    |
 
 #### Example
 
@@ -539,7 +547,7 @@ You can override the default server globally by passing a server index to the `s
 import { BotShield } from "botshield-sdk";
 
 const botShield = new BotShield({
-  serverIdx: 0,
+  server: "production",
 });
 
 async function run() {

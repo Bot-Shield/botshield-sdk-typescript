@@ -73,7 +73,7 @@ export type GatesApiActionsRequestData = {
 };
 
 /**
- * Queued. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401), `gates_scope_required` (403), `action_invalid` (400), `action_not_found` (404), `action_off` (404), `agent_not_found` (404), `not_linked` (409 — the person isn't linked to your company), `request_id_reused` (409).
+ * Queued. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401), `gates_scope_required` (403), `org_not_found` (404), `action_invalid` (400), `action_not_found` (404), `action_off` (404), `agent_not_found` (404), `not_linked` (409 — the person isn't linked to your company), `request_id_reused` (409), `internal` (500).
  */
 export type GatesApiActionsRequestResponse = {
   data: GatesApiActionsRequestData;

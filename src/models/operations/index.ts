@@ -17,6 +17,8 @@ export * from "./gates-api-create.js";
 export * from "./gates-api-extend.js";
 export * from "./gates-api-get.js";
 export * from "./gates-api-list.js";
+export * from "./request-passkey-complete.js";
+export * from "./request-passkey-options.js";
 export * from "./sdk-create-session.js";
 export * from "./sdk-create-verification-link.js";
 export * from "./sdk-get-partner-config.js";
