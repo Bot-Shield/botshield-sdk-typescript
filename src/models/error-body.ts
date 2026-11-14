@@ -36,7 +36,7 @@ export type ErrorBody = {
   message: string;
   statusCode: number;
   /**
-   * `ttl_below_floor`, `ttl_above_ceiling`, `trust_layer_rejected`, `trust_layer_unavailable`, `gate_required`, `alias_retired`, `RATE_LIMITED`, `inline_not_for_age_gate`.
+   * `ttl_below_floor`, `ttl_above_ceiling`, `trust_layer_rejected`, `trust_layer_unavailable`, `gate_required`, `alias_retired`, `RATE_LIMITED`.
    */
   code?: string | undefined;
   minTtlSeconds?: number | undefined;
@@ -49,10 +49,6 @@ export type ErrorBody = {
   retryIn?: number | undefined;
   limits?: Limits | undefined;
   upgradeUrl?: string | undefined;
-  /**
-   * inline_not_for_age_gate only: the app hand-off for this request.
-   */
-  url?: string | undefined;
 };
 
 /** @internal */
@@ -160,7 +156,6 @@ export const ErrorBody$inboundSchema: z.ZodType<
   retry_in: types.optional(types.number()),
   limits: types.optional(z.lazy(() => Limits$inboundSchema)),
   upgrade_url: types.optional(types.string()),
-  url: types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "min_ttl_seconds": "minTtlSeconds",
@@ -185,7 +180,6 @@ export type ErrorBody$Outbound = {
   retry_in?: number | undefined;
   limits?: Limits$Outbound | undefined;
   upgrade_url?: string | undefined;
-  url?: string | undefined;
 };
 
 /** @internal */
@@ -207,7 +201,6 @@ export const ErrorBody$outboundSchema: z.ZodType<
   retryIn: z.number().int().optional(),
   limits: z.lazy(() => Limits$outboundSchema).optional(),
   upgradeUrl: z.string().optional(),
-  url: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     minTtlSeconds: "min_ttl_seconds",

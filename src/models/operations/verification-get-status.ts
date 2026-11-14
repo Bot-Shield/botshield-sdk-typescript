@@ -15,6 +15,37 @@ import * as models from "../index.js";
 export type VerificationGetStatusSecurity = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
+  apiKeyAuth2?: string | undefined;
+  apiKeyAuth3?: string | undefined;
+  apiKeyAuth4?: string | undefined;
+  apiKeyAuth5?: string | undefined;
+  apiKeyAuth6?: string | undefined;
+  apiKeyAuth7?: string | undefined;
+  apiKeyAuth8?: string | undefined;
+  apiKeyAuth9?: string | undefined;
+  apiKeyAuth10?: string | undefined;
+  apiKeyAuth11?: string | undefined;
+  apiKeyAuth12?: string | undefined;
+  apiKeyAuth13?: string | undefined;
+  apiKeyAuth14?: string | undefined;
+  apiKeyAuth15?: string | undefined;
+  apiKeyAuth16?: string | undefined;
+  apiKeyAuth17?: string | undefined;
+  apiKeyAuth18?: string | undefined;
+  apiKeyAuth19?: string | undefined;
+  apiKeyAuth20?: string | undefined;
+  apiKeyAuth21?: string | undefined;
+  apiKeyAuth22?: string | undefined;
+  apiKeyAuth23?: string | undefined;
+  apiKeyAuth24?: string | undefined;
+  apiKeyAuth25?: string | undefined;
+  apiKeyAuth26?: string | undefined;
+  apiKeyAuth27?: string | undefined;
+  apiKeyAuth28?: string | undefined;
+  apiKeyAuth29?: string | undefined;
+  apiKeyAuth30?: string | undefined;
+  apiKeyAuth31?: string | undefined;
+  apiKeyAuth32?: string | undefined;
 };
 
 export type VerificationGetStatusRequest = {
@@ -59,111 +90,21 @@ export type Metadata = {
   parentRequestId?: string | null | undefined;
 };
 
-export const VerificationGetStatusPreset = {
-  Presale: "presale",
-  Promo: "promo",
-  Drop: "drop",
-  Vote: "vote",
-  Reservation: "reservation",
-  Claim: "claim",
-} as const;
-export type VerificationGetStatusPreset = OpenEnum<
-  typeof VerificationGetStatusPreset
->;
-
 /**
- * Whether a pass links the person to your platform (told before it happens).
+ * Why a request ended `failed`. Null while pending and on success. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `unavailable`: the standard Unavailable result.
  */
-export const Link = {
-  Required: "required",
-  Optional: "optional",
-  Never: "never",
+export const VerificationGetStatusReason = {
+  AlreadyTrusted: "already_trusted",
+  RebindRequiresPriorId: "rebind_requires_prior_id",
+  PassLimitReached: "pass_limit_reached",
+  RealDaysNotMet: "real_days_not_met",
+  Unavailable: "unavailable",
 } as const;
 /**
- * Whether a pass links the person to your platform (told before it happens).
+ * Why a request ended `failed`. Null while pending and on success. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `unavailable`: the standard Unavailable result.
  */
-export type Link = OpenEnum<typeof Link>;
-
-export const VerificationGetStatusState = {
-  Scheduled: "scheduled",
-  Open: "open",
-  Closed: "closed",
-} as const;
-export type VerificationGetStatusState = OpenEnum<
-  typeof VerificationGetStatusState
->;
-
-/**
- * The gate as the person meets it on the arrival card — display facts about the GATE, never about anyone. Null when the request has no gate.
- */
-export type Gate = {
-  gateName?: string | null | undefined;
-  /**
-   * The gate's line to people.
-   */
-  message?: string | null | undefined;
-  /**
-   * The gate's destination — null until this request is completed and verified.
-   */
-  destinationUrl?: string | null | undefined;
-  /**
-   * The destination's host (https only, `www.` dropped), shown before a pass so the card can say where it goes.
-   */
-  destinationHost?: string | null | undefined;
-  preset?: VerificationGetStatusPreset | null | undefined;
-  /**
-   * Whether a pass links the person to your platform (told before it happens).
-   */
-  link?: Link | undefined;
-  /**
-   * Whether the person (or your ref on this request) is already linked to your platform. Null when not known here.
-   */
-  linked?: boolean | null | undefined;
-  signedUpRequired?: boolean | undefined;
-  /**
-   * Passes per person. Null = as often as they like.
-   */
-  perPerson?: models.PassesPerPerson | null | undefined;
-  /**
-   * Distinct proving days the BotShield ID needs. 0 = anyone.
-   */
-  realDays?: number | undefined;
-  policyLine?: string | undefined;
-  state?: VerificationGetStatusState | undefined;
-  opensAt?: Date | null | undefined;
-  closesAt?: Date | null | undefined;
-};
-
-/**
- * BotShield Actions: what this tap confirms. Null on every non-action request. The `act` string itself is never shown here.
- */
-export type VerificationGetStatusAction = {
-  /**
-   * The action's name.
-   */
-  name: string;
-  /**
-   * The `act_label` sent with the request.
-   */
-  label: string | null;
-  /**
-   * Whether your ref on this request is already linked to your platform. Null when not known.
-   */
-  linked: boolean | null;
-};
-
-/**
- * The gate kind this request runs. `human` on every non-gate request.
- */
-export const VerificationGetStatusGateType = {
-  Human: "human",
-  Age: "age",
-} as const;
-/**
- * The gate kind this request runs. `human` on every non-gate request.
- */
-export type VerificationGetStatusGateType = OpenEnum<
-  typeof VerificationGetStatusGateType
+export type VerificationGetStatusReason = OpenEnum<
+  typeof VerificationGetStatusReason
 >;
 
 export type VerificationGetStatusData = {
@@ -199,9 +140,9 @@ export type VerificationGetStatusData = {
    */
   error?: models.ErrorBody | undefined;
   /**
-   * Why a request ended `failed`. Null while pending and on success. An open set — treat unknown values as `unavailable`. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `gate_not_open`, `signup_required`, `link_requires_user_ref`: the gate's policy refused. `action_off`: the BotShield Action was turned off mid-tap. `action_requires_user_ref`: an action request without a linking ceremony. `unavailable`: the standard Unavailable result.
+   * Why a request ended `failed`. Null while pending and on success. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `unavailable`: the standard Unavailable result.
    */
-  reason?: string | null | undefined;
+  reason?: VerificationGetStatusReason | null | undefined;
   /**
    * GA 3.0: on a completed ceremony, whether an active Secured Account binding exists for (your platform, platform-user-ref). Null until completed.
    */
@@ -218,38 +159,6 @@ export type VerificationGetStatusData = {
    * Your organization's public display name, as the BotShield app shows it to the person.
    */
   organizationName?: string | null | undefined;
-  /**
-   * The gate as the person meets it on the arrival card — display facts about the GATE, never about anyone. Null when the request has no gate.
-   */
-  gate?: Gate | null | undefined;
-  /**
-   * BotShield Actions: what this tap confirms. Null on every non-action request. The `act` string itself is never shown here.
-   */
-  action?: VerificationGetStatusAction | null | undefined;
-  /**
-   * Your organization's mark (logo) URL, if set.
-   */
-  organizationMarkUrl?: string | null | undefined;
-  /**
-   * Number matching: the number the screen shows once the phone has scanned, while the request waits for the person's pick. Null otherwise.
-   */
-  matchNumber?: number | null | undefined;
-  /**
-   * The gate kind this request runs. `human` on every non-gate request.
-   */
-  gateType?: VerificationGetStatusGateType | undefined;
-  /**
-   * Age Gate only: the threshold asked (13, 18 or 21).
-   */
-  ageThreshold?: number | null | undefined;
-  /**
-   * Age Gate only, once completed. Positive-only: `over_<n>` or `unavailable`.
-   */
-  ageVerdict?: string | null | undefined;
-  /**
-   * Age Gate only, once completed: where the age answer came from.
-   */
-  ageSource?: string | null | undefined;
 };
 
 /**
@@ -267,11 +176,73 @@ export const VerificationGetStatusSecurity$inboundSchema: z.ZodType<
 > = z.object({
   apiKeyAuth: types.optional(types.string()),
   apiKeyAuth1: types.optional(types.string()),
+  apiKeyAuth2: types.optional(types.string()),
+  apiKeyAuth3: types.optional(types.string()),
+  apiKeyAuth4: types.optional(types.string()),
+  apiKeyAuth5: types.optional(types.string()),
+  apiKeyAuth6: types.optional(types.string()),
+  apiKeyAuth7: types.optional(types.string()),
+  apiKeyAuth8: types.optional(types.string()),
+  apiKeyAuth9: types.optional(types.string()),
+  apiKeyAuth10: types.optional(types.string()),
+  apiKeyAuth11: types.optional(types.string()),
+  apiKeyAuth12: types.optional(types.string()),
+  apiKeyAuth13: types.optional(types.string()),
+  apiKeyAuth14: types.optional(types.string()),
+  apiKeyAuth15: types.optional(types.string()),
+  apiKeyAuth16: types.optional(types.string()),
+  apiKeyAuth17: types.optional(types.string()),
+  apiKeyAuth18: types.optional(types.string()),
+  apiKeyAuth19: types.optional(types.string()),
+  apiKeyAuth20: types.optional(types.string()),
+  apiKeyAuth21: types.optional(types.string()),
+  apiKeyAuth22: types.optional(types.string()),
+  apiKeyAuth23: types.optional(types.string()),
+  apiKeyAuth24: types.optional(types.string()),
+  apiKeyAuth25: types.optional(types.string()),
+  apiKeyAuth26: types.optional(types.string()),
+  apiKeyAuth27: types.optional(types.string()),
+  apiKeyAuth28: types.optional(types.string()),
+  apiKeyAuth29: types.optional(types.string()),
+  apiKeyAuth30: types.optional(types.string()),
+  apiKeyAuth31: types.optional(types.string()),
+  apiKeyAuth32: types.optional(types.string()),
 });
 /** @internal */
 export type VerificationGetStatusSecurity$Outbound = {
   apiKeyAuth?: string | undefined;
   apiKeyAuth1?: string | undefined;
+  apiKeyAuth2?: string | undefined;
+  apiKeyAuth3?: string | undefined;
+  apiKeyAuth4?: string | undefined;
+  apiKeyAuth5?: string | undefined;
+  apiKeyAuth6?: string | undefined;
+  apiKeyAuth7?: string | undefined;
+  apiKeyAuth8?: string | undefined;
+  apiKeyAuth9?: string | undefined;
+  apiKeyAuth10?: string | undefined;
+  apiKeyAuth11?: string | undefined;
+  apiKeyAuth12?: string | undefined;
+  apiKeyAuth13?: string | undefined;
+  apiKeyAuth14?: string | undefined;
+  apiKeyAuth15?: string | undefined;
+  apiKeyAuth16?: string | undefined;
+  apiKeyAuth17?: string | undefined;
+  apiKeyAuth18?: string | undefined;
+  apiKeyAuth19?: string | undefined;
+  apiKeyAuth20?: string | undefined;
+  apiKeyAuth21?: string | undefined;
+  apiKeyAuth22?: string | undefined;
+  apiKeyAuth23?: string | undefined;
+  apiKeyAuth24?: string | undefined;
+  apiKeyAuth25?: string | undefined;
+  apiKeyAuth26?: string | undefined;
+  apiKeyAuth27?: string | undefined;
+  apiKeyAuth28?: string | undefined;
+  apiKeyAuth29?: string | undefined;
+  apiKeyAuth30?: string | undefined;
+  apiKeyAuth31?: string | undefined;
+  apiKeyAuth32?: string | undefined;
 };
 
 /** @internal */
@@ -282,6 +253,37 @@ export const VerificationGetStatusSecurity$outboundSchema: z.ZodType<
 > = z.object({
   apiKeyAuth: z.string().optional(),
   apiKeyAuth1: z.string().optional(),
+  apiKeyAuth2: z.string().optional(),
+  apiKeyAuth3: z.string().optional(),
+  apiKeyAuth4: z.string().optional(),
+  apiKeyAuth5: z.string().optional(),
+  apiKeyAuth6: z.string().optional(),
+  apiKeyAuth7: z.string().optional(),
+  apiKeyAuth8: z.string().optional(),
+  apiKeyAuth9: z.string().optional(),
+  apiKeyAuth10: z.string().optional(),
+  apiKeyAuth11: z.string().optional(),
+  apiKeyAuth12: z.string().optional(),
+  apiKeyAuth13: z.string().optional(),
+  apiKeyAuth14: z.string().optional(),
+  apiKeyAuth15: z.string().optional(),
+  apiKeyAuth16: z.string().optional(),
+  apiKeyAuth17: z.string().optional(),
+  apiKeyAuth18: z.string().optional(),
+  apiKeyAuth19: z.string().optional(),
+  apiKeyAuth20: z.string().optional(),
+  apiKeyAuth21: z.string().optional(),
+  apiKeyAuth22: z.string().optional(),
+  apiKeyAuth23: z.string().optional(),
+  apiKeyAuth24: z.string().optional(),
+  apiKeyAuth25: z.string().optional(),
+  apiKeyAuth26: z.string().optional(),
+  apiKeyAuth27: z.string().optional(),
+  apiKeyAuth28: z.string().optional(),
+  apiKeyAuth29: z.string().optional(),
+  apiKeyAuth30: z.string().optional(),
+  apiKeyAuth31: z.string().optional(),
+  apiKeyAuth32: z.string().optional(),
 });
 
 export function verificationGetStatusSecurityToJSON(
@@ -438,189 +440,17 @@ export function metadataFromJSON(
 }
 
 /** @internal */
-export const VerificationGetStatusPreset$inboundSchema: z.ZodType<
-  VerificationGetStatusPreset,
+export const VerificationGetStatusReason$inboundSchema: z.ZodType<
+  VerificationGetStatusReason,
   z.ZodTypeDef,
   unknown
-> = openEnums.inboundSchema(VerificationGetStatusPreset);
+> = openEnums.inboundSchema(VerificationGetStatusReason);
 /** @internal */
-export const VerificationGetStatusPreset$outboundSchema: z.ZodType<
+export const VerificationGetStatusReason$outboundSchema: z.ZodType<
   string,
   z.ZodTypeDef,
-  VerificationGetStatusPreset
-> = openEnums.outboundSchema(VerificationGetStatusPreset);
-
-/** @internal */
-export const Link$inboundSchema: z.ZodType<Link, z.ZodTypeDef, unknown> =
-  openEnums.inboundSchema(Link);
-/** @internal */
-export const Link$outboundSchema: z.ZodType<string, z.ZodTypeDef, Link> =
-  openEnums.outboundSchema(Link);
-
-/** @internal */
-export const VerificationGetStatusState$inboundSchema: z.ZodType<
-  VerificationGetStatusState,
-  z.ZodTypeDef,
-  unknown
-> = openEnums.inboundSchema(VerificationGetStatusState);
-/** @internal */
-export const VerificationGetStatusState$outboundSchema: z.ZodType<
-  string,
-  z.ZodTypeDef,
-  VerificationGetStatusState
-> = openEnums.outboundSchema(VerificationGetStatusState);
-
-/** @internal */
-export const Gate$inboundSchema: z.ZodType<Gate, z.ZodTypeDef, unknown> = z
-  .object({
-    gate_name: z.nullable(types.string()).optional(),
-    message: z.nullable(types.string()).optional(),
-    destination_url: z.nullable(types.string()).optional(),
-    destination_host: z.nullable(types.string()).optional(),
-    preset: z.nullable(VerificationGetStatusPreset$inboundSchema).optional(),
-    link: types.optional(Link$inboundSchema),
-    linked: z.nullable(types.boolean()).optional(),
-    signed_up_required: types.optional(types.boolean()),
-    per_person: z.nullable(models.PassesPerPerson$inboundSchema).optional(),
-    real_days: types.optional(types.number()),
-    policy_line: types.optional(types.string()),
-    state: types.optional(VerificationGetStatusState$inboundSchema),
-    opens_at: z.nullable(types.date()).optional(),
-    closes_at: z.nullable(types.date()).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      "gate_name": "gateName",
-      "destination_url": "destinationUrl",
-      "destination_host": "destinationHost",
-      "signed_up_required": "signedUpRequired",
-      "per_person": "perPerson",
-      "real_days": "realDays",
-      "policy_line": "policyLine",
-      "opens_at": "opensAt",
-      "closes_at": "closesAt",
-    });
-  });
-/** @internal */
-export type Gate$Outbound = {
-  gate_name?: string | null | undefined;
-  message?: string | null | undefined;
-  destination_url?: string | null | undefined;
-  destination_host?: string | null | undefined;
-  preset?: string | null | undefined;
-  link?: string | undefined;
-  linked?: boolean | null | undefined;
-  signed_up_required?: boolean | undefined;
-  per_person?: models.PassesPerPerson$Outbound | null | undefined;
-  real_days?: number | undefined;
-  policy_line?: string | undefined;
-  state?: string | undefined;
-  opens_at?: string | null | undefined;
-  closes_at?: string | null | undefined;
-};
-
-/** @internal */
-export const Gate$outboundSchema: z.ZodType<Gate$Outbound, z.ZodTypeDef, Gate> =
-  z.object({
-    gateName: z.nullable(z.string()).optional(),
-    message: z.nullable(z.string()).optional(),
-    destinationUrl: z.nullable(z.string()).optional(),
-    destinationHost: z.nullable(z.string()).optional(),
-    preset: z.nullable(VerificationGetStatusPreset$outboundSchema).optional(),
-    link: Link$outboundSchema.optional(),
-    linked: z.nullable(z.boolean()).optional(),
-    signedUpRequired: z.boolean().optional(),
-    perPerson: z.nullable(models.PassesPerPerson$outboundSchema).optional(),
-    realDays: z.number().int().optional(),
-    policyLine: z.string().optional(),
-    state: VerificationGetStatusState$outboundSchema.optional(),
-    opensAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
-    closesAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      gateName: "gate_name",
-      destinationUrl: "destination_url",
-      destinationHost: "destination_host",
-      signedUpRequired: "signed_up_required",
-      perPerson: "per_person",
-      realDays: "real_days",
-      policyLine: "policy_line",
-      opensAt: "opens_at",
-      closesAt: "closes_at",
-    });
-  });
-
-export function gateToJSON(gate: Gate): string {
-  return JSON.stringify(Gate$outboundSchema.parse(gate));
-}
-export function gateFromJSON(
-  jsonString: string,
-): SafeParseResult<Gate, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Gate$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Gate' from JSON`,
-  );
-}
-
-/** @internal */
-export const VerificationGetStatusAction$inboundSchema: z.ZodType<
-  VerificationGetStatusAction,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  name: types.string(),
-  label: types.nullable(types.string()),
-  linked: types.nullable(types.boolean()),
-});
-/** @internal */
-export type VerificationGetStatusAction$Outbound = {
-  name: string;
-  label: string | null;
-  linked: boolean | null;
-};
-
-/** @internal */
-export const VerificationGetStatusAction$outboundSchema: z.ZodType<
-  VerificationGetStatusAction$Outbound,
-  z.ZodTypeDef,
-  VerificationGetStatusAction
-> = z.object({
-  name: z.string(),
-  label: z.nullable(z.string()),
-  linked: z.nullable(z.boolean()),
-});
-
-export function verificationGetStatusActionToJSON(
-  verificationGetStatusAction: VerificationGetStatusAction,
-): string {
-  return JSON.stringify(
-    VerificationGetStatusAction$outboundSchema.parse(
-      verificationGetStatusAction,
-    ),
-  );
-}
-export function verificationGetStatusActionFromJSON(
-  jsonString: string,
-): SafeParseResult<VerificationGetStatusAction, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => VerificationGetStatusAction$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'VerificationGetStatusAction' from JSON`,
-  );
-}
-
-/** @internal */
-export const VerificationGetStatusGateType$inboundSchema: z.ZodType<
-  VerificationGetStatusGateType,
-  z.ZodTypeDef,
-  unknown
-> = openEnums.inboundSchema(VerificationGetStatusGateType);
-/** @internal */
-export const VerificationGetStatusGateType$outboundSchema: z.ZodType<
-  string,
-  z.ZodTypeDef,
-  VerificationGetStatusGateType
-> = openEnums.outboundSchema(VerificationGetStatusGateType);
+  VerificationGetStatusReason
+> = openEnums.outboundSchema(VerificationGetStatusReason);
 
 /** @internal */
 export const VerificationGetStatusData$inboundSchema: z.ZodType<
@@ -644,20 +474,11 @@ export const VerificationGetStatusData$inboundSchema: z.ZodType<
   metadata: z.nullable(z.lazy(() => Metadata$inboundSchema)).optional(),
   message: types.optional(types.string()),
   error: types.optional(models.ErrorBody$inboundSchema),
-  reason: z.nullable(types.string()).optional(),
+  reason: z.nullable(VerificationGetStatusReason$inboundSchema).optional(),
   trusted: z.nullable(types.boolean()).optional(),
   first_time: z.nullable(types.boolean()).optional(),
   notarize: types.optional(types.boolean()),
   organization_name: z.nullable(types.string()).optional(),
-  gate: z.nullable(z.lazy(() => Gate$inboundSchema)).optional(),
-  action: z.nullable(z.lazy(() => VerificationGetStatusAction$inboundSchema))
-    .optional(),
-  organization_mark_url: z.nullable(types.string()).optional(),
-  match_number: z.nullable(types.number()).optional(),
-  gate_type: types.optional(VerificationGetStatusGateType$inboundSchema),
-  age_threshold: z.nullable(types.number()).optional(),
-  age_verdict: z.nullable(types.string()).optional(),
-  age_source: z.nullable(types.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
@@ -672,12 +493,6 @@ export const VerificationGetStatusData$inboundSchema: z.ZodType<
     "presence_address": "presenceAddress",
     "first_time": "firstTime",
     "organization_name": "organizationName",
-    "organization_mark_url": "organizationMarkUrl",
-    "match_number": "matchNumber",
-    "gate_type": "gateType",
-    "age_threshold": "ageThreshold",
-    "age_verdict": "ageVerdict",
-    "age_source": "ageSource",
   });
 });
 /** @internal */
@@ -703,14 +518,6 @@ export type VerificationGetStatusData$Outbound = {
   first_time?: boolean | null | undefined;
   notarize?: boolean | undefined;
   organization_name?: string | null | undefined;
-  gate?: Gate$Outbound | null | undefined;
-  action?: VerificationGetStatusAction$Outbound | null | undefined;
-  organization_mark_url?: string | null | undefined;
-  match_number?: number | null | undefined;
-  gate_type?: string | undefined;
-  age_threshold?: number | null | undefined;
-  age_verdict?: string | null | undefined;
-  age_source?: string | null | undefined;
 };
 
 /** @internal */
@@ -735,20 +542,11 @@ export const VerificationGetStatusData$outboundSchema: z.ZodType<
   metadata: z.nullable(z.lazy(() => Metadata$outboundSchema)).optional(),
   message: z.string().optional(),
   error: models.ErrorBody$outboundSchema.optional(),
-  reason: z.nullable(z.string()).optional(),
+  reason: z.nullable(VerificationGetStatusReason$outboundSchema).optional(),
   trusted: z.nullable(z.boolean()).optional(),
   firstTime: z.nullable(z.boolean()).optional(),
   notarize: z.boolean().optional(),
   organizationName: z.nullable(z.string()).optional(),
-  gate: z.nullable(z.lazy(() => Gate$outboundSchema)).optional(),
-  action: z.nullable(z.lazy(() => VerificationGetStatusAction$outboundSchema))
-    .optional(),
-  organizationMarkUrl: z.nullable(z.string()).optional(),
-  matchNumber: z.nullable(z.number().int()).optional(),
-  gateType: VerificationGetStatusGateType$outboundSchema.optional(),
-  ageThreshold: z.nullable(z.number().int()).optional(),
-  ageVerdict: z.nullable(z.string()).optional(),
-  ageSource: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
@@ -763,12 +561,6 @@ export const VerificationGetStatusData$outboundSchema: z.ZodType<
     presenceAddress: "presence_address",
     firstTime: "first_time",
     organizationName: "organization_name",
-    organizationMarkUrl: "organization_mark_url",
-    matchNumber: "match_number",
-    gateType: "gate_type",
-    ageThreshold: "age_threshold",
-    ageVerdict: "age_verdict",
-    ageSource: "age_source",
   });
 });
 
