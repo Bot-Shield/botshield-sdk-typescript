@@ -54,3 +54,14 @@ Based on:
 - `GateHumanVerifiedEvent` model (the `gate.human_verified` webhook, incl. `act`).
 - `verification.getStatus`: `matchNumber`, `organizationMarkUrl`, `gateType`, `ageThreshold`, `ageVerdict`, `ageSource`; `reason` is now an open string (gate and action refusal codes) — the `VerificationGetStatusReason` enum type is removed.
 - `ErrorBody.url`.
+
+
+## 2026-11-14 03:42:27
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.796.3 (2.934.1) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v2.4.0] .
+### Releases
+- [NPM v2.4.0] https://www.npmjs.com/package/botshield-sdk/v/2.4.0 - .
