@@ -36,7 +36,7 @@ export type ErrorBody = {
   message: string;
   statusCode: number;
   /**
-   * `ttl_below_floor`, `ttl_above_ceiling`, `trust_layer_rejected`, `trust_layer_unavailable`, `gate_required`, `alias_retired`, `RATE_LIMITED`, `inline_not_for_age_gate`.
+   * `ttl_below_floor`, `ttl_above_ceiling`, `trust_layer_rejected`, `trust_layer_unavailable`, `gate_required`, `alias_retired`, `RATE_LIMITED`, `inline_not_for_age_gate`, `act_label_has_link`.
    */
   code?: string | undefined;
   minTtlSeconds?: number | undefined;

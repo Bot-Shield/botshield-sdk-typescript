@@ -10,6 +10,7 @@ export * from "./gates-api-actions-list.js";
 export * from "./gates-api-actions-request-status.js";
 export * from "./gates-api-actions-request.js";
 export * from "./gates-api-actions-set-state.js";
+export * from "./gates-api-actions-update.js";
 export * from "./gates-api-activate.js";
 export * from "./gates-api-cancel.js";
 export * from "./gates-api-close.js";

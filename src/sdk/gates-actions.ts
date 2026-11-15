@@ -7,6 +7,7 @@ import { gatesActionsList } from "../funcs/gates-actions-list.js";
 import { gatesActionsRequestStatus } from "../funcs/gates-actions-request-status.js";
 import { gatesActionsRequest } from "../funcs/gates-actions-request.js";
 import { gatesActionsSetState } from "../funcs/gates-actions-set-state.js";
+import { gatesActionsUpdate } from "../funcs/gates-actions-update.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
@@ -60,6 +61,25 @@ export class GatesActions extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.GatesApiActionsSetStateResponse> {
     return unwrapAsync(gatesActionsSetState(
+      this,
+      security,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Rename a BotShield Action, or mark it staff can send
+   *
+   * @remarks
+   * Change an action's `name` (what the person reads on their card) or `staffCanSend` (your support team can send it to a customer), by its key. Send at least one.
+   */
+  async update(
+    security: operations.GatesApiActionsUpdateSecurity,
+    request: operations.GatesApiActionsUpdateRequest,
+    options?: RequestOptions,
+  ): Promise<operations.GatesApiActionsUpdateResponse> {
+    return unwrapAsync(gatesActionsUpdate(
       this,
       security,
       request,

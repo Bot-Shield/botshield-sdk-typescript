@@ -12,7 +12,7 @@ export class Verification extends ClientSDK {
    * Check verification status
    *
    * @remarks
-   * Poll a verification request. Carries the signed attestation on completion and NO identity — no user_email, partner_user_id, auth_mode, or botshield_user_id ever cross this boundary.
+   * Poll a verification request. Carries the signed attestation on completion and NO identity — no user_email, partner_user_id, auth_mode, or botshield_user_id ever cross this boundary. Called without a key, it is rate-limited per client address (a page polling every 2 seconds stays well inside it); over the limit the call is refused with HTTP 403 and `errors[0].code = "RATE_LIMITED"`.
    */
   async getStatus(
     security: operations.VerificationGetStatusSecurity,

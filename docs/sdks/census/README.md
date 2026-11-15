@@ -89,6 +89,8 @@ run();
 
 Creates a verification request (deep link, web URL, QR code) for a gate. Requires an anchor grant token from create-session. Returns 409 when a pending request already exists for the same gate and user.
 
+**A check sent to one person** (a request with `partner_user_ref` whose account is linked, pushed to the person's phones): one is open at a time per organization, environment and person. A newer one that is pushed replaces the open one, which ends `cancelled` with reason `superseded` (verification/status) and fires `gate.unavailable` once with `failure_code: "superseded"`. Pushes are capped per person per day (default 5 in 24 hours); over the cap the request is still created and its QR / deep link work, but nothing is pushed (`push_skipped: "daily_cap"`).
+
 ### Example Usage
 
 <!-- UsageSnippet language="typescript" operationID="SdkCreateVerificationLink" method="post" path="/sdk/create-verification-link" -->
@@ -165,7 +167,7 @@ run();
 
 ## verifyToken
 
-Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person. Each attestation is for one organization (aud = its organization_id; pass `audience` to enforce it) and one check: a repeat check is refused (`valid: false`, `replayed: true`). Check it once, on your server.
+Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person. Each attestation is for one organization (aud = its organization_id; pass `audience` to enforce it) and one check: a repeat check is refused (`valid: false`, `replayed: true`). Check it once, on your server. Each token names its `kind` (`verification` or `action`) and the `environment` it was issued in. A token of any other kind is refused, and when you call with your secret key (`Authorization: Bearer bs_…`) a token from the other environment is refused (a development token never passes a production check). A refused token is not spent.
 
 ### Example Usage
 

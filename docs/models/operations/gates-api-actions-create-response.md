@@ -1,6 +1,6 @@
 # GatesApiActionsCreateResponse
 
-The placed action. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401 — missing, malformed or inactive key), `gates_scope_required` (403 — the key lacks Gates API access), `org_not_found` (404), `action_key_taken` (409), `internal` (500).
+The placed action. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401 — missing, malformed or inactive key), `gates_scope_required` (403 — the key lacks Gates API access), `org_not_found` (404), `action_key_taken` (409), `not_migrated` (503 — `staffCanSend` is not available yet), `internal` (500).
 
 ## Example Usage
 

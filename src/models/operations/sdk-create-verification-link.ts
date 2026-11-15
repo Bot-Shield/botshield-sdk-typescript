@@ -97,7 +97,7 @@ export type SDKCreateVerificationLinkRequest = {
    */
   act?: string | undefined;
   /**
-   * What the person is confirming, shown verbatim on their card (e.g. "Trade with sam_k — 2 GA for $180"). Only with `act` (`act_label_without_act`). Display only — it is NOT in the token; bind terms through `act` (e.g. a hash of them), which the token carries.
+   * What the person is confirming, shown verbatim on their card (e.g. "Trade with sam_k — 2 GA for $180"). Only with `act` (`act_label_without_act`). Plain words only: a link, a domain or a URI scheme is refused (`act_label_has_link`). Display only — it is NOT in the token; bind terms through `act` (e.g. a hash of them), which the token carries.
    */
   actLabel?: string | undefined;
 };
@@ -119,6 +119,31 @@ export type AuthMode = OpenEnum<typeof AuthMode>;
 export type SDKCreateVerificationLinkOrganization = {
   id?: string | undefined;
 };
+
+/**
+ * Present when you sent `partner_user_ref`. `pushed`: the customer's phone was asked. `not_delivered`: nothing was pushed (the customer has turned off checks from you, has no phone set up, or the push was skipped or could not be sent; see `push_skipped`). The check still exists and still answers. `not_linked`: this account is not verified with BotShield, so nothing was pushed.
+ */
+export const Delivery = {
+  Pushed: "pushed",
+  NotDelivered: "not_delivered",
+  NotLinked: "not_linked",
+} as const;
+/**
+ * Present when you sent `partner_user_ref`. `pushed`: the customer's phone was asked. `not_delivered`: nothing was pushed (the customer has turned off checks from you, has no phone set up, or the push was skipped or could not be sent; see `push_skipped`). The check still exists and still answers. `not_linked`: this account is not verified with BotShield, so nothing was pushed.
+ */
+export type Delivery = OpenEnum<typeof Delivery>;
+
+/**
+ * Present only when the account is linked but its phones were not pushed for one of these reasons. `daily_cap`: you have sent this customer the most checks allowed in 24 hours. `unavailable`: BotShield could not read this customer's recent checks, so it pushed nothing (fails closed). The request is still created either way.
+ */
+export const PushSkipped = {
+  DailyCap: "daily_cap",
+  Unavailable: "unavailable",
+} as const;
+/**
+ * Present only when the account is linked but its phones were not pushed for one of these reasons. `daily_cap`: you have sent this customer the most checks allowed in 24 hours. `unavailable`: BotShield could not read this customer's recent checks, so it pushed nothing (fails closed). The request is still created either way.
+ */
+export type PushSkipped = OpenEnum<typeof PushSkipped>;
 
 /**
  * The gate's type. An Age Gate never notarizes (widget suppresses the chip).
@@ -189,6 +214,14 @@ export type SDKCreateVerificationLinkDataData = {
    */
   pushedToDevices: number;
   /**
+   * Present when you sent `partner_user_ref`. `pushed`: the customer's phone was asked. `not_delivered`: nothing was pushed (the customer has turned off checks from you, has no phone set up, or the push was skipped or could not be sent; see `push_skipped`). The check still exists and still answers. `not_linked`: this account is not verified with BotShield, so nothing was pushed.
+   */
+  delivery?: Delivery | undefined;
+  /**
+   * Present only when the account is linked but its phones were not pushed for one of these reasons. `daily_cap`: you have sent this customer the most checks allowed in 24 hours. `unavailable`: BotShield could not read this customer's recent checks, so it pushed nothing (fails closed). The request is still created either way.
+   */
+  pushSkipped?: PushSkipped | undefined;
+  /**
    * The gate's type. An Age Gate never notarizes (widget suppresses the chip).
    */
   gateType?: SDKCreateVerificationLinkGateType | undefined;
@@ -225,7 +258,7 @@ export type SDKCreateVerificationLinkData = {
 };
 
 /**
- * Verification link created. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 400 (partner not found / gate not active), 401, 403 (gate not in the token allowlist), 409 (pending request already exists — call revoke-verification). BotShield Actions and linking codes (`data.error.code`): `act_label_without_act` (400), `action_not_a_gate` (400), `action_invalid` (400 — act malformed), `action_not_found` (400 — no action with that key here), `action_off` (409), `action_requires_user_ref` (400), `link_requires_user_ref` (400 — the gate's policy is `link: required` and no partner_user_ref was sent).
+ * Verification link created. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 400 (partner not found / gate not active), 401, 403 (gate not in the token allowlist), 409 (pending request already exists — call revoke-verification). BotShield Actions and linking codes (`data.error.code`): `act_label_without_act` (400), `act_label_has_link` (400 — `act_label` may not contain a link, a domain or a URI scheme), `action_not_a_gate` (400), `action_invalid` (400 — act malformed), `action_not_found` (400 — no action with that key here), `action_off` (409), `action_requires_user_ref` (400), `link_requires_user_ref` (400 — the gate's policy is `link: required` and no partner_user_ref was sent). A development key over its limit: `RATE_LIMITED`.
  */
 export type SDKCreateVerificationLinkResponse = {
   data: SDKCreateVerificationLinkData;
@@ -473,6 +506,32 @@ export function sdkCreateVerificationLinkOrganizationFromJSON(
 }
 
 /** @internal */
+export const Delivery$inboundSchema: z.ZodType<
+  Delivery,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(Delivery);
+/** @internal */
+export const Delivery$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  Delivery
+> = openEnums.outboundSchema(Delivery);
+
+/** @internal */
+export const PushSkipped$inboundSchema: z.ZodType<
+  PushSkipped,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(PushSkipped);
+/** @internal */
+export const PushSkipped$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  PushSkipped
+> = openEnums.outboundSchema(PushSkipped);
+
+/** @internal */
 export const SDKCreateVerificationLinkGateType$inboundSchema: z.ZodType<
   SDKCreateVerificationLinkGateType,
   z.ZodTypeDef,
@@ -533,6 +592,8 @@ export const SDKCreateVerificationLinkDataData$inboundSchema: z.ZodType<
     z.lazy(() => SDKCreateVerificationLinkOrganization$inboundSchema),
   ),
   pushed_to_devices: types.number(),
+  delivery: types.optional(Delivery$inboundSchema),
+  push_skipped: types.optional(PushSkipped$inboundSchema),
   gate_type: types.optional(SDKCreateVerificationLinkGateType$inboundSchema),
   age_threshold: types.optional(
     SDKCreateVerificationLinkAgeThreshold$inboundSchema,
@@ -553,6 +614,7 @@ export const SDKCreateVerificationLinkDataData$inboundSchema: z.ZodType<
     "sdk_type": "sdkType",
     "auth_mode": "authMode",
     "pushed_to_devices": "pushedToDevices",
+    "push_skipped": "pushSkipped",
     "gate_type": "gateType",
     "age_threshold": "ageThreshold",
     "notarize_fallback_reason": "notarizeFallbackReason",
@@ -570,6 +632,8 @@ export type SDKCreateVerificationLinkDataData$Outbound = {
   scope?: string | undefined;
   organization?: SDKCreateVerificationLinkOrganization$Outbound | undefined;
   pushed_to_devices: number;
+  delivery?: string | undefined;
+  push_skipped?: string | undefined;
   gate_type?: string | undefined;
   age_threshold?: number | undefined;
   trusted?: boolean | undefined;
@@ -596,6 +660,8 @@ export const SDKCreateVerificationLinkDataData$outboundSchema: z.ZodType<
     SDKCreateVerificationLinkOrganization$outboundSchema
   ).optional(),
   pushedToDevices: z.number().int(),
+  delivery: Delivery$outboundSchema.optional(),
+  pushSkipped: PushSkipped$outboundSchema.optional(),
   gateType: SDKCreateVerificationLinkGateType$outboundSchema.optional(),
   ageThreshold: SDKCreateVerificationLinkAgeThreshold$outboundSchema.optional(),
   trusted: z.boolean().optional(),
@@ -613,6 +679,7 @@ export const SDKCreateVerificationLinkDataData$outboundSchema: z.ZodType<
     sdkType: "sdk_type",
     authMode: "auth_mode",
     pushedToDevices: "pushed_to_devices",
+    pushSkipped: "push_skipped",
     gateType: "gate_type",
     ageThreshold: "age_threshold",
     notarizeFallbackReason: "notarize_fallback_reason",

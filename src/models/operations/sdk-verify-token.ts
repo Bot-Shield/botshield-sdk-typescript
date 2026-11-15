@@ -41,6 +41,32 @@ export const AgeOver = {
  */
 export type AgeOver = OpenEnum<typeof AgeOver>;
 
+/**
+ * `verification`: a person passed a check or a link. `action`: a person confirmed a BotShield Action. Null on a token issued before 4.0.
+ */
+export const Kind = {
+  Verification: "verification",
+  Action: "action",
+} as const;
+/**
+ * `verification`: a person passed a check or a link. `action`: a person confirmed a BotShield Action. Null on a token issued before 4.0.
+ */
+export type Kind = OpenEnum<typeof Kind>;
+
+/**
+ * The environment of the key that started the request. Null on a token issued before 4.0, or when it was not known.
+ */
+export const SDKVerifyTokenEnvironment = {
+  Development: "development",
+  Production: "production",
+} as const;
+/**
+ * The environment of the key that started the request. Null on a token issued before 4.0, or when it was not known.
+ */
+export type SDKVerifyTokenEnvironment = OpenEnum<
+  typeof SDKVerifyTokenEnvironment
+>;
+
 export type Claims = {
   requestId?: string | undefined;
   verified?: boolean | undefined;
@@ -73,6 +99,14 @@ export type Claims = {
    * BotShield Actions: the `act` this tap was for, echoed verbatim (your own string, e.g. `dibs:listing_4417`). Present only on tokens minted for an action.
    */
   act?: string | undefined;
+  /**
+   * `verification`: a person passed a check or a link. `action`: a person confirmed a BotShield Action. Null on a token issued before 4.0.
+   */
+  kind?: Kind | null | undefined;
+  /**
+   * The environment of the key that started the request. Null on a token issued before 4.0, or when it was not known.
+   */
+  environment?: SDKVerifyTokenEnvironment | null | undefined;
 };
 
 /**
@@ -90,7 +124,7 @@ export type SDKVerifyTokenVerdict = OpenEnum<typeof SDKVerifyTokenVerdict>;
 export type SDKVerifyTokenDataData = {
   valid: boolean;
   /**
-   * Present when valid is false.
+   * Present when valid is false. A plain line, not a code. Includes: `Invalid token — not a BotShield verification token` (a token of another kind), `Invalid token — unknown environment`, and `Token was issued in the development environment; this key is production.` (or the reverse).
    */
   reason?: string | undefined;
   /**
@@ -215,6 +249,26 @@ export const AgeOver$outboundSchema: z.ZodType<number, z.ZodTypeDef, AgeOver> =
   openEnums.outboundSchemaInt(AgeOver);
 
 /** @internal */
+export const Kind$inboundSchema: z.ZodType<Kind, z.ZodTypeDef, unknown> =
+  openEnums.inboundSchema(Kind);
+/** @internal */
+export const Kind$outboundSchema: z.ZodType<string, z.ZodTypeDef, Kind> =
+  openEnums.outboundSchema(Kind);
+
+/** @internal */
+export const SDKVerifyTokenEnvironment$inboundSchema: z.ZodType<
+  SDKVerifyTokenEnvironment,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(SDKVerifyTokenEnvironment);
+/** @internal */
+export const SDKVerifyTokenEnvironment$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  SDKVerifyTokenEnvironment
+> = openEnums.outboundSchema(SDKVerifyTokenEnvironment);
+
+/** @internal */
 export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
   .object({
     request_id: types.optional(types.string()),
@@ -230,6 +284,8 @@ export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
     last_pass_at: types.optional(types.date()),
     audience: z.nullable(types.string()).optional(),
     act: types.optional(types.string()),
+    kind: z.nullable(Kind$inboundSchema).optional(),
+    environment: z.nullable(SDKVerifyTokenEnvironment$inboundSchema).optional(),
   }).transform((v) => {
     return remap$(v, {
       "request_id": "requestId",
@@ -256,6 +312,8 @@ export type Claims$Outbound = {
   last_pass_at?: string | undefined;
   audience?: string | null | undefined;
   act?: string | undefined;
+  kind?: string | null | undefined;
+  environment?: string | null | undefined;
 };
 
 /** @internal */
@@ -277,6 +335,8 @@ export const Claims$outboundSchema: z.ZodType<
   lastPassAt: z.date().transform(v => v.toISOString()).optional(),
   audience: z.nullable(z.string()).optional(),
   act: z.string().optional(),
+  kind: z.nullable(Kind$outboundSchema).optional(),
+  environment: z.nullable(SDKVerifyTokenEnvironment$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",

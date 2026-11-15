@@ -8,6 +8,7 @@ export * from "./error-response.js";
 export * from "./gate-human-verified-event.js";
 export * from "./gate-policy-doc.js";
 export * from "./gate-schedule.js";
+export * from "./gate-unavailable-event.js";
 export * from "./gate.js";
 export * from "./gates-api-error.js";
 export * from "./inline-passkey-assertion.js";

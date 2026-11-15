@@ -49,7 +49,7 @@ export type RequestPasskeyCompleteDataData = {
    */
   outcome: RequestPasskeyCompleteOutcome;
   /**
-   * A non-identifying reason you may branch on. Lane codes: `challenge_expired` (expired — unknown, used or stale challenge_id), `request_expired` (expired), `unknown_request`, `request_closed`, `link_changed` (the request no longer resolves to the person the challenge was issued for), `assertion_invalid`, `user_not_verified` (UV is required), `completion_failed`. Completion refusals (same as the app ceremony): `ceremony_user_mismatch`, `already_trusted`, `rebind_requires_prior_id`, `gate_not_open`, `link_requires_user_ref`, `signup_required`, `real_days_not_met`, `pass_limit_reached`, `action_off` (the BotShield Action was turned off), `action_requires_user_ref`. Treat unknown codes as `failed`.
+   * A non-identifying reason you may branch on. Lane codes: `challenge_expired` (expired — unknown, used or stale challenge_id), `request_expired` (expired), `unknown_request`, `request_closed`, `link_changed` (the request no longer resolves to the person the challenge was issued for), `assertion_invalid`, `user_not_verified` (UV is required), `completion_failed`. Completion refusals (same as the app ceremony): `ceremony_user_mismatch` (the passkey answer names a different BotShield ID than the request; the request stays open), `already_trusted`, `rebind_requires_prior_id`, `gate_not_open`, `link_requires_user_ref`, `signup_required`, `real_days_not_met`, `pass_limit_reached`, `action_off` (the BotShield Action was turned off), `action_requires_user_ref`. Treat unknown codes as `failed`.
    */
   code?: string | undefined;
 };

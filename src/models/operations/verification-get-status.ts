@@ -22,7 +22,7 @@ export type VerificationGetStatusRequest = {
 };
 
 /**
- * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`.
+ * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`. `cancelled`: the request ended without an answer; see `reason` (`declined`: the person cancelled the link ask; `superseded`: a newer check sent to the same person replaced this one).
  */
 export const VerificationGetStatusStatus = {
   Pending: "pending",
@@ -30,11 +30,12 @@ export const VerificationGetStatusStatus = {
   Pass: "pass",
   Expired: "expired",
   Failed: "failed",
+  Cancelled: "cancelled",
   NotFound: "not_found",
   Error: "error",
 } as const;
 /**
- * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`.
+ * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`. `cancelled`: the request ended without an answer; see `reason` (`declined`: the person cancelled the link ask; `superseded`: a newer check sent to the same person replaced this one).
  */
 export type VerificationGetStatusStatus = OpenEnum<
   typeof VerificationGetStatusStatus
@@ -169,7 +170,7 @@ export type VerificationGetStatusGateType = OpenEnum<
 export type VerificationGetStatusData = {
   found?: boolean | undefined;
   /**
-   * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`.
+   * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`. `cancelled`: the request ended without an answer; see `reason` (`declined`: the person cancelled the link ask; `superseded`: a newer check sent to the same person replaced this one).
    */
   status?: VerificationGetStatusStatus | undefined;
   requestId?: string | undefined;
@@ -199,7 +200,7 @@ export type VerificationGetStatusData = {
    */
   error?: models.ErrorBody | undefined;
   /**
-   * Why a request ended `failed`. Null while pending and on success. An open set — treat unknown values as `unavailable`. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `gate_not_open`, `signup_required`, `link_requires_user_ref`: the gate's policy refused. `action_off`: the BotShield Action was turned off mid-tap. `action_requires_user_ref`: an action request without a linking ceremony. `unavailable`: the standard Unavailable result.
+   * Why a request ended `failed` or `cancelled`. Null while pending and on success. An open set — treat unknown values as `unavailable`. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `gate_not_open`, `signup_required`, `link_requires_user_ref`: the gate's policy refused. `action_off`: the BotShield Action was turned off mid-tap. `action_requires_user_ref`: an action request without a linking ceremony. `superseded`: a newer check you sent to the same person replaced this one (status `cancelled`). `unavailable`: the standard Unavailable result.
    */
   reason?: string | null | undefined;
   /**

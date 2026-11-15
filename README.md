@@ -317,6 +317,7 @@ run();
 * [create](docs/sdks/gatesactions/README.md#create) - Place a BotShield Action
 * [list](docs/sdks/gatesactions/README.md#list) - List BotShield Actions
 * [setState](docs/sdks/gatesactions/README.md#setstate) - Turn a BotShield Action on or off
+* [update](docs/sdks/gatesactions/README.md#update) - Rename a BotShield Action, or mark it staff can send
 * [request](docs/sdks/gatesactions/README.md#request) - Ask a linked person to confirm an action
 * [requestStatus](docs/sdks/gatesactions/README.md#requeststatus) - Where an action request stands
 
@@ -369,6 +370,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`gatesActionsRequest`](docs/sdks/gatesactions/README.md#request) - Ask a linked person to confirm an action
 - [`gatesActionsRequestStatus`](docs/sdks/gatesactions/README.md#requeststatus) - Where an action request stands
 - [`gatesActionsSetState`](docs/sdks/gatesactions/README.md#setstate) - Turn a BotShield Action on or off
+- [`gatesActionsUpdate`](docs/sdks/gatesactions/README.md#update) - Rename a BotShield Action, or mark it staff can send
 - [`gatesActivate`](docs/sdks/gates/README.md#activate) - Activate a gate
 - [`gatesCancel`](docs/sdks/gates/README.md#cancel) - Cancel a gate
 - [`gatesClose`](docs/sdks/gates/README.md#close) - Close a gate
