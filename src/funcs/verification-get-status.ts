@@ -3,7 +3,7 @@
  */
 
 import { BotShieldCore } from "../core.js";
-import { encodeFormQuery } from "../lib/encodings.js";
+import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
 import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Check verification status
  *
  * @remarks
- * Poll a verification request. Carries the signed attestation on completion and NO identity — no user_email, partner_user_id, auth_mode, or botshield_user_id ever cross this boundary. Called without a key, it is rate-limited per client address (a page polling every 2 seconds stays well inside it); over the limit the call is refused with HTTP 403 and `errors[0].code = "RATE_LIMITED"`.
+ * Poll a verification request. Carries the signed attestation on completion and NO identity — no user_email, partner_user_id, auth_mode, or botshield_user_id ever cross this boundary. Called without a key, it is rate-limited per client address (a page polling every 2 seconds stays well inside it); over the limit the call is refused with HTTP 403 and `errors[0].code = "RATE_LIMITED"`. 4.0: knowing the request id is not enough to read the finished tokens. A request started with a site key returns them only with its `read_secret` (`X-BotShield-Request-Secret`); a request your server started, only to your secret key. A passkey sign-in's tokens are never returned here.
  */
 export function verificationGetStatus(
   client: BotShieldCore,
@@ -103,6 +103,11 @@ async function $do(
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
+    "X-BotShield-Request-Secret": encodeSimple(
+      "X-BotShield-Request-Secret",
+      payload["X-BotShield-Request-Secret"],
+      { explode: false, charEncoding: "none" },
+    ),
   }));
 
   const requestSecurity = resolveSecurity(

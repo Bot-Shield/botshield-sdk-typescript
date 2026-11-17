@@ -330,11 +330,21 @@ run();
 * [getOptions](docs/sdks/inlinepasskey/README.md#getoptions) - Start the inline passkey for one request
 * [complete](docs/sdks/inlinepasskey/README.md#complete) - Finish the inline passkey for one request
 
+### [Recovery](docs/sdks/recovery/README.md)
+
+* [exchange](docs/sdks/recovery/README.md#exchange) - Redeem a recovery code
+* [otherRoute](docs/sdks/recovery/README.md#otherroute) - Report another sign-in reset
+
 ### [SecuredAccounts](docs/sdks/securedaccounts/README.md)
 
 * [list](docs/sdks/securedaccounts/README.md#list) - List Secured Accounts
 * [revoke](docs/sdks/securedaccounts/README.md#revoke) - Revoke a Secured Account
 * [getStatus](docs/sdks/securedaccounts/README.md#getstatus) - Get Secured Account status
+
+### [SignIn](docs/sdks/signin/README.md)
+
+* [request](docs/sdks/signin/README.md#request) - Ask for a passkey sign-in
+* [confirm](docs/sdks/signin/README.md#confirm) - Redeem a passkey sign-in
 
 ### [Verification](docs/sdks/verification/README.md)
 
@@ -388,9 +398,13 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`gatesList`](docs/sdks/gates/README.md#list) - List gates
 - [`inlinePasskeyComplete`](docs/sdks/inlinepasskey/README.md#complete) - Finish the inline passkey for one request
 - [`inlinePasskeyGetOptions`](docs/sdks/inlinepasskey/README.md#getoptions) - Start the inline passkey for one request
+- [`recoveryExchange`](docs/sdks/recovery/README.md#exchange) - Redeem a recovery code
+- [`recoveryOtherRoute`](docs/sdks/recovery/README.md#otherroute) - Report another sign-in reset
 - [`securedAccountsGetStatus`](docs/sdks/securedaccounts/README.md#getstatus) - Get Secured Account status
 - [`securedAccountsList`](docs/sdks/securedaccounts/README.md#list) - List Secured Accounts
 - [`securedAccountsRevoke`](docs/sdks/securedaccounts/README.md#revoke) - Revoke a Secured Account
+- [`signInConfirm`](docs/sdks/signin/README.md#confirm) - Redeem a passkey sign-in
+- [`signInRequest`](docs/sdks/signin/README.md#request) - Ask for a passkey sign-in
 - [`verificationGetStatus`](docs/sdks/verification/README.md#getstatus) - Check verification status
 
 </details>

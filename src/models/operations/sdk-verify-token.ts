@@ -30,6 +30,10 @@ export type SDKVerifyTokenRequest = {
    * 4.0: with your secret key, on a token whose link is pending, this confirms the link (same as sdk/confirm-link). The answer's `link` says whether it went live.
    */
   partnerUserRef?: string | undefined;
+  /**
+   * 4.0: the request YOUR server made for this attempt. When given, a token for any other request is refused (`valid: false`, `code: request_mismatch`) and is not spent.
+   */
+  expectedRequestId?: string | undefined;
 };
 
 /**
@@ -112,6 +116,10 @@ export type Claims = {
    */
   environment?: SDKVerifyTokenEnvironment | null | undefined;
   /**
+   * 4.0: present for 72 hours after this verified account was recovered with Recover Account with BotShield: when it was recovered. Only when `trusted` is true.
+   */
+  recoveredAt?: Date | undefined;
+  /**
    * 4.0: where the link stood for this token: `pending`, `live`, `expired` or `refused`. Absent on a plain check.
    */
   linkState?: string | undefined;
@@ -157,6 +165,10 @@ export type SDKVerifyTokenDataData = {
    * Present when valid is false. A plain line, not a code. Includes: `Invalid token — not a BotShield verification token` (a token of another kind), `Invalid token — unknown environment`, and `Token was issued in the development environment; this key is production.` (or the reverse).
    */
   reason?: string | undefined;
+  /**
+   * 4.0: on some refusals (`valid: false`), a code beside `reason`: `secret_key_required` (called without your secret key; the token was not spent), `request_mismatch` (the token is for another request than `expected_request_id`; not spent).
+   */
+  code?: string | undefined;
   /**
    * Present when the token was valid but has expired.
    */
@@ -242,9 +254,11 @@ export const SDKVerifyTokenRequest$inboundSchema: z.ZodType<
   token: types.string(),
   audience: types.optional(types.string()),
   partner_user_ref: types.optional(types.string()),
+  expected_request_id: types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "partner_user_ref": "partnerUserRef",
+    "expected_request_id": "expectedRequestId",
   });
 });
 /** @internal */
@@ -252,6 +266,7 @@ export type SDKVerifyTokenRequest$Outbound = {
   token: string;
   audience?: string | undefined;
   partner_user_ref?: string | undefined;
+  expected_request_id?: string | undefined;
 };
 
 /** @internal */
@@ -263,9 +278,11 @@ export const SDKVerifyTokenRequest$outboundSchema: z.ZodType<
   token: z.string(),
   audience: z.string().optional(),
   partnerUserRef: z.string().optional(),
+  expectedRequestId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     partnerUserRef: "partner_user_ref",
+    expectedRequestId: "expected_request_id",
   });
 });
 
@@ -331,6 +348,7 @@ export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
     act: types.optional(types.string()),
     kind: z.nullable(Kind$inboundSchema).optional(),
     environment: z.nullable(SDKVerifyTokenEnvironment$inboundSchema).optional(),
+    recovered_at: types.optional(types.date()),
     link_state: types.optional(types.string()),
   }).transform((v) => {
     return remap$(v, {
@@ -341,6 +359,7 @@ export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
       "age_over": "ageOver",
       "trusted_since": "trustedSince",
       "last_pass_at": "lastPassAt",
+      "recovered_at": "recoveredAt",
       "link_state": "linkState",
     });
   });
@@ -361,6 +380,7 @@ export type Claims$Outbound = {
   act?: string | undefined;
   kind?: string | null | undefined;
   environment?: string | null | undefined;
+  recovered_at?: string | undefined;
   link_state?: string | undefined;
 };
 
@@ -385,6 +405,7 @@ export const Claims$outboundSchema: z.ZodType<
   act: z.string().optional(),
   kind: z.nullable(Kind$outboundSchema).optional(),
   environment: z.nullable(SDKVerifyTokenEnvironment$outboundSchema).optional(),
+  recoveredAt: z.date().transform(v => v.toISOString()).optional(),
   linkState: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -395,6 +416,7 @@ export const Claims$outboundSchema: z.ZodType<
     ageOver: "age_over",
     trustedSince: "trusted_since",
     lastPassAt: "last_pass_at",
+    recoveredAt: "recovered_at",
     linkState: "link_state",
   });
 });
@@ -508,6 +530,7 @@ export const SDKVerifyTokenDataData$inboundSchema: z.ZodType<
 > = z.object({
   valid: types.boolean(),
   reason: types.optional(types.string()),
+  code: types.optional(types.string()),
   expired_at: z.nullable(types.date()).optional(),
   claims: z.nullable(z.lazy(() => Claims$inboundSchema)).optional(),
   replayed: types.optional(types.boolean()),
@@ -522,6 +545,7 @@ export const SDKVerifyTokenDataData$inboundSchema: z.ZodType<
 export type SDKVerifyTokenDataData$Outbound = {
   valid: boolean;
   reason?: string | undefined;
+  code?: string | undefined;
   expired_at?: string | null | undefined;
   claims?: Claims$Outbound | null | undefined;
   replayed?: boolean | undefined;
@@ -537,6 +561,7 @@ export const SDKVerifyTokenDataData$outboundSchema: z.ZodType<
 > = z.object({
   valid: z.boolean(),
   reason: z.string().optional(),
+  code: z.string().optional(),
   expiredAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
   claims: z.nullable(z.lazy(() => Claims$outboundSchema)).optional(),
   replayed: z.boolean().optional(),

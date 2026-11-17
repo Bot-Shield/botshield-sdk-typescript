@@ -191,6 +191,10 @@ export type SDKCreateVerificationLinkNotarizeFallbackReason = OpenEnum<
 
 export type SDKCreateVerificationLinkDataData = {
   requestId: string;
+  /**
+   * 4.0: only on a request started with your site key (`pk_…`, a page's grant). The one secret that reads this request's answer: send it as `X-BotShield-Request-Secret` to verification/status, which returns the finished tokens only with it. Returned once, here; BotShield keeps only its hash. A request your server started with its secret key has none (its tokens go to that key).
+   */
+  readSecret?: string | undefined;
   deepLink: string;
   webUrl: string;
   /**
@@ -258,7 +262,7 @@ export type SDKCreateVerificationLinkData = {
 };
 
 /**
- * Verification link created. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 400 (partner not found / gate not active), 401, 403 (gate not in the token allowlist), 409 (pending request already exists — call revoke-verification). BotShield Actions and linking codes (`data.error.code`): `act_label_without_act` (400), `act_label_has_link` (400 — `act_label` may not contain a link, a domain or a URI scheme), `action_not_a_gate` (400), `action_invalid` (400 — act malformed), `action_not_found` (400 — no action with that key here), `action_off` (409), `action_requires_user_ref` (400), `link_requires_user_ref` (400 — the gate's policy is `link: required` and no partner_user_ref was sent), `account_reconfirm_required` (409 — the customer changed their phone number without approval from another phone; only the link ceremony (`notarize`) can be started for this partner_user_ref until they confirm the account again from your signed-in page). A development key over its limit: `RATE_LIMITED`.
+ * Verification link created. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 400 (partner not found / gate not active), 401, 403 (gate not in the token allowlist), 409 (pending request already exists — call revoke-verification). BotShield Actions and linking codes (`data.error.code`): `act_label_without_act` (400), `act_label_has_link` (400 — `act_label` may not contain a link, a domain or a URI scheme), `action_not_a_gate` (400), `action_invalid` (400 — act malformed), `action_not_found` (400 — no action with that key here), `action_off` (409), `action_requires_user_ref` (400), `link_requires_user_ref` (400 — the gate's policy is `link: required` and no partner_user_ref was sent), `account_reconfirm_required` (409 — the customer changed their phone number without approval from another phone; only the link ceremony (`notarize`) can be started for this partner_user_ref until they confirm the account again from your signed-in page). A development key over its limit: `RATE_LIMITED`. 4.0: `link_requires_server_session` (403 — a request on a site-key grant that would write a NEW link: a `notarize` ceremony, or an `act` on an account not linked here yet; open the session from your server with your secret key, naming the signed-in customer), `account_override_refused` (403 — `partner_user_ref` names a different account from the one the session names), `action_is_recovery` / `action_is_signin` (400 — that `act` is your Recovery Action or your Sign-on Action, which no request starts), and 503 when BotShield could not tell whether the account is already linked (nothing was written; retry).
  */
 export type SDKCreateVerificationLinkResponse = {
   data: SDKCreateVerificationLinkData;
@@ -579,6 +583,7 @@ export const SDKCreateVerificationLinkDataData$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   request_id: types.string(),
+  read_secret: types.optional(types.string()),
   deep_link: types.string(),
   web_url: types.string(),
   qr_code_url: types.string(),
@@ -607,6 +612,7 @@ export const SDKCreateVerificationLinkDataData$inboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
+    "read_secret": "readSecret",
     "deep_link": "deepLink",
     "web_url": "webUrl",
     "qr_code_url": "qrCodeUrl",
@@ -623,6 +629,7 @@ export const SDKCreateVerificationLinkDataData$inboundSchema: z.ZodType<
 /** @internal */
 export type SDKCreateVerificationLinkDataData$Outbound = {
   request_id: string;
+  read_secret?: string | undefined;
   deep_link: string;
   web_url: string;
   qr_code_url: string;
@@ -649,6 +656,7 @@ export const SDKCreateVerificationLinkDataData$outboundSchema: z.ZodType<
   SDKCreateVerificationLinkDataData
 > = z.object({
   requestId: z.string(),
+  readSecret: z.string().optional(),
   deepLink: z.string(),
   webUrl: z.string(),
   qrCodeUrl: z.string(),
@@ -672,6 +680,7 @@ export const SDKCreateVerificationLinkDataData$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
+    readSecret: "read_secret",
     deepLink: "deep_link",
     webUrl: "web_url",
     qrCodeUrl: "qr_code_url",

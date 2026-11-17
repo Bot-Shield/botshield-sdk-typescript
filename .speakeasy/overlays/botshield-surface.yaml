@@ -328,3 +328,26 @@ actions:
     update: { title: SdkVerifyResolutionDataData }
   - target: $.paths["/gates-api/actions/request"].post.requestBody.content["application/json"].schema.properties.details.items
     update: { title: GatesApiActionsRequestDetail }
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 4.0 (SDK 4.0.1) — Recover Account with BotShield (document 24) and Sign in with your
+  # passkey (document 25): the company SERVER's calls, secret key (per-op ApiKeyAuth in the
+  # engine spec). EXCLUDED from MCP (not agent tools).
+  # client.recovery.exchange / .otherRoute · client.signIn.request / .confirm
+  # ────────────────────────────────────────────────────────────────────────────
+  - target: $.paths["/recovery/exchange"].post
+    update: { x-speakeasy-group: recovery, x-speakeasy-name-override: exchange, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/recovery/other-route"].post
+    update: { x-speakeasy-group: recovery, x-speakeasy-name-override: otherRoute, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/signin/request"].post
+    update: { x-speakeasy-group: signIn, x-speakeasy-name-override: request, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/signin/confirm"].post
+    update: { x-speakeasy-group: signIn, x-speakeasy-name-override: confirm, x-speakeasy-mcp: { disabled: true } }
+  # 4.0.1 model names: without these the new enums come out as bare `Kind` (beside the
+  # published operations `Kind`, the token kind), `Act` and `FinishedBy`.
+  - target: $.components.schemas.BotShieldAction.properties.kind
+    update: { title: BotShieldActionKind }
+  - target: $.paths["/recovery/exchange"].post.responses["200"].content["application/json"].schema.properties.data.properties.data.properties.act
+    update: { title: RecoveryExchangeAct }
+  - target: $.paths["/signin/confirm"].post.responses["200"].content["application/json"].schema.properties.data.properties.data.properties.finished_by
+    update: { title: SigninConfirmFinishedBy }
