@@ -91,3 +91,24 @@ Based on:
 - Refusal codes documented in the operations: `account_reconfirm_required`, `action_requires_signed_in`, `one_addressee_required`, `phone_invalid`, `org_not_verified`, `send_rate_limited`, `unanswered_limit_reached`, `too_many_open_requests`, `daily_request_limit`.
 ### Production
 - The default server is production, whose engine is pre-4.0 until the 4.0 engine ships. Until then `sendByNumber`, `confirmLink`, `verifyResolution` and `gates.actions.requestCancel` (and the 4.0 inputs above) work only against `server: "staging"`.
+
+## 4.0.1 (BotShield 4.0 — generated locally 2026-11-17, not yet published)
+### Changes
+Based on:
+- OpenAPI Doc: bot-shield-wg `feat/4.0-spec-401` 8374b29 `openapi-spec.json` (on `staging/4.0-batch1` 657aea5), then the engine overlay and this repo's overlay, as for 4.0.0
+- Speakeasy CLI 1.796.3 (2.934.1) https://github.com/speakeasy-api/speakeasy
+### Breaking changes
+- None in the SDK surface: no method, export, field or option was removed or renamed (checked against 4.0.0). The client's `security: { agentKeyAuth, agentKeyAuth1 }` option is unchanged.
+- Engine behavior with 4.0: `census.verifyToken` needs your secret key (`Bearer bs_…`); without it the answer is `valid: false, code: "secret_key_required"` and the token is not spent. A request started with a site key returns its finished tokens from `verification.getStatus` only with its `readSecret`.
+### Added
+- `client.recovery.exchange({ apiKeyAuth }, { code, secret })` (secret key): redeem the `botshield_recovery_code` your landing page received, with the secret your page set before the tap. Answers `recovery: true`, `act: "recovery"`, `action`, `handle`, `recoveryId`, `recoveredAt`. The code works once; every failure reads `recovery_code_invalid`.
+- `client.recovery.otherRoute({ apiKeyAuth }, { handle })` (secret key): tell BotShield your other sign-in reset was started for a verified account. Answers `received`, `worksFrom`.
+- `client.signIn.request({ apiKeyAuth }, { partnerUserRef })` (secret key): ask for a passkey sign-in for one verified account. Answers `requestId`, `expiresAt`, `tier`, `pageOrigin`, `qr`, `qrUrl`. Refusals: `signin_not_set_up`, `not_verified`, `account_paused`, `unavailable`.
+- `client.signIn.confirm({ apiKeyAuth }, { requestId, partnerUserRef? })` (secret key): redeem the sign-in once. Answers `signedIn`, `requestId`, `act`, `handle`, `verifiedAt`, `environment`, `finishedBy` (`inline` | `qr`), `tier`. Refusals: `signin_unknown`, `signin_pending`, `signin_refused`, `signin_expired`, `signin_used`, `signin_wrong_account`, `unavailable`.
+- `census.createVerificationLink`: `readSecret` (only on a request started with a site key). New refusal codes `link_requires_server_session`, `account_override_refused`, `action_is_recovery`, `action_is_signin`.
+- `verification.getStatus`: `xBotShieldRequestSecret` (sent as the `X-BotShield-Request-Secret` header).
+- `census.verifyToken`: `expectedRequestId` input (a token for another request is refused, `code: "request_mismatch"`, unspent); `code` on the result; `claims.recoveredAt` (for 72 hours after a recovery).
+- `BotShieldAction`: `kind` (`action` | `recovery` | `signin`, type `BotShieldActionKind`), `signinQr`, `pendingWhereUrl`, `pendingWhereUrlAt` on `gates.actions.create` / `list` / `setState` / `update` results. Recovery and Sign-on Actions are placed in the Console; the Gates API does not take these as inputs.
+- `gates.actions.request` and `census.sendByNumber`: refusal codes `action_is_recovery` / `action_is_signin`.
+### Production
+- The default server is production, whose engine is pre-4.0 until the 4.0 engine ships. Until then `recovery.*` and `signIn.*` work only against `server: "staging"`, and only once migrations 20261117140000 and 20261117160000 are applied there.

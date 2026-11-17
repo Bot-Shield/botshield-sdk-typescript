@@ -7,7 +7,9 @@ import { Actions } from "./actions.js";
 import { Census } from "./census.js";
 import { Gates } from "./gates.js";
 import { InlinePasskey } from "./inline-passkey.js";
+import { Recovery } from "./recovery.js";
 import { SecuredAccounts } from "./secured-accounts.js";
+import { SignIn } from "./sign-in.js";
 import { Verification } from "./verification.js";
 
 export class BotShield extends ClientSDK {
@@ -39,5 +41,15 @@ export class BotShield extends ClientSDK {
   private _inlinePasskey?: InlinePasskey;
   get inlinePasskey(): InlinePasskey {
     return (this._inlinePasskey ??= new InlinePasskey(this._options));
+  }
+
+  private _recovery?: Recovery;
+  get recovery(): Recovery {
+    return (this._recovery ??= new Recovery(this._options));
+  }
+
+  private _signIn?: SignIn;
+  get signIn(): SignIn {
+    return (this._signIn ??= new SignIn(this._options));
   }
 }

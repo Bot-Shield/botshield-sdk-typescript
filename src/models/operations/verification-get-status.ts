@@ -19,6 +19,10 @@ export type VerificationGetStatusSecurity = {
 
 export type VerificationGetStatusRequest = {
   requestId: string;
+  /**
+   * 4.0: the `read_secret` create-verification-link returned for a request started with your site key. Without it such a request's `verification_token` / `signed_token` are never returned. A request your server started reads them with your secret key (`Authorization: Bearer bs_…`) instead. A passkey sign-in's answer is never returned here (use signin/confirm).
+   */
+  xBotShieldRequestSecret?: string | undefined;
 };
 
 /**
@@ -338,14 +342,17 @@ export const VerificationGetStatusRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   request_id: types.string(),
+  "X-BotShield-Request-Secret": types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
+    "X-BotShield-Request-Secret": "xBotShieldRequestSecret",
   });
 });
 /** @internal */
 export type VerificationGetStatusRequest$Outbound = {
   request_id: string;
+  "X-BotShield-Request-Secret"?: string | undefined;
 };
 
 /** @internal */
@@ -355,9 +362,11 @@ export const VerificationGetStatusRequest$outboundSchema: z.ZodType<
   VerificationGetStatusRequest
 > = z.object({
   requestId: z.string(),
+  xBotShieldRequestSecret: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
+    xBotShieldRequestSecret: "X-BotShield-Request-Secret",
   });
 });
 

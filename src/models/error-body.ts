@@ -36,7 +36,7 @@ export type ErrorBody = {
   message: string;
   statusCode: number;
   /**
-   * `ttl_below_floor`, `ttl_above_ceiling`, `trust_layer_rejected`, `trust_layer_unavailable`, `gate_required`, `alias_retired`, `RATE_LIMITED`, `inline_not_for_age_gate`, `act_label_has_link`.
+   * `ttl_below_floor`, `ttl_above_ceiling`, `trust_layer_rejected`, `trust_layer_unavailable`, `gate_required`, `alias_retired`, `RATE_LIMITED`, `inline_not_for_age_gate`, `act_label_has_link`, and in 4.0 `link_requires_server_session`, `account_override_refused`, `action_is_recovery`, `action_is_signin`, `invalid_key`, `recovery_code_invalid`, `handle_invalid`, `signin_not_set_up`, `not_verified`, `account_paused`, `signin_unknown`, `signin_pending`, `signin_refused`, `signin_expired`, `signin_used`, `signin_wrong_account`, `unavailable`.
    */
   code?: string | undefined;
   minTtlSeconds?: number | undefined;
