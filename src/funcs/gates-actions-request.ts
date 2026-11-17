@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Ask a linked person to confirm an action
  *
  * @remarks
- * An agent asks, a person confirms. Puts ONE BotShield Action in front of a person already linked to your company, as a card in their BotShield app naming the agent that asked. The person approves with their passkey, which signs the act itself. Collect the action token with gates-api/actions/request-status and check it with sdk/verify-token (claims.act), exactly as for a tapped action. Idempotent on (agent, request_id).
+ * An agent asks, a person confirms. Puts ONE BotShield Action in front of a person already linked to your company, as a card in their BotShield app naming the agent that asked. The person approves with their passkey, which signs the act itself. Collect the action token with gates-api/actions/request-status and check it with sdk/verify-token (claims.act), exactly as for a tapped action. Idempotent on (agent, request_id). Or address the person by `phone_number` (no link needed beforehand; see the field).
  */
 export function gatesActionsRequest(
   client: BotShieldCore,

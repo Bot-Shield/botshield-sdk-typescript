@@ -16,6 +16,11 @@ export type GatesApiActionsRequestSecurity = {
   gatesKeyAuth: string;
 };
 
+export type GatesApiActionsRequestDetail = {
+  label: string;
+  value: string;
+};
+
 export type GatesApiActionsRequestRequest = {
   /**
    * Your idempotency key for this request.
@@ -34,13 +39,21 @@ export type GatesApiActionsRequestRequest = {
    */
   actLabel?: string | undefined;
   /**
-   * Your reference for the person (the one you linked them with). The person must already be linked.
+   * Your reference for the person (the one you linked them with). The person must already be linked. Exactly one of this and `phone_number`.
    */
-  partnerUserRef: string;
+  partnerUserRef?: string | undefined;
+  /**
+   * 4.0 · the person's phone number, in place of `partner_user_ref` (exactly one of the two). Used for one lookup, then dropped: never stored, logged or sent in a webhook. The answer is the same whether or not anyone holds the number. Show the returned `match_number` to the person; they pick it in the app before approving. A person not yet linked to your company gets an introduction first, never the card; the ask is held and becomes the card if they allow. An ask nobody answers reads `queued`, then `expired`. Production needs a verified business.
+   */
+  phoneNumber?: string | undefined;
   /**
    * Display only: who asked on the person's behalf, e.g. their assistant.
    */
   requestedBy?: string | undefined;
+  /**
+   * The terms the person is approving, as rows on the card. Shown as you send them and signed with the act: a row changed after the approval breaks it. A label and a value only.
+   */
+  details?: Array<GatesApiActionsRequestDetail> | undefined;
   /**
    * How long the card waits for the person.
    */
@@ -62,6 +75,10 @@ export type GatesApiActionsRequestDataData = {
   requestId: string;
   status: GatesApiActionsRequestStatus;
   expiresAt: Date;
+  /**
+   * By phone number only: the two-digit number to show the person (in your conversation, or on your screen). They pick it in the BotShield app before approving.
+   */
+  matchNumber?: number | undefined;
 };
 
 export type GatesApiActionsRequestData = {
@@ -73,7 +90,7 @@ export type GatesApiActionsRequestData = {
 };
 
 /**
- * Queued. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401), `gates_scope_required` (403), `org_not_found` (404), `action_invalid` (400), `action_not_found` (404), `action_off` (404), `agent_not_found` (404), `not_linked` (409 — the person isn't linked to your company), `request_id_reused` (409), `internal` (500).
+ * Queued. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401), `gates_scope_required` (403), `org_not_found` (404), `action_invalid` (400), `action_not_found` (404), `action_off` (404), `agent_not_found` (404), `not_linked` (409 — the person isn't linked to your company), `details_invalid` (400), `agent_removed_by_person` (409 — the person removed this agent), `account_reconfirm_required` (409 — the customer changed their phone number without approval from another phone, so they must confirm this account with BotShield again from your signed-in page before anything can be sent to them; nothing is counted or sent), `request_id_reused` (409 — also when the same request_id is sent with other terms), `too_many_open_requests` (429 — this person already has 5 of your requests waiting; carries `retry_after_seconds`), `daily_request_limit` (429 — 50 requests to this person in 24 hours; carries `retry_after_seconds`), `request_limit_unavailable` (503 — the request could not be counted, so it was not sent; retry), `one_addressee_required` (400 — send exactly one of partner_user_ref and phone_number), `phone_invalid` (400), `org_not_verified` (403 — by phone number in production), `send_rate_limited` (429 — asks by phone number per key per hour), `unanswered_limit_reached` (429 — too many unanswered asks by phone number in 24 hours), `unavailable` (503), `internal` (500).
  */
 export type GatesApiActionsRequestResponse = {
   data: GatesApiActionsRequestData;
@@ -129,6 +146,50 @@ export function gatesApiActionsRequestSecurityFromJSON(
 }
 
 /** @internal */
+export const GatesApiActionsRequestDetail$inboundSchema: z.ZodType<
+  GatesApiActionsRequestDetail,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  label: types.string(),
+  value: types.string(),
+});
+/** @internal */
+export type GatesApiActionsRequestDetail$Outbound = {
+  label: string;
+  value: string;
+};
+
+/** @internal */
+export const GatesApiActionsRequestDetail$outboundSchema: z.ZodType<
+  GatesApiActionsRequestDetail$Outbound,
+  z.ZodTypeDef,
+  GatesApiActionsRequestDetail
+> = z.object({
+  label: z.string(),
+  value: z.string(),
+});
+
+export function gatesApiActionsRequestDetailToJSON(
+  gatesApiActionsRequestDetail: GatesApiActionsRequestDetail,
+): string {
+  return JSON.stringify(
+    GatesApiActionsRequestDetail$outboundSchema.parse(
+      gatesApiActionsRequestDetail,
+    ),
+  );
+}
+export function gatesApiActionsRequestDetailFromJSON(
+  jsonString: string,
+): SafeParseResult<GatesApiActionsRequestDetail, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GatesApiActionsRequestDetail$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GatesApiActionsRequestDetail' from JSON`,
+  );
+}
+
+/** @internal */
 export const GatesApiActionsRequestRequest$inboundSchema: z.ZodType<
   GatesApiActionsRequestRequest,
   z.ZodTypeDef,
@@ -138,14 +199,19 @@ export const GatesApiActionsRequestRequest$inboundSchema: z.ZodType<
   agent: types.string(),
   act: types.string(),
   act_label: types.optional(types.string()),
-  partner_user_ref: types.string(),
+  partner_user_ref: types.optional(types.string()),
+  phone_number: types.optional(types.string()),
   requested_by: types.optional(types.string()),
+  details: types.optional(
+    z.array(z.lazy(() => GatesApiActionsRequestDetail$inboundSchema)),
+  ),
   ttl_seconds: types.number().default(600),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
     "act_label": "actLabel",
     "partner_user_ref": "partnerUserRef",
+    "phone_number": "phoneNumber",
     "requested_by": "requestedBy",
     "ttl_seconds": "ttlSeconds",
   });
@@ -156,8 +222,10 @@ export type GatesApiActionsRequestRequest$Outbound = {
   agent: string;
   act: string;
   act_label?: string | undefined;
-  partner_user_ref: string;
+  partner_user_ref?: string | undefined;
+  phone_number?: string | undefined;
   requested_by?: string | undefined;
+  details?: Array<GatesApiActionsRequestDetail$Outbound> | undefined;
   ttl_seconds: number;
 };
 
@@ -171,14 +239,18 @@ export const GatesApiActionsRequestRequest$outboundSchema: z.ZodType<
   agent: z.string(),
   act: z.string(),
   actLabel: z.string().optional(),
-  partnerUserRef: z.string(),
+  partnerUserRef: z.string().optional(),
+  phoneNumber: z.string().optional(),
   requestedBy: z.string().optional(),
+  details: z.array(z.lazy(() => GatesApiActionsRequestDetail$outboundSchema))
+    .optional(),
   ttlSeconds: z.number().int().default(600),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
     actLabel: "act_label",
     partnerUserRef: "partner_user_ref",
+    phoneNumber: "phone_number",
     requestedBy: "requested_by",
     ttlSeconds: "ttl_seconds",
   });
@@ -225,10 +297,12 @@ export const GatesApiActionsRequestDataData$inboundSchema: z.ZodType<
   request_id: types.string(),
   status: GatesApiActionsRequestStatus$inboundSchema,
   expires_at: types.date(),
+  match_number: types.optional(types.number()),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
     "expires_at": "expiresAt",
+    "match_number": "matchNumber",
   });
 });
 /** @internal */
@@ -236,6 +310,7 @@ export type GatesApiActionsRequestDataData$Outbound = {
   request_id: string;
   status: string;
   expires_at: string;
+  match_number?: number | undefined;
 };
 
 /** @internal */
@@ -247,10 +322,12 @@ export const GatesApiActionsRequestDataData$outboundSchema: z.ZodType<
   requestId: z.string(),
   status: GatesApiActionsRequestStatus$outboundSchema,
   expiresAt: z.date().transform(v => v.toISOString()),
+  matchNumber: z.number().int().optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
     expiresAt: "expires_at",
+    matchNumber: "match_number",
   });
 });
 

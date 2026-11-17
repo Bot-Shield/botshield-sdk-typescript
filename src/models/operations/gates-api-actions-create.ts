@@ -31,6 +31,10 @@ export type GatesApiActionsCreateRequest = {
    * Your support team can send this to a customer. Its name is what the customer reads.
    */
   staffCanSend?: boolean | undefined;
+  /**
+   * 4.0 VH-31: high-value. It starts only from your customer's signed-in session (your server naming the account by your own reference). It is refused by phone number and for staff sends (`action_requires_signed_in`).
+   */
+  highValue?: boolean | undefined;
 };
 
 export type GatesApiActionsCreateDataData = {
@@ -114,6 +118,7 @@ export const GatesApiActionsCreateRequest$inboundSchema: z.ZodType<
   actKey: types.string(),
   whereUrl: types.optional(types.string()),
   staffCanSend: types.optional(types.boolean()),
+  highValue: types.optional(types.boolean()),
 });
 /** @internal */
 export type GatesApiActionsCreateRequest$Outbound = {
@@ -121,6 +126,7 @@ export type GatesApiActionsCreateRequest$Outbound = {
   actKey: string;
   whereUrl?: string | undefined;
   staffCanSend?: boolean | undefined;
+  highValue?: boolean | undefined;
 };
 
 /** @internal */
@@ -133,6 +139,7 @@ export const GatesApiActionsCreateRequest$outboundSchema: z.ZodType<
   actKey: z.string(),
   whereUrl: z.string().optional(),
   staffCanSend: z.boolean().optional(),
+  highValue: z.boolean().optional(),
 });
 
 export function gatesApiActionsCreateRequestToJSON(

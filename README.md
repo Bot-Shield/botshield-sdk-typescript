@@ -287,6 +287,7 @@ run();
 
 ### [Actions](docs/sdks/actions/README.md)
 
+* [verifyResolution](docs/sdks/actions/README.md#verifyresolution) - Check a Proof of Resolution (works once)
 * [proposeAction](docs/sdks/actions/README.md#proposeaction) - Propose an action for human confirmation
 * [checkActionStatus](docs/sdks/actions/README.md#checkactionstatus) - Check action proposal status
 * [cancelAction](docs/sdks/actions/README.md#cancelaction) - Cancel a queued action proposal
@@ -301,6 +302,8 @@ run();
 * [getPartnerConfig](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
 * [revokeVerification](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
 * [logout](docs/sdks/census/README.md#logout) - Revoke a grant token
+* [confirmLink](docs/sdks/census/README.md#confirmlink) - Confirm a pending link
+* [sendByNumber](docs/sdks/census/README.md#sendbynumber) - Send a request to verify by phone number
 
 ### [Gates](docs/sdks/gates/README.md)
 
@@ -320,6 +323,7 @@ run();
 * [update](docs/sdks/gatesactions/README.md#update) - Rename a BotShield Action, or mark it staff can send
 * [request](docs/sdks/gatesactions/README.md#request) - Ask a linked person to confirm an action
 * [requestStatus](docs/sdks/gatesactions/README.md#requeststatus) - Where an action request stands
+* [requestCancel](docs/sdks/gatesactions/README.md#requestcancel) - Withdraw an action request
 
 ### [InlinePasskey](docs/sdks/inlinepasskey/README.md)
 
@@ -357,17 +361,21 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`actionsCancelAction`](docs/sdks/actions/README.md#cancelaction) - Cancel a queued action proposal
 - [`actionsCheckActionStatus`](docs/sdks/actions/README.md#checkactionstatus) - Check action proposal status
 - [`actionsProposeAction`](docs/sdks/actions/README.md#proposeaction) - Propose an action for human confirmation
+- [`actionsVerifyResolution`](docs/sdks/actions/README.md#verifyresolution) - Check a Proof of Resolution (works once)
+- [`censusConfirmLink`](docs/sdks/census/README.md#confirmlink) - Confirm a pending link
 - [`censusCreateSession`](docs/sdks/census/README.md#createsession) - Create a grant token
 - [`censusCreateVerificationLink`](docs/sdks/census/README.md#createverificationlink) - Create a verification request
 - [`censusGetPartnerConfig`](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
 - [`censusLogout`](docs/sdks/census/README.md#logout) - Revoke a grant token
 - [`censusRevokeVerification`](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
+- [`censusSendByNumber`](docs/sdks/census/README.md#sendbynumber) - Send a request to verify by phone number
 - [`censusStoreSignal`](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
 - [`censusValidateSignal`](docs/sdks/census/README.md#validatesignal) - Validate a signal token
 - [`censusVerifyToken`](docs/sdks/census/README.md#verifytoken) - Validate a verification token
 - [`gatesActionsCreate`](docs/sdks/gatesactions/README.md#create) - Place a BotShield Action
 - [`gatesActionsList`](docs/sdks/gatesactions/README.md#list) - List BotShield Actions
 - [`gatesActionsRequest`](docs/sdks/gatesactions/README.md#request) - Ask a linked person to confirm an action
+- [`gatesActionsRequestCancel`](docs/sdks/gatesactions/README.md#requestcancel) - Withdraw an action request
 - [`gatesActionsRequestStatus`](docs/sdks/gatesactions/README.md#requeststatus) - Where an action request stands
 - [`gatesActionsSetState`](docs/sdks/gatesactions/README.md#setstate) - Turn a BotShield Action on or off
 - [`gatesActionsUpdate`](docs/sdks/gatesactions/README.md#update) - Rename a BotShield Action, or mark it staff can send
@@ -509,8 +517,8 @@ run();
 ### Error Classes
 **Primary errors:**
 * [`BotShieldError`](./src/models/errors/bot-shield-error.ts): The base class for HTTP error responses.
-  * [`InvalidInputError`](./src/models/errors/invalid-input-error.ts): Invalid input. Status code `400`.
-  * [`ErrorResponse`](./src/models/errors/error-response.ts): Internal server error. Status code `500`.
+  * [`ErrorResponse`](./src/models/errors/error-response.ts): Internal server error. Status code `500`. *
+  * [`InvalidInputError`](./src/models/errors/invalid-input-error.ts): Invalid input. Status code `400`. *
 
 <details><summary>Less common errors (6)</summary>
 
@@ -528,6 +536,8 @@ run();
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
+
+\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->

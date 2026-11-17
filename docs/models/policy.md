@@ -22,7 +22,7 @@ let value: Policy = {
     opensAt: new Date("2025-01-27T01:50:13.112Z"),
     closesAt: new Date("2024-12-21T11:32:24.842Z"),
   },
-  line: "2 per person · ever",
+  line: "2 per BotShield ID · ever",
 };
 ```
 
@@ -38,4 +38,4 @@ let value: Policy = {
 | `passesPerPerson`                                        | [models.PassesPerPerson](../models/passes-per-person.md) | :heavy_check_mark:                                       | Null = as often as they like.                            |                                                          |
 | `realDaysAtLeast`                                        | *number*                                                 | :heavy_check_mark:                                       | N/A                                                      |                                                          |
 | `schedule`                                               | [models.Schedule](../models/schedule.md)                 | :heavy_check_mark:                                       | N/A                                                      |                                                          |
-| `line`                                                   | *string*                                                 | :heavy_check_mark:                                       | The human-readable policy readback the Console shows.    | 2 per person · ever                                      |
+| `line`                                                   | *string*                                                 | :heavy_check_mark:                                       | The human-readable policy readback the Console shows.    | 2 per BotShield ID · ever                                |

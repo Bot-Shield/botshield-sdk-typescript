@@ -10,6 +10,7 @@
 * [update](#update) - Rename a BotShield Action, or mark it staff can send
 * [request](#request) - Ask a linked person to confirm an action
 * [requestStatus](#requeststatus) - Where an action request stands
+* [requestCancel](#requestcancel) - Withdraw an action request
 
 ## create
 
@@ -259,6 +260,7 @@ async function run() {
     actKey: "account-recovery",
     name: "You asked to recover your account.",
     staffCanSend: true,
+    highValue: true,
   });
 
   console.log(result);
@@ -286,6 +288,7 @@ async function run() {
     actKey: "account-recovery",
     name: "You asked to recover your account.",
     staffCanSend: true,
+    highValue: true,
   });
   if (res.ok) {
     const { value: result } = res;
@@ -322,7 +325,7 @@ run();
 
 ## request
 
-An agent asks, a person confirms. Puts ONE BotShield Action in front of a person already linked to your company, as a card in their BotShield app naming the agent that asked. The person approves with their passkey, which signs the act itself. Collect the action token with gates-api/actions/request-status and check it with sdk/verify-token (claims.act), exactly as for a tapped action. Idempotent on (agent, request_id).
+An agent asks, a person confirms. Puts ONE BotShield Action in front of a person already linked to your company, as a card in their BotShield app naming the agent that asked. The person approves with their passkey, which signs the act itself. Collect the action token with gates-api/actions/request-status and check it with sdk/verify-token (claims.act), exactly as for a tapped action. Idempotent on (agent, request_id). Or address the person by `phone_number` (no link needed beforehand; see the field).
 
 ### Example Usage
 
@@ -340,8 +343,14 @@ async function run() {
     agent: "couchtour",
     act: "hold:3f1c…:9a0b1c2d3e4f5a6b",
     actLabel: "Hold Summer ’26 tee · $40",
-    partnerUserRef: "<value>",
+    phoneNumber: "+1 415 555 0142",
     requestedBy: "Muse",
+    details: [
+      {
+        label: "Plan",
+        value: "Family, monthly",
+      },
+    ],
   });
 
   console.log(result);
@@ -370,8 +379,14 @@ async function run() {
     agent: "couchtour",
     act: "hold:3f1c…:9a0b1c2d3e4f5a6b",
     actLabel: "Hold Summer ’26 tee · $40",
-    partnerUserRef: "<value>",
+    phoneNumber: "+1 415 555 0142",
     requestedBy: "Muse",
+    details: [
+      {
+        label: "Plan",
+        value: "Family, monthly",
+      },
+    ],
   });
   if (res.ok) {
     const { value: result } = res;
@@ -473,6 +488,84 @@ run();
 ### Response
 
 **Promise\<[operations.GatesApiActionsRequestStatusResponse](../../models/operations/gates-api-actions-request-status-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.InvalidInputError     | 400                          | application/json             |
+| errors.ErrorResponse         | 500                          | application/json             |
+| errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
+
+## requestCancel
+
+Withdraws a request you sent with actions/request while it is still waiting for the person. The card leaves their BotShield app. A request that was already answered, expired or withdrawn comes back as it stands with already_resolved true; an approval cannot be undone here. A withdrawn request is not billed.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="GatesApiActionsRequestCancel" method="post" path="/gates-api/actions/request-cancel" -->
+```typescript
+import { BotShield } from "botshield-sdk";
+
+const botShield = new BotShield();
+
+async function run() {
+  const result = await botShield.gates.actions.requestCancel({
+    gatesKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    requestId: "39151025-ae3a-436a-a55a-dd9682b7a621",
+    agent: "<value>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { BotShieldCore } from "botshield-sdk/core.js";
+import { gatesActionsRequestCancel } from "botshield-sdk/funcs/gates-actions-request-cancel.js";
+
+// Use `BotShieldCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const botShield = new BotShieldCore();
+
+async function run() {
+  const res = await gatesActionsRequestCancel(botShield, {
+    gatesKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    requestId: "39151025-ae3a-436a-a55a-dd9682b7a621",
+    agent: "<value>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("gatesActionsRequestCancel failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GatesApiActionsRequestCancelRequest](../../models/operations/gates-api-actions-request-cancel-request.md)                                                          | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.GatesApiActionsRequestCancelSecurity](../../models/operations/gates-api-actions-request-cancel-security.md)                                                        | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.GatesApiActionsRequestCancelResponse](../../models/operations/gates-api-actions-request-cancel-response.md)\>**
 
 ### Errors
 

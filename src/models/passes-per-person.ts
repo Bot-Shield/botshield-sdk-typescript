@@ -19,7 +19,7 @@ export const Window = {
 export type Window = OpenEnum<typeof Window>;
 
 /**
- * Passes per person on your platform: `limit` per `window` (`30d` = rolling 30 days, `ever` = lifetime).
+ * Passes per BotShield ID on your platform: `limit` per `window` (`30d` = rolling 30 days, `ever` = lifetime).
  */
 export type PassesPerPerson = {
   limit: number;
