@@ -16,14 +16,14 @@ export class BotShield extends ClientSDK {
     return (this._census ??= new Census(this._options));
   }
 
-  private _verification?: Verification;
-  get verification(): Verification {
-    return (this._verification ??= new Verification(this._options));
-  }
-
   private _actions?: Actions;
   get actions(): Actions {
     return (this._actions ??= new Actions(this._options));
+  }
+
+  private _verification?: Verification;
+  get verification(): Verification {
+    return (this._verification ??= new Verification(this._options));
   }
 
   private _securedAccounts?: SecuredAccounts;

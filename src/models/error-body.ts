@@ -36,7 +36,7 @@ export type ErrorBody = {
   message: string;
   statusCode: number;
   /**
-   * `ttl_below_floor`, `ttl_above_ceiling`, `trust_layer_rejected`, `trust_layer_unavailable`, `gate_required`, `alias_retired`, `RATE_LIMITED`, `inline_not_for_age_gate`.
+   * `ttl_below_floor`, `ttl_above_ceiling`, `trust_layer_rejected`, `trust_layer_unavailable`, `gate_required`, `alias_retired`, `RATE_LIMITED`, `inline_not_for_age_gate`, `act_label_has_link`.
    */
   code?: string | undefined;
   minTtlSeconds?: number | undefined;
@@ -53,6 +53,10 @@ export type ErrorBody = {
    * inline_not_for_age_gate only: the app hand-off for this request.
    */
   url?: string | undefined;
+  /**
+   * On a 429 limit (`too_many_open_requests`, `daily_request_limit`, `send_rate_limited`, `unanswered_limit_reached`): seconds until a retry can succeed.
+   */
+  retryAfterSeconds?: number | undefined;
 };
 
 /** @internal */
@@ -161,6 +165,7 @@ export const ErrorBody$inboundSchema: z.ZodType<
   limits: types.optional(z.lazy(() => Limits$inboundSchema)),
   upgrade_url: types.optional(types.string()),
   url: types.optional(types.string()),
+  retry_after_seconds: types.optional(types.number()),
 }).transform((v) => {
   return remap$(v, {
     "min_ttl_seconds": "minTtlSeconds",
@@ -168,6 +173,7 @@ export const ErrorBody$inboundSchema: z.ZodType<
     "next_step": "nextStep",
     "retry_in": "retryIn",
     "upgrade_url": "upgradeUrl",
+    "retry_after_seconds": "retryAfterSeconds",
   });
 });
 /** @internal */
@@ -186,6 +192,7 @@ export type ErrorBody$Outbound = {
   limits?: Limits$Outbound | undefined;
   upgrade_url?: string | undefined;
   url?: string | undefined;
+  retry_after_seconds?: number | undefined;
 };
 
 /** @internal */
@@ -208,6 +215,7 @@ export const ErrorBody$outboundSchema: z.ZodType<
   limits: z.lazy(() => Limits$outboundSchema).optional(),
   upgradeUrl: z.string().optional(),
   url: z.string().optional(),
+  retryAfterSeconds: z.number().int().optional(),
 }).transform((v) => {
   return remap$(v, {
     minTtlSeconds: "min_ttl_seconds",
@@ -215,6 +223,7 @@ export const ErrorBody$outboundSchema: z.ZodType<
     nextStep: "next_step",
     retryIn: "retry_in",
     upgradeUrl: "upgrade_url",
+    retryAfterSeconds: "retry_after_seconds",
   });
 });
 

@@ -201,12 +201,18 @@ actions:
     update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: list, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/gates-api/actions/set-state"].post
     update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: setState, x-speakeasy-mcp: { disabled: true } }
+  # 4.0 J6: rename an action, or mark it staff can send. client.gates.actions.update
+  - target: $.paths["/gates-api/actions/update"].post
+    update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: update, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/gates-api/extend"].post
     update: { x-speakeasy-group: gates, x-speakeasy-name-override: extend, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/gates-api/actions/request"].post
     update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: request, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/gates-api/actions/request-status"].get
     update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: requestStatus, x-speakeasy-mcp: { disabled: true } }
+  # 4.0 Loop 186 G7: a company withdraws an action request it sent. client.gates.actions.requestCancel
+  - target: $.paths["/gates-api/actions/request-cancel"].post
+    update: { x-speakeasy-group: gates.actions, x-speakeasy-name-override: requestCancel, x-speakeasy-mcp: { disabled: true } }
 
   # ────────────────────────────────────────────────────────────────────────────
   # inlinePasskey.* — the partner inline passkey lane (SDK 2.3). PUBLIC: the request_id
@@ -218,3 +224,107 @@ actions:
     update: { x-speakeasy-group: inlinePasskey, x-speakeasy-name-override: getOptions, x-speakeasy-mcp: { disabled: true } }
   - target: $.paths["/request/passkey-complete"].post
     update: { x-speakeasy-group: inlinePasskey, x-speakeasy-name-override: complete, x-speakeasy-mcp: { disabled: true } }
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 4.0 (SDK 4.0.0) — new partner-server operations. EXCLUDED from MCP.
+  # The engine spec puts these two on a `bearerAuth` scheme it never defines (the spec
+  # would not validate). They take the company's SECRET key (`Bearer bs_…`), which is
+  # ApiKeyAuth here, as for create-session / revoke-verification.
+  # client.census.sendByNumber / client.census.confirmLink
+  # ────────────────────────────────────────────────────────────────────────────
+  - target: $.paths["/sdk/send-by-number"].post
+    update: { x-speakeasy-group: census, x-speakeasy-name-override: sendByNumber, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/sdk/send-by-number"].post.security
+    remove: true
+  - target: $.paths["/sdk/send-by-number"].post
+    update: { security: [ { ApiKeyAuth: [] } ] }
+  - target: $.paths["/sdk/confirm-link"].post
+    update: { x-speakeasy-group: census, x-speakeasy-name-override: confirmLink, x-speakeasy-mcp: { disabled: true } }
+  - target: $.paths["/sdk/confirm-link"].post.security
+    remove: true
+  - target: $.paths["/sdk/confirm-link"].post
+    update: { security: [ { ApiKeyAuth: [] } ] }
+  # Loop 186 G4: check a Proof of Resolution once. Takes the agent's own key OR the company's
+  # secret key, so both are offered (the engine spec left it unset = the global agent key only).
+  # Not an MCP tool: the MCP allowlist stays the three Queue verbs (RFC 42 A2).
+  # client.actions.verifyResolution
+  - target: $.paths["/sdk/verify-resolution"].post
+    update: { x-speakeasy-group: actions, x-speakeasy-name-override: verifyResolution, x-speakeasy-mcp: { disabled: true }, security: [ { AgentKeyAuth: [] }, { ApiKeyAuth: [] } ] }
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 4.0 fields the engine returns that its spec does not yet describe. Without them the
+  # generated parsers drop the values. Remove each entry once the engine spec carries it.
+  # ────────────────────────────────────────────────────────────────────────────
+  # verify-resolution: a refused key arrives as data.error (code `invalid_key`).
+  - target: $.paths["/sdk/verify-resolution"].post.responses["200"].content["application/json"].schema.properties.data.properties
+    update:
+      error: { $ref: "#/components/schemas/GatesApiError" }
+  # VH-31: each action says whether it is high-value (list / create / update).
+  - target: $.components.schemas.BotShieldAction.properties
+    update:
+      high_value:
+        type: boolean
+        description: "4.0: high-value. It starts only from your customer's signed-in session (your server naming the account by your own reference); by phone number or by staff it is refused (`action_requires_signed_in`). Set with `highValue` on create or update."
+  # B-34 / PG-4: limits carry how long to wait.
+  - target: $.components.schemas.ErrorBody.properties
+    update:
+      retry_after_seconds:
+        type: integer
+        description: "On a 429 limit (`too_many_open_requests`, `daily_request_limit`, `send_rate_limited`, `unanswered_limit_reached`): seconds until a retry can succeed."
+  - target: $.components.schemas.GatesApiError.properties
+    update:
+      retry_after_seconds:
+        type: integer
+        description: "On a 429 limit: seconds until a retry can succeed."
+  # D3 "pending until your server confirms": verify-token reports where the link stands, and
+  # confirms it when called with the secret key and `partner_user_ref`.
+  - target: $.paths["/sdk/verify-token"].post.responses["200"].content["application/json"].schema.properties.data.properties.data.properties
+    update:
+      link:
+        type: object
+        description: "4.0: present only on a token whose link waited for your server. `pending`: not confirmed (send your secret key and `partner_user_ref`, or call sdk/confirm-link). `live` with `confirmed: true`: this check confirmed it. `not_live`: the confirm was refused (`code`)."
+        properties:
+          state: { type: string, enum: [pending, live, not_live] }
+          confirmed: { type: boolean }
+          handle: { type: string }
+          first_time: { type: boolean }
+          code: { type: string, description: "`link_pending`, or the confirm refusal code (as sdk/confirm-link)." }
+          message: { type: string }
+  - target: $.paths["/sdk/verify-token"].post.responses["200"].content["application/json"].schema.properties.data.properties.data.properties.claims.properties
+    update:
+      link_state:
+        type: string
+        description: "4.0: where the link stood for this token: `pending`, `live`, `expired` or `refused`. Absent on a plain check."
+  - target: $.paths["/verification/status"].get.responses["200"].content["application/json"].schema.properties.data.properties
+    update:
+      link_state:
+        type: ["string", "null"]
+        enum: [pending, live, expired, refused, null]
+        description: "4.0: where the link stands on this request. Null on a plain check and on a link from before 4.0. A pass whose link is not live carries no destination."
+      link_expires_at:
+        type: ["string", "null"]
+        format: date-time
+        description: "4.0: when a pending link expires (24 hours after the tap). Null unless `link_state` is `pending`."
+      link_code:
+        type: string
+        description: "4.0: `link_pending` while the link waits for your server."
+      link_message:
+        type: string
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 4.0 model names (`title` names the generated type; it does not rename the field). Pinned so the generator's collision rules neither rename a published
+  # export (`Link`, the gate's link policy, would otherwise become VerificationGetStatusLink
+  # once verify-token gained `link`) nor mint bare names like `Detail` / `DataSent`.
+  # ────────────────────────────────────────────────────────────────────────────
+  - target: $.paths["/verification/status"].get.responses["200"].content["application/json"].schema.properties.data.properties.gate.properties.link
+    update: { title: Link }
+  - target: $.paths["/sdk/verify-token"].post.responses["200"].content["application/json"].schema.properties.data.properties.data.properties.link
+    update: { title: SdkVerifyTokenLink }
+  - target: $.paths["/sdk/send-by-number"].post.responses["200"].content["application/json"].schema.properties.data.properties.data
+    update: { title: SdkSendByNumberDataData }
+  - target: $.paths["/sdk/confirm-link"].post.responses["200"].content["application/json"].schema.properties.data.properties.data
+    update: { title: SdkConfirmLinkDataData }
+  - target: $.paths["/sdk/verify-resolution"].post.responses["200"].content["application/json"].schema.properties.data.properties.data
+    update: { title: SdkVerifyResolutionDataData }
+  - target: $.paths["/gates-api/actions/request"].post.requestBody.content["application/json"].schema.properties.details.items
+    update: { title: GatesApiActionsRequestDetail }

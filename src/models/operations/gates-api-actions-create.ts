@@ -27,6 +27,14 @@ export type GatesApiActionsCreateRequest = {
    * Where the action lives on your surface. `https://` only.
    */
   whereUrl?: string | undefined;
+  /**
+   * Your support team can send this to a customer. Its name is what the customer reads.
+   */
+  staffCanSend?: boolean | undefined;
+  /**
+   * 4.0 VH-31: high-value. It starts only from your customer's signed-in session (your server naming the account by your own reference). It is refused by phone number and for staff sends (`action_requires_signed_in`).
+   */
+  highValue?: boolean | undefined;
 };
 
 export type GatesApiActionsCreateDataData = {
@@ -45,7 +53,7 @@ export type GatesApiActionsCreateData = {
 };
 
 /**
- * The placed action. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401 — missing, malformed or inactive key), `gates_scope_required` (403 — the key lacks Gates API access), `org_not_found` (404), `action_key_taken` (409), `internal` (500).
+ * The placed action. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401 — missing, malformed or inactive key), `gates_scope_required` (403 — the key lacks Gates API access), `org_not_found` (404), `action_key_taken` (409), `not_migrated` (503 — `staffCanSend` is not available yet), `internal` (500).
  */
 export type GatesApiActionsCreateResponse = {
   data: GatesApiActionsCreateData;
@@ -109,12 +117,16 @@ export const GatesApiActionsCreateRequest$inboundSchema: z.ZodType<
   name: types.string(),
   actKey: types.string(),
   whereUrl: types.optional(types.string()),
+  staffCanSend: types.optional(types.boolean()),
+  highValue: types.optional(types.boolean()),
 });
 /** @internal */
 export type GatesApiActionsCreateRequest$Outbound = {
   name: string;
   actKey: string;
   whereUrl?: string | undefined;
+  staffCanSend?: boolean | undefined;
+  highValue?: boolean | undefined;
 };
 
 /** @internal */
@@ -126,6 +138,8 @@ export const GatesApiActionsCreateRequest$outboundSchema: z.ZodType<
   name: z.string(),
   actKey: z.string(),
   whereUrl: z.string().optional(),
+  staffCanSend: z.boolean().optional(),
+  highValue: z.boolean().optional(),
 });
 
 export function gatesApiActionsCreateRequestToJSON(

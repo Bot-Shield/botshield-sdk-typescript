@@ -1,6 +1,6 @@
 # PassesPerPerson
 
-Passes per person on your platform: `limit` per `window` (`30d` = rolling 30 days, `ever` = lifetime).
+Passes per BotShield ID on your platform: `limit` per `window` (`30d` = rolling 30 days, `ever` = lifetime).
 
 ## Example Usage
 

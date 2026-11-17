@@ -22,7 +22,7 @@ export type VerificationGetStatusRequest = {
 };
 
 /**
- * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`.
+ * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`. `cancelled`: the request ended without an answer; see `reason` (`declined`: the person cancelled the link ask; `superseded`: a newer check sent to the same person replaced this one).
  */
 export const VerificationGetStatusStatus = {
   Pending: "pending",
@@ -30,11 +30,12 @@ export const VerificationGetStatusStatus = {
   Pass: "pass",
   Expired: "expired",
   Failed: "failed",
+  Cancelled: "cancelled",
   NotFound: "not_found",
   Error: "error",
 } as const;
 /**
- * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`.
+ * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`. `cancelled`: the request ended without an answer; see `reason` (`declined`: the person cancelled the link ask; `superseded`: a newer check sent to the same person replaced this one).
  */
 export type VerificationGetStatusStatus = OpenEnum<
   typeof VerificationGetStatusStatus
@@ -121,7 +122,7 @@ export type Gate = {
   linked?: boolean | null | undefined;
   signedUpRequired?: boolean | undefined;
   /**
-   * Passes per person. Null = as often as they like.
+   * Passes per BotShield ID. Null = as often as they like.
    */
   perPerson?: models.PassesPerPerson | null | undefined;
   /**
@@ -166,10 +167,24 @@ export type VerificationGetStatusGateType = OpenEnum<
   typeof VerificationGetStatusGateType
 >;
 
+/**
+ * 4.0: where the link stands on this request. Null on a plain check and on a link from before 4.0. A pass whose link is not live carries no destination.
+ */
+export const LinkState = {
+  Pending: "pending",
+  Live: "live",
+  Expired: "expired",
+  Refused: "refused",
+} as const;
+/**
+ * 4.0: where the link stands on this request. Null on a plain check and on a link from before 4.0. A pass whose link is not live carries no destination.
+ */
+export type LinkState = OpenEnum<typeof LinkState>;
+
 export type VerificationGetStatusData = {
   found?: boolean | undefined;
   /**
-   * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`.
+   * `pass` is legacy: a success recorded without a new confirmation on the phone. Gates always ask in 3.3, so new requests end `completed`. A `pass` record expires 60 seconds after the check, after which this endpoint reports `expired`. `cancelled`: the request ended without an answer; see `reason` (`declined`: the person cancelled the link ask; `superseded`: a newer check sent to the same person replaced this one).
    */
   status?: VerificationGetStatusStatus | undefined;
   requestId?: string | undefined;
@@ -199,7 +214,7 @@ export type VerificationGetStatusData = {
    */
   error?: models.ErrorBody | undefined;
   /**
-   * Why a request ended `failed`. Null while pending and on success. An open set — treat unknown values as `unavailable`. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `gate_not_open`, `signup_required`, `link_requires_user_ref`: the gate's policy refused. `action_off`: the BotShield Action was turned off mid-tap. `action_requires_user_ref`: an action request without a linking ceremony. `unavailable`: the standard Unavailable result.
+   * Why a request ended `failed` or `cancelled`. Null while pending and on success. An open set — treat unknown values as `unavailable`. `already_trusted`: this BotShield ID already secures another account on your platform. `rebind_requires_prior_id`: this account is already secured by another BotShield ID. `pass_limit_reached`: the person has used the passes the gate allows. `real_days_not_met`: the BotShield ID has not yet proved a person on as many days as the gate asks. `gate_not_open`, `signup_required`, `link_requires_user_ref`: the gate's policy refused. `action_off`: the BotShield Action was turned off mid-tap. `action_requires_user_ref`: an action request without a linking ceremony. `superseded`: a newer check you sent to the same person replaced this one (status `cancelled`). `unavailable`: the standard Unavailable result.
    */
   reason?: string | null | undefined;
   /**
@@ -250,6 +265,19 @@ export type VerificationGetStatusData = {
    * Age Gate only, once completed: where the age answer came from.
    */
   ageSource?: string | null | undefined;
+  /**
+   * 4.0: where the link stands on this request. Null on a plain check and on a link from before 4.0. A pass whose link is not live carries no destination.
+   */
+  linkState?: LinkState | null | undefined;
+  /**
+   * 4.0: when a pending link expires (24 hours after the tap). Null unless `link_state` is `pending`.
+   */
+  linkExpiresAt?: Date | null | undefined;
+  /**
+   * 4.0: `link_pending` while the link waits for your server.
+   */
+  linkCode?: string | undefined;
+  linkMessage?: string | undefined;
 };
 
 /**
@@ -623,6 +651,19 @@ export const VerificationGetStatusGateType$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(VerificationGetStatusGateType);
 
 /** @internal */
+export const LinkState$inboundSchema: z.ZodType<
+  LinkState,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(LinkState);
+/** @internal */
+export const LinkState$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  LinkState
+> = openEnums.outboundSchema(LinkState);
+
+/** @internal */
 export const VerificationGetStatusData$inboundSchema: z.ZodType<
   VerificationGetStatusData,
   z.ZodTypeDef,
@@ -658,6 +699,10 @@ export const VerificationGetStatusData$inboundSchema: z.ZodType<
   age_threshold: z.nullable(types.number()).optional(),
   age_verdict: z.nullable(types.string()).optional(),
   age_source: z.nullable(types.string()).optional(),
+  link_state: z.nullable(LinkState$inboundSchema).optional(),
+  link_expires_at: z.nullable(types.date()).optional(),
+  link_code: types.optional(types.string()),
+  link_message: types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
@@ -678,6 +723,10 @@ export const VerificationGetStatusData$inboundSchema: z.ZodType<
     "age_threshold": "ageThreshold",
     "age_verdict": "ageVerdict",
     "age_source": "ageSource",
+    "link_state": "linkState",
+    "link_expires_at": "linkExpiresAt",
+    "link_code": "linkCode",
+    "link_message": "linkMessage",
   });
 });
 /** @internal */
@@ -711,6 +760,10 @@ export type VerificationGetStatusData$Outbound = {
   age_threshold?: number | null | undefined;
   age_verdict?: string | null | undefined;
   age_source?: string | null | undefined;
+  link_state?: string | null | undefined;
+  link_expires_at?: string | null | undefined;
+  link_code?: string | undefined;
+  link_message?: string | undefined;
 };
 
 /** @internal */
@@ -749,6 +802,11 @@ export const VerificationGetStatusData$outboundSchema: z.ZodType<
   ageThreshold: z.nullable(z.number().int()).optional(),
   ageVerdict: z.nullable(z.string()).optional(),
   ageSource: z.nullable(z.string()).optional(),
+  linkState: z.nullable(LinkState$outboundSchema).optional(),
+  linkExpiresAt: z.nullable(z.date().transform(v => v.toISOString()))
+    .optional(),
+  linkCode: z.string().optional(),
+  linkMessage: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
@@ -769,6 +827,10 @@ export const VerificationGetStatusData$outboundSchema: z.ZodType<
     ageThreshold: "age_threshold",
     ageVerdict: "age_verdict",
     ageSource: "age_source",
+    linkState: "link_state",
+    linkExpiresAt: "link_expires_at",
+    linkCode: "link_code",
+    linkMessage: "link_message",
   });
 });
 

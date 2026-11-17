@@ -31,6 +31,8 @@ import { Result } from "../types/fp.js";
  *
  * @remarks
  * Creates a verification request (deep link, web URL, QR code) for a gate. Requires an anchor grant token from create-session. Returns 409 when a pending request already exists for the same gate and user.
+ *
+ * **A check sent to one person** (a request with `partner_user_ref` whose account is linked, pushed to the person's phones): one is open at a time per organization, environment and person. A newer one that is pushed replaces the open one, which ends `cancelled` with reason `superseded` (verification/status) and fires `gate.unavailable` once with `failure_code: "superseded"`. Pushes are capped per person per day (default 5 in 24 hours); over the cap the request is still created and its QR / deep link work, but nothing is pushed (`push_skipped: "daily_cap"`).
  */
 export function censusCreateVerificationLink(
   client: BotShieldCore,

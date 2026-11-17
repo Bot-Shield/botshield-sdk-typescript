@@ -4,9 +4,11 @@
 
 import { gatesActionsCreate } from "../funcs/gates-actions-create.js";
 import { gatesActionsList } from "../funcs/gates-actions-list.js";
+import { gatesActionsRequestCancel } from "../funcs/gates-actions-request-cancel.js";
 import { gatesActionsRequestStatus } from "../funcs/gates-actions-request-status.js";
 import { gatesActionsRequest } from "../funcs/gates-actions-request.js";
 import { gatesActionsSetState } from "../funcs/gates-actions-set-state.js";
+import { gatesActionsUpdate } from "../funcs/gates-actions-update.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
@@ -68,10 +70,29 @@ export class GatesActions extends ClientSDK {
   }
 
   /**
+   * Rename a BotShield Action, or mark it staff can send
+   *
+   * @remarks
+   * Change an action's `name` (what the person reads on their card) or `staffCanSend` (your support team can send it to a customer), by its key. Send at least one.
+   */
+  async update(
+    security: operations.GatesApiActionsUpdateSecurity,
+    request: operations.GatesApiActionsUpdateRequest,
+    options?: RequestOptions,
+  ): Promise<operations.GatesApiActionsUpdateResponse> {
+    return unwrapAsync(gatesActionsUpdate(
+      this,
+      security,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * Ask a linked person to confirm an action
    *
    * @remarks
-   * An agent asks, a person confirms. Puts ONE BotShield Action in front of a person already linked to your company, as a card in their BotShield app naming the agent that asked. The person approves with their passkey, which signs the act itself. Collect the action token with gates-api/actions/request-status and check it with sdk/verify-token (claims.act), exactly as for a tapped action. Idempotent on (agent, request_id).
+   * An agent asks, a person confirms. Puts ONE BotShield Action in front of a person already linked to your company, as a card in their BotShield app naming the agent that asked. The person approves with their passkey, which signs the act itself. Collect the action token with gates-api/actions/request-status and check it with sdk/verify-token (claims.act), exactly as for a tapped action. Idempotent on (agent, request_id). Or address the person by `phone_number` (no link needed beforehand; see the field).
    */
   async request(
     security: operations.GatesApiActionsRequestSecurity,
@@ -98,6 +119,25 @@ export class GatesActions extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.GatesApiActionsRequestStatusResponse> {
     return unwrapAsync(gatesActionsRequestStatus(
+      this,
+      security,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Withdraw an action request
+   *
+   * @remarks
+   * Withdraws a request you sent with actions/request while it is still waiting for the person. The card leaves their BotShield app. A request that was already answered, expired or withdrawn comes back as it stands with already_resolved true; an approval cannot be undone here. A withdrawn request is not billed.
+   */
+  async requestCancel(
+    security: operations.GatesApiActionsRequestCancelSecurity,
+    request: operations.GatesApiActionsRequestCancelRequest,
+    options?: RequestOptions,
+  ): Promise<operations.GatesApiActionsRequestCancelResponse> {
+    return unwrapAsync(gatesActionsRequestCancel(
       this,
       security,
       request,

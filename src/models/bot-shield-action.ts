@@ -55,6 +55,14 @@ export type BotShieldAction = {
   environment: BotShieldActionEnvironment;
   placedAt: Date;
   turnedOffAt: Date | null;
+  /**
+   * Your support team can send this to a customer; its name is what the customer reads. Set with `staffCanSend` on create or update.
+   */
+  staffCanSend?: boolean | undefined;
+  /**
+   * 4.0: high-value. It starts only from your customer's signed-in session (your server naming the account by your own reference); by phone number or by staff it is refused (`action_requires_signed_in`). Set with `highValue` on create or update.
+   */
+  highValue?: boolean | undefined;
 };
 
 /** @internal */
@@ -97,12 +105,16 @@ export const BotShieldAction$inboundSchema: z.ZodType<
   environment: BotShieldActionEnvironment$inboundSchema,
   placed_at: types.date(),
   turned_off_at: types.nullable(types.date()),
+  staff_can_send: types.optional(types.boolean()),
+  high_value: types.optional(types.boolean()),
 }).transform((v) => {
   return remap$(v, {
     "act_key": "actKey",
     "where_url": "whereUrl",
     "placed_at": "placedAt",
     "turned_off_at": "turnedOffAt",
+    "staff_can_send": "staffCanSend",
+    "high_value": "highValue",
   });
 });
 /** @internal */
@@ -115,6 +127,8 @@ export type BotShieldAction$Outbound = {
   environment: string;
   placed_at: string;
   turned_off_at: string | null;
+  staff_can_send?: boolean | undefined;
+  high_value?: boolean | undefined;
 };
 
 /** @internal */
@@ -131,12 +145,16 @@ export const BotShieldAction$outboundSchema: z.ZodType<
   environment: BotShieldActionEnvironment$outboundSchema,
   placedAt: z.date().transform(v => v.toISOString()),
   turnedOffAt: z.nullable(z.date().transform(v => v.toISOString())),
+  staffCanSend: z.boolean().optional(),
+  highValue: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
     actKey: "act_key",
     whereUrl: "where_url",
     placedAt: "placed_at",
     turnedOffAt: "turned_off_at",
+    staffCanSend: "staff_can_send",
+    highValue: "high_value",
   });
 });
 

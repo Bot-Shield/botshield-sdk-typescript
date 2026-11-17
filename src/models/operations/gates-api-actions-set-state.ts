@@ -47,7 +47,7 @@ export type GatesApiActionsSetStateData = {
 };
 
 /**
- * The action. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401 — missing, malformed or inactive key), `gates_scope_required` (403 — the key lacks Gates API access), `org_not_found` (404), `action_not_found` (404), `internal` (500).
+ * The action. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401 — missing, malformed or inactive key), `gates_scope_required` (403 — the key lacks Gates API access), `org_not_found` (404), `action_not_found` (404), `internal` (500). Each action carries `staff_can_send`.
  */
 export type GatesApiActionsSetStateResponse = {
   data: GatesApiActionsSetStateData;

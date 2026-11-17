@@ -5,16 +5,36 @@
 import { actionsCancelAction } from "../funcs/actions-cancel-action.js";
 import { actionsCheckActionStatus } from "../funcs/actions-check-action-status.js";
 import { actionsProposeAction } from "../funcs/actions-propose-action.js";
+import { actionsVerifyResolution } from "../funcs/actions-verify-resolution.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
 export class Actions extends ClientSDK {
   /**
+   * Check a Proof of Resolution (works once)
+   *
+   * @remarks
+   * An approved ask mints a proof that the agent reads with agentlink/check-status. Send it here before acting on it. The first check answers valid true with what was approved; every later check answers valid false with replayed true. Checking the signature yourself against the public keys shows the proof is real, not that it is unused. Call with the agent's own key (for a proof minted for that agent) or the company's secret key (for a proof minted for one of its agents).
+   */
+  async verifyResolution(
+    security: operations.SDKVerifyResolutionSecurity,
+    request: operations.SDKVerifyResolutionRequest,
+    options?: RequestOptions,
+  ): Promise<operations.SDKVerifyResolutionResponse> {
+    return unwrapAsync(actionsVerifyResolution(
+      this,
+      security,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * Propose an action for human confirmation
    *
    * @remarks
-   * Queue a human-presence-gated action for a BotShield user. The user receives the card in the BotShield app (Agents Ask), confirms or denies with their passkey, and BotShield delivers a signed Proof of Resolution JWT to your registered callback URL (or poll check-status). Identify the user by opaque_id — the pairwise id from the bind ceremony. Authentication: agent key (bs_agent_<name>__<secret>) in the Authorization header.
+   * Queue a human-presence-gated action for a BotShield user. The user receives the card in the BotShield app (Agents Ask), confirms or denies with their passkey, and BotShield delivers a signed Proof of Resolution JWT to your registered callback URL (or poll check-status). Identify the user by opaque_id — the pairwise id from the bind ceremony. Authentication: agent key (bs_agent_<name>__<secret>) in the Authorization header. Or address the person by `phone_number` (no link needed beforehand; see the field).
    */
   async proposeAction(
     request: operations.ActionsProposeRequest,

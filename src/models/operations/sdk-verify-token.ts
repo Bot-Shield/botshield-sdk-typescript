@@ -26,6 +26,10 @@ export type SDKVerifyTokenRequest = {
    * Your organization id (the organization_id shown in Console settings). When given, a token issued for any other organization is rejected.
    */
   audience?: string | undefined;
+  /**
+   * 4.0: with your secret key, on a token whose link is pending, this confirms the link (same as sdk/confirm-link). The answer's `link` says whether it went live.
+   */
+  partnerUserRef?: string | undefined;
 };
 
 /**
@@ -40,6 +44,32 @@ export const AgeOver = {
  * Age Gate only, positive-only.
  */
 export type AgeOver = OpenEnum<typeof AgeOver>;
+
+/**
+ * `verification`: a person passed a check or a link. `action`: a person confirmed a BotShield Action. Null on a token issued before 4.0.
+ */
+export const Kind = {
+  Verification: "verification",
+  Action: "action",
+} as const;
+/**
+ * `verification`: a person passed a check or a link. `action`: a person confirmed a BotShield Action. Null on a token issued before 4.0.
+ */
+export type Kind = OpenEnum<typeof Kind>;
+
+/**
+ * The environment of the key that started the request. Null on a token issued before 4.0, or when it was not known.
+ */
+export const SDKVerifyTokenEnvironment = {
+  Development: "development",
+  Production: "production",
+} as const;
+/**
+ * The environment of the key that started the request. Null on a token issued before 4.0, or when it was not known.
+ */
+export type SDKVerifyTokenEnvironment = OpenEnum<
+  typeof SDKVerifyTokenEnvironment
+>;
 
 export type Claims = {
   requestId?: string | undefined;
@@ -73,6 +103,18 @@ export type Claims = {
    * BotShield Actions: the `act` this tap was for, echoed verbatim (your own string, e.g. `dibs:listing_4417`). Present only on tokens minted for an action.
    */
   act?: string | undefined;
+  /**
+   * `verification`: a person passed a check or a link. `action`: a person confirmed a BotShield Action. Null on a token issued before 4.0.
+   */
+  kind?: Kind | null | undefined;
+  /**
+   * The environment of the key that started the request. Null on a token issued before 4.0, or when it was not known.
+   */
+  environment?: SDKVerifyTokenEnvironment | null | undefined;
+  /**
+   * 4.0: where the link stood for this token: `pending`, `live`, `expired` or `refused`. Absent on a plain check.
+   */
+  linkState?: string | undefined;
 };
 
 /**
@@ -87,10 +129,32 @@ export const SDKVerifyTokenVerdict = {
  */
 export type SDKVerifyTokenVerdict = OpenEnum<typeof SDKVerifyTokenVerdict>;
 
+export const SDKVerifyTokenState = {
+  Pending: "pending",
+  Live: "live",
+  NotLive: "not_live",
+} as const;
+export type SDKVerifyTokenState = OpenEnum<typeof SDKVerifyTokenState>;
+
+/**
+ * 4.0: present only on a token whose link waited for your server. `pending`: not confirmed (send your secret key and `partner_user_ref`, or call sdk/confirm-link). `live` with `confirmed: true`: this check confirmed it. `not_live`: the confirm was refused (`code`).
+ */
+export type SDKVerifyTokenLink = {
+  state?: SDKVerifyTokenState | undefined;
+  confirmed?: boolean | undefined;
+  handle?: string | undefined;
+  firstTime?: boolean | undefined;
+  /**
+   * `link_pending`, or the confirm refusal code (as sdk/confirm-link).
+   */
+  code?: string | undefined;
+  message?: string | undefined;
+};
+
 export type SDKVerifyTokenDataData = {
   valid: boolean;
   /**
-   * Present when valid is false.
+   * Present when valid is false. A plain line, not a code. Includes: `Invalid token — not a BotShield verification token` (a token of another kind), `Invalid token — unknown environment`, and `Token was issued in the development environment; this key is production.` (or the reverse).
    */
   reason?: string | undefined;
   /**
@@ -106,6 +170,10 @@ export type SDKVerifyTokenDataData = {
    * Present when `valid` is true. `pass` when the token records a verified human.
    */
   verdict?: SDKVerifyTokenVerdict | undefined;
+  /**
+   * 4.0: present only on a token whose link waited for your server. `pending`: not confirmed (send your secret key and `partner_user_ref`, or call sdk/confirm-link). `live` with `confirmed: true`: this check confirmed it. `not_live`: the confirm was refused (`code`).
+   */
+  link?: SDKVerifyTokenLink | undefined;
 };
 
 export type SDKVerifyTokenData = {
@@ -173,11 +241,17 @@ export const SDKVerifyTokenRequest$inboundSchema: z.ZodType<
 > = z.object({
   token: types.string(),
   audience: types.optional(types.string()),
+  partner_user_ref: types.optional(types.string()),
+}).transform((v) => {
+  return remap$(v, {
+    "partner_user_ref": "partnerUserRef",
+  });
 });
 /** @internal */
 export type SDKVerifyTokenRequest$Outbound = {
   token: string;
   audience?: string | undefined;
+  partner_user_ref?: string | undefined;
 };
 
 /** @internal */
@@ -188,6 +262,11 @@ export const SDKVerifyTokenRequest$outboundSchema: z.ZodType<
 > = z.object({
   token: z.string(),
   audience: z.string().optional(),
+  partnerUserRef: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    partnerUserRef: "partner_user_ref",
+  });
 });
 
 export function sdkVerifyTokenRequestToJSON(
@@ -215,6 +294,26 @@ export const AgeOver$outboundSchema: z.ZodType<number, z.ZodTypeDef, AgeOver> =
   openEnums.outboundSchemaInt(AgeOver);
 
 /** @internal */
+export const Kind$inboundSchema: z.ZodType<Kind, z.ZodTypeDef, unknown> =
+  openEnums.inboundSchema(Kind);
+/** @internal */
+export const Kind$outboundSchema: z.ZodType<string, z.ZodTypeDef, Kind> =
+  openEnums.outboundSchema(Kind);
+
+/** @internal */
+export const SDKVerifyTokenEnvironment$inboundSchema: z.ZodType<
+  SDKVerifyTokenEnvironment,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(SDKVerifyTokenEnvironment);
+/** @internal */
+export const SDKVerifyTokenEnvironment$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  SDKVerifyTokenEnvironment
+> = openEnums.outboundSchema(SDKVerifyTokenEnvironment);
+
+/** @internal */
 export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
   .object({
     request_id: types.optional(types.string()),
@@ -230,6 +329,9 @@ export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
     last_pass_at: types.optional(types.date()),
     audience: z.nullable(types.string()).optional(),
     act: types.optional(types.string()),
+    kind: z.nullable(Kind$inboundSchema).optional(),
+    environment: z.nullable(SDKVerifyTokenEnvironment$inboundSchema).optional(),
+    link_state: types.optional(types.string()),
   }).transform((v) => {
     return remap$(v, {
       "request_id": "requestId",
@@ -239,6 +341,7 @@ export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
       "age_over": "ageOver",
       "trusted_since": "trustedSince",
       "last_pass_at": "lastPassAt",
+      "link_state": "linkState",
     });
   });
 /** @internal */
@@ -256,6 +359,9 @@ export type Claims$Outbound = {
   last_pass_at?: string | undefined;
   audience?: string | null | undefined;
   act?: string | undefined;
+  kind?: string | null | undefined;
+  environment?: string | null | undefined;
+  link_state?: string | undefined;
 };
 
 /** @internal */
@@ -277,6 +383,9 @@ export const Claims$outboundSchema: z.ZodType<
   lastPassAt: z.date().transform(v => v.toISOString()).optional(),
   audience: z.nullable(z.string()).optional(),
   act: z.string().optional(),
+  kind: z.nullable(Kind$outboundSchema).optional(),
+  environment: z.nullable(SDKVerifyTokenEnvironment$outboundSchema).optional(),
+  linkState: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
@@ -286,6 +395,7 @@ export const Claims$outboundSchema: z.ZodType<
     ageOver: "age_over",
     trustedSince: "trusted_since",
     lastPassAt: "last_pass_at",
+    linkState: "link_state",
   });
 });
 
@@ -316,6 +426,81 @@ export const SDKVerifyTokenVerdict$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(SDKVerifyTokenVerdict);
 
 /** @internal */
+export const SDKVerifyTokenState$inboundSchema: z.ZodType<
+  SDKVerifyTokenState,
+  z.ZodTypeDef,
+  unknown
+> = openEnums.inboundSchema(SDKVerifyTokenState);
+/** @internal */
+export const SDKVerifyTokenState$outboundSchema: z.ZodType<
+  string,
+  z.ZodTypeDef,
+  SDKVerifyTokenState
+> = openEnums.outboundSchema(SDKVerifyTokenState);
+
+/** @internal */
+export const SDKVerifyTokenLink$inboundSchema: z.ZodType<
+  SDKVerifyTokenLink,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  state: types.optional(SDKVerifyTokenState$inboundSchema),
+  confirmed: types.optional(types.boolean()),
+  handle: types.optional(types.string()),
+  first_time: types.optional(types.boolean()),
+  code: types.optional(types.string()),
+  message: types.optional(types.string()),
+}).transform((v) => {
+  return remap$(v, {
+    "first_time": "firstTime",
+  });
+});
+/** @internal */
+export type SDKVerifyTokenLink$Outbound = {
+  state?: string | undefined;
+  confirmed?: boolean | undefined;
+  handle?: string | undefined;
+  first_time?: boolean | undefined;
+  code?: string | undefined;
+  message?: string | undefined;
+};
+
+/** @internal */
+export const SDKVerifyTokenLink$outboundSchema: z.ZodType<
+  SDKVerifyTokenLink$Outbound,
+  z.ZodTypeDef,
+  SDKVerifyTokenLink
+> = z.object({
+  state: SDKVerifyTokenState$outboundSchema.optional(),
+  confirmed: z.boolean().optional(),
+  handle: z.string().optional(),
+  firstTime: z.boolean().optional(),
+  code: z.string().optional(),
+  message: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    firstTime: "first_time",
+  });
+});
+
+export function sdkVerifyTokenLinkToJSON(
+  sdkVerifyTokenLink: SDKVerifyTokenLink,
+): string {
+  return JSON.stringify(
+    SDKVerifyTokenLink$outboundSchema.parse(sdkVerifyTokenLink),
+  );
+}
+export function sdkVerifyTokenLinkFromJSON(
+  jsonString: string,
+): SafeParseResult<SDKVerifyTokenLink, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SDKVerifyTokenLink$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SDKVerifyTokenLink' from JSON`,
+  );
+}
+
+/** @internal */
 export const SDKVerifyTokenDataData$inboundSchema: z.ZodType<
   SDKVerifyTokenDataData,
   z.ZodTypeDef,
@@ -327,6 +512,7 @@ export const SDKVerifyTokenDataData$inboundSchema: z.ZodType<
   claims: z.nullable(z.lazy(() => Claims$inboundSchema)).optional(),
   replayed: types.optional(types.boolean()),
   verdict: types.optional(SDKVerifyTokenVerdict$inboundSchema),
+  link: types.optional(z.lazy(() => SDKVerifyTokenLink$inboundSchema)),
 }).transform((v) => {
   return remap$(v, {
     "expired_at": "expiredAt",
@@ -340,6 +526,7 @@ export type SDKVerifyTokenDataData$Outbound = {
   claims?: Claims$Outbound | null | undefined;
   replayed?: boolean | undefined;
   verdict?: string | undefined;
+  link?: SDKVerifyTokenLink$Outbound | undefined;
 };
 
 /** @internal */
@@ -354,6 +541,7 @@ export const SDKVerifyTokenDataData$outboundSchema: z.ZodType<
   claims: z.nullable(z.lazy(() => Claims$outboundSchema)).optional(),
   replayed: z.boolean().optional(),
   verdict: SDKVerifyTokenVerdict$outboundSchema.optional(),
+  link: z.lazy(() => SDKVerifyTokenLink$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     expiredAt: "expired_at",

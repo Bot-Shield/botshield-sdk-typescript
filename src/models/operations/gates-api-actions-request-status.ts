@@ -18,6 +18,10 @@ export type GatesApiActionsRequestStatusSecurity = {
 
 export type GatesApiActionsRequestStatusRequest = {
   requestId: string;
+  /**
+   * The agent you sent the request through. A request is keyed on (agent, request_id); name the agent so the answer is that request's.
+   */
+  agent?: string | undefined;
   waitSeconds?: number | undefined;
 };
 
@@ -123,6 +127,7 @@ export const GatesApiActionsRequestStatusRequest$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   request_id: types.string(),
+  agent: types.optional(types.string()),
   wait_seconds: types.optional(types.number()),
 }).transform((v) => {
   return remap$(v, {
@@ -133,6 +138,7 @@ export const GatesApiActionsRequestStatusRequest$inboundSchema: z.ZodType<
 /** @internal */
 export type GatesApiActionsRequestStatusRequest$Outbound = {
   request_id: string;
+  agent?: string | undefined;
   wait_seconds?: number | undefined;
 };
 
@@ -143,6 +149,7 @@ export const GatesApiActionsRequestStatusRequest$outboundSchema: z.ZodType<
   GatesApiActionsRequestStatusRequest
 > = z.object({
   requestId: z.string(),
+  agent: z.string().optional(),
   waitSeconds: z.number().int().optional(),
 }).transform((v) => {
   return remap$(v, {

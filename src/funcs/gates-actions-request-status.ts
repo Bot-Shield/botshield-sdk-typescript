@@ -100,6 +100,7 @@ async function $do(
   const path = pathToFunc("/gates-api/actions/request-status")();
 
   const query = encodeFormQuery({
+    "agent": payload.agent,
     "request_id": payload.request_id,
     "wait_seconds": payload.wait_seconds,
   });

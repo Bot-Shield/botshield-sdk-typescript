@@ -3,6 +3,7 @@
  */
 
 import * as z from "zod/v3";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
@@ -15,6 +16,10 @@ export type GatesApiError = {
   message: string;
   statusCode: number;
   code: string;
+  /**
+   * On a 429 limit: seconds until a retry can succeed.
+   */
+  retryAfterSeconds?: number | undefined;
 };
 
 /** @internal */
@@ -26,12 +31,18 @@ export const GatesApiError$inboundSchema: z.ZodType<
   message: types.string(),
   statusCode: types.number(),
   code: types.string(),
+  retry_after_seconds: types.optional(types.number()),
+}).transform((v) => {
+  return remap$(v, {
+    "retry_after_seconds": "retryAfterSeconds",
+  });
 });
 /** @internal */
 export type GatesApiError$Outbound = {
   message: string;
   statusCode: number;
   code: string;
+  retry_after_seconds?: number | undefined;
 };
 
 /** @internal */
@@ -43,6 +54,11 @@ export const GatesApiError$outboundSchema: z.ZodType<
   message: z.string(),
   statusCode: z.number().int(),
   code: z.string(),
+  retryAfterSeconds: z.number().int().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    retryAfterSeconds: "retry_after_seconds",
+  });
 });
 
 export function gatesApiErrorToJSON(gatesApiError: GatesApiError): string {

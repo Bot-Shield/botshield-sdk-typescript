@@ -4,13 +4,90 @@
 
 ### Available Operations
 
+* [verifyResolution](#verifyresolution) - Check a Proof of Resolution (works once)
 * [proposeAction](#proposeaction) - Propose an action for human confirmation
 * [checkActionStatus](#checkactionstatus) - Check action proposal status
 * [cancelAction](#cancelaction) - Cancel a queued action proposal
 
+## verifyResolution
+
+An approved ask mints a proof that the agent reads with agentlink/check-status. Send it here before acting on it. The first check answers valid true with what was approved; every later check answers valid false with replayed true. Checking the signature yourself against the public keys shows the proof is real, not that it is unused. Call with the agent's own key (for a proof minted for that agent) or the company's secret key (for a proof minted for one of its agents).
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="SdkVerifyResolution" method="post" path="/sdk/verify-resolution" -->
+```typescript
+import { BotShield } from "botshield-sdk";
+
+const botShield = new BotShield();
+
+async function run() {
+  const result = await botShield.actions.verifyResolution({
+    agentKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    token: "<value>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { BotShieldCore } from "botshield-sdk/core.js";
+import { actionsVerifyResolution } from "botshield-sdk/funcs/actions-verify-resolution.js";
+
+// Use `BotShieldCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const botShield = new BotShieldCore();
+
+async function run() {
+  const res = await actionsVerifyResolution(botShield, {
+    agentKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    token: "<value>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("actionsVerifyResolution failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.SDKVerifyResolutionRequest](../../models/operations/sdk-verify-resolution-request.md)                                                                              | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.SDKVerifyResolutionSecurity](../../models/operations/sdk-verify-resolution-security.md)                                                                            | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.SDKVerifyResolutionResponse](../../models/operations/sdk-verify-resolution-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.InvalidInputError     | 400                          | application/json             |
+| errors.ErrorResponse         | 500                          | application/json             |
+| errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
+
 ## proposeAction
 
-Queue a human-presence-gated action for a BotShield user. The user receives the card in the BotShield app (Agents Ask), confirms or denies with their passkey, and BotShield delivers a signed Proof of Resolution JWT to your registered callback URL (or poll check-status). Identify the user by opaque_id — the pairwise id from the bind ceremony. Authentication: agent key (bs_agent_<name>__<secret>) in the Authorization header.
+Queue a human-presence-gated action for a BotShield user. The user receives the card in the BotShield app (Agents Ask), confirms or denies with their passkey, and BotShield delivers a signed Proof of Resolution JWT to your registered callback URL (or poll check-status). Identify the user by opaque_id — the pairwise id from the bind ceremony. Authentication: agent key (bs_agent_<name>__<secret>) in the Authorization header. Or address the person by `phone_number` (no link needed beforehand; see the field).
 
 ### Example Usage
 
@@ -27,6 +104,7 @@ const botShield = new BotShield({
 async function run() {
   const result = await botShield.actions.proposeAction({
     requestId: "362873d8-19a4-46e6-b883-916c05dd0283",
+    phoneNumber: "+1 415 555 0142",
     action: {
       summaryTitle: "<value>",
       summaryDetail: {
@@ -62,6 +140,7 @@ const botShield = new BotShieldCore({
 async function run() {
   const res = await actionsProposeAction(botShield, {
     requestId: "362873d8-19a4-46e6-b883-916c05dd0283",
+    phoneNumber: "+1 415 555 0142",
     action: {
       summaryTitle: "<value>",
       summaryDetail: {

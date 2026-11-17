@@ -30,7 +30,7 @@ let value: GatesApiListDataData = {
           opensAt: new Date("2025-01-27T01:50:13.112Z"),
           closesAt: new Date("2024-12-21T11:32:24.842Z"),
         },
-        line: "2 per person · ever",
+        line: "2 per BotShield ID · ever",
       },
       placedAt: new Date("2024-01-14T13:09:59.977Z"),
       placedByApi: true,

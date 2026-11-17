@@ -15,7 +15,7 @@ let value: VerificationGetStatusResponse = {
         limit: 2,
         window: "ever",
       },
-      policyLine: "2 per person · ever",
+      policyLine: "2 per BotShield ID · ever",
     },
     action: {
       name: "Watch with passkey",

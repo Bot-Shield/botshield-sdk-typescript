@@ -16,8 +16,9 @@ let value: GatesApiError = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        | Example            |
-| ------------------ | ------------------ | ------------------ | ------------------ | ------------------ |
-| `message`          | *string*           | :heavy_check_mark: | N/A                |                    |
-| `statusCode`       | *number*           | :heavy_check_mark: | N/A                | 409                |
-| `code`             | *string*           | :heavy_check_mark: | N/A                | gate_key_taken     |
+| Field                                              | Type                                               | Required                                           | Description                                        | Example                                            |
+| -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| `message`                                          | *string*                                           | :heavy_check_mark:                                 | N/A                                                |                                                    |
+| `statusCode`                                       | *number*                                           | :heavy_check_mark:                                 | N/A                                                | 409                                                |
+| `code`                                             | *string*                                           | :heavy_check_mark:                                 | N/A                                                | gate_key_taken                                     |
+| `retryAfterSeconds`                                | *number*                                           | :heavy_minus_sign:                                 | On a 429 limit: seconds until a retry can succeed. |                                                    |

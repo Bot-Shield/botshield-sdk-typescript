@@ -12,6 +12,8 @@
 * [getPartnerConfig](#getpartnerconfig) - Get partner configuration
 * [revokeVerification](#revokeverification) - Revoke a pending verification
 * [logout](#logout) - Revoke a grant token
+* [confirmLink](#confirmlink) - Confirm a pending link
+* [sendByNumber](#sendbynumber) - Send a request to verify by phone number
 
 ## createSession
 
@@ -89,6 +91,8 @@ run();
 
 Creates a verification request (deep link, web URL, QR code) for a gate. Requires an anchor grant token from create-session. Returns 409 when a pending request already exists for the same gate and user.
 
+**A check sent to one person** (a request with `partner_user_ref` whose account is linked, pushed to the person's phones): one is open at a time per organization, environment and person. A newer one that is pushed replaces the open one, which ends `cancelled` with reason `superseded` (verification/status) and fires `gate.unavailable` once with `failure_code: "superseded"`. Pushes are capped per person per day (default 5 in 24 hours); over the cap the request is still created and its QR / deep link work, but nothing is pushed (`push_skipped: "daily_cap"`).
+
 ### Example Usage
 
 <!-- UsageSnippet language="typescript" operationID="SdkCreateVerificationLink" method="post" path="/sdk/create-verification-link" -->
@@ -165,7 +169,7 @@ run();
 
 ## verifyToken
 
-Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person. Each attestation is for one organization (aud = its organization_id; pass `audience` to enforce it) and one check: a repeat check is refused (`valid: false`, `replayed: true`). Check it once, on your server.
+Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person. Each attestation is for one organization (aud = its organization_id; pass `audience` to enforce it) and one check: a repeat check is refused (`valid: false`, `replayed: true`). Check it once, on your server. Each token names its `kind` (`verification` or `action`) and the `environment` it was issued in. A token of any other kind is refused, and when you call with your secret key (`Authorization: Bearer bs_…`) a token from the other environment is refused (a development token never passes a production check). A refused token is not spent.
 
 ### Example Usage
 
@@ -604,5 +608,156 @@ run();
 | Error Type                   | Status Code                  | Content Type                 |
 | ---------------------------- | ---------------------------- | ---------------------------- |
 | errors.InvalidInputError     | 400                          | application/json             |
+| errors.ErrorResponse         | 500                          | application/json             |
+| errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
+
+## confirmLink
+
+4.0: on a key with “Pending until your server confirms” on, a link waits after the person's tap (account.link_pending). Confirm it from your server with your SECRET key, sending the account your own session shows. The same account makes the link live (account.link_live, account.secured) and returns the finished token on this response only. Another account is refused and the waiting link is dropped. A link not confirmed within 24 hours expires. You can also confirm by passing `partner_user_ref` to sdk/verify-token with your secret key.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="SdkConfirmLink" method="post" path="/sdk/confirm-link" -->
+```typescript
+import { BotShield } from "botshield-sdk";
+
+const botShield = new BotShield();
+
+async function run() {
+  const result = await botShield.census.confirmLink({
+    apiKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    requestId: "<id>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { BotShieldCore } from "botshield-sdk/core.js";
+import { censusConfirmLink } from "botshield-sdk/funcs/census-confirm-link.js";
+
+// Use `BotShieldCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const botShield = new BotShieldCore();
+
+async function run() {
+  const res = await censusConfirmLink(botShield, {
+    apiKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    requestId: "<id>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("censusConfirmLink failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.SDKConfirmLinkRequest](../../models/operations/sdk-confirm-link-request.md)                                                                                        | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.SDKConfirmLinkSecurity](../../models/operations/sdk-confirm-link-security.md)                                                                                      | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.SDKConfirmLinkResponse](../../models/operations/sdk-confirm-link-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
+
+## sendByNumber
+
+4.0: from your server, with your SECRET key, send a request to verify to the person whose BotShield ID carries this phone number. BotShield keeps none of your customer data: the number is used once and is not stored, logged or returned. The answer is the same whether or not anyone holds the number: status `sent`, the request id, its expiry and a two-digit `match_number` — show it to your customer; they pick it in the BotShield app before their passkey. Outcomes arrive as webhooks (or verification/status with this key): verified, declined, or expired. A person who has not linked your company first sees an introduction from you; your request can be answered only after they allow it. Production sends need a verified business. Limits: a cap per key per hour and on unanswered sends per company.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="SdkSendByNumber" method="post" path="/sdk/send-by-number" -->
+```typescript
+import { BotShield } from "botshield-sdk";
+
+const botShield = new BotShield();
+
+async function run() {
+  const result = await botShield.census.sendByNumber({
+    apiKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    phoneNumber: "733-309-2891",
+    act: "<value>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { BotShieldCore } from "botshield-sdk/core.js";
+import { censusSendByNumber } from "botshield-sdk/funcs/census-send-by-number.js";
+
+// Use `BotShieldCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const botShield = new BotShieldCore();
+
+async function run() {
+  const res = await censusSendByNumber(botShield, {
+    apiKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    phoneNumber: "733-309-2891",
+    act: "<value>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("censusSendByNumber failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.SDKSendByNumberRequest](../../models/operations/sdk-send-by-number-request.md)                                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.SDKSendByNumberSecurity](../../models/operations/sdk-send-by-number-security.md)                                                                                   | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.SDKSendByNumberResponse](../../models/operations/sdk-send-by-number-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
 | errors.ErrorResponse         | 500                          | application/json             |
 | errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
