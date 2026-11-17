@@ -1,11 +1,11 @@
-# ActionsProposeAction
+# Action
 
 ## Example Usage
 
 ```typescript
-import { ActionsProposeAction } from "botshield-sdk/models/operations";
+import { Action } from "botshield-sdk/models/operations";
 
-let value: ActionsProposeAction = {
+let value: Action = {
   summaryTitle: "<value>",
   summaryDetail: {
     label: "TOTAL",

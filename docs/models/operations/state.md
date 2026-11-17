@@ -1,11 +1,11 @@
-# SecuredAccountsStatusState
+# State
 
 ## Example Usage
 
 ```typescript
-import { SecuredAccountsStatusState } from "botshield-sdk/models/operations";
+import { State } from "botshield-sdk/models/operations";
 
-let value: SecuredAccountsStatusState = "stale";
+let value: State = "none";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```

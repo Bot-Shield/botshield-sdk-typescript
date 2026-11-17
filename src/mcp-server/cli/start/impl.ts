@@ -21,8 +21,42 @@ interface StartCommandFlags {
   readonly scope?: MCPScope[];
   readonly "agent-key-auth"?: string | undefined;
   readonly "agent-key-auth1"?: string | undefined;
+  readonly "agent-key-auth2"?: string | undefined;
+  readonly "agent-key-auth3"?: string | undefined;
+  readonly "agent-key-auth4"?: string | undefined;
+  readonly "agent-key-auth5"?: string | undefined;
+  readonly "agent-key-auth6"?: string | undefined;
+  readonly "agent-key-auth7"?: string | undefined;
+  readonly "agent-key-auth8"?: string | undefined;
+  readonly "agent-key-auth9"?: string | undefined;
+  readonly "agent-key-auth10"?: string | undefined;
+  readonly "agent-key-auth11"?: string | undefined;
+  readonly "agent-key-auth12"?: string | undefined;
+  readonly "agent-key-auth13"?: string | undefined;
+  readonly "agent-key-auth14"?: string | undefined;
+  readonly "agent-key-auth15"?: string | undefined;
+  readonly "agent-key-auth16"?: string | undefined;
+  readonly "agent-key-auth17"?: string | undefined;
+  readonly "agent-key-auth18"?: string | undefined;
+  readonly "agent-key-auth19"?: string | undefined;
+  readonly "agent-key-auth20"?: string | undefined;
+  readonly "agent-key-auth21"?: string | undefined;
+  readonly "agent-key-auth22"?: string | undefined;
+  readonly "agent-key-auth23"?: string | undefined;
+  readonly "agent-key-auth24"?: string | undefined;
+  readonly "agent-key-auth25"?: string | undefined;
+  readonly "agent-key-auth26"?: string | undefined;
+  readonly "agent-key-auth27"?: string | undefined;
+  readonly "agent-key-auth28"?: string | undefined;
+  readonly "agent-key-auth29"?: string | undefined;
+  readonly "agent-key-auth30"?: string | undefined;
+  readonly "agent-key-auth31"?: string | undefined;
+  readonly "agent-key-auth32"?: string | undefined;
+  readonly "agent-key-auth33"?: string | undefined;
+  readonly "agent-key-auth34"?: string | undefined;
+  readonly "agent-key-auth35"?: string | undefined;
   readonly "server-url"?: string;
-  readonly server?: SDKOptions["server"];
+  readonly "server-index"?: SDKOptions["serverIdx"];
   readonly "log-level": ConsoleLoggerLevel;
   readonly env?: [string, string][];
 }
@@ -54,9 +88,43 @@ async function startStdio(flags: StartCommandFlags) {
     security: {
       agentKeyAuth: flags["agent-key-auth"] ?? "",
       agentKeyAuth1: flags["agent-key-auth1"] ?? "",
+      agentKeyAuth2: flags["agent-key-auth2"] ?? "",
+      agentKeyAuth3: flags["agent-key-auth3"] ?? "",
+      agentKeyAuth4: flags["agent-key-auth4"] ?? "",
+      agentKeyAuth5: flags["agent-key-auth5"] ?? "",
+      agentKeyAuth6: flags["agent-key-auth6"] ?? "",
+      agentKeyAuth7: flags["agent-key-auth7"] ?? "",
+      agentKeyAuth8: flags["agent-key-auth8"] ?? "",
+      agentKeyAuth9: flags["agent-key-auth9"] ?? "",
+      agentKeyAuth10: flags["agent-key-auth10"] ?? "",
+      agentKeyAuth11: flags["agent-key-auth11"] ?? "",
+      agentKeyAuth12: flags["agent-key-auth12"] ?? "",
+      agentKeyAuth13: flags["agent-key-auth13"] ?? "",
+      agentKeyAuth14: flags["agent-key-auth14"] ?? "",
+      agentKeyAuth15: flags["agent-key-auth15"] ?? "",
+      agentKeyAuth16: flags["agent-key-auth16"] ?? "",
+      agentKeyAuth17: flags["agent-key-auth17"] ?? "",
+      agentKeyAuth18: flags["agent-key-auth18"] ?? "",
+      agentKeyAuth19: flags["agent-key-auth19"] ?? "",
+      agentKeyAuth20: flags["agent-key-auth20"] ?? "",
+      agentKeyAuth21: flags["agent-key-auth21"] ?? "",
+      agentKeyAuth22: flags["agent-key-auth22"] ?? "",
+      agentKeyAuth23: flags["agent-key-auth23"] ?? "",
+      agentKeyAuth24: flags["agent-key-auth24"] ?? "",
+      agentKeyAuth25: flags["agent-key-auth25"] ?? "",
+      agentKeyAuth26: flags["agent-key-auth26"] ?? "",
+      agentKeyAuth27: flags["agent-key-auth27"] ?? "",
+      agentKeyAuth28: flags["agent-key-auth28"] ?? "",
+      agentKeyAuth29: flags["agent-key-auth29"] ?? "",
+      agentKeyAuth30: flags["agent-key-auth30"] ?? "",
+      agentKeyAuth31: flags["agent-key-auth31"] ?? "",
+      agentKeyAuth32: flags["agent-key-auth32"] ?? "",
+      agentKeyAuth33: flags["agent-key-auth33"] ?? "",
+      agentKeyAuth34: flags["agent-key-auth34"] ?? "",
+      agentKeyAuth35: flags["agent-key-auth35"] ?? "",
     },
     serverURL: flags["server-url"],
-    server: flags.server,
+    serverIdx: flags["server-index"],
   });
   await server.connect(transport);
 
@@ -78,9 +146,43 @@ async function startSSE(flags: StartCommandFlags) {
     security: {
       agentKeyAuth: flags["agent-key-auth"] ?? "",
       agentKeyAuth1: flags["agent-key-auth1"] ?? "",
+      agentKeyAuth2: flags["agent-key-auth2"] ?? "",
+      agentKeyAuth3: flags["agent-key-auth3"] ?? "",
+      agentKeyAuth4: flags["agent-key-auth4"] ?? "",
+      agentKeyAuth5: flags["agent-key-auth5"] ?? "",
+      agentKeyAuth6: flags["agent-key-auth6"] ?? "",
+      agentKeyAuth7: flags["agent-key-auth7"] ?? "",
+      agentKeyAuth8: flags["agent-key-auth8"] ?? "",
+      agentKeyAuth9: flags["agent-key-auth9"] ?? "",
+      agentKeyAuth10: flags["agent-key-auth10"] ?? "",
+      agentKeyAuth11: flags["agent-key-auth11"] ?? "",
+      agentKeyAuth12: flags["agent-key-auth12"] ?? "",
+      agentKeyAuth13: flags["agent-key-auth13"] ?? "",
+      agentKeyAuth14: flags["agent-key-auth14"] ?? "",
+      agentKeyAuth15: flags["agent-key-auth15"] ?? "",
+      agentKeyAuth16: flags["agent-key-auth16"] ?? "",
+      agentKeyAuth17: flags["agent-key-auth17"] ?? "",
+      agentKeyAuth18: flags["agent-key-auth18"] ?? "",
+      agentKeyAuth19: flags["agent-key-auth19"] ?? "",
+      agentKeyAuth20: flags["agent-key-auth20"] ?? "",
+      agentKeyAuth21: flags["agent-key-auth21"] ?? "",
+      agentKeyAuth22: flags["agent-key-auth22"] ?? "",
+      agentKeyAuth23: flags["agent-key-auth23"] ?? "",
+      agentKeyAuth24: flags["agent-key-auth24"] ?? "",
+      agentKeyAuth25: flags["agent-key-auth25"] ?? "",
+      agentKeyAuth26: flags["agent-key-auth26"] ?? "",
+      agentKeyAuth27: flags["agent-key-auth27"] ?? "",
+      agentKeyAuth28: flags["agent-key-auth28"] ?? "",
+      agentKeyAuth29: flags["agent-key-auth29"] ?? "",
+      agentKeyAuth30: flags["agent-key-auth30"] ?? "",
+      agentKeyAuth31: flags["agent-key-auth31"] ?? "",
+      agentKeyAuth32: flags["agent-key-auth32"] ?? "",
+      agentKeyAuth33: flags["agent-key-auth33"] ?? "",
+      agentKeyAuth34: flags["agent-key-auth34"] ?? "",
+      agentKeyAuth35: flags["agent-key-auth35"] ?? "",
     },
     serverURL: flags["server-url"],
-    server: flags.server,
+    serverIdx: flags["server-index"],
   });
   let transport: SSEServerTransport | undefined;
   const controller = new AbortController();

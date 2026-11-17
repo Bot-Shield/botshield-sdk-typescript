@@ -23,17 +23,15 @@ export type SecuredAccountsStatusRequest = {
   platformUserRef: string;
 };
 
-export const SecuredAccountsStatusState = {
+export const State = {
   None: "none",
   Fresh: "fresh",
   Stale: "stale",
 } as const;
-export type SecuredAccountsStatusState = OpenEnum<
-  typeof SecuredAccountsStatusState
->;
+export type State = OpenEnum<typeof State>;
 
 export type SecuredAccountsStatusDataData = {
-  state: SecuredAccountsStatusState;
+  state: State;
   /**
    * When recent presence lapses (in the past when `stale`); null when `none`.
    */
@@ -154,17 +152,11 @@ export function securedAccountsStatusRequestFromJSON(
 }
 
 /** @internal */
-export const SecuredAccountsStatusState$inboundSchema: z.ZodType<
-  SecuredAccountsStatusState,
-  z.ZodTypeDef,
-  unknown
-> = openEnums.inboundSchema(SecuredAccountsStatusState);
+export const State$inboundSchema: z.ZodType<State, z.ZodTypeDef, unknown> =
+  openEnums.inboundSchema(State);
 /** @internal */
-export const SecuredAccountsStatusState$outboundSchema: z.ZodType<
-  string,
-  z.ZodTypeDef,
-  SecuredAccountsStatusState
-> = openEnums.outboundSchema(SecuredAccountsStatusState);
+export const State$outboundSchema: z.ZodType<string, z.ZodTypeDef, State> =
+  openEnums.outboundSchema(State);
 
 /** @internal */
 export const SecuredAccountsStatusDataData$inboundSchema: z.ZodType<
@@ -172,7 +164,7 @@ export const SecuredAccountsStatusDataData$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  state: SecuredAccountsStatusState$inboundSchema,
+  state: State$inboundSchema,
   fresh_until: types.nullable(types.date()),
 }).transform((v) => {
   return remap$(v, {
@@ -191,7 +183,7 @@ export const SecuredAccountsStatusDataData$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   SecuredAccountsStatusDataData
 > = z.object({
-  state: SecuredAccountsStatusState$outboundSchema,
+  state: State$outboundSchema,
   freshUntil: z.nullable(z.date().transform(v => v.toISOString())),
 }).transform((v) => {
   return remap$(v, {
