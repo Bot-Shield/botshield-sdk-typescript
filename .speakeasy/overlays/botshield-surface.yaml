@@ -264,7 +264,7 @@ actions:
     update:
       high_value:
         type: boolean
-        description: "4.0: high-value. It starts only from your customer's signed-in session (your server naming the account by your own reference); by phone number or by staff it is refused (`action_requires_signed_in`). Set with `highValue` on create or update."
+        description: "High-value. It starts only from your customer's signed-in session (your server naming the account by your own reference); by phone number or by staff it is refused (`action_requires_signed_in`). Set with `highValue` on create or update."
   # B-34 / PG-4: limits carry how long to wait.
   - target: $.components.schemas.ErrorBody.properties
     update:
@@ -282,7 +282,7 @@ actions:
     update:
       link:
         type: object
-        description: "4.0: present only on a token whose link waited for your server. `pending`: not confirmed (send your secret key and `partner_user_ref`, or call sdk/confirm-link). `live` with `confirmed: true`: this check confirmed it. `not_live`: the confirm was refused (`code`)."
+        description: "Present only on a token whose link waited for your server. `pending`: not confirmed (send your secret key and `partner_user_ref`, or call sdk/confirm-link). `live` with `confirmed: true`: this check confirmed it. `not_live`: the confirm was refused (`code`)."
         properties:
           state: { type: string, enum: [pending, live, not_live] }
           confirmed: { type: boolean }
@@ -294,20 +294,20 @@ actions:
     update:
       link_state:
         type: string
-        description: "4.0: where the link stood for this token: `pending`, `live`, `expired` or `refused`. Absent on a plain check."
+        description: "Where the link stood for this token: `pending`, `live`, `expired` or `refused`. Absent on a plain check."
   - target: $.paths["/verification/status"].get.responses["200"].content["application/json"].schema.properties.data.properties
     update:
       link_state:
         type: ["string", "null"]
         enum: [pending, live, expired, refused, null]
-        description: "4.0: where the link stands on this request. Null on a plain check and on a link from before 4.0. A pass whose link is not live carries no destination."
+        description: "Where the link stands on this request. Null on a plain check and on a link from before 4.0. A pass whose link is not live carries no destination."
       link_expires_at:
         type: ["string", "null"]
         format: date-time
-        description: "4.0: when a pending link expires (24 hours after the tap). Null unless `link_state` is `pending`."
+        description: "When a pending link expires (24 hours after the tap). Null unless `link_state` is `pending`."
       link_code:
         type: string
-        description: "4.0: `link_pending` while the link waits for your server."
+        description: "`link_pending` while the link waits for your server."
       link_message:
         type: string
 

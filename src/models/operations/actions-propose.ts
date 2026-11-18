@@ -62,7 +62,7 @@ export type ActionsProposeRequest = {
    */
   userEmail?: string | undefined;
   /**
-   * 4.0 · the person's phone number, in place of `opaque_id` / `botshield_user_id` / `user_email` (never together with them). Used for one lookup, then dropped: never stored, logged or sent in a webhook. The answer is the same whether or not anyone holds the number. Show the returned `match_number` to the person; they pick it in the app before approving. A person not yet linked to your company gets an introduction first, never the card; the ask is held and becomes the card if they allow. An ask nobody answers reads `queued`, then `expired`. Production needs a verified business.
+   * The person's phone number, in place of `opaque_id` / `botshield_user_id` / `user_email` (never together with them). Used for one lookup, then dropped: never stored, logged or sent in a webhook. The answer is the same whether or not anyone holds the number. Show the returned `match_number` to the person; they pick it in the app before approving. A person not yet linked to your company gets an introduction first, never the card; the ask is held and becomes the card if they allow. An ask nobody answers reads `queued`, then `expired`. Production needs a verified business.
    */
   phoneNumber?: string | undefined;
   action: ActionsProposeAction;

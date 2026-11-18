@@ -32,7 +32,7 @@ export type BotShieldActionEnvironment = OpenEnum<
 >;
 
 /**
- * 4.0: `action` (a BotShield Action), `recovery` (your one Recovery Action: only your customer starts it, from the Recover Account with BotShield button) or `signin` (your one Sign-on Action: only signin/request starts it). Recovery and Sign-on Actions are placed in the Console; no `act`, server ask, send by number or staff send reaches them (`action_is_recovery` / `action_is_signin`). `action` on an engine before 4.0.
+ * `action` (a BotShield Action), `recovery` (your one Recovery Action: only your customer starts it, from the Recover Account with BotShield button) or `signin` (your one Sign-on Action: only signin/request starts it). Recovery and Sign-on Actions are placed in the Console; no `act`, server ask, send by number or staff send reaches them (`action_is_recovery` / `action_is_signin`). `action` on an engine before 4.0.
  */
 export const BotShieldActionKind = {
   Action: "action",
@@ -40,7 +40,7 @@ export const BotShieldActionKind = {
   Signin: "signin",
 } as const;
 /**
- * 4.0: `action` (a BotShield Action), `recovery` (your one Recovery Action: only your customer starts it, from the Recover Account with BotShield button) or `signin` (your one Sign-on Action: only signin/request starts it). Recovery and Sign-on Actions are placed in the Console; no `act`, server ask, send by number or staff send reaches them (`action_is_recovery` / `action_is_signin`). `action` on an engine before 4.0.
+ * `action` (a BotShield Action), `recovery` (your one Recovery Action: only your customer starts it, from the Recover Account with BotShield button) or `signin` (your one Sign-on Action: only signin/request starts it). Recovery and Sign-on Actions are placed in the Console; no `act`, server ask, send by number or staff send reaches them (`action_is_recovery` / `action_is_signin`). `action` on an engine before 4.0.
  */
 export type BotShieldActionKind = OpenEnum<typeof BotShieldActionKind>;
 
@@ -73,23 +73,23 @@ export type BotShieldAction = {
    */
   staffCanSend?: boolean | undefined;
   /**
-   * 4.0: `action` (a BotShield Action), `recovery` (your one Recovery Action: only your customer starts it, from the Recover Account with BotShield button) or `signin` (your one Sign-on Action: only signin/request starts it). Recovery and Sign-on Actions are placed in the Console; no `act`, server ask, send by number or staff send reaches them (`action_is_recovery` / `action_is_signin`). `action` on an engine before 4.0.
+   * `action` (a BotShield Action), `recovery` (your one Recovery Action: only your customer starts it, from the Recover Account with BotShield button) or `signin` (your one Sign-on Action: only signin/request starts it). Recovery and Sign-on Actions are placed in the Console; no `act`, server ask, send by number or staff send reaches them (`action_is_recovery` / `action_is_signin`). `action` on an engine before 4.0.
    */
   kind?: BotShieldActionKind | undefined;
   /**
-   * 4.0: on a Sign-on Action, whether BotShield's own QR may finish a sign-in (default off: your page's passkey only). Always false on other kinds.
+   * On a Sign-on Action, whether BotShield's own QR may finish a sign-in (default off: your page's passkey only). Always false on other kinds.
    */
   signinQr?: boolean | undefined;
   /**
-   * 4.0: a Recovery Action's new landing address while it waits to take effect (24 hours in Production; every admin is told). `where_url` is the address in effect until then.
+   * A Recovery Action's new landing address while it waits to take effect (24 hours in Production; every admin is told). `where_url` is the address in effect until then.
    */
   pendingWhereUrl?: string | null | undefined;
   /**
-   * 4.0: when `pending_where_url` takes effect.
+   * When `pending_where_url` takes effect.
    */
   pendingWhereUrlAt?: Date | null | undefined;
   /**
-   * 4.0: high-value. It starts only from your customer's signed-in session (your server naming the account by your own reference); by phone number or by staff it is refused (`action_requires_signed_in`). Set with `highValue` on create or update.
+   * High-value. It starts only from your customer's signed-in session (your server naming the account by your own reference); by phone number or by staff it is refused (`action_requires_signed_in`). Set with `highValue` on create or update.
    */
   highValue?: boolean | undefined;
 };

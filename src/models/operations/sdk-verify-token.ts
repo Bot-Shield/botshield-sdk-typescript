@@ -27,11 +27,11 @@ export type SDKVerifyTokenRequest = {
    */
   audience?: string | undefined;
   /**
-   * 4.0: with your secret key, on a token whose link is pending, this confirms the link (same as sdk/confirm-link). The answer's `link` says whether it went live.
+   * With your secret key, on a token whose link is pending, this confirms the link (same as sdk/confirm-link). The answer's `link` says whether it went live.
    */
   partnerUserRef?: string | undefined;
   /**
-   * 4.0: the request YOUR server made for this attempt. When given, a token for any other request is refused (`valid: false`, `code: request_mismatch`) and is not spent.
+   * The request YOUR server made for this attempt. When given, a token for any other request is refused (`valid: false`, `code: request_mismatch`) and is not spent.
    */
   expectedRequestId?: string | undefined;
 };
@@ -116,11 +116,11 @@ export type Claims = {
    */
   environment?: SDKVerifyTokenEnvironment | null | undefined;
   /**
-   * 4.0: present for 72 hours after this verified account was recovered with Recover Account with BotShield: when it was recovered. Only when `trusted` is true.
+   * Present for 72 hours after this verified account was recovered with Recover Account with BotShield: when it was recovered. Only when `trusted` is true.
    */
   recoveredAt?: Date | undefined;
   /**
-   * 4.0: where the link stood for this token: `pending`, `live`, `expired` or `refused`. Absent on a plain check.
+   * Where the link stood for this token: `pending`, `live`, `expired` or `refused`. Absent on a plain check.
    */
   linkState?: string | undefined;
 };
@@ -145,7 +145,7 @@ export const SDKVerifyTokenState = {
 export type SDKVerifyTokenState = OpenEnum<typeof SDKVerifyTokenState>;
 
 /**
- * 4.0: present only on a token whose link waited for your server. `pending`: not confirmed (send your secret key and `partner_user_ref`, or call sdk/confirm-link). `live` with `confirmed: true`: this check confirmed it. `not_live`: the confirm was refused (`code`).
+ * Present only on a token whose link waited for your server. `pending`: not confirmed (send your secret key and `partner_user_ref`, or call sdk/confirm-link). `live` with `confirmed: true`: this check confirmed it. `not_live`: the confirm was refused (`code`).
  */
 export type SDKVerifyTokenLink = {
   state?: SDKVerifyTokenState | undefined;
@@ -166,7 +166,7 @@ export type SDKVerifyTokenDataData = {
    */
   reason?: string | undefined;
   /**
-   * 4.0: on some refusals (`valid: false`), a code beside `reason`: `secret_key_required` (called without your secret key; the token was not spent), `request_mismatch` (the token is for another request than `expected_request_id`; not spent).
+   * On some refusals (`valid: false`), a code beside `reason`: `secret_key_required` (called without your secret key; the token was not spent), `request_mismatch` (the token is for another request than `expected_request_id`; not spent).
    */
   code?: string | undefined;
   /**
@@ -183,7 +183,7 @@ export type SDKVerifyTokenDataData = {
    */
   verdict?: SDKVerifyTokenVerdict | undefined;
   /**
-   * 4.0: present only on a token whose link waited for your server. `pending`: not confirmed (send your secret key and `partner_user_ref`, or call sdk/confirm-link). `live` with `confirmed: true`: this check confirmed it. `not_live`: the confirm was refused (`code`).
+   * Present only on a token whose link waited for your server. `pending`: not confirmed (send your secret key and `partner_user_ref`, or call sdk/confirm-link). `live` with `confirmed: true`: this check confirmed it. `not_live`: the confirm was refused (`code`).
    */
   link?: SDKVerifyTokenLink | undefined;
 };

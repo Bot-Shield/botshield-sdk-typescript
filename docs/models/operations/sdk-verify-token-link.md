@@ -1,6 +1,6 @@
 # SDKVerifyTokenLink
 
-4.0: present only on a token whose link waited for your server. `pending`: not confirmed (send your secret key and `partner_user_ref`, or call sdk/confirm-link). `live` with `confirmed: true`: this check confirmed it. `not_live`: the confirm was refused (`code`).
+Present only on a token whose link waited for your server. `pending`: not confirmed (send your secret key and `partner_user_ref`, or call sdk/confirm-link). `live` with `confirmed: true`: this check confirmed it. `not_live`: the confirm was refused (`code`).
 
 ## Example Usage
 

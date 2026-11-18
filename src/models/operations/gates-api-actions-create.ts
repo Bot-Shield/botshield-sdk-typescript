@@ -32,7 +32,7 @@ export type GatesApiActionsCreateRequest = {
    */
   staffCanSend?: boolean | undefined;
   /**
-   * 4.0 VH-31: high-value. It starts only from your customer's signed-in session (your server naming the account by your own reference). It is refused by phone number and for staff sends (`action_requires_signed_in`).
+   * High-value. It starts only from your customer's signed-in session (your server naming the account by your own reference). It is refused by phone number and for staff sends (`action_requires_signed_in`).
    */
   highValue?: boolean | undefined;
 };
@@ -53,7 +53,7 @@ export type GatesApiActionsCreateData = {
 };
 
 /**
- * The placed action. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401 — missing, malformed or inactive key), `gates_scope_required` (403 — the key lacks Gates API access), `org_not_found` (404), `action_key_taken` (409), `not_migrated` (503 — `staffCanSend` is not available yet), `internal` (500). 4.0: each action carries `kind` (`action`, `recovery` or `signin`), `signin_qr` and, for a Recovery Action, `pending_where_url` / `pending_where_url_at`. Recovery and Sign-on Actions are placed in the Console, not here.
+ * The placed action. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401 — missing, malformed or inactive key), `gates_scope_required` (403 — the key lacks Gates API access), `org_not_found` (404), `action_key_taken` (409), `not_migrated` (503 — `staffCanSend` is not available yet), `internal` (500). Each action carries `kind` (`action`, `recovery` or `signin`), `signin_qr` and, for a Recovery Action, `pending_where_url` / `pending_where_url_at`. Recovery and Sign-on Actions are placed in the Console, not here.
  */
 export type GatesApiActionsCreateResponse = {
   data: GatesApiActionsCreateData;

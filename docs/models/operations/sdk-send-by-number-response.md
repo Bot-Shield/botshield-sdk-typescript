@@ -1,6 +1,6 @@
 # SDKSendByNumberResponse
 
-Result. NOTE: handler errors arrive here (HTTP 200) as data.error — codes: secret_key_required · invalid_key · phone_invalid · action_invalid · action_not_found · action_off · act_label_has_link · org_not_verified · send_rate_limited · unanswered_limit_reached · unavailable. 4.0: action_is_recovery · action_is_signin (400 — your Recovery Action and Sign-on Action are never sent).
+Result. NOTE: handler errors arrive here (HTTP 200) as data.error — codes: secret_key_required · invalid_key · phone_invalid · action_invalid · action_not_found · action_off · act_label_has_link · org_not_verified · send_rate_limited · unanswered_limit_reached · unavailable. Action_is_recovery · action_is_signin (400 — your Recovery Action and Sign-on Action are never sent).
 
 ## Example Usage
 

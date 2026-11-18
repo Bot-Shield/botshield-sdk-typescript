@@ -38,6 +38,10 @@ export type SecuredAccountsStatusDataData = {
    * When recent presence lapses (in the past when `stale`); null when `none`.
    */
   freshUntil: Date | null;
+  /**
+   * True while the person's number changed without approval from another phone: this account answers nothing (refusals say account_reconfirm_required) until your signed-in link ceremony completes again. null when it can't be read; false when there is no live account.
+   */
+  paused?: boolean | null | undefined;
 };
 
 export type SecuredAccountsStatusData = {
@@ -174,6 +178,7 @@ export const SecuredAccountsStatusDataData$inboundSchema: z.ZodType<
 > = z.object({
   state: SecuredAccountsStatusState$inboundSchema,
   fresh_until: types.nullable(types.date()),
+  paused: z.nullable(types.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "fresh_until": "freshUntil",
@@ -183,6 +188,7 @@ export const SecuredAccountsStatusDataData$inboundSchema: z.ZodType<
 export type SecuredAccountsStatusDataData$Outbound = {
   state: string;
   fresh_until: string | null;
+  paused?: boolean | null | undefined;
 };
 
 /** @internal */
@@ -193,6 +199,7 @@ export const SecuredAccountsStatusDataData$outboundSchema: z.ZodType<
 > = z.object({
   state: SecuredAccountsStatusState$outboundSchema,
   freshUntil: z.nullable(z.date().transform(v => v.toISOString())),
+  paused: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
     freshUntil: "fresh_until",

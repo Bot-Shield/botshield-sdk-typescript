@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Send a request to verify by phone number
  *
  * @remarks
- * 4.0: from your server, with your SECRET key, send a request to verify to the person whose BotShield ID carries this phone number. BotShield keeps none of your customer data: the number is used once and is not stored, logged or returned. The answer is the same whether or not anyone holds the number: status `sent`, the request id, its expiry and a two-digit `match_number` — show it to your customer; they pick it in the BotShield app before their passkey. Outcomes arrive as webhooks (or verification/status with this key): verified, declined, or expired. A person who has not linked your company first sees an introduction from you; your request can be answered only after they allow it. Production sends need a verified business. Limits: a cap per key per hour and on unanswered sends per company.
+ * From your server, with your SECRET key, send a request to verify to the person whose BotShield ID carries this phone number. BotShield keeps none of your customer data: the number is used once and is not stored, logged or returned. The answer is the same whether or not anyone holds the number: status `sent`, the request id, its expiry and a two-digit `match_number` — show it to your customer; they pick it in the BotShield app before their passkey. Outcomes arrive as webhooks (or verification/status with this key): verified, declined, or expired. A person who has not linked your company first sees an introduction from you; your request can be answered only after they allow it. Production sends need a verified business. Limits: a cap per key per hour and on unanswered sends per company.
  */
 export function censusSendByNumber(
   client: BotShieldCore,
