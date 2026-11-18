@@ -15,12 +15,13 @@ let value: SecuredAccountsListDataData = {
       unlinkedBy: "human",
       unlinkReason: "platform",
       surfaceId: "890ec218-10ff-441c-b8c5-f9bc6dce799e",
+      paused: false,
     },
   ],
-  total: 694024,
-  environment: "production",
-  limit: 247626,
-  offset: 704471,
+  total: 801716,
+  environment: "development",
+  limit: 704471,
+  offset: 699961,
 };
 ```
 

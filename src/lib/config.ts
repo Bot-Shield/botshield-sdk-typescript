@@ -13,20 +13,10 @@ import { Params, pathToFunc } from "./url.js";
  */
 export const ServerProduction = "production";
 /**
- * Staging
- */
-export const ServerStaging = "staging";
-/**
- * Local development
- */
-export const ServerLocal = "local";
-/**
  * Contains the list of servers available to the SDK
  */
 export const ServerList = {
   [ServerProduction]: "https://api.botshield.ai/operations",
-  [ServerStaging]: "https://wg-staging.botshield.ai/operations",
-  [ServerLocal]: "http://localhost:9991/operations",
 } as const;
 
 export type SDKOptions = {
@@ -73,7 +63,7 @@ export function serverURLFromOptions(options: SDKOptions): URL | null {
 export const SDK_METADATA = {
   language: "typescript",
   openapiDocVersion: "2.0.0",
-  sdkVersion: "4.0.1",
+  sdkVersion: "4.0.3",
   genVersion: "2.934.1",
-  userAgent: "speakeasy-sdk/typescript 4.0.1 2.934.1 2.0.0 botshield-sdk",
+  userAgent: "speakeasy-sdk/typescript 4.0.3 2.934.1 2.0.0 botshield-sdk",
 } as const;

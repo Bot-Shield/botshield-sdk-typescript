@@ -1,6 +1,6 @@
 # GatesApiActionsUpdateResponse
 
-The action. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401 — missing, malformed or inactive key), `gates_scope_required` (403 — the key lacks Gates API access), `org_not_found` (404), `nothing_to_change` (400), `action_not_found` (404), `not_migrated` (503), `internal` (500). 4.0: each action carries `kind` (`action`, `recovery` or `signin`), `signin_qr` and, for a Recovery Action, `pending_where_url` / `pending_where_url_at`. Recovery and Sign-on Actions are placed in the Console, not here.
+The action. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes: `invalid_key` (401 — missing, malformed or inactive key), `gates_scope_required` (403 — the key lacks Gates API access), `org_not_found` (404), `nothing_to_change` (400), `action_not_found` (404), `not_migrated` (503), `internal` (500). Each action carries `kind` (`action`, `recovery` or `signin`), `signin_qr` and, for a Recovery Action, `pending_where_url` / `pending_where_url_at`. Recovery and Sign-on Actions are placed in the Console, not here.
 
 ## Example Usage
 

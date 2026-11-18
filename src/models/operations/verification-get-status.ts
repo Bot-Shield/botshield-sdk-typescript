@@ -20,7 +20,7 @@ export type VerificationGetStatusSecurity = {
 export type VerificationGetStatusRequest = {
   requestId: string;
   /**
-   * 4.0: the `read_secret` create-verification-link returned for a request started with your site key. Without it such a request's `verification_token` / `signed_token` are never returned. A request your server started reads them with your secret key (`Authorization: Bearer bs_…`) instead. A passkey sign-in's answer is never returned here (use signin/confirm).
+   * The `read_secret` create-verification-link returned for a request started with your site key. Without it such a request's `verification_token` / `signed_token` are never returned. A request your server started reads them with your secret key (`Authorization: Bearer bs_…`) instead. A passkey sign-in's answer is never returned here (use signin/confirm).
    */
   xBotShieldRequestSecret?: string | undefined;
 };
@@ -172,7 +172,7 @@ export type VerificationGetStatusGateType = OpenEnum<
 >;
 
 /**
- * 4.0: where the link stands on this request. Null on a plain check and on a link from before 4.0. A pass whose link is not live carries no destination.
+ * Where the link stands on this request. Null on a plain check and on a link from before 4.0. A pass whose link is not live carries no destination.
  */
 export const LinkState = {
   Pending: "pending",
@@ -181,7 +181,7 @@ export const LinkState = {
   Refused: "refused",
 } as const;
 /**
- * 4.0: where the link stands on this request. Null on a plain check and on a link from before 4.0. A pass whose link is not live carries no destination.
+ * Where the link stands on this request. Null on a plain check and on a link from before 4.0. A pass whose link is not live carries no destination.
  */
 export type LinkState = OpenEnum<typeof LinkState>;
 
@@ -270,15 +270,15 @@ export type VerificationGetStatusData = {
    */
   ageSource?: string | null | undefined;
   /**
-   * 4.0: where the link stands on this request. Null on a plain check and on a link from before 4.0. A pass whose link is not live carries no destination.
+   * Where the link stands on this request. Null on a plain check and on a link from before 4.0. A pass whose link is not live carries no destination.
    */
   linkState?: LinkState | null | undefined;
   /**
-   * 4.0: when a pending link expires (24 hours after the tap). Null unless `link_state` is `pending`.
+   * When a pending link expires (24 hours after the tap). Null unless `link_state` is `pending`.
    */
   linkExpiresAt?: Date | null | undefined;
   /**
-   * 4.0: `link_pending` while the link waits for your server.
+   * `link_pending` while the link waits for your server.
    */
   linkCode?: string | undefined;
   linkMessage?: string | undefined;

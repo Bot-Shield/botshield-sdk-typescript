@@ -94,6 +94,10 @@ export type Row = {
    * The Link with BotShield ID surface the account was secured through; null when it was secured at a Gate.
    */
   surfaceId: string | null;
+  /**
+   * True while the person's number changed without approval from another phone: this account answers nothing (refusals say account_reconfirm_required) until your signed-in link ceremony completes again. Never true for an unlinked account.
+   */
+  paused: boolean;
 };
 
 /**
@@ -304,6 +308,7 @@ export const Row$inboundSchema: z.ZodType<Row, z.ZodTypeDef, unknown> = z
       SecuredAccountsListUnlinkReason$inboundSchema,
     ),
     surface_id: types.nullable(types.string()),
+    paused: types.boolean(),
   }).transform((v) => {
     return remap$(v, {
       "secured_at": "securedAt",
@@ -322,6 +327,7 @@ export type Row$Outbound = {
   unlinked_by: string | null;
   unlink_reason: string | null;
   surface_id: string | null;
+  paused: boolean;
 };
 
 /** @internal */
@@ -334,6 +340,7 @@ export const Row$outboundSchema: z.ZodType<Row$Outbound, z.ZodTypeDef, Row> = z
     unlinkedBy: z.nullable(UnlinkedBy$outboundSchema),
     unlinkReason: z.nullable(SecuredAccountsListUnlinkReason$outboundSchema),
     surfaceId: z.nullable(z.string()),
+    paused: z.boolean(),
   }).transform((v) => {
     return remap$(v, {
       securedAt: "secured_at",

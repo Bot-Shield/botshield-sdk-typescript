@@ -561,11 +561,9 @@ run();
 
 You can override the default server globally by passing a server name to the `server: keyof typeof ServerList` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the names associated with the available servers:
 
-| Name         | Server                                       | Description          |
-| ------------ | -------------------------------------------- | -------------------- |
-| `production` | `https://api.botshield.ai/operations`        | Production (default) |
-| `staging`    | `https://wg-staging.botshield.ai/operations` | Staging              |
-| `local`      | `http://localhost:9991/operations`           | Local development    |
+| Name         | Server                                | Description          |
+| ------------ | ------------------------------------- | -------------------- |
+| `production` | `https://api.botshield.ai/operations` | Production (default) |
 
 #### Example
 

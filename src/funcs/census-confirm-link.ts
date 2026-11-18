@@ -29,7 +29,7 @@ import { Result } from "../types/fp.js";
  * Confirm a pending link
  *
  * @remarks
- * 4.0: on a key with “Pending until your server confirms” on, a link waits after the person's tap (account.link_pending). Confirm it from your server with your SECRET key, sending the account your own session shows. The same account makes the link live (account.link_live, account.secured) and returns the finished token on this response only. Another account is refused and the waiting link is dropped. A link not confirmed within 24 hours expires. You can also confirm by passing `partner_user_ref` to sdk/verify-token with your secret key.
+ * On a key with “Pending until your server confirms” on, a link waits after the person's tap (account.link_pending). Confirm it from your server with your SECRET key, sending the account your own session shows. The same account makes the link live (account.link_live, account.secured) and returns the finished token on this response only. Another account is refused and the waiting link is dropped. A link not confirmed within 24 hours expires. You can also confirm by passing `partner_user_ref` to sdk/verify-token with your secret key.
  */
 export function censusConfirmLink(
   client: BotShieldCore,

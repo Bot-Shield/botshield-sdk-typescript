@@ -8,7 +8,7 @@
 
 ## getStatus
 
-Poll a verification request. Carries the signed attestation on completion and NO identity — no user_email, partner_user_id, auth_mode, or botshield_user_id ever cross this boundary. Called without a key, it is rate-limited per client address (a page polling every 2 seconds stays well inside it); over the limit the call is refused with HTTP 403 and `errors[0].code = "RATE_LIMITED"`. 4.0: knowing the request id is not enough to read the finished tokens. A request started with a site key returns them only with its `read_secret` (`X-BotShield-Request-Secret`); a request your server started, only to your secret key. A passkey sign-in's tokens are never returned here.
+Poll a verification request. Carries the signed attestation on completion and NO identity — no user_email, partner_user_id, auth_mode, or botshield_user_id ever cross this boundary. Called without a key, it is rate-limited per client address (a page polling every 2 seconds stays well inside it); over the limit the call is refused with HTTP 403 and `errors[0].code = "RATE_LIMITED"`. Knowing the request id is not enough to read the finished tokens. A request started with a site key returns them only with its `read_secret` (`X-BotShield-Request-Secret`); a request your server started, only to your secret key. A passkey sign-in's tokens are never returned here.
 
 ### Example Usage
 
