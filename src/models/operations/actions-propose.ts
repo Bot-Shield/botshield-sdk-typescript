@@ -20,7 +20,7 @@ export type SummaryDetail = {
   value?: string | undefined;
 };
 
-export type ActionsProposeAction = {
+export type Action = {
   /**
    * Plain-English action description shown on the card (e.g. 'Has an Uber ride ready to book').
    */
@@ -61,11 +61,7 @@ export type ActionsProposeRequest = {
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   userEmail?: string | undefined;
-  /**
-   * 4.0 · the person's phone number, in place of `opaque_id` / `botshield_user_id` / `user_email` (never together with them). Used for one lookup, then dropped: never stored, logged or sent in a webhook. The answer is the same whether or not anyone holds the number. Show the returned `match_number` to the person; they pick it in the app before approving. A person not yet linked to your company gets an introduction first, never the card; the ask is held and becomes the card if they allow. An ask nobody answers reads `queued`, then `expired`. Production needs a verified business.
-   */
-  phoneNumber?: string | undefined;
-  action: ActionsProposeAction;
+  action: Action;
   /**
    * Optional Adaptive Card v1.5 JSON shown when the user expands the card. Allowlist: TextBlock, FactSet, ColumnSet, Container, Table, Image (bundled-asset only).
    */
@@ -74,10 +70,6 @@ export type ActionsProposeRequest = {
    * How long the user has to respond before the proposal expires (60–86400; default 600). Out-of-range values are rejected with ttl_below_floor / ttl_above_ceiling.
    */
   ttlSeconds?: number | undefined;
-  /**
-   * Your company's own id for the customer's verified account (the same value your server sends as partner_user_ref). A verified account is what lets your company's agents ask; no pairing code is needed. Hashed, never stored or echoed.
-   */
-  partnerUserRef?: string | undefined;
 };
 
 /**
@@ -109,14 +101,6 @@ export type ActionsProposeDataData = {
    * true when this request_id was already proposed; no new card was created.
    */
   idempotentReplay?: boolean | undefined;
-  /**
-   * By phone number only: your request_id, echoed.
-   */
-  requestId?: string | undefined;
-  /**
-   * By phone number only: the two-digit number to show the person (in your conversation, or on your screen). They pick it in the BotShield app before approving.
-   */
-  matchNumber?: number | undefined;
 };
 
 export type ActionsProposeData = {
@@ -128,7 +112,7 @@ export type ActionsProposeData = {
 };
 
 /**
- * Action proposal queued (or replayed). NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401, 403 (category_not_allowed), 404 (no binding for opaque_id / user not found), 422 (Adaptive Card rejected, see violations), 400 with code ttl_below_floor | ttl_above_ceiling, 429 with code too_many_open_requests | daily_request_limit (a cap per person: 5 requests waiting, 50 in 24 hours, counted across your company's agents; carries retry_after_seconds), 503 with code request_limit_unavailable (not counted, so not sent; retry), 400 with code one_addressee_required (phone_number together with another way to name the person) | phone_invalid, 403 with code org_not_verified (by phone number in production), 429 with code send_rate_limited | unanswered_limit_reached (asks by phone number), 503 with code unavailable, 409 with code account_reconfirm_required (the customer changed their phone number without approval from another phone; they must confirm their account with your company again from its signed-in page before your agents can ask them anything — nothing is counted or sent), 500, 502 (user lookup failed).
+ * Action proposal queued (or replayed). NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401, 403 (category_not_allowed), 404 (no binding for opaque_id / user not found), 422 (Adaptive Card rejected, see violations), 400 with code ttl_below_floor | ttl_above_ceiling, 500, 502 (user lookup failed).
  */
 export type ActionsProposeResponse = {
   data: ActionsProposeData;
@@ -173,24 +157,21 @@ export function summaryDetailFromJSON(
 }
 
 /** @internal */
-export const ActionsProposeAction$inboundSchema: z.ZodType<
-  ActionsProposeAction,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  summary_title: types.string(),
-  summary_detail: types.optional(z.lazy(() => SummaryDetail$inboundSchema)),
-  category: types.string(),
-  trusted_account_id: types.optional(types.string()),
-}).transform((v) => {
-  return remap$(v, {
-    "summary_title": "summaryTitle",
-    "summary_detail": "summaryDetail",
-    "trusted_account_id": "trustedAccountId",
+export const Action$inboundSchema: z.ZodType<Action, z.ZodTypeDef, unknown> = z
+  .object({
+    summary_title: types.string(),
+    summary_detail: types.optional(z.lazy(() => SummaryDetail$inboundSchema)),
+    category: types.string(),
+    trusted_account_id: types.optional(types.string()),
+  }).transform((v) => {
+    return remap$(v, {
+      "summary_title": "summaryTitle",
+      "summary_detail": "summaryDetail",
+      "trusted_account_id": "trustedAccountId",
+    });
   });
-});
 /** @internal */
-export type ActionsProposeAction$Outbound = {
+export type Action$Outbound = {
   summary_title: string;
   summary_detail?: SummaryDetail$Outbound | undefined;
   category: string;
@@ -198,10 +179,10 @@ export type ActionsProposeAction$Outbound = {
 };
 
 /** @internal */
-export const ActionsProposeAction$outboundSchema: z.ZodType<
-  ActionsProposeAction$Outbound,
+export const Action$outboundSchema: z.ZodType<
+  Action$Outbound,
   z.ZodTypeDef,
-  ActionsProposeAction
+  Action
 > = z.object({
   summaryTitle: z.string(),
   summaryDetail: z.lazy(() => SummaryDetail$outboundSchema).optional(),
@@ -215,20 +196,16 @@ export const ActionsProposeAction$outboundSchema: z.ZodType<
   });
 });
 
-export function actionsProposeActionToJSON(
-  actionsProposeAction: ActionsProposeAction,
-): string {
-  return JSON.stringify(
-    ActionsProposeAction$outboundSchema.parse(actionsProposeAction),
-  );
+export function actionToJSON(action: Action): string {
+  return JSON.stringify(Action$outboundSchema.parse(action));
 }
-export function actionsProposeActionFromJSON(
+export function actionFromJSON(
   jsonString: string,
-): SafeParseResult<ActionsProposeAction, SDKValidationError> {
+): SafeParseResult<Action, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ActionsProposeAction$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ActionsProposeAction' from JSON`,
+    (x) => Action$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Action' from JSON`,
   );
 }
 
@@ -242,21 +219,17 @@ export const ActionsProposeRequest$inboundSchema: z.ZodType<
   opaque_id: types.optional(types.string()),
   botshield_user_id: types.optional(types.string()),
   user_email: types.optional(types.string()),
-  phone_number: types.optional(types.string()),
-  action: z.lazy(() => ActionsProposeAction$inboundSchema),
+  action: z.lazy(() => Action$inboundSchema),
   adaptive_card_payload: types.optional(z.record(z.any())),
   ttl_seconds: types.number().default(600),
-  partner_user_ref: types.optional(types.string()),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
     "opaque_id": "opaqueId",
     "botshield_user_id": "botshieldUserId",
     "user_email": "userEmail",
-    "phone_number": "phoneNumber",
     "adaptive_card_payload": "adaptiveCardPayload",
     "ttl_seconds": "ttlSeconds",
-    "partner_user_ref": "partnerUserRef",
   });
 });
 /** @internal */
@@ -265,11 +238,9 @@ export type ActionsProposeRequest$Outbound = {
   opaque_id?: string | undefined;
   botshield_user_id?: string | undefined;
   user_email?: string | undefined;
-  phone_number?: string | undefined;
-  action: ActionsProposeAction$Outbound;
+  action: Action$Outbound;
   adaptive_card_payload?: { [k: string]: any } | undefined;
   ttl_seconds: number;
-  partner_user_ref?: string | undefined;
 };
 
 /** @internal */
@@ -282,21 +253,17 @@ export const ActionsProposeRequest$outboundSchema: z.ZodType<
   opaqueId: z.string().optional(),
   botshieldUserId: z.string().optional(),
   userEmail: z.string().optional(),
-  phoneNumber: z.string().optional(),
-  action: z.lazy(() => ActionsProposeAction$outboundSchema),
+  action: z.lazy(() => Action$outboundSchema),
   adaptiveCardPayload: z.record(z.any()).optional(),
   ttlSeconds: z.number().int().default(600),
-  partnerUserRef: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
     opaqueId: "opaque_id",
     botshieldUserId: "botshield_user_id",
     userEmail: "user_email",
-    phoneNumber: "phone_number",
     adaptiveCardPayload: "adaptive_card_payload",
     ttlSeconds: "ttl_seconds",
-    partnerUserRef: "partner_user_ref",
   });
 });
 
@@ -340,15 +307,11 @@ export const ActionsProposeDataData$inboundSchema: z.ZodType<
   card_id: types.string(),
   ttl_at: types.optional(types.date()),
   idempotent_replay: types.optional(types.boolean()),
-  request_id: types.optional(types.string()),
-  match_number: types.optional(types.number()),
 }).transform((v) => {
   return remap$(v, {
     "card_id": "cardId",
     "ttl_at": "ttlAt",
     "idempotent_replay": "idempotentReplay",
-    "request_id": "requestId",
-    "match_number": "matchNumber",
   });
 });
 /** @internal */
@@ -357,8 +320,6 @@ export type ActionsProposeDataData$Outbound = {
   card_id: string;
   ttl_at?: string | undefined;
   idempotent_replay?: boolean | undefined;
-  request_id?: string | undefined;
-  match_number?: number | undefined;
 };
 
 /** @internal */
@@ -371,15 +332,11 @@ export const ActionsProposeDataData$outboundSchema: z.ZodType<
   cardId: z.string(),
   ttlAt: z.date().transform(v => v.toISOString()).optional(),
   idempotentReplay: z.boolean().optional(),
-  requestId: z.string().optional(),
-  matchNumber: z.number().int().optional(),
 }).transform((v) => {
   return remap$(v, {
     cardId: "card_id",
     ttlAt: "ttl_at",
     idempotentReplay: "idempotent_replay",
-    requestId: "request_id",
-    matchNumber: "match_number",
   });
 });
 

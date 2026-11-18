@@ -23,17 +23,17 @@ export function createMCPServer(deps: {
   scopes?: MCPScope[] | undefined;
   serverURL?: string | undefined;
   security?: SDKOptions["security"] | undefined;
-  server?: SDKOptions["server"] | undefined;
+  serverIdx?: SDKOptions["serverIdx"] | undefined;
 }) {
   const server = new McpServer({
     name: "BotShield",
-    version: "4.0.1",
+    version: "4.1.0",
   });
 
   const client = new BotShieldCore({
     security: deps.security,
     serverURL: deps.serverURL,
-    server: deps.server,
+    serverIdx: deps.serverIdx,
   });
 
   const scopes = new Set(deps.scopes);

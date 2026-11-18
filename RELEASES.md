@@ -112,3 +112,14 @@ Based on:
 - `gates.actions.request` and `census.sendByNumber`: refusal codes `action_is_recovery` / `action_is_signin`.
 ### Production
 - The default server is production, whose engine is pre-4.0 until the 4.0 engine ships. Until then `recovery.*` and `signIn.*` work only against `server: "staging"`, and only once migrations 20261117140000 and 20261117160000 are applied there.
+
+
+## 2026-11-18 04:48:04
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.796.3 (2.934.1) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v4.1.0] .
+### Releases
+- [NPM v4.1.0] https://www.npmjs.com/package/botshield-sdk/v/4.1.0 - .

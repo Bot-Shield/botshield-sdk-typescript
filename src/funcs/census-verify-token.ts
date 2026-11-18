@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Validate a verification token
  *
  * @remarks
- * Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person. Each attestation is for one organization (aud = its organization_id; pass `audience` to enforce it) and one check: a repeat check is refused (`valid: false`, `replayed: true`). Check it once, on your server. Each token names its `kind` (`verification` or `action`) and the `environment` it was issued in. A token of any other kind is refused, and when you call with your secret key (`Authorization: Bearer bs_…`) a token from the other environment is refused (a development token never passes a production check). A refused token is not spent. 4.0: the check needs your secret key (`Authorization: Bearer bs_…`); without it the answer is `valid: false, code: secret_key_required` and the token is not spent. Send `expected_request_id` (the request your server made) and a token for any other request is refused (`code: request_mismatch`), unspent. A passkey sign-in's token is refused here: redeem a sign-in with signin/confirm.
+ * Validates a BotShield attestation JWT — the primary server-side check. Attestations are ES256-signed; the public key is published at /.well-known/jwks.json (kid in the header), so you may also verify locally with any JWT library. Claims are anonymous by construction: the token attests the event, never the person. Each attestation is for one organization (aud = its organization_id; pass `audience` to enforce it) and one check: a repeat check is flagged `replayed` and refused from 2026-11-15.
  */
 export function censusVerifyToken(
   client: BotShieldCore,
@@ -114,6 +114,251 @@ async function $do(
         fieldName: "Authorization",
         type: "apiKey:header",
         value: security?.apiKeyAuth1,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth2,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth3,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth4,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth5,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth6,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth7,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth8,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth9,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth10,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth11,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth12,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth13,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth14,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth15,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth16,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth17,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth18,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth19,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth20,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth21,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth22,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth23,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth24,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth25,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth26,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth27,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth28,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth29,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth30,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth31,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth32,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth33,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth34,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth35,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth36,
       },
     ],
   );

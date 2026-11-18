@@ -100,7 +100,7 @@ export type SDKCreateSessionData = {
 };
 
 /**
- * Anchor grant window created. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401 (bad or missing credential), 403 (origin not allowed for the site key; also a production site key with no allowed origins, which is refused until you add your domain to the key in the Console).
+ * Anchor grant window created. NOTE: handler errors also arrive here (HTTP 200) as data.error — codes for this operation: 401 (bad or missing credential), 403 (origin not allowed for the site key).
  */
 export type SDKCreateSessionResponse = {
   data: SDKCreateSessionData;

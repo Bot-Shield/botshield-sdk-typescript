@@ -130,7 +130,42 @@ Add the following server definition to your `claude_desktop_config.json` file:
         "--",
         "mcp", "start",
         "--agent-key-auth", "...",
-        "--agent-key-auth1", "..."
+        "--agent-key-auth1", "...",
+        "--agent-key-auth2", "...",
+        "--agent-key-auth3", "...",
+        "--agent-key-auth4", "...",
+        "--agent-key-auth5", "...",
+        "--agent-key-auth6", "...",
+        "--agent-key-auth7", "...",
+        "--agent-key-auth8", "...",
+        "--agent-key-auth9", "...",
+        "--agent-key-auth10", "...",
+        "--agent-key-auth11", "...",
+        "--agent-key-auth12", "...",
+        "--agent-key-auth13", "...",
+        "--agent-key-auth14", "...",
+        "--agent-key-auth15", "...",
+        "--agent-key-auth16", "...",
+        "--agent-key-auth17", "...",
+        "--agent-key-auth18", "...",
+        "--agent-key-auth19", "...",
+        "--agent-key-auth20", "...",
+        "--agent-key-auth21", "...",
+        "--agent-key-auth22", "...",
+        "--agent-key-auth23", "...",
+        "--agent-key-auth24", "...",
+        "--agent-key-auth25", "...",
+        "--agent-key-auth26", "...",
+        "--agent-key-auth27", "...",
+        "--agent-key-auth28", "...",
+        "--agent-key-auth29", "...",
+        "--agent-key-auth30", "...",
+        "--agent-key-auth31", "...",
+        "--agent-key-auth32", "...",
+        "--agent-key-auth33", "...",
+        "--agent-key-auth34", "...",
+        "--agent-key-auth35", "...",
+        "--agent-key-auth36", "..."
       ]
     }
   }
@@ -154,7 +189,42 @@ Create a `.cursor/mcp.json` file in your project root with the following content
         "--",
         "mcp", "start",
         "--agent-key-auth", "...",
-        "--agent-key-auth1", "..."
+        "--agent-key-auth1", "...",
+        "--agent-key-auth2", "...",
+        "--agent-key-auth3", "...",
+        "--agent-key-auth4", "...",
+        "--agent-key-auth5", "...",
+        "--agent-key-auth6", "...",
+        "--agent-key-auth7", "...",
+        "--agent-key-auth8", "...",
+        "--agent-key-auth9", "...",
+        "--agent-key-auth10", "...",
+        "--agent-key-auth11", "...",
+        "--agent-key-auth12", "...",
+        "--agent-key-auth13", "...",
+        "--agent-key-auth14", "...",
+        "--agent-key-auth15", "...",
+        "--agent-key-auth16", "...",
+        "--agent-key-auth17", "...",
+        "--agent-key-auth18", "...",
+        "--agent-key-auth19", "...",
+        "--agent-key-auth20", "...",
+        "--agent-key-auth21", "...",
+        "--agent-key-auth22", "...",
+        "--agent-key-auth23", "...",
+        "--agent-key-auth24", "...",
+        "--agent-key-auth25", "...",
+        "--agent-key-auth26", "...",
+        "--agent-key-auth27", "...",
+        "--agent-key-auth28", "...",
+        "--agent-key-auth29", "...",
+        "--agent-key-auth30", "...",
+        "--agent-key-auth31", "...",
+        "--agent-key-auth32", "...",
+        "--agent-key-auth33", "...",
+        "--agent-key-auth34", "...",
+        "--agent-key-auth35", "...",
+        "--agent-key-auth36", "..."
       ]
     }
   }
@@ -230,10 +300,45 @@ run();
 
 This SDK supports the following security schemes globally:
 
-| Name            | Type   | Scheme  |
-| --------------- | ------ | ------- |
-| `agentKeyAuth`  | apiKey | API key |
-| `agentKeyAuth1` | apiKey | API key |
+| Name             | Type   | Scheme  |
+| ---------------- | ------ | ------- |
+| `agentKeyAuth`   | apiKey | API key |
+| `agentKeyAuth1`  | apiKey | API key |
+| `agentKeyAuth2`  | apiKey | API key |
+| `agentKeyAuth3`  | apiKey | API key |
+| `agentKeyAuth4`  | apiKey | API key |
+| `agentKeyAuth5`  | apiKey | API key |
+| `agentKeyAuth6`  | apiKey | API key |
+| `agentKeyAuth7`  | apiKey | API key |
+| `agentKeyAuth8`  | apiKey | API key |
+| `agentKeyAuth9`  | apiKey | API key |
+| `agentKeyAuth10` | apiKey | API key |
+| `agentKeyAuth11` | apiKey | API key |
+| `agentKeyAuth12` | apiKey | API key |
+| `agentKeyAuth13` | apiKey | API key |
+| `agentKeyAuth14` | apiKey | API key |
+| `agentKeyAuth15` | apiKey | API key |
+| `agentKeyAuth16` | apiKey | API key |
+| `agentKeyAuth17` | apiKey | API key |
+| `agentKeyAuth18` | apiKey | API key |
+| `agentKeyAuth19` | apiKey | API key |
+| `agentKeyAuth20` | apiKey | API key |
+| `agentKeyAuth21` | apiKey | API key |
+| `agentKeyAuth22` | apiKey | API key |
+| `agentKeyAuth23` | apiKey | API key |
+| `agentKeyAuth24` | apiKey | API key |
+| `agentKeyAuth25` | apiKey | API key |
+| `agentKeyAuth26` | apiKey | API key |
+| `agentKeyAuth27` | apiKey | API key |
+| `agentKeyAuth28` | apiKey | API key |
+| `agentKeyAuth29` | apiKey | API key |
+| `agentKeyAuth30` | apiKey | API key |
+| `agentKeyAuth31` | apiKey | API key |
+| `agentKeyAuth32` | apiKey | API key |
+| `agentKeyAuth33` | apiKey | API key |
+| `agentKeyAuth34` | apiKey | API key |
+| `agentKeyAuth35` | apiKey | API key |
+| `agentKeyAuth36` | apiKey | API key |
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript
@@ -287,7 +392,6 @@ run();
 
 ### [Actions](docs/sdks/actions/README.md)
 
-* [verifyResolution](docs/sdks/actions/README.md#verifyresolution) - Check a Proof of Resolution (works once)
 * [proposeAction](docs/sdks/actions/README.md#proposeaction) - Propose an action for human confirmation
 * [checkActionStatus](docs/sdks/actions/README.md#checkactionstatus) - Check action proposal status
 * [cancelAction](docs/sdks/actions/README.md#cancelaction) - Cancel a queued action proposal
@@ -302,49 +406,12 @@ run();
 * [getPartnerConfig](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
 * [revokeVerification](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
 * [logout](docs/sdks/census/README.md#logout) - Revoke a grant token
-* [confirmLink](docs/sdks/census/README.md#confirmlink) - Confirm a pending link
-* [sendByNumber](docs/sdks/census/README.md#sendbynumber) - Send a request to verify by phone number
-
-### [Gates](docs/sdks/gates/README.md)
-
-* [create](docs/sdks/gates/README.md#create) - Place a gate
-* [activate](docs/sdks/gates/README.md#activate) - Activate a gate
-* [close](docs/sdks/gates/README.md#close) - Close a gate
-* [extend](docs/sdks/gates/README.md#extend) - Extend a gate's window
-* [cancel](docs/sdks/gates/README.md#cancel) - Cancel a gate
-* [get](docs/sdks/gates/README.md#get) - Get a gate
-* [list](docs/sdks/gates/README.md#list) - List gates
-
-#### [Gates.Actions](docs/sdks/gatesactions/README.md)
-
-* [create](docs/sdks/gatesactions/README.md#create) - Place a BotShield Action
-* [list](docs/sdks/gatesactions/README.md#list) - List BotShield Actions
-* [setState](docs/sdks/gatesactions/README.md#setstate) - Turn a BotShield Action on or off
-* [update](docs/sdks/gatesactions/README.md#update) - Rename a BotShield Action, or mark it staff can send
-* [request](docs/sdks/gatesactions/README.md#request) - Ask a linked person to confirm an action
-* [requestStatus](docs/sdks/gatesactions/README.md#requeststatus) - Where an action request stands
-* [requestCancel](docs/sdks/gatesactions/README.md#requestcancel) - Withdraw an action request
-
-### [InlinePasskey](docs/sdks/inlinepasskey/README.md)
-
-* [getOptions](docs/sdks/inlinepasskey/README.md#getoptions) - Start the inline passkey for one request
-* [complete](docs/sdks/inlinepasskey/README.md#complete) - Finish the inline passkey for one request
-
-### [Recovery](docs/sdks/recovery/README.md)
-
-* [exchange](docs/sdks/recovery/README.md#exchange) - Redeem a recovery code
-* [otherRoute](docs/sdks/recovery/README.md#otherroute) - Report another sign-in reset
 
 ### [SecuredAccounts](docs/sdks/securedaccounts/README.md)
 
 * [list](docs/sdks/securedaccounts/README.md#list) - List Secured Accounts
 * [revoke](docs/sdks/securedaccounts/README.md#revoke) - Revoke a Secured Account
 * [getStatus](docs/sdks/securedaccounts/README.md#getstatus) - Get Secured Account status
-
-### [SignIn](docs/sdks/signin/README.md)
-
-* [request](docs/sdks/signin/README.md#request) - Ask for a passkey sign-in
-* [confirm](docs/sdks/signin/README.md#confirm) - Redeem a passkey sign-in
 
 ### [Verification](docs/sdks/verification/README.md)
 
@@ -371,40 +438,17 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`actionsCancelAction`](docs/sdks/actions/README.md#cancelaction) - Cancel a queued action proposal
 - [`actionsCheckActionStatus`](docs/sdks/actions/README.md#checkactionstatus) - Check action proposal status
 - [`actionsProposeAction`](docs/sdks/actions/README.md#proposeaction) - Propose an action for human confirmation
-- [`actionsVerifyResolution`](docs/sdks/actions/README.md#verifyresolution) - Check a Proof of Resolution (works once)
-- [`censusConfirmLink`](docs/sdks/census/README.md#confirmlink) - Confirm a pending link
 - [`censusCreateSession`](docs/sdks/census/README.md#createsession) - Create a grant token
 - [`censusCreateVerificationLink`](docs/sdks/census/README.md#createverificationlink) - Create a verification request
 - [`censusGetPartnerConfig`](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
 - [`censusLogout`](docs/sdks/census/README.md#logout) - Revoke a grant token
 - [`censusRevokeVerification`](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
-- [`censusSendByNumber`](docs/sdks/census/README.md#sendbynumber) - Send a request to verify by phone number
 - [`censusStoreSignal`](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
 - [`censusValidateSignal`](docs/sdks/census/README.md#validatesignal) - Validate a signal token
 - [`censusVerifyToken`](docs/sdks/census/README.md#verifytoken) - Validate a verification token
-- [`gatesActionsCreate`](docs/sdks/gatesactions/README.md#create) - Place a BotShield Action
-- [`gatesActionsList`](docs/sdks/gatesactions/README.md#list) - List BotShield Actions
-- [`gatesActionsRequest`](docs/sdks/gatesactions/README.md#request) - Ask a linked person to confirm an action
-- [`gatesActionsRequestCancel`](docs/sdks/gatesactions/README.md#requestcancel) - Withdraw an action request
-- [`gatesActionsRequestStatus`](docs/sdks/gatesactions/README.md#requeststatus) - Where an action request stands
-- [`gatesActionsSetState`](docs/sdks/gatesactions/README.md#setstate) - Turn a BotShield Action on or off
-- [`gatesActionsUpdate`](docs/sdks/gatesactions/README.md#update) - Rename a BotShield Action, or mark it staff can send
-- [`gatesActivate`](docs/sdks/gates/README.md#activate) - Activate a gate
-- [`gatesCancel`](docs/sdks/gates/README.md#cancel) - Cancel a gate
-- [`gatesClose`](docs/sdks/gates/README.md#close) - Close a gate
-- [`gatesCreate`](docs/sdks/gates/README.md#create) - Place a gate
-- [`gatesExtend`](docs/sdks/gates/README.md#extend) - Extend a gate's window
-- [`gatesGet`](docs/sdks/gates/README.md#get) - Get a gate
-- [`gatesList`](docs/sdks/gates/README.md#list) - List gates
-- [`inlinePasskeyComplete`](docs/sdks/inlinepasskey/README.md#complete) - Finish the inline passkey for one request
-- [`inlinePasskeyGetOptions`](docs/sdks/inlinepasskey/README.md#getoptions) - Start the inline passkey for one request
-- [`recoveryExchange`](docs/sdks/recovery/README.md#exchange) - Redeem a recovery code
-- [`recoveryOtherRoute`](docs/sdks/recovery/README.md#otherroute) - Report another sign-in reset
 - [`securedAccountsGetStatus`](docs/sdks/securedaccounts/README.md#getstatus) - Get Secured Account status
 - [`securedAccountsList`](docs/sdks/securedaccounts/README.md#list) - List Secured Accounts
 - [`securedAccountsRevoke`](docs/sdks/securedaccounts/README.md#revoke) - Revoke a Secured Account
-- [`signInConfirm`](docs/sdks/signin/README.md#confirm) - Redeem a passkey sign-in
-- [`signInRequest`](docs/sdks/signin/README.md#request) - Ask for a passkey sign-in
 - [`verificationGetStatus`](docs/sdks/verification/README.md#getstatus) - Check verification status
 
 </details>
@@ -531,8 +575,8 @@ run();
 ### Error Classes
 **Primary errors:**
 * [`BotShieldError`](./src/models/errors/bot-shield-error.ts): The base class for HTTP error responses.
-  * [`ErrorResponse`](./src/models/errors/error-response.ts): Internal server error. Status code `500`. *
-  * [`InvalidInputError`](./src/models/errors/invalid-input-error.ts): Invalid input. Status code `400`. *
+  * [`InvalidInputError`](./src/models/errors/invalid-input-error.ts): Invalid input. Status code `400`.
+  * [`ErrorResponse`](./src/models/errors/error-response.ts): Internal server error. Status code `500`.
 
 <details><summary>Less common errors (6)</summary>
 
@@ -550,22 +594,19 @@ run();
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
-
-\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
 ## Server Selection
 
-### Select Server by Name
+### Select Server by Index
 
-You can override the default server globally by passing a server name to the `server: keyof typeof ServerList` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the names associated with the available servers:
+You can override the default server globally by passing a server index to the `serverIdx: number` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the indexes associated with the available servers:
 
-| Name         | Server                                       | Description          |
-| ------------ | -------------------------------------------- | -------------------- |
-| `production` | `https://api.botshield.ai/operations`        | Production (default) |
-| `staging`    | `https://wg-staging.botshield.ai/operations` | Staging              |
-| `local`      | `http://localhost:9991/operations`           | Local development    |
+| #   | Server                                | Description       |
+| --- | ------------------------------------- | ----------------- |
+| 0   | `http://localhost:9991/operations`    | Local development |
+| 1   | `https://api.botshield.ai/operations` | Production        |
 
 #### Example
 
@@ -573,7 +614,7 @@ You can override the default server globally by passing a server name to the `se
 import { BotShield } from "botshield-sdk";
 
 const botShield = new BotShield({
-  server: "production",
+  serverIdx: 0,
 });
 
 async function run() {

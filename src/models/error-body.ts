@@ -36,7 +36,7 @@ export type ErrorBody = {
   message: string;
   statusCode: number;
   /**
-   * `ttl_below_floor`, `ttl_above_ceiling`, `trust_layer_rejected`, `trust_layer_unavailable`, `gate_required`, `alias_retired`, `RATE_LIMITED`, `inline_not_for_age_gate`, `act_label_has_link`, and in 4.0 `link_requires_server_session`, `account_override_refused`, `action_is_recovery`, `action_is_signin`, `invalid_key`, `recovery_code_invalid`, `handle_invalid`, `signin_not_set_up`, `not_verified`, `account_paused`, `signin_unknown`, `signin_pending`, `signin_refused`, `signin_expired`, `signin_used`, `signin_wrong_account`, `unavailable`.
+   * `ttl_below_floor`, `ttl_above_ceiling`, `trust_layer_rejected`, `trust_layer_unavailable`, `gate_required`, `alias_retired`, `RATE_LIMITED`.
    */
   code?: string | undefined;
   minTtlSeconds?: number | undefined;
@@ -49,10 +49,6 @@ export type ErrorBody = {
   retryIn?: number | undefined;
   limits?: Limits | undefined;
   upgradeUrl?: string | undefined;
-  /**
-   * inline_not_for_age_gate only: the app hand-off for this request.
-   */
-  url?: string | undefined;
   /**
    * On a 429 limit (`too_many_open_requests`, `daily_request_limit`, `send_rate_limited`, `unanswered_limit_reached`): seconds until a retry can succeed.
    */
@@ -164,7 +160,6 @@ export const ErrorBody$inboundSchema: z.ZodType<
   retry_in: types.optional(types.number()),
   limits: types.optional(z.lazy(() => Limits$inboundSchema)),
   upgrade_url: types.optional(types.string()),
-  url: types.optional(types.string()),
   retry_after_seconds: types.optional(types.number()),
 }).transform((v) => {
   return remap$(v, {
@@ -191,7 +186,6 @@ export type ErrorBody$Outbound = {
   retry_in?: number | undefined;
   limits?: Limits$Outbound | undefined;
   upgrade_url?: string | undefined;
-  url?: string | undefined;
   retry_after_seconds?: number | undefined;
 };
 
@@ -214,7 +208,6 @@ export const ErrorBody$outboundSchema: z.ZodType<
   retryIn: z.number().int().optional(),
   limits: z.lazy(() => Limits$outboundSchema).optional(),
   upgradeUrl: z.string().optional(),
-  url: z.string().optional(),
   retryAfterSeconds: z.number().int().optional(),
 }).transform((v) => {
   return remap$(v, {

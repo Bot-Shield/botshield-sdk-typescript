@@ -3,7 +3,7 @@
  */
 
 import { BotShieldCore } from "../core.js";
-import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
+import { encodeFormQuery } from "../lib/encodings.js";
 import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Check verification status
  *
  * @remarks
- * Poll a verification request. Carries the signed attestation on completion and NO identity — no user_email, partner_user_id, auth_mode, or botshield_user_id ever cross this boundary. Called without a key, it is rate-limited per client address (a page polling every 2 seconds stays well inside it); over the limit the call is refused with HTTP 403 and `errors[0].code = "RATE_LIMITED"`. 4.0: knowing the request id is not enough to read the finished tokens. A request started with a site key returns them only with its `read_secret` (`X-BotShield-Request-Secret`); a request your server started, only to your secret key. A passkey sign-in's tokens are never returned here.
+ * Poll a verification request. Carries the signed attestation on completion and NO identity — no user_email, partner_user_id, auth_mode, or botshield_user_id ever cross this boundary.
  */
 export function verificationGetStatus(
   client: BotShieldCore,
@@ -103,11 +103,6 @@ async function $do(
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
-    "X-BotShield-Request-Secret": encodeSimple(
-      "X-BotShield-Request-Secret",
-      payload["X-BotShield-Request-Secret"],
-      { explode: false, charEncoding: "none" },
-    ),
   }));
 
   const requestSecurity = resolveSecurity(
@@ -123,6 +118,251 @@ async function $do(
         fieldName: "Authorization",
         type: "apiKey:header",
         value: security?.apiKeyAuth1,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth2,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth3,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth4,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth5,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth6,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth7,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth8,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth9,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth10,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth11,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth12,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth13,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth14,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth15,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth16,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth17,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth18,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth19,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth20,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth21,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth22,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth23,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth24,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth25,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth26,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth27,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth28,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth29,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth30,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth31,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth32,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth33,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth34,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth35,
+      },
+    ],
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.apiKeyAuth36,
       },
     ],
   );
