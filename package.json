@@ -46,6 +46,7 @@
     "lint": "oxlint --max-warnings=0 --deny-warnings --no-error-on-unmatched-pattern src",
     "build:mcp": "bun src/mcp-server/build.mts",
     "build": "npm run build:mcp && tshy",
+    "test:ciba": "bun test ./tests",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {},

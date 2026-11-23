@@ -1,0 +1,7 @@
+# Hand-written code. Speakeasy never creates, overwrites or deletes these paths on regeneration.
+# OpenID CIBA helper (import from "botshield-sdk/ciba"; served by the existing "./*" export)
+src/ciba.ts
+src/ciba/**
+# Its unit tests (bun test) and the runnable sample
+tests/**
+examples/ciba-agent/**
