@@ -32,6 +32,24 @@ Most integrations need only the browser widget. Get a site key in the [Console](
 
 On your server, confirm the token with this SDK (`census.verifyToken`) before trusting it. Gates, age checks, Trusted Accounts and Agents Ask are configured in the Console and documented at [docs.botshield.ai](https://docs.botshield.ai): [BotShield Gate](https://docs.botshield.ai/gate/overview) · [Trusted Accounts](https://docs.botshield.ai/trusted-accounts/overview) · [Agents Ask](https://docs.botshield.ai/agents-ask/overview).
 
+### Agents: OpenID CIBA
+
+An agent that needs the account holder's approval before a sensitive action can ask over OpenID CIBA with the hand-written helper in `botshield-sdk/ciba`:
+
+```ts
+import { createCibaClient } from "botshield-sdk/ciba";
+
+const ciba = createCibaClient({ clientId: AGENT_ID, kid: KEY_ID, privateKey: PRIVATE_KEY_PEM });
+const result = await ciba.askAndWait({
+  accountReference: "customer-1234",
+  bindingMessage: "Add payee Acme Ltd",
+  action: { type: "botshield_ask", title: "Add a payee", category: "botshield.action", main: { label: "Payee", value: "Acme Ltd" } },
+});
+if (result.approved) { /* go ahead; result.claims are the verified ID token claims */ }
+```
+
+`ask`, `poll`, `verifyToken` and `askAndWait` are also available separately. A runnable sample (plain Node, and a Claude Agent SDK agent) is in [`examples/ciba-agent`](./examples/ciba-agent).
+
 > [!NOTE]
 > The SDK is generated from the BotShield OpenAPI spec by Speakeasy. Everything below this line is the generated reference.
 

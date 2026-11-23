@@ -52,7 +52,8 @@ typescript:
       - agents
       - mcp
     license: MIT
-  additionalScripts: {}
+  additionalScripts:
+    test:ciba: bun test ./tests
   alwaysIncludeInboundAndOutbound: false
   apiPromiseHelpers: false
   author: BotShield
