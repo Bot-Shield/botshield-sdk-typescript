@@ -30,6 +30,8 @@ import { Result } from "../types/fp.js";
  *
  * @remarks
  * On a key with “Pending until your server confirms” on, a link waits after the person's tap (account.link_pending). Confirm it from your server with your SECRET key, sending the account your own session shows. The same account makes the link live (account.link_live, account.secured) and returns the finished token on this response only. Another account is refused and the waiting link is dropped. A link not confirmed within 24 hours expires. You can also confirm by passing `partner_user_ref` to sdk/verify-token with your secret key.
+ *
+ * Send `signin_passkey` to say how this account signs in to your site: `true` when it has a passkey at your sign-in, `false` when it signs in with a password. Either way the customer is BotShield Verified. `false` is the password shape (the app shows a password icon), not a refusal. It is refused (`signin_passkey_required`) only when your company requires a passkey at your sign-in; then leaving the field out is refused the same way. Send `password_reset_at` when you know the account's password was reset: a reset in the last 7 days is refused (`password_reset_recent`) and the error's `retry_after` says when to confirm again.
  */
 export function censusConfirmLink(
   client: BotShieldCore,

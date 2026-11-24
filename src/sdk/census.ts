@@ -10,6 +10,7 @@ import { censusLogout } from "../funcs/census-logout.js";
 import { censusRevokeVerification } from "../funcs/census-revoke-verification.js";
 import { censusSendByNumber } from "../funcs/census-send-by-number.js";
 import { censusStoreSignal } from "../funcs/census-store-signal.js";
+import { censusUpdateLink } from "../funcs/census-update-link.js";
 import { censusValidateSignal } from "../funcs/census-validate-signal.js";
 import { censusVerifyToken } from "../funcs/census-verify-token.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
@@ -80,7 +81,9 @@ export class Census extends ClientSDK {
    * Store a Signal Pixel bot score
    *
    * @remarks
-   * Stores a behavioral fingerprint score server-side and returns an opaque signal_token (bs_sig_...). The client-side score can be spoofed — the signal_token maps to the real score in BotShield's database. Called by the CDN worker; no partner credential is required.
+   * RETIRED (Loop 198, 2026-11-22). BotShield no longer scores visitors. Always answers data.error {code: 'retired', statusCode: 410}. Will be removed.
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   async storeSignal(
     request: operations.SDKStoreSignalRequest,
@@ -97,7 +100,9 @@ export class Census extends ClientSDK {
    * Validate a signal token
    *
    * @remarks
-   * Validates a signal_token and returns the real server-side bot score. One-time use, 10-minute expiry. This is the tamper-proof check.
+   * RETIRED (Loop 198, 2026-11-22). BotShield no longer scores visitors. Always answers data.error {code: 'retired', statusCode: 410}. Will be removed.
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   async validateSignal(
     request: operations.SDKValidateSignalRequest,
@@ -169,6 +174,8 @@ export class Census extends ClientSDK {
    *
    * @remarks
    * On a key with “Pending until your server confirms” on, a link waits after the person's tap (account.link_pending). Confirm it from your server with your SECRET key, sending the account your own session shows. The same account makes the link live (account.link_live, account.secured) and returns the finished token on this response only. Another account is refused and the waiting link is dropped. A link not confirmed within 24 hours expires. You can also confirm by passing `partner_user_ref` to sdk/verify-token with your secret key.
+   *
+   * Send `signin_passkey` to say how this account signs in to your site: `true` when it has a passkey at your sign-in, `false` when it signs in with a password. Either way the customer is BotShield Verified. `false` is the password shape (the app shows a password icon), not a refusal. It is refused (`signin_passkey_required`) only when your company requires a passkey at your sign-in; then leaving the field out is refused the same way. Send `password_reset_at` when you know the account's password was reset: a reset in the last 7 days is refused (`password_reset_recent`) and the error's `retry_after` says when to confirm again.
    */
   async confirmLink(
     security: operations.SDKConfirmLinkSecurity,
@@ -176,6 +183,29 @@ export class Census extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.SDKConfirmLinkResponse> {
     return unwrapAsync(censusConfirmLink(
+      this,
+      security,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update a verified account's sign-in
+   *
+   * @remarks
+   * Tell BotShield that a verified account now signs in to your site with a password: the customer removed their last passkey at your sign-in. Call it from your server with your SECRET key, naming the account by your own reference. It sets `signin_passkey` to false and nothing else; `true` is only ever set by sdk/confirm-link.
+   *
+   * The customer stays BotShield Verified and the app shows the password icon (`state: verified`). Only when your company requires a passkey at your sign-in is the account paused (`state: unfinished`): its requests are refused (`signin_passkey_required`) until the customer adds a passkey at your sign-in, taps Get BotShield Verified again and your server confirms with `signin_passkey: true`. Agents and history are kept either way.
+   *
+   * Idempotent: an account already false answers the same with `changed: false`.
+   */
+  async updateLink(
+    security: operations.SDKUpdateLinkSecurity,
+    request: operations.SDKUpdateLinkRequest,
+    options?: RequestOptions,
+  ): Promise<operations.SDKUpdateLinkResponse> {
+    return unwrapAsync(censusUpdateLink(
       this,
       security,
       request,

@@ -5,6 +5,7 @@
 ### Available Operations
 
 * [verifyResolution](#verifyresolution) - Check a Proof of Resolution (works once)
+* [authorizeTool](#authorizetool) - Authorize one protected tool call (works once)
 * [proposeAction](#proposeaction) - Propose an action for human confirmation
 * [checkActionStatus](#checkactionstatus) - Check action proposal status
 * [cancelAction](#cancelaction) - Cancel a queued action proposal
@@ -83,6 +84,84 @@ run();
 | ---------------------------- | ---------------------------- | ---------------------------- |
 | errors.InvalidInputError     | 400                          | application/json             |
 | errors.ErrorResponse         | 500                          | application/json             |
+| errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
+
+## authorizeTool
+
+Before a protected tool runs, send the Resolution the agent presented, the tool name, the call's arguments and the linked agent's opaque ID. BotShield answers allow true only when the approval is a passkey approve for this tool, these exact arguments, this linked agent, the link is still active, and it is the first use. A refusal gives a reason and does not spend the approval. Call with the agent's own key or the company's secret key.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="SdkAuthorizeTool" method="post" path="/sdk/authorize-tool" -->
+```typescript
+import { BotShield } from "botshield-sdk";
+
+const botShield = new BotShield();
+
+async function run() {
+  const result = await botShield.actions.authorizeTool({
+    agentKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    resolution: "<value>",
+    tool: "<value>",
+    opaqueId: "<id>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { BotShieldCore } from "botshield-sdk/core.js";
+import { actionsAuthorizeTool } from "botshield-sdk/funcs/actions-authorize-tool.js";
+
+// Use `BotShieldCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const botShield = new BotShieldCore();
+
+async function run() {
+  const res = await actionsAuthorizeTool(botShield, {
+    agentKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    resolution: "<value>",
+    tool: "<value>",
+    opaqueId: "<id>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("actionsAuthorizeTool failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.SDKAuthorizeToolRequest](../../models/operations/sdk-authorize-tool-request.md)                                                                                    | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.SDKAuthorizeToolSecurity](../../models/operations/sdk-authorize-tool-security.md)                                                                                  | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.SDKAuthorizeToolResponse](../../models/operations/sdk-authorize-tool-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
 | errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
 
 ## proposeAction

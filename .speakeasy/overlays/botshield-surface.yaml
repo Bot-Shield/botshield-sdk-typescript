@@ -244,12 +244,20 @@ actions:
     remove: true
   - target: $.paths["/sdk/confirm-link"].post
     update: { security: [ { ApiKeyAuth: [] } ] }
+  # 4.1: the company's server reports that a verified account now signs in with a password.
+  # Secret key (ApiKeyAuth in the engine spec). client.census.updateLink
+  - target: $.paths["/sdk/update-link"].post
+    update: { x-speakeasy-group: census, x-speakeasy-name-override: updateLink, x-speakeasy-mcp: { disabled: true } }
   # Loop 186 G4: check a Proof of Resolution once. Takes the agent's own key OR the company's
   # secret key, so both are offered (the engine spec left it unset = the global agent key only).
   # Not an MCP tool: the MCP allowlist stays the three Queue verbs (RFC 42 A2).
   # client.actions.verifyResolution
   - target: $.paths["/sdk/verify-resolution"].post
     update: { x-speakeasy-group: actions, x-speakeasy-name-override: verifyResolution, x-speakeasy-mcp: { disabled: true }, security: [ { AgentKeyAuth: [] }, { ApiKeyAuth: [] } ] }
+  # Loop 195 H4: one BotShield check before a protected tool runs (the gateway or the company's
+  # MCP server). Same keys as verifyResolution. Not an MCP tool. client.actions.authorizeTool
+  - target: $.paths["/sdk/authorize-tool"].post
+    update: { x-speakeasy-group: actions, x-speakeasy-name-override: authorizeTool, x-speakeasy-mcp: { disabled: true }, security: [ { AgentKeyAuth: [] }, { ApiKeyAuth: [] } ] }
 
   # ────────────────────────────────────────────────────────────────────────────
   # 4.0 fields the engine returns that its spec does not yet describe. Without them the
@@ -257,6 +265,10 @@ actions:
   # ────────────────────────────────────────────────────────────────────────────
   # verify-resolution: a refused key arrives as data.error (code `invalid_key`).
   - target: $.paths["/sdk/verify-resolution"].post.responses["200"].content["application/json"].schema.properties.data.properties
+    update:
+      error: { $ref: "#/components/schemas/GatesApiError" }
+  # authorize-tool: a refused key arrives as data.error (code `invalid_key`).
+  - target: $.paths["/sdk/authorize-tool"].post.responses["200"].content["application/json"].schema.properties.data.properties
     update:
       error: { $ref: "#/components/schemas/GatesApiError" }
   # VH-31: each action says whether it is high-value (list / create / update).
@@ -324,6 +336,14 @@ actions:
     update: { title: SdkSendByNumberDataData }
   - target: $.paths["/sdk/confirm-link"].post.responses["200"].content["application/json"].schema.properties.data.properties.data
     update: { title: SdkConfirmLinkDataData }
+  - target: $.paths["/sdk/update-link"].post.responses["200"].content["application/json"].schema.properties.data.properties.data
+    update: { title: SdkUpdateLinkDataData }
+  - target: $.paths["/sdk/update-link"].post.responses["200"].content["application/json"].schema.properties.data.properties.data.properties.state
+    update: { title: SdkUpdateLinkState }
+  - target: $.paths["/sdk/authorize-tool"].post.requestBody.content["application/json"].schema.properties.args
+    update: { title: SdkAuthorizeToolArgs }
+  - target: $.paths["/sdk/authorize-tool"].post.responses["200"].content["application/json"].schema.properties.data.properties.data
+    update: { title: SdkAuthorizeToolDataData }
   - target: $.paths["/sdk/verify-resolution"].post.responses["200"].content["application/json"].schema.properties.data.properties.data
     update: { title: SdkVerifyResolutionDataData }
   - target: $.paths["/gates-api/actions/request"].post.requestBody.content["application/json"].schema.properties.details.items

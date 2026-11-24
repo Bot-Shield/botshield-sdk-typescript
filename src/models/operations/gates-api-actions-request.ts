@@ -35,9 +35,17 @@ export type GatesApiActionsRequestRequest = {
    */
   act: string;
   /**
-   * The card's title — what the person is confirming. Default: the action's name.
+   * The card's title — what the person is confirming. Default: the action's name. Ignored for an `assistant:` act: BotShield sets that title itself, `Let <client_name> buy for you`, with the name it reads from the assistant's metadata at `assistant_client_id`.
    */
   actLabel?: string | undefined;
+  /**
+   * For an `assistant:` act only: the assistant's Poppy client_id (the HTTPS URL of its metadata document). BotShield reads the assistant's `client_name` from it for the card's title. Without it, or when it does not match the act, the card reads a fixed line and the approval cannot be registered.
+   */
+  assistantClientId?: string | undefined;
+  /**
+   * For an `assistant:` act only: the assistant's pairwise user id for your company (Poppy `sub`), when the act was made with one.
+   */
+  assistantUserId?: string | undefined;
   /**
    * Your reference for the person (the one you linked them with). The person must already be linked. Exactly one of this and `phone_number`.
    */
@@ -199,6 +207,8 @@ export const GatesApiActionsRequestRequest$inboundSchema: z.ZodType<
   agent: types.string(),
   act: types.string(),
   act_label: types.optional(types.string()),
+  assistant_client_id: types.optional(types.string()),
+  assistant_user_id: types.optional(types.string()),
   partner_user_ref: types.optional(types.string()),
   phone_number: types.optional(types.string()),
   requested_by: types.optional(types.string()),
@@ -210,6 +220,8 @@ export const GatesApiActionsRequestRequest$inboundSchema: z.ZodType<
   return remap$(v, {
     "request_id": "requestId",
     "act_label": "actLabel",
+    "assistant_client_id": "assistantClientId",
+    "assistant_user_id": "assistantUserId",
     "partner_user_ref": "partnerUserRef",
     "phone_number": "phoneNumber",
     "requested_by": "requestedBy",
@@ -222,6 +234,8 @@ export type GatesApiActionsRequestRequest$Outbound = {
   agent: string;
   act: string;
   act_label?: string | undefined;
+  assistant_client_id?: string | undefined;
+  assistant_user_id?: string | undefined;
   partner_user_ref?: string | undefined;
   phone_number?: string | undefined;
   requested_by?: string | undefined;
@@ -239,6 +253,8 @@ export const GatesApiActionsRequestRequest$outboundSchema: z.ZodType<
   agent: z.string(),
   act: z.string(),
   actLabel: z.string().optional(),
+  assistantClientId: z.string().optional(),
+  assistantUserId: z.string().optional(),
   partnerUserRef: z.string().optional(),
   phoneNumber: z.string().optional(),
   requestedBy: z.string().optional(),
@@ -249,6 +265,8 @@ export const GatesApiActionsRequestRequest$outboundSchema: z.ZodType<
   return remap$(v, {
     requestId: "request_id",
     actLabel: "act_label",
+    assistantClientId: "assistant_client_id",
+    assistantUserId: "assistant_user_id",
     partnerUserRef: "partner_user_ref",
     phoneNumber: "phone_number",
     requestedBy: "requested_by",

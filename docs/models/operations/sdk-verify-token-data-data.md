@@ -8,6 +8,7 @@ import { SDKVerifyTokenDataData } from "botshield-sdk/models/operations";
 let value: SDKVerifyTokenDataData = {
   valid: true,
   claims: {
+    gate: "checkout",
     act: "dibs:listing_4417",
   },
 };
