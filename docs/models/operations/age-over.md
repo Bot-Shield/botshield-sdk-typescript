@@ -1,6 +1,6 @@
 # AgeOver
 
-Age Gate only, positive-only.
+Age Gate only, positive-only: the gate's own threshold when the person meets it (a person over 21 passing an 18+ gate reads 18), absent otherwise.
 
 ## Example Usage
 

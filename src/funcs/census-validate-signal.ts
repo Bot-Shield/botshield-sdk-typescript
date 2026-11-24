@@ -29,7 +29,9 @@ import { Result } from "../types/fp.js";
  * Validate a signal token
  *
  * @remarks
- * Validates a signal_token and returns the real server-side bot score. One-time use, 10-minute expiry. This is the tamper-proof check.
+ * RETIRED (Loop 198, 2026-11-22). BotShield no longer scores visitors. Always answers data.error {code: 'retired', statusCode: 410}. Will be removed.
+ *
+ * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
  */
 export function censusValidateSignal(
   client: BotShieldCore,

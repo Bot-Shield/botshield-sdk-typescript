@@ -7,12 +7,13 @@
 * [createSession](#createsession) - Create a grant token
 * [createVerificationLink](#createverificationlink) - Create a verification request
 * [verifyToken](#verifytoken) - Validate a verification token
-* [storeSignal](#storesignal) - Store a Signal Pixel bot score
-* [validateSignal](#validatesignal) - Validate a signal token
+* [~~storeSignal~~](#storesignal) - Store a Signal Pixel bot score :warning: **Deprecated**
+* [~~validateSignal~~](#validatesignal) - Validate a signal token :warning: **Deprecated**
 * [getPartnerConfig](#getpartnerconfig) - Get partner configuration
 * [revokeVerification](#revokeverification) - Revoke a pending verification
 * [logout](#logout) - Revoke a grant token
 * [confirmLink](#confirmlink) - Confirm a pending link
+* [updateLink](#updatelink) - Update a verified account's sign-in
 * [sendByNumber](#sendbynumber) - Send a request to verify by phone number
 
 ## createSession
@@ -243,9 +244,11 @@ run();
 | errors.ErrorResponse         | 500                          | application/json             |
 | errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
 
-## storeSignal
+## ~~storeSignal~~
 
-Stores a behavioral fingerprint score server-side and returns an opaque signal_token (bs_sig_...). The client-side score can be spoofed — the signal_token maps to the real score in BotShield's database. Called by the CDN worker; no partner credential is required.
+RETIRED (Loop 198, 2026-11-22). BotShield no longer scores visitors. Always answers data.error {code: 'retired', statusCode: 410}. Will be removed.
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
@@ -316,9 +319,11 @@ run();
 | errors.ErrorResponse         | 500                          | application/json             |
 | errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
 
-## validateSignal
+## ~~validateSignal~~
 
-Validates a signal_token and returns the real server-side bot score. One-time use, 10-minute expiry. This is the tamper-proof check.
+RETIRED (Loop 198, 2026-11-22). BotShield no longer scores visitors. Always answers data.error {code: 'retired', statusCode: 410}. Will be removed.
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
@@ -615,6 +620,8 @@ run();
 
 On a key with “Pending until your server confirms” on, a link waits after the person's tap (account.link_pending). Confirm it from your server with your SECRET key, sending the account your own session shows. The same account makes the link live (account.link_live, account.secured) and returns the finished token on this response only. Another account is refused and the waiting link is dropped. A link not confirmed within 24 hours expires. You can also confirm by passing `partner_user_ref` to sdk/verify-token with your secret key.
 
+Send `signin_passkey` to say how this account signs in to your site: `true` when it has a passkey at your sign-in, `false` when it signs in with a password. Either way the customer is BotShield Verified. `false` is the password shape (the app shows a password icon), not a refusal. It is refused (`signin_passkey_required`) only when your company requires a passkey at your sign-in; then leaving the field out is refused the same way. Send `password_reset_at` when you know the account's password was reset: a reset in the last 7 days is refused (`password_reset_recent`) and the error's `retry_after` says when to confirm again.
+
 ### Example Usage
 
 <!-- UsageSnippet language="typescript" operationID="SdkConfirmLink" method="post" path="/sdk/confirm-link" -->
@@ -678,6 +685,84 @@ run();
 ### Response
 
 **Promise\<[operations.SDKConfirmLinkResponse](../../models/operations/sdk-confirm-link-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.BotShieldDefaultError | 4XX, 5XX                     | \*/\*                        |
+
+## updateLink
+
+Tell BotShield that a verified account now signs in to your site with a password: the customer removed their last passkey at your sign-in. Call it from your server with your SECRET key, naming the account by your own reference. It sets `signin_passkey` to false and nothing else; `true` is only ever set by sdk/confirm-link.
+
+The customer stays BotShield Verified and the app shows the password icon (`state: verified`). Only when your company requires a passkey at your sign-in is the account paused (`state: unfinished`): its requests are refused (`signin_passkey_required`) until the customer adds a passkey at your sign-in, taps Get BotShield Verified again and your server confirms with `signin_passkey: true`. Agents and history are kept either way.
+
+Idempotent: an account already false answers the same with `changed: false`.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="SdkUpdateLink" method="post" path="/sdk/update-link" -->
+```typescript
+import { BotShield } from "botshield-sdk";
+
+const botShield = new BotShield();
+
+async function run() {
+  const result = await botShield.census.updateLink({
+    apiKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    signinPasskey: false,
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { BotShieldCore } from "botshield-sdk/core.js";
+import { censusUpdateLink } from "botshield-sdk/funcs/census-update-link.js";
+
+// Use `BotShieldCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const botShield = new BotShieldCore();
+
+async function run() {
+  const res = await censusUpdateLink(botShield, {
+    apiKeyAuth: "<YOUR_API_KEY_HERE>",
+  }, {
+    signinPasskey: false,
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("censusUpdateLink failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.SDKUpdateLinkRequest](../../models/operations/sdk-update-link-request.md)                                                                                          | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.SDKUpdateLinkSecurity](../../models/operations/sdk-update-link-security.md)                                                                                        | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.SDKUpdateLinkResponse](../../models/operations/sdk-update-link-response.md)\>**
 
 ### Errors
 

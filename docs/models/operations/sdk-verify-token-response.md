@@ -12,6 +12,7 @@ let value: SDKVerifyTokenResponse = {
     data: {
       valid: true,
       claims: {
+        gate: "checkout",
         act: "dibs:listing_4417",
       },
     },

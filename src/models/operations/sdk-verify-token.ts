@@ -37,7 +37,7 @@ export type SDKVerifyTokenRequest = {
 };
 
 /**
- * Age Gate only, positive-only.
+ * Age Gate only, positive-only: the gate's own threshold when the person meets it (a person over 21 passing an 18+ gate reads 18), absent otherwise.
  */
 export const AgeOver = {
   Thirteen: 13,
@@ -45,7 +45,7 @@ export const AgeOver = {
   TwentyOne: 21,
 } as const;
 /**
- * Age Gate only, positive-only.
+ * Age Gate only, positive-only: the gate's own threshold when the person meets it (a person over 21 passing an 18+ gate reads 18), absent otherwise.
  */
 export type AgeOver = OpenEnum<typeof AgeOver>;
 
@@ -84,9 +84,13 @@ export type Claims = {
   issuedAt?: number | undefined;
   expiresAt?: number | undefined;
   /**
-   * Age Gate only, positive-only.
+   * Age Gate only, positive-only: the gate's own threshold when the person meets it (a person over 21 passing an 18+ gate reads 18), absent otherwise.
    */
   ageOver?: AgeOver | undefined;
+  /**
+   * The gate the request ran under (its name, as you send it in `gate`), or `none` when the request named no gate and no gate rule was applied. Check it equals your gate before treating the token as that gate's pass. Absent on tokens minted before 2026-11-20.
+   */
+  gate?: string | undefined;
   /**
    * GA 3.0 Secured Accounts: an active binding exists for (your platform, platform-user-ref). Always present; false on a plain Verify Human and on tokens minted before GA 3.0.
    */
@@ -341,6 +345,7 @@ export const Claims$inboundSchema: z.ZodType<Claims, z.ZodTypeDef, unknown> = z
     issued_at: types.optional(types.number()),
     expires_at: types.optional(types.number()),
     age_over: types.optional(AgeOver$inboundSchema),
+    gate: types.optional(types.string()),
     trusted: types.optional(types.boolean()),
     trusted_since: types.optional(types.date()),
     last_pass_at: types.optional(types.date()),
@@ -373,6 +378,7 @@ export type Claims$Outbound = {
   issued_at?: number | undefined;
   expires_at?: number | undefined;
   age_over?: number | undefined;
+  gate?: string | undefined;
   trusted?: boolean | undefined;
   trusted_since?: string | undefined;
   last_pass_at?: string | undefined;
@@ -398,6 +404,7 @@ export const Claims$outboundSchema: z.ZodType<
   issuedAt: z.number().optional(),
   expiresAt: z.number().optional(),
   ageOver: AgeOver$outboundSchema.optional(),
+  gate: z.string().optional(),
   trusted: z.boolean().optional(),
   trustedSince: z.date().transform(v => v.toISOString()).optional(),
   lastPassAt: z.date().transform(v => v.toISOString()).optional(),

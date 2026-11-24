@@ -246,9 +246,17 @@ const botShield = new BotShield({
 });
 
 async function run() {
-  const result = await botShield.census.storeSignal({
-    siteKey: "<value>",
-    score: 229498,
+  const result = await botShield.actions.proposeAction({
+    requestId: "362873d8-19a4-46e6-b883-916c05dd0283",
+    phoneNumber: "+1 415 555 0142",
+    action: {
+      summaryTitle: "<value>",
+      summaryDetail: {
+        label: "TOTAL",
+        value: "$100.90",
+      },
+      category: "travel.book",
+    },
   });
 
   console.log(result);
@@ -288,6 +296,7 @@ run();
 ### [Actions](docs/sdks/actions/README.md)
 
 * [verifyResolution](docs/sdks/actions/README.md#verifyresolution) - Check a Proof of Resolution (works once)
+* [authorizeTool](docs/sdks/actions/README.md#authorizetool) - Authorize one protected tool call (works once)
 * [proposeAction](docs/sdks/actions/README.md#proposeaction) - Propose an action for human confirmation
 * [checkActionStatus](docs/sdks/actions/README.md#checkactionstatus) - Check action proposal status
 * [cancelAction](docs/sdks/actions/README.md#cancelaction) - Cancel a queued action proposal
@@ -297,12 +306,13 @@ run();
 * [createSession](docs/sdks/census/README.md#createsession) - Create a grant token
 * [createVerificationLink](docs/sdks/census/README.md#createverificationlink) - Create a verification request
 * [verifyToken](docs/sdks/census/README.md#verifytoken) - Validate a verification token
-* [storeSignal](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
-* [validateSignal](docs/sdks/census/README.md#validatesignal) - Validate a signal token
+* [~~storeSignal~~](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score :warning: **Deprecated**
+* [~~validateSignal~~](docs/sdks/census/README.md#validatesignal) - Validate a signal token :warning: **Deprecated**
 * [getPartnerConfig](docs/sdks/census/README.md#getpartnerconfig) - Get partner configuration
 * [revokeVerification](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
 * [logout](docs/sdks/census/README.md#logout) - Revoke a grant token
 * [confirmLink](docs/sdks/census/README.md#confirmlink) - Confirm a pending link
+* [updateLink](docs/sdks/census/README.md#updatelink) - Update a verified account's sign-in
 * [sendByNumber](docs/sdks/census/README.md#sendbynumber) - Send a request to verify by phone number
 
 ### [Gates](docs/sdks/gates/README.md)
@@ -368,6 +378,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
+- [`actionsAuthorizeTool`](docs/sdks/actions/README.md#authorizetool) - Authorize one protected tool call (works once)
 - [`actionsCancelAction`](docs/sdks/actions/README.md#cancelaction) - Cancel a queued action proposal
 - [`actionsCheckActionStatus`](docs/sdks/actions/README.md#checkactionstatus) - Check action proposal status
 - [`actionsProposeAction`](docs/sdks/actions/README.md#proposeaction) - Propose an action for human confirmation
@@ -379,8 +390,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`censusLogout`](docs/sdks/census/README.md#logout) - Revoke a grant token
 - [`censusRevokeVerification`](docs/sdks/census/README.md#revokeverification) - Revoke a pending verification
 - [`censusSendByNumber`](docs/sdks/census/README.md#sendbynumber) - Send a request to verify by phone number
-- [`censusStoreSignal`](docs/sdks/census/README.md#storesignal) - Store a Signal Pixel bot score
-- [`censusValidateSignal`](docs/sdks/census/README.md#validatesignal) - Validate a signal token
+- [`censusUpdateLink`](docs/sdks/census/README.md#updatelink) - Update a verified account's sign-in
 - [`censusVerifyToken`](docs/sdks/census/README.md#verifytoken) - Validate a verification token
 - [`gatesActionsCreate`](docs/sdks/gatesactions/README.md#create) - Place a BotShield Action
 - [`gatesActionsList`](docs/sdks/gatesactions/README.md#list) - List BotShield Actions
@@ -406,6 +416,8 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`signInConfirm`](docs/sdks/signin/README.md#confirm) - Redeem a passkey sign-in
 - [`signInRequest`](docs/sdks/signin/README.md#request) - Ask for a passkey sign-in
 - [`verificationGetStatus`](docs/sdks/verification/README.md#getstatus) - Check verification status
+- ~~[`censusStoreSignal`](docs/sdks/census/README.md#storesignal)~~ - Store a Signal Pixel bot score :warning: **Deprecated**
+- ~~[`censusValidateSignal`](docs/sdks/census/README.md#validatesignal)~~ - Validate a signal token :warning: **Deprecated**
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->

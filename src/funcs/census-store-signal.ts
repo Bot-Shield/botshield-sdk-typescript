@@ -29,7 +29,9 @@ import { Result } from "../types/fp.js";
  * Store a Signal Pixel bot score
  *
  * @remarks
- * Stores a behavioral fingerprint score server-side and returns an opaque signal_token (bs_sig_...). The client-side score can be spoofed — the signal_token maps to the real score in BotShield's database. Called by the CDN worker; no partner credential is required.
+ * RETIRED (Loop 198, 2026-11-22). BotShield no longer scores visitors. Always answers data.error {code: 'retired', statusCode: 410}. Will be removed.
+ *
+ * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
  */
 export function censusStoreSignal(
   client: BotShieldCore,

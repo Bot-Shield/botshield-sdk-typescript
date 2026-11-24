@@ -27,6 +27,14 @@ export type SDKConfirmLinkRequest = {
    * Alias of partner_user_ref.
    */
   partnerUserId?: string | undefined;
+  /**
+   * How this account signs in to your site. `true`: it has a passkey at your sign-in. `false`: it signs in with a password. Either way the customer is BotShield Verified; `false` changes only the icon the app shows. Refused (`signin_passkey_required`) only when your company requires a passkey at your sign-in. Leave it out if you do not know.
+   */
+  signinPasskey?: boolean | undefined;
+  /**
+   * When this account's password was last reset (ISO 8601 with offset), if you know. Within the last 7 days the confirm is refused (`password_reset_recent`, with `retry_after`).
+   */
+  passwordResetAt?: Date | undefined;
 };
 
 export const SDKConfirmLinkState = {
@@ -46,12 +54,20 @@ export type SDKConfirmLinkDataData = {
    * The finished token. Single use, 2 minutes.
    */
   verificationToken?: string | undefined;
+  /**
+   * What your server said about this account's sign-in: `true` (a passkey), `false` (a password), or null when it was not sent. The customer is BotShield Verified in every case.
+   */
+  signinPasskey?: boolean | null | undefined;
 };
 
 export type SDKConfirmLinkError = {
   code?: string | undefined;
   message?: string | undefined;
   statusCode?: number | undefined;
+  /**
+   * On `password_reset_recent`: when the confirm can succeed (7 days after the reset).
+   */
+  retryAfter?: Date | undefined;
 };
 
 export type SDKConfirmLinkData = {
@@ -60,7 +76,7 @@ export type SDKConfirmLinkData = {
 };
 
 /**
- * Result. NOTE: handler errors arrive here (HTTP 200) as data.error — codes: secret_key_required · invalid_key · account_required · link_not_found · environment_mismatch · link_account_mismatch · link_expired · link_refused · rebind_requires_prior_id · already_trusted · unavailable.
+ * Result. NOTE: handler errors arrive here (HTTP 200) as data.error — codes: secret_key_required · invalid_key · account_required · link_not_found · environment_mismatch · link_account_mismatch · link_expired · link_refused · rebind_requires_prior_id · already_trusted · signin_passkey_required (403) · password_reset_recent (403, with retry_after) · unavailable.
  */
 export type SDKConfirmLinkResponse = {
   data?: SDKConfirmLinkData | undefined;
@@ -122,11 +138,15 @@ export const SDKConfirmLinkRequest$inboundSchema: z.ZodType<
   request_id: types.string(),
   partner_user_ref: types.optional(types.string()),
   partner_user_id: types.optional(types.string()),
+  signin_passkey: types.optional(types.boolean()),
+  password_reset_at: types.optional(types.date()),
 }).transform((v) => {
   return remap$(v, {
     "request_id": "requestId",
     "partner_user_ref": "partnerUserRef",
     "partner_user_id": "partnerUserId",
+    "signin_passkey": "signinPasskey",
+    "password_reset_at": "passwordResetAt",
   });
 });
 /** @internal */
@@ -134,6 +154,8 @@ export type SDKConfirmLinkRequest$Outbound = {
   request_id: string;
   partner_user_ref?: string | undefined;
   partner_user_id?: string | undefined;
+  signin_passkey?: boolean | undefined;
+  password_reset_at?: string | undefined;
 };
 
 /** @internal */
@@ -145,11 +167,15 @@ export const SDKConfirmLinkRequest$outboundSchema: z.ZodType<
   requestId: z.string(),
   partnerUserRef: z.string().optional(),
   partnerUserId: z.string().optional(),
+  signinPasskey: z.boolean().optional(),
+  passwordResetAt: z.date().transform(v => v.toISOString()).optional(),
 }).transform((v) => {
   return remap$(v, {
     requestId: "request_id",
     partnerUserRef: "partner_user_ref",
     partnerUserId: "partner_user_id",
+    signinPasskey: "signin_passkey",
+    passwordResetAt: "password_reset_at",
   });
 });
 
@@ -193,12 +219,14 @@ export const SDKConfirmLinkDataData$inboundSchema: z.ZodType<
   trusted: types.optional(types.boolean()),
   trusted_since: types.optional(types.date()),
   verification_token: types.optional(types.string()),
+  signin_passkey: z.nullable(types.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "first_time": "firstTime",
     "request_id": "requestId",
     "trusted_since": "trustedSince",
     "verification_token": "verificationToken",
+    "signin_passkey": "signinPasskey",
   });
 });
 /** @internal */
@@ -211,6 +239,7 @@ export type SDKConfirmLinkDataData$Outbound = {
   trusted?: boolean | undefined;
   trusted_since?: string | undefined;
   verification_token?: string | undefined;
+  signin_passkey?: boolean | null | undefined;
 };
 
 /** @internal */
@@ -227,12 +256,14 @@ export const SDKConfirmLinkDataData$outboundSchema: z.ZodType<
   trusted: z.boolean().optional(),
   trustedSince: z.date().transform(v => v.toISOString()).optional(),
   verificationToken: z.string().optional(),
+  signinPasskey: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
     firstTime: "first_time",
     requestId: "request_id",
     trustedSince: "trusted_since",
     verificationToken: "verification_token",
+    signinPasskey: "signin_passkey",
   });
 });
 
@@ -262,12 +293,18 @@ export const SDKConfirmLinkError$inboundSchema: z.ZodType<
   code: types.optional(types.string()),
   message: types.optional(types.string()),
   statusCode: types.optional(types.number()),
+  retry_after: types.optional(types.date()),
+}).transform((v) => {
+  return remap$(v, {
+    "retry_after": "retryAfter",
+  });
 });
 /** @internal */
 export type SDKConfirmLinkError$Outbound = {
   code?: string | undefined;
   message?: string | undefined;
   statusCode?: number | undefined;
+  retry_after?: string | undefined;
 };
 
 /** @internal */
@@ -279,6 +316,11 @@ export const SDKConfirmLinkError$outboundSchema: z.ZodType<
   code: z.string().optional(),
   message: z.string().optional(),
   statusCode: z.number().int().optional(),
+  retryAfter: z.date().transform(v => v.toISOString()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    retryAfter: "retry_after",
+  });
 });
 
 export function sdkConfirmLinkErrorToJSON(
